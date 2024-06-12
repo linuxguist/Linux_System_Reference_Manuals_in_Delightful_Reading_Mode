@@ -1,0 +1,67 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>fincore - count pages of file contents in core</p>
+<h1>SYNOPSIS</h1>
+<p><strong>fincore</strong> [options] <em>file</em>...</p>
+<h1>DESCRIPTION</h1>
+<p><strong>fincore</strong> counts pages of file contents being resident
+in memory (in core), and reports the numbers. If an error occurs during
+counting, then an error message is printed to the stderr and
+<strong>fincore</strong> continues processing the rest of files listed
+in a command line.</p>
+<p>The default output is subject to change. So whenever possible, you
+should avoid using default outputs in your scripts. Always explicitly
+define expected columns by using <strong>--output</strong>
+<em>columns-list</em> in environments where a stable output is
+required.</p>
+<h1>OPTIONS</h1>
+<p><strong>-n</strong>, <strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print a header line in status output.</p>
+</blockquote>
+<p><strong>-b</strong>, <strong>--bytes</strong></p>
+<blockquote>
+<p>Print the sizes in bytes rather than in a human-readable format.</p>
+<p>By default, the unit, sizes are expressed in, is byte, and unit
+prefixes are in power of 2^10 (1024). Abbreviations of symbols are
+exhibited truncated in order to reach a better readability, by
+exhibiting alone the first letter of them; examples: "1 KiB" and "1 MiB"
+are respectively exhibited as "1 K" and "1 M", then omitting on purpose
+the mention "iB", which is part of these abbreviations.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Define output columns. See the <strong>--help</strong> output to get
+a list of the currently supported columns. The default list of columns
+may be extended if <em>list</em> is specified in the format
+<em>+list</em>.</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--raw</strong></p>
+<blockquote>
+<p>Produce output in raw format. All potentially unsafe characters are
+hex-escaped (\x&lt;code&gt;).</p>
+</blockquote>
+<p><strong>-J</strong>, <strong>--json</strong></p>
+<blockquote>
+<p>Use JSON output format.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>mincore</strong>(2), <strong>getpagesize</strong>(2),
+<strong>getconf</strong>(1p)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>fincore</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

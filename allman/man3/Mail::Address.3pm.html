@@ -1,0 +1,115 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Mail::Address - parse mail addresses</p>
+<h1>SYNOPSIS</h1>
+<p>use Mail::Address; my @addrs = Mail::Address-&gt;parse($line);
+foreach $addr (@addrs) { print $addr-&gt;format,"\n"; }</p>
+<h1>DESCRIPTION</h1>
+<p><code>Mail::Address</code> extracts and manipulates email addresses
+from a message header. It cannot be used to extract addresses from some
+random text. You can use this module to create RFC822 compliant
+fields.</p>
+<p>Although <code>Mail::Address</code> is a very popular subject for
+books, and is used in many applications, it does a very poor job on the
+more complex message fields. It does only handle simple address formats
+(which covers about 95% of what can be found). Problems are with</p>
+<ul>
+<li><p>no support for address groups, even not with the semi-colon as
+separator between addresses;</p></li>
+<li><p>limited support for escapes in phrases and comments. There are
+cases where it can get wrong; and</p></li>
+<li><p>you have to take care of most escaping when you create an address
+yourself: <code>Mail::Address</code> does not do that for you.</p></li>
+</ul>
+<p>Often requests are made to the maintainers of this code improve this
+situation, but this is not a good idea, where it will break zillions of
+existing applications. If you wish for a fully RFC2822 compliant
+implementation you may take a look at Mail::Message::Field::Full, part
+of MailBox.</p>
+<p><strong>. Example</strong></p>
+<p>my $s = Mail::Message::Field::Full-&gt;new($from_header); # ref $s
+isa Mail::Message::Field::Addresses; my @g = $s-&gt;groups; # all
+groups, at least one # ref $g[0] isa Mail::Message::Field::AddrGroup; my
+$ga = $g[0]-&gt;addresses; # group addresses my @a = $s-&gt;addresses; #
+all addresses # ref $a[0] isa Mail::Message::Field::Address;</p>
+<h1>METHODS</h1>
+<h2>Constructors</h2>
+<dl>
+<dt>Mail::Address-&gt;new( $phrase, $address, [ $comment ] )</dt>
+<dd>
+<p>Create a new <code>Mail::Address</code> object which represents an
+address with the elements given. In a message these 3 elements would be
+seen like: PHRASE &lt;ADDRESS&gt; (COMMENT) ADDRESS (COMMENT) example:
+Mail::Address-&gt;new("Perl5 Porters",
+"perl5-porters@africa.nicoh.com");</p>
+</dd>
+<dt>$obj-&gt;parse($line)</dt>
+<dd>
+<p>Parse the given line a return a list of extracted
+<code>Mail::Address</code> objects. The line would normally be one taken
+from a To,Cc or Bcc line in a message example: my @addr =
+Mail::Address-&gt;parse($line);</p>
+</dd>
+</dl>
+<h2>Accessors</h2>
+<dl>
+<dt>$obj-&gt;address()</dt>
+<dd>
+<p>Return the address part of the object.</p>
+</dd>
+<dt>$obj-&gt;comment()</dt>
+<dd>
+<p>Return the comment part of the object</p>
+</dd>
+<dt>$obj-&gt;format(@addresses)</dt>
+<dd>
+<p>Return a string representing the address in a suitable form to be
+placed on a <code>To</code>, <code>Cc</code>, or <code>Bcc</code> line
+of a message. This method is called on the first address to be used;
+other specified addresses will be appended, separated by commas.</p>
+</dd>
+<dt>$obj-&gt;phrase()</dt>
+<dd>
+<p>Return the phrase part of the object.</p>
+</dd>
+</dl>
+<h2>Smart accessors</h2>
+<dl>
+<dt>$obj-&gt;host()</dt>
+<dd>
+<p>Return the address excluding the user id and '@'</p>
+</dd>
+<dt>$obj-&gt;name()</dt>
+<dd>
+<p>Using the information contained within the object attempt to identify
+what the person or groups name is. <strong>Note:</strong> This function
+tries to be smart with the phrase of the email address, which is
+probably a very bad idea. Consider to use <strong>phrase()</strong>
+itself.</p>
+</dd>
+<dt>$obj-&gt;user()</dt>
+<dd>
+<p>Return the address excluding the '@' and the mail domain</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>This module is part of the MailTools distribution,
+<em>http://perl.overmeer.net/mailtools/</em>.</p>
+<h1>AUTHORS</h1>
+<p>The MailTools bundle was developed by Graham Barr. Later, Mark
+Overmeer took over maintenance without commitment to further
+development.</p>
+<p>Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;. Mail::Field::AddrList
+by Peter Orbaek &lt;poe@cit.dk&gt;. Mail::Mailer and Mail::Send by Tim
+Bunce &lt;Tim.Bunce@ig.co.uk&gt;. For other contributors see
+ChangeLog.</p>
+<h1>LICENSE</h1>
+<p>Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and
+2001-2017 Mark Overmeer &lt;perl@overmeer.net&gt;.</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself. See
+<em>http://www.perl.com/perl/misc/Artistic.html</em></p>

@@ -1,0 +1,40 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>aseqdump - show the events received at an ALSA sequencer port</p>
+<h1>SYNOPSIS</h1>
+<p><strong>aseqdump</strong> [<em>-p client:port,...</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>aseqdump</strong> is a command-line utility that prints the
+sequencer events it receives as text.</p>
+<p>To stop receiving, press Ctrl+C.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><em>-h,--help</em></dt>
+<dd>
+<p>Prints a list of options.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-V,--version</em></dt>
+<dd>
+<p>Prints the current version.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-l,--list</em></dt>
+<dd>
+<p>Prints a list of possible input ports.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-p,--port=client:port,...</em></dt>
+<dd>
+<p>Sets the sequencer port(s) from which events are received.</p>
+<p>A client can be specified by its number, its name, or a prefix of its
+name. A port is specified by its number; for port 0 of a client, the
+":0" part of the port specification can be omitted.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Clemens Ladisch &lt;clemens@ladisch.de&gt;</p>

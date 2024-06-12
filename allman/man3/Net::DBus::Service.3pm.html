@@ -1,0 +1,47 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Service - Provide a service to the bus for clients to
+use</p>
+<h1>SYNOPSIS</h1>
+<p>package main; use Net::DBus; # Attach to the bus my $bus =
+Net::DBus-&gt;find; # Acquire a service org.demo.Hello my $service =
+$bus-&gt;export_service("org.demo.Hello"); # Export our object within
+the service my $object = Demo::HelloWorld-&gt;new($service); ....rest of
+program...</p>
+<h1>DESCRIPTION</h1>
+<p>This module represents a service which is exported to the message
+bus. Once a service has been exported, it is possible to create and
+export objects to the bus.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $service = Net::DBus::Service-&gt;new($bus, $name);</dt>
+<dd>
+<p>Create a new service, attaching to the bus provided in the
+<code>$bus</code> parameter, which should be an instance of the
+Net::DBus object. The <code>$name</code> parameter is the qualified
+service name. It is not usually necessary to use this constructor, since
+services can be created via the <code>export_service</code> method on
+the Net::DBus object. When <code>$name</code> is not specified or is
+<code>undef</code> then returned handle to the service is identified
+only by the unique name of client's connection to the bus.</p>
+</dd>
+<dt>my $bus = $service-&gt;get_bus;</dt>
+<dd>
+<p>Retrieves the Net::DBus object to which this service is attached.</p>
+</dd>
+<dt>my $name = $service-&gt;get_service_name</dt>
+<dd>
+<p>Retrieves the qualified name by which this service is known on the
+bus.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2005-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus, Net::DBus::Object, Net::DBus::RemoteService</p>

@@ -1,0 +1,31 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sane-as6e - SANE backend for using the Artec AS6E parallel port
+interface scanner.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>sane-as6e</strong> library implements a SANE (Scanner
+Access Now Easy) backend that provides access to Artec AS6E flatbed
+scanner. It requires the <strong>as6edriver</strong> program in order to
+operate. The <strong>as6edriver</strong> program is not included with
+the SANE package. It can be found at
+<em>http://as6edriver.sourceforge.net</em>. See the as6edriver
+documentation for technical information.</p>
+<p>The <strong>as6edriver</strong> program must be in the path for
+executables (<strong>$PATH</strong>). Especially if you run
+<strong>saned</strong>(8) (the SANE network scanning daemon), take care
+to setup the path for <strong>inetd</strong>(8) or
+<strong>xinetd</strong>(8) correctly or place the program in a directory
+that is in the path.</p>
+<h1>FILES</h1>
+<p><strong>as6edriver</strong> - driver program that controls the
+scanner.</p>
+<h1>SEE ALSO</h1>
+<p><strong>sane</strong>(7), <strong>as6edriver</strong>(5),
+<strong>saned</strong>(8), <strong>inetd</strong>(8),
+<strong>xinetd</strong>(8)<br />
+<em>http://as6edriver.sourceforge.net</em></p>
+<h1>AUTHOR</h1>
+<p>Eugene S. Weiss</p>
+<h1>EMAIL-CONTACT</h1>
+<p><em>yossarian@users.sourceforge.net</em></p>

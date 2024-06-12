@@ -1,0 +1,48 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>x11perfcomp - X11 server performance comparison program</p>
+<h1>SYNTAX</h1>
+<p><strong>x11perfcomp</strong> [ -r | -ro ] [ -l label_file ] files</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>x11perfcomp</em> program merges the output of several
+<em>x11perf(1)</em> runs into a nice tabular format. It takes the
+results in each file, fills in any missing test results if necessary,
+and for each test shows the objects/second rate of each server. If
+invoked with the -r or -ro options, it shows the relative performance of
+each server to the first server.</p>
+<p>Normally, <em>x11perfcomp</em> uses the first file specified to
+determine which specific tests it should report on. Some (non-DEC :)
+servers may fail to perform all tests. In this case,
+<em>x11perfcomp</em> automatically substitutes in a rate of 0.0
+objects/second. Since the first file determines which tests to report
+on, this file must contain a superset of the tests reported in the other
+files, else <em>x11perfcomp</em> will fail.</p>
+<p>You can provide an explicit list of tests to report on by using the
+-l switch to specify a file of labels. You can create a label file by
+using the -label option in <em>x11perf.</em></p>
+<h1>OPTIONS</h1>
+<p><em>x11perfcomp</em> accepts the options listed below:</p>
+<dl>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Specifies that the output should also include relative server
+performance.</p>
+</dd>
+<dt><strong>-ro</strong></dt>
+<dd>
+<p>Specifies that the output should include only relative server
+performance.</p>
+</dd>
+<dt><strong>-l label_file</strong></dt>
+<dd>
+<p>Specifies a label file to use.</p>
+</dd>
+</dl>
+<h1>X DEFAULTS</h1>
+<p>There are no X defaults used by this program.</p>
+<h1>SEE ALSO</h1>
+<p>X(7), x11perf(1)</p>
+<h1>AUTHORS</h1>
+<p>Mark Moraes wrote the original scripts to compare servers.<br />
+Joel McCormack just munged them together a bit.</p>

@@ -1,0 +1,32 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Xrm - X Resource/Defaults/Options routines that obey the
+rules.</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk; use Tk::Xrm;</p>
+<h1>DESCRIPTION</h1>
+<p>Using this modules causes Tk's Option code to be replaced by versions
+which use routines from &lt;X11/Xresource.h&gt; - i.e. same ones every
+other X toolkit uses.</p>
+<p>Result is that matching of name/Class with the options database
+follows the same rules as other X toolkits. This makes it more
+predictable, and makes it easier to have a single ~/.Xdefaults file
+which gives sensible results for both Tk and (say) Motif
+applications.</p>
+<h1>BUGS</h1>
+<p>Currently <strong>optionAdd</strong>(<em>key</em> =&gt;
+<em>value</em>?, <em>priority</em>?) ignores optional priority
+completely and just does <strong>XrmPutStringResource()</strong>.
+Perhaps it should be more subtle and do
+<strong>XrmMergeDatabases()</strong> or
+<strong>XrmCombineDatabase()</strong>.</p>
+<p>This version is a little slower than Tk's re-invention but there is
+more optimization that can be done.</p>
+<h1>SEE ALSO</h1>
+<p>Tk::option</p>
+<h1>KEYWORDS</h1>
+<p>database, option, priority, retrieve</p>

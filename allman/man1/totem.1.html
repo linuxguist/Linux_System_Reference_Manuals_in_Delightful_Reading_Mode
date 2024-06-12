@@ -1,0 +1,143 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>GNOME Videos - Movie player</p>
+<h1>SYNOPSIS</h1>
+<p><strong>totem</strong> [<em>option...</em>]<em>
+</em>[<em>filenames</em>|<em>URI</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>Videos</strong> is a movie player for the GNOME desktop.
+Through use of the <strong>GStreamer</strong> backend many popular file
+and streaming formats are supported including: H.264 (AVC) and H.265
+(HEVC) MPEG-4, WebM and AV1, MPEG-2 and MPEG-1, as well as legacy videos
+types: Ogg, AVI, ASF, MOV, WMV, QuickTime, and more. Playback of DVDs is
+also possible.</p>
+<p>For additional documentation on interactive use of
+<strong>Videos</strong> select the <em>Help</em> menu option. The menus
+allow access to some features not available through keybindings or
+command-line options.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-?, --help</strong></dt>
+<dd>
+<p>Output a longer help message then quit. (Any discrepancies between
+this man page and the output of <strong>totem --help</strong> should be
+reported as a documentation bug.)</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Output version information then quit.</p>
+</dd>
+</dl>
+<p>The following options command an already-running instance of
+<strong>Videos</strong> to do something; they are useful for
+remote-control scripting. If <strong>Videos</strong> is not already
+running, these commands will launch a new instance of
+<strong>Videos</strong> but will not do anything further.</p>
+<dl>
+<dt><strong>--play-pause</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to toggle
+between play and pause.</p>
+</dd>
+<dt><strong>--play</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to play
+(has no effect if already playing)</p>
+</dd>
+<dt><strong>--pause</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to pause
+(has no effect if already paused)</p>
+</dd>
+<dt><strong>--next</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to skip
+to the next movie or chapter in the playlist.</p>
+</dd>
+<dt><strong>--previous</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to return
+to the previous movie or chapter in the playlist.</p>
+</dd>
+<dt><strong>--seek-fwd</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to seek
+forwards 15 seconds in the current movie.</p>
+</dd>
+<dt><strong>--seek-bwd</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to seek
+backwards 15 seconds in the current movie.</p>
+</dd>
+<dt><strong>--volume-up</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to raise
+the volume by 8%.</p>
+</dd>
+<dt><strong>--volume-down</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to lower
+the volume by 8%.</p>
+</dd>
+<dt><strong>--mute</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to toggle
+between muted and unmuted audio.</p>
+</dd>
+<dt><strong>--fullscreen</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to toggle
+fullscreen mode.</p>
+</dd>
+<dt><strong>--quit</strong></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to
+quit.</p>
+</dd>
+<dt><strong>--enqueue </strong><em>filename|URI</em></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to add a
+new stream to the playlist.</p>
+</dd>
+<dt><strong>--replace </strong><em>filename|URI</em></dt>
+<dd>
+<p>Tell an already-running instance of <strong>Videos</strong> to play
+from the playlist.</p>
+</dd>
+</dl>
+<h1>KEYBINDINGS</h1>
+<p>Information about keybindings is available once the application is
+started by typing <strong>Ctrl+Question Mark</strong> which might
+require pressing Shift in some keyboard configurations.</p>
+<h1>FILES</h1>
+<p><em>/usr/lib/totem/plugins/</em></p>
+<blockquote>
+<p>The global plugins directory, which contains all the system-installed
+plugins.</p>
+</blockquote>
+<p><em>~/.local/share/totem/plugins/</em></p>
+<blockquote>
+<p>The user plugins directory, containing plugins available only to that
+user. It is always in the "totem/plugins" subdirectory of your
+<strong>XDG_DATA_HOME</strong> directory.</p>
+</blockquote>
+<p><em>~/.config/totem/state.ini</em></p>
+<blockquote>
+<p>The configuration file for the main window's appearance, stored in a
+simple INI format.</p>
+</blockquote>
+<h1>BUGS</h1>
+<p><strong>Videos</strong> cannot play files using some proprietary
+codecs.</p>
+<h1>AUTHOR</h1>
+<p><strong>Videos</strong> was written by Bastien Nocera
+&lt;hadess@hadess.net&gt;. This manual page was written by Andre
+Lehovich for the Debian Project.</p>
+<h1>DISTRIBUTION</h1>
+<p>The latest version of Videos may be downloaded from <a
+href="https://flathub.org/apps/details/org.gnome.Totem">&lt;https://flathub.org/apps/details/org.gnome.Totem&gt;</a></p>
+<h1>SEE ALSO</h1>
+<p><strong>totem-video-thumbnailer</strong>(1),</p>
+<p>The online documentation available through the program's
+<em>Help</em> menu.</p>

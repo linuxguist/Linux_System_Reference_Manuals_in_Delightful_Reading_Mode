@@ -1,0 +1,237 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-measure - Pre-calculate and sign expected TPM2 PCR values for
+booted unified kernel images</p>
+<h1>SYNOPSIS</h1>
+<p><strong>/lib/systemd/systemd-measure</strong>
+<strong>[OPTIONS...]</strong></p>
+<h1>DESCRIPTION</h1>
+<p>Note: this command is experimental for now. While it is likely to
+become a regular component of systemd, it might still change in
+behaviour and interface.</p>
+<p><strong>systemd-measure</strong> is a tool that may be used to
+pre-calculate and sign the expected TPM2 PCR 11 values that should be
+seen when a unified Linux kernel image based on
+<strong>systemd-stub</strong>(7) is booted up. It accepts paths to the
+ELF kernel image file, initrd image file, devicetree file, kernel
+command line file, <strong>os-release</strong>(5) file, boot splash
+file, and TPM2 PCR PEM public key file that make up the unified kernel
+image, and determines the PCR values expected to be in place after
+booting the image. Calculation starts with a zero-initialized PCR 11,
+and is executed in a fashion compatible with what systemd-stub does at
+boot. The result may optionally be signed cryptographically, to allow
+TPM2 policies that can only be unlocked if a certain set of kernels is
+booted, for which such a PCR signature can be provided.</p>
+<h1>COMMANDS</h1>
+<p>The following commands are understood:</p>
+<p><strong>status</strong></p>
+<blockquote>
+<p>This is the default command if none is specified. This queries the
+local systems TPM2 PCR 11+12+13 values and displays them. The data is
+written in a similar format as the <strong>calculate</strong> command
+below, and may be used to quickly compare expectation with reality.</p>
+</blockquote>
+<p><strong>calculate</strong></p>
+<blockquote>
+<p>Pre-calculate the expected values seen in PCR register 11 after
+boot-up of a unified kernel image consisting of the components specified
+with <strong>--linux=</strong>, <strong>--osrel=</strong>,
+<strong>--cmdline=</strong>, <strong>--initrd=</strong>,
+<strong>--splash=</strong>, <strong>--dtb=</strong>,
+<strong>--pcrpkey=</strong> see below. Only <strong>--linux=</strong> is
+mandatory. (Alternatively, specify <strong>--current</strong> to use the
+current values of PCR register 11 instead.)</p>
+</blockquote>
+<p><strong>sign</strong></p>
+<blockquote>
+<p>As with the <strong>calculate</strong> command, pre-calculate the
+expected value seen in TPM2 PCR register 11 after boot-up of a unified
+kernel image. Then, cryptographically sign the resulting values with the
+private/public key pair (RSA) configured via
+<strong>--private-key=</strong> and <strong>--public-key=</strong>. This
+will write a JSON object to standard output that contains signatures for
+all specified PCR banks (see <strong>--pcr-bank=</strong>) below, which
+may be used to unlock encrypted credentials (see
+<strong>systemd-creds</strong>(1)) or LUKS volumes (see
+<strong>systemd-cryptsetup@.service</strong>(8)). This allows binding
+secrets to a set of kernels for which such PCR 11 signatures can be
+provided.</p>
+<p>Note that a TPM2 device must be available for this signing to take
+place, even though the result is not tied to any TPM2 device or its
+state.</p>
+</blockquote>
+<h1>OPTIONS</h1>
+<p>The following options are understood:</p>
+<p><strong>--linux=PATH</strong>, <strong>--osrel=PATH</strong>,
+<strong>--cmdline=PATH</strong>, <strong>--initrd=PATH</strong>,
+<strong>--splash=PATH</strong>, <strong>--dtb=PATH</strong>,
+<strong>--pcrpkey=PATH</strong></p>
+<blockquote>
+<p>When used with the <strong>calculate</strong> or
+<strong>sign</strong> verb, configures the files to read the unified
+kernel image components from. Each option corresponds with the equally
+named section in the unified kernel PE file. The
+<strong>--linux=</strong> switch expects the path to the ELF kernel file
+that the unified PE kernel will wrap. All switches except
+<strong>--linux=</strong> are optional. Each option may be used at most
+once.</p>
+</blockquote>
+<p><strong>--current</strong></p>
+<blockquote>
+<p>When used with the <strong>calculate</strong> or
+<strong>sign</strong> verb, takes the PCR 11 values currently in effect
+for the system (which should typically reflect the hashes of the
+currently booted kernel). This can be used in place of
+<strong>--linux=</strong> and the other switches listed above.</p>
+</blockquote>
+<p><strong>--bank=DIGEST</strong></p>
+<blockquote>
+<p>Controls the PCR banks to pre-calculate the PCR values for – in case
+<strong>calculate</strong> or <strong>sign</strong> is invoked –, or the
+banks to show in the <strong>status</strong> output. May be used more
+then once to specify multiple banks. If not specified, defaults to the
+four banks "sha1", "sha256", "sha384", "sha512".</p>
+</blockquote>
+<p><strong>--private-key=PATH</strong>,
+<strong>--public-key=PATH</strong></p>
+<blockquote>
+<p>These switches take paths to a pair of PEM encoded RSA key files, for
+use with the <strong>sign</strong> command.</p>
+<p>Note the difference between the <strong>--pcrpkey=</strong> and
+<strong>--public-key=</strong> switches. The former selects the data to
+include in the ".pcrpkey" PE section of the unified kernel image, the
+latter picks the public key of the key pair used to sign the resulting
+PCR 11 values. The former is the key that the booted system will likely
+use to lock disk and credential encryption to, the latter is the key
+used for unlocking such resources again. Hence, typically the same PEM
+key should be supplied in both cases.</p>
+<p>If the <strong>--public-key=</strong> is not specified but
+<strong>--private-key=</strong> is specified the public key is
+automatically derived from the private key.</p>
+</blockquote>
+<p><strong>--tpm2-device=</strong><em>PATH</em></p>
+<blockquote>
+<p>Controls which TPM2 device to use. Expects a device node path
+referring to the TPM2 chip (e.g. /dev/tpmrm0). Alternatively the special
+value "auto" may be specified, in order to automatically determine the
+device node of a suitable TPM2 device (of which there must be exactly
+one). The special value "list" may be used to enumerate all suitable
+TPM2 devices currently discovered.</p>
+</blockquote>
+<p><strong>--phase=</strong><em>PHASE</em></p>
+<blockquote>
+<p>Controls which boot phases to calculate expected PCR 11 values for.
+This takes a series of colon-separated strings that encode boot "paths"
+for entering a specific phase of the boot process. Each of the specified
+strings is measured by the systemd-pcrphase-initrd.service and
+<strong>systemd-pcrphase.service</strong>(8) into PCR 11 during
+different milestones of the boot process. This switch may be specified
+multiple times to calculate PCR values for multiple boot phases at once.
+If not used defaults to "enter-initrd", "enter-initrd:leave-initrd",
+"enter-initrd:leave-initrd:sysinit",
+"enter-initrd:leave-initrd:sysinit:ready", i.e. calculates expected PCR
+values for the boot phase in the initrd, during early boot, during later
+boot, and during system runtime, but excluding the phases before the
+initrd or when shutting down. This setting is honoured both by
+<strong>calculate</strong> and <strong>sign</strong>. When used with the
+latter its particularly useful for generating PCR signatures that can
+only be used for unlocking resources during specific parts of the boot
+process.</p>
+<p>For further details about PCR boot phases, see
+<strong>systemd-pcrphase.service</strong>(8).</p>
+</blockquote>
+<p><strong>--json=</strong><em>MODE</em></p>
+<blockquote>
+<p>Shows output formatted as JSON. Expects one of "short" (for the
+shortest possible output without any redundant whitespace or line
+breaks), "pretty" (for a pretty version of the same, with indentation
+and line breaks) or "off" (to turn off JSON output, the default).</p>
+</blockquote>
+<p><strong>--no-pager</strong></p>
+<blockquote>
+<p>Do not pipe output into a pager.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Print a short help text and exit.</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Print a short version string and exit.</p>
+</blockquote>
+<h1>EXAMPLES</h1>
+<p><strong>Example 1. Generate a unified kernel image, and calculate the
+expected TPM PCR 11 value</strong></p>
+<blockquote>
+<pre><code># objcopy \
+    --add-section .linux=vmlinux --change-section-vma .linux=0x2000000 \
+    --add-section .osrel=os-release.txt --change-section-vma .osrel=0x20000 \
+    --add-section .cmdline=cmdline.txt --change-section-vma .cmdline=0x30000 \
+    --add-section .initrd=initrd.cpio --change-section-vma .initrd=0x3000000 \
+    --add-section .splash=splash.bmp --change-section-vma .splash=0x100000 \
+    --add-section .dtb=devicetree.dtb --change-section-vma .dtb=0x40000 \
+    /usr/lib/systemd/boot/efi/linuxx64.efi.stub \
+    foo.efi
+# systemd-measure calculate \
+     --linux=vmlinux \
+     --osrel=os-release.txt \
+     --cmdline=cmdline.txt \
+     --initrd=initrd.cpio \
+     --splash=splash.bmp \
+     --dtb=devicetree.dtb
+11:sha1=d775a7b4482450ac77e03ee19bda90bd792d6ec7
+11:sha256=bc6170f9ce28eb051ab465cd62be8cf63985276766cf9faf527ffefb66f45651
+11:sha384=1cf67dff4757e61e5a73d2a21a6694d668629bbc3761747d493f7f49ad720be02fd07263e1f93061243aec599d1ee4b4
+11:sha512=8e79acd3ddbbc8282e98091849c3530f996303c8ac8e87a3b2378b71c8b3a6e86d5c4f41ecea9e1517090c3e8ec0c714821032038f525f744960bcd082d937da</code></pre>
+</blockquote>
+<p><strong>Example 2. Generate a private/public key pair, and a unified
+kernel image, and a TPM PCR 11 signature for it, and embed the signature
+and the public key in the image</strong></p>
+<blockquote>
+<pre><code># openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out tpm2-pcr-private.pem
+# openssl rsa -pubout -in tpm2-pcr-private.pem -out tpm2-pcr-public.pem
+# systemd-measure sign \
+     --linux=vmlinux \
+     --osrel=os-release.txt \
+     --cmdline=cmdline.txt \
+     --initrd=initrd.cpio \
+     --splash=splash.bmp \
+     --dtb=devicetree.dtb \
+     --pcrpkey=tpm2-pcr-public.pem \
+     --bank=sha1 \
+     --bank=sha256 \
+     --private-key=tpm2-pcr-private.pem \
+     --public-key=tpm2-pcr-public.pem &gt; tpm2-pcr-signature.json
+# objcopy \
+    --add-section .linux=vmlinux --change-section-vma .linux=0x2000000 \
+    --add-section .osrel=os-release.txt --change-section-vma .osrel=0x20000 \
+    --add-section .cmdline=cmdline.txt --change-section-vma .cmdline=0x30000 \
+    --add-section .initrd=initrd.cpio --change-section-vma .initrd=0x3000000 \
+    --add-section .splash=splash.bmp --change-section-vma .splash=0x100000 \
+    --add-section .dtb=devicetree.dtb --change-section-vma .dtb=0x40000 \
+    --add-section .pcrsig=tpm2-pcr-signature.json --change-section-vma .splash=0x80000 \
+    --add-section .pcrpkey=tpm2-pcr-public.pem --change-section-vma .splash=0x90000 \
+    /usr/lib/systemd/boot/efi/linuxx64.efi.stub \
+    foo.efi</code></pre>
+</blockquote>
+<p>Later on, enroll the signed PCR policy on a LUKS volume:</p>
+<blockquote>
+<pre><code># systemd-cryptenroll --tpm2-device=auto --tpm2-public-key=tpm2-pcr-public.pem --tpm2-signature=tpm2-pcr-signature.json /dev/sda5</code></pre>
+</blockquote>
+<p>And then unlock the device with the signature:</p>
+<blockquote>
+<pre><code># /lib/systemd/systemd-cryptsetup attach myvolume /dev/sda5 - tpm2-device=auto,tpm2-signature=/path/to/tpm2-pcr-signature.json</code></pre>
+</blockquote>
+<p>Note that when the generated unified kernel image foo.efi is booted
+the signature and public key files will be placed at locations
+<strong>systemd-cryptenroll</strong> and
+<strong>systemd-cryptsetup</strong> will look for anyway, and thus these
+paths do not actually need to be specified.</p>
+<h1>EXIT STATUS</h1>
+<p>On success, 0 is returned, a non-zero failure code otherwise.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>systemd-stub</strong>(7),
+<strong>objcopy</strong>(1), <strong>systemd-creds</strong>(1),
+<strong>systemd-cryptsetup@.service</strong>(8),
+<strong>systemd-pcrphase.service</strong>(8)</p>

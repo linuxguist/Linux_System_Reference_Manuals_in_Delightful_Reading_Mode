@@ -1,0 +1,18 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-integritysetup-generator - Unit generator for integrity
+protected block devices</p>
+<h1>SYNOPSIS</h1>
+<p>/lib/systemd/system-generators/systemd-integritysetup-generator</p>
+<h1>DESCRIPTION</h1>
+<p>systemd-integritysetup-generator is a generator that translates
+/etc/integritytab entries into native systemd units early at boot. This
+will create <strong>systemd-integritysetup@.service</strong>(8) units as
+necessary.</p>
+<p><strong>systemd-integritysetup-generator</strong> implements
+<strong>systemd.generator</strong>(7).</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1),
+<strong>systemd-integritysetup@.service</strong>(8),
+<strong>integritysetup</strong>(8)</p>

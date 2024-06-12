@@ -1,0 +1,198 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sane-coolscan3 - SANE backend for Nikon Coolscan film scanners</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>sane-coolscan3</strong> library implements a SANE
+(Scanner Access Now Easy) backend that provides access to Nikon Coolscan
+film scanners. Some functions of this backend should be considered
+<strong>beta-quality</strong> software. Most functions have been stable
+for a long time, but of course new development can not and will not
+function properly from the very first day.</p>
+<p>At present, the following scanners are known to work with this
+backend:</p>
+<blockquote>
+<pre><code>Model:                       Connection Type
+---------------------------  -------------------
+LS-30 (Coolscan III)         SCSI
+LS-40 ED (Coolscan IV)       USB
+LS-50 ED (Coolscan V)        USB
+LS-2000                      SCSI
+LS-4000 ED                   IEEE 1394
+LS-8000 ED                   IEEE 1394</code></pre>
+</blockquote>
+<p>Please send mail to <em>sane-devel@alioth-lists.debian.net</em> to
+report successes or failures.</p>
+<h1>OPTIONS</h1>
+<p>The options the backend supports can either be selected through
+command line options to programs like <strong>scanimage</strong>(1) or
+through GUI elements in <strong>xscanimage</strong>(1) or
+<strong>xsane</strong>(1).</p>
+<p>Valid command line options and their syntax can be listed by
+using:</p>
+<blockquote>
+<p>scanimage --help -d coolscan3:&lt;interface&gt;:&lt;device&gt;</p>
+</blockquote>
+<p>where &lt;interface&gt; and &lt;device&gt; specify the device in
+question, as in the configuration file (see next section). The
+<strong>-d</strong> parameter and its argument can be omitted to obtain
+information on the first scanner identified. Use the command:</p>
+<blockquote>
+<p>scanimage -L</p>
+</blockquote>
+<p>to list all devices recognized by your SANE installation.</p>
+<p>The options should be fully described by the description or tooltips
+given by frontend. Here is a description of some of the most important
+options, in the syntax with which they must be supplied to
+<strong>scanimage</strong>(1):</p>
+<dl>
+<dt><strong>--frame &lt;n&gt;</strong></dt>
+<dd>
+<p>This option specifies which frame to operate on, if a motorized film
+strip feeder or APS adapter are used. The frame number
+<em>&lt;n&gt;</em> ranges from 1 to the number of frames available,
+which is sensed each time the backend is initialized (usually each time
+you start the frontend).</p>
+</dd>
+<dt><strong>--subframe &lt;x&gt;</strong></dt>
+<dd>
+<p>This option shifts the scan window by the specified amount (default
+unit is mm).</p>
+</dd>
+<dt><strong>--infrared=yes/no</strong></dt>
+<dd>
+<p>If set to "yes", the scanner will read the infrared channel, thus
+allowing defect removal in software. The infrared image is read during a
+second scan, with no options altered. The backend must not be restarted
+between the scans. If you use scanimage, perform a batch scan with
+<strong>--batch-count=2</strong> to obtain the IR information.</p>
+</dd>
+<dt><strong>--depth &lt;n&gt;</strong></dt>
+<dd>
+<p>Here &lt;n&gt; can either be 8 or the maximum number of bits
+supported by the scanner (10, 12, or 14). It specifies whether or not
+the scanner reduces the scanned data to 8 bits before sending it to the
+backend. If 8 bits are used, some information and thus image quality is
+lost, but the amount of data is smaller compared to higher depths. Also,
+many imaging programs and image formats cannot handle depths greater
+than 8 bits.</p>
+</dd>
+<dt><strong>--autofocus</strong></dt>
+<dd>
+<p>Perform autofocus operation. Unless otherwise specified by the other
+options ( <strong>--focus-on-centre</strong> and friends), focusing is
+performed on the centre of the selected scan area.</p>
+</dd>
+<dt><strong>--ae-wb</strong></dt>
+<dd>
+<dl>
+<dt><strong>--ae</strong></dt>
+<dd>
+<p>Perform a pre-scan to calculate exposure values automatically.
+<strong>--ae-wb</strong> will maintain the white balance, while
+<strong>--ae</strong> will adjust each channel separately.</p>
+</dd>
+<dt><strong>--exposure</strong></dt>
+<dd>
+<p>Multiply all exposure times with this value. This allows exposure
+correction without modifying white balance.</p>
+</dd>
+<dt><strong>--load</strong></dt>
+<dd>
+<p>Load the next slide when using the slide loader (SF-200 bulk loader
+only).</p>
+</dd>
+<dt><strong>--eject</strong></dt>
+<dd>
+<p>Eject the film strip or mounted slide when using the slide
+loader.</p>
+</dd>
+<dt><strong>--reset</strong></dt>
+<dd>
+<p>Reset scanner. The scanner will perform the same action as when power
+is turned on: it will eject the film strip (with the SF-200 bulk loader)
+and calibrate itself. Use this whenever the scanner refuses to load a
+film strip properly, as a result of which <strong>--eject</strong> does
+not work.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h1>CONFIGURATION FILE</h1>
+<p>The configuration file <em>/etc/sane.d/coolscan3.conf</em> specifies
+the device(s) that the backend will use. Owing to the nature of the
+supported connection types SCSI, USB, and IEEE 1394, the default
+configuration file supplied with the SANE distribution should work
+without being edited.</p>
+<p>Each line in the configuration file is either of the following, where
+all entries are case-sensitive:</p>
+<dl>
+<dt><em>blank or starting with a '#' character</em></dt>
+<dd>
+<p>These lines are ignored, thus '#' can be used to include
+comments.</p>
+</dd>
+<dt><em>containing only the word "auto"</em></dt>
+<dd>
+<p>This instructs the backend to probe for a scanner by scanning the
+buses for devices with known identifiers. This is the default action
+when no configuration file is present.</p>
+</dd>
+<dt><em>a line of the form &lt;interface&gt;:&lt;device&gt;</em></dt>
+<dd>
+<p>Here &lt;interface&gt; can be one of "scsi" or "usb", and
+&lt;device&gt; is the device file of the scanner. Note that IEEE 1394
+devices are handled by the SBP-2 module in the kernel and appear to SANE
+as SCSI devices.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-coolscan3.a</em></dt>
+<dd>
+<p>The static library implementing this backend.</p>
+</dd>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-coolscan3.so</em></dt>
+<dd>
+<p>The shared library implementing this backend (present on systems that
+support dynamic loading).</p>
+</dd>
+<dt><em>/etc/sane.d/coolscan3.conf</em></dt>
+<dd>
+<p>Configuration file for this backend, read each time the backend is
+initialized.</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>SANE_DEBUG_COOLSCAN3</strong></dt>
+<dd>
+<p>If the library was compiled with debug support enabled, this
+environment variable controls the debug level for this backend. E.g., a
+value of 128 requests all debug output to be printed. Smaller levels
+reduce verbosity.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>sane-scsi</strong>(5), <strong>sane-usb</strong>(5),
+<strong>scanimage</strong>(1), <strong>xscanimage</strong>(1),
+<strong>xsane</strong>(1)</p>
+<h1>BUGS</h1>
+<p>Currently, the SANE protocol does not allow automatically updating
+options whenever the hardware changes. Thus the number of choices for
+the <strong>--frame</strong> option will be fixed when the backend is
+initialized (usually when the user runs the frontend). In particular, if
+there is no film strip in the automatic film strip feeder when the
+backend is initialized, the <strong>--frame</strong> option will not
+appear at all. Also, restarting the frontend after swapping film
+adapters is strongly recommended.</p>
+<p>Linux kernels prior to 2.4.19 had a patch that truncated INQUIRY data
+from IEEE 1394 scanners to 36 bytes, discarding vital information about
+the scanner. The IEEE 1394 models therefore only work with 2.4.19 or
+later.</p>
+<p>No real bugs currently known, please report any to the SANE
+developers' list.</p>
+<h1>AUTHORS</h1>
+<p>coolscan3 written by A. Zummo &lt;<em>a.zummo@towertech.it</em>&gt;,
+based heavily on coolscan2 written by András Major
+&lt;<em>andras@users.sourceforge.net</em>&gt;.</p>

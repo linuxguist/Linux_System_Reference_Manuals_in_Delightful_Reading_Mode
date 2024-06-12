@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+html {
+    background-color: #242424;
+    border-color: black;
+    border: 1px solid black;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+
+body { 
+    margin:0 auto; max-width: 700px; 
+    font-family: Roboto,sans-serif;
+    background-color: #303030;
+    color: #bdbdbd;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* For other Browsers */    
+::selection {
+  background: orange;
+  color: black;
+}
+
+/* For Firefox */
+::-moz-selection {
+  background: orange;
+  color: black;
+}

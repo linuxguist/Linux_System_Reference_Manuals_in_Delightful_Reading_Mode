@@ -1,0 +1,358 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>cups-files.conf - file and directory configuration file for cups</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>cups-files.conf</strong> file configures the files and
+directories used by the CUPS scheduler, <strong>cupsd</strong>(8). It is
+normally located in the <em>/etc/cups</em> directory.</p>
+<p>Each line in the file can be a configuration directive, a blank line,
+or a comment. Configuration directives typically consist of a name and
+zero or more values separated by whitespace. The configuration directive
+name and values are case-insensitive. Comment lines start with the #
+character.</p>
+<h2>DIRECTIVES</h2>
+<p>The following directives are understood by
+<strong>cupsd</strong>(8):</p>
+<dl>
+<dt><strong>AccessLog</strong></dt>
+<dd>
+<dl>
+<dt><strong>AccessLog</strong> <em>filename</em></dt>
+<dd>
+<dl>
+<dt><strong>AccessLog stderr</strong></dt>
+<dd>
+<dl>
+<dt><strong>AccessLog syslog</strong></dt>
+<dd>
+<p>Defines the access log filename. Specifying a blank filename disables
+access log generation. The value "stderr" causes log entries to be sent
+to the standard error file when the scheduler is running in the
+foreground, or to the system log daemon when run in the background. The
+value "syslog" causes log entries to be sent to the system log daemon.
+The server name may be included in filenames using the string "%s", for
+example:</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<pre><code>
+    AccessLog /var/log/cups/%s-access_log
+</code></pre>
+<p>The default is "/var/log/cups/access_log".</p>
+<dl>
+<dt><strong>CacheDir</strong> <em>directory</em></dt>
+<dd>
+<p>Specifies the directory to use for long-lived temporary (cache)
+files. The default is "/var/spool/cups/cache" or "/var/cache/cups"
+depending on the platform.</p>
+</dd>
+<dt><strong>ConfigFilePerm</strong> <em>mode</em></dt>
+<dd>
+<p>Specifies the permissions for all configuration files that the
+scheduler writes. The default is "0644" on macOS and "0640" on all other
+operating systems.</p>
+</dd>
+</dl>
+<p><strong>Note:</strong> The permissions for the <em>printers.conf</em>
+file are currently masked to only allow access from the scheduler user
+(typically root). This is done because printer device URIs sometimes
+contain sensitive authentication information that should not be
+generally known on the system. There is no way to disable this security
+feature.</p>
+<dl>
+<dt><strong>CreateSelfSignedCerts yes</strong></dt>
+<dd>
+<dl>
+<dt><strong>CreateSelfSignedCerts no</strong></dt>
+<dd>
+<p>Specifies whether the scheduler automatically creates self-signed
+certificates for client connections using TLS. The default is yes.</p>
+</dd>
+<dt><strong>DataDir</strong> <em>path</em></dt>
+<dd>
+<p>Specifies the directory where data files can be found. The default is
+usually "/usr/share/cups".</p>
+</dd>
+<dt><strong>DocumentRoot</strong> <em>directory</em></dt>
+<dd>
+<p>Specifies the root directory for the CUPS web interface content. The
+default is usually "/usr/share/doc/cups".</p>
+</dd>
+<dt><strong>ErrorLog</strong></dt>
+<dd>
+<dl>
+<dt><strong>ErrorLog</strong> <em>filename</em></dt>
+<dd>
+<dl>
+<dt><strong>ErrorLog stderr</strong></dt>
+<dd>
+<dl>
+<dt><strong>ErrorLog syslog</strong></dt>
+<dd>
+<p>Defines the error log filename. Specifying a blank filename disables
+error log generation. The value "stderr" causes log entries to be sent
+to the standard error file when the scheduler is running in the
+foreground, or to the system log daemon when run in the background. The
+value "syslog" causes log entries to be sent to the system log daemon.
+The server name may be included in filenames using the string "%s", for
+example:</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<pre><code>
+    ErrorLog /var/log/cups/%s-error_log
+</code></pre>
+<p>The default is "/var/log/cups/error_log".</p>
+<dl>
+<dt><strong>FatalErrors none</strong></dt>
+<dd>
+<dl>
+<dt><strong>FatalErrors all</strong> <em>-kind</em> [ ... <em>-kind</em>
+]</dt>
+<dd>
+<dl>
+<dt><strong>FatalErrors</strong> <em>kind</em> [ ... <em>kind</em>
+]</dt>
+<dd>
+<p>Specifies which errors are fatal, causing the scheduler to exit. The
+default is "config". The <em>kind</em> strings are:</p>
+<dl>
+<dt><strong>none</strong></dt>
+<dd>
+<p>No errors are fatal.</p>
+</dd>
+<dt><strong>all</strong></dt>
+<dd>
+<p>All of the errors below are fatal.</p>
+</dd>
+<dt><strong>browse</strong></dt>
+<dd>
+<p>Browsing initialization errors are fatal, for example failed
+connections to the DNS-SD daemon.</p>
+</dd>
+<dt><strong>config</strong></dt>
+<dd>
+<p>Configuration file syntax errors are fatal.</p>
+</dd>
+<dt><strong>listen</strong></dt>
+<dd>
+<p>Listen or Port errors are fatal, except for IPv6 failures on the
+loopback or "any" addresses.</p>
+</dd>
+<dt><strong>log</strong></dt>
+<dd>
+<p>Log file creation or write errors are fatal.</p>
+</dd>
+<dt><strong>permissions</strong></dt>
+<dd>
+<p>Bad startup file permissions are fatal, for example shared TLS
+certificate and key files with world-read permissions.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>Group</strong> <em>group-name-or-number</em></dt>
+<dd>
+<p>Specifies the group name or ID that will be used when executing
+external programs. The default group is operating system specific but is
+usually "lp" or "nobody".</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt><strong>LogFileGroup</strong> <em>group-name-or-number</em></dt>
+<dd>
+<p>Specifies the group name or ID that will be used for log files. The
+default group is operating system specific but is usually "lp" or
+"nobody".</p>
+</dd>
+<dt><strong>LogFilePerm</strong> <em>mode</em></dt>
+<dd>
+<p>Specifies the permissions of all log files that the scheduler writes.
+The default is "0644".</p>
+</dd>
+<dt><strong>PageLog</strong> [ <em>filename</em> ]</dt>
+<dd>
+<dl>
+<dt><strong>PageLog stderr</strong></dt>
+<dd>
+<dl>
+<dt><strong>PageLog syslog</strong></dt>
+<dd>
+<p>Defines the page log filename. The value "stderr" causes log entries
+to be sent to the standard error file when the scheduler is running in
+the foreground, or to the system log daemon when run in the background.
+The value "syslog" causes log entries to be sent to the system log
+daemon. Specifying a blank filename disables page log generation. The
+server name may be included in filenames using the string "%s", for
+example:</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<pre><code>
+    PageLog /var/log/cups/%s-page_log
+</code></pre>
+<p>The default is "/var/log/cups/page_log".</p>
+<dl>
+<dt><strong>PassEnv</strong> <em>variable</em> [ ... <em>variable</em>
+]</dt>
+<dd>
+<p>Passes the specified environment variable(s) to child processes.
+Note: the standard CUPS filter and backend environment variables cannot
+be overridden using this directive.</p>
+</dd>
+<dt><strong>RemoteRoot</strong> <em>username</em></dt>
+<dd>
+<p>Specifies the username that is associated with unauthenticated
+accesses by clients claiming to be the root user. The default is
+"remroot".</p>
+</dd>
+<dt><strong>RequestRoot</strong> <em>directory</em></dt>
+<dd>
+<p>Specifies the directory that contains print jobs and other HTTP
+request data. The default is "/var/spool/cups".</p>
+</dd>
+<dt><strong>Sandboxing relaxed</strong></dt>
+<dd>
+<dl>
+<dt><strong>Sandboxing strict</strong></dt>
+<dd>
+<p>Specifies the level of security sandboxing that is applied to print
+filters, backends, and other child processes of the scheduler. The
+default is "strict". This directive is currently only used/supported on
+macOS.</p>
+</dd>
+<dt><strong>ServerBin</strong> <em>directory</em></dt>
+<dd>
+<p>Specifies the directory containing the backends, CGI programs,
+filters, helper programs, notifiers, and port monitors. The default is
+"/usr/lib/cups" or "/usr/libexec/cups" depending on the platform.</p>
+</dd>
+<dt><strong>ServerKeychain</strong> <em>path</em></dt>
+<dd>
+<p>Specifies the location of TLS certificates and private keys. The
+default is "/Library/Keychains/System.keychain" on macOS and
+"/etc/cups/ssl" on all other operating systems. macOS uses its keychain
+database to store certificates and keys while other platforms use
+separate files in the specified directory, *.crt for PEM-encoded
+certificates and *.key for PEM-encoded private keys.</p>
+</dd>
+<dt><strong>ServerRoot</strong> <em>directory</em></dt>
+<dd>
+<p>Specifies the directory containing the server configuration files.
+The default is "/etc/cups".</p>
+</dd>
+<dt><strong>SetEnv</strong> <em>variable value</em></dt>
+<dd>
+<p>Set the specified environment variable to be passed to child
+processes. Note: the standard CUPS filter and backend environment
+variables cannot be overridden using this directive.</p>
+</dd>
+<dt><strong>StateDir</strong> <em>directory</em></dt>
+<dd>
+<p>Specifies the directory to use for PID and local certificate files.
+The default is "/var/run/cups" or "/etc/cups" depending on the
+platform.</p>
+</dd>
+<dt><strong>SyncOnClose Yes</strong></dt>
+<dd>
+<dl>
+<dt><strong>SyncOnClose No</strong></dt>
+<dd>
+<p>Specifies whether the scheduler calls <strong>fsync</strong>(2) after
+writing configuration or state files.</p>
+</dd>
+<dt><strong>SystemGroup</strong> <em>group-name</em> [ ...
+<em>group-name</em> ]</dt>
+<dd>
+<p>Specifies the group(s) to use for <em>@SYSTEM</em> group
+authentication. The default contains "admin", "lpadmin", "root", "sys",
+and/or "system".</p>
+</dd>
+<dt><strong>TempDir</strong> <em>directory</em></dt>
+<dd>
+<p>Specifies the directory where short-term temporary files are stored.
+The default is "/var/spool/cups/tmp".</p>
+</dd>
+<dt><strong>User</strong> <em>username</em></dt>
+<dd>
+<p>Specifies the user name or ID that is used when running external
+programs. The default is "lp".</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>DEPRECATED DIRECTIVES</h2>
+<p>The following directives are deprecated and will be removed from a
+future version of CUPS:</p>
+<dl>
+<dt><strong>FileDevice Yes</strong></dt>
+<dd>
+<dl>
+<dt><strong>FileDevice No</strong></dt>
+<dd>
+<p>Specifies whether the file pseudo-device can be used for new printer
+queues. The URI "file:///dev/null" is always allowed. File devices
+cannot be used with "raw" print queues - a PPD file is required. The
+specified file is overwritten for every print job. Writing to
+directories is not supported.</p>
+</dd>
+<dt><strong>Printcap</strong> <em>filename</em></dt>
+<dd>
+<p>Specifies a file that is filled with a list of local print
+queues.</p>
+</dd>
+<dt><strong>PrintcapFormat bsd</strong></dt>
+<dd>
+<dl>
+<dt><strong>PrintcapFormat plist</strong></dt>
+<dd>
+<dl>
+<dt><strong>PrintcapFormat solaris</strong></dt>
+<dd>
+<p>Specifies the format to use for the Printcap file. "bsd" is the
+historical LPD printcap file format. "plist" is the Apple plist file
+format. "solaris" is the historical Solaris LPD printcap file
+format.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>The scheduler MUST be restarted manually after making changes to the
+<strong>cups-files.conf</strong> file. On Linux this is typically done
+using the <strong>systemctl</strong>(8) command, while on macOS the
+<strong>launchctl</strong>(8) command is used instead.</p>
+<h1>SEE ALSO</h1>
+<p><strong>classes.conf</strong>(5), <strong>cups</strong>(1),
+<strong>cupsd</strong>(8), <strong>cupsd.conf</strong>(5),
+<strong>mime.convs</strong>(5), <strong>mime.types</strong>(5),
+<strong>printers.conf</strong>(5),
+<strong>subscriptions.conf</strong>(5), CUPS Online Help
+(http://localhost:631/help)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2020-2022 by OpenPrinting.</p>

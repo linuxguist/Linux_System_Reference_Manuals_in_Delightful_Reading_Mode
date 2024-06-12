@@ -1,0 +1,49 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTML::FormatText - Format HTML as plaintext</p>
+<h1>VERSION</h1>
+<p>version 2.16</p>
+<h1>SYNOPSIS</h1>
+<p>use HTML::TreeBuilder; $tree =
+HTML::TreeBuilder-&gt;new-&gt;parse_file("test.html"); use
+HTML::FormatText; $formatter = HTML::FormatText-&gt;new(leftmargin =&gt;
+0, rightmargin =&gt; 50); print $formatter-&gt;format($tree);</p>
+<p>or, more simply:</p>
+<p>use HTML::FormatText; my $string = HTML::FormatText-&gt;format_file(
+test.html, leftmargin =&gt; 0, rightmargin =&gt; 50 );</p>
+<h1>DESCRIPTION</h1>
+<p>HTML::FormatText is a formatter that outputs plain text. All
+character attributes (bold/italic/underline) are ignored. Formatting of
+HTML tables and forms is not implemented.</p>
+<p>HTML::FormatText is built on HTML::Formatter and documentation for
+that module applies to this - especially new in HTML::Formatter,
+format_file in HTML::Formatter and format_string in HTML::Formatter.</p>
+<p>You might specify the following parameters when constructing the
+formatter:</p>
+<dl>
+<dt>leftmargin (alias lm)</dt>
+<dd>
+<p>The column of the left margin. The default is 3.</p>
+</dd>
+<dt>rightmargin (alias rm)</dt>
+<dd>
+<p>The column of the right margin. The default is 72.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>HTML::Formatter</p>
+<h1>AUTHORS</h1>
+<ul>
+<li><p>Nigel Metheringham &lt;nigelm@cpan.org&gt;</p></li>
+<li><p>Sean M Burke &lt;sburke@cpan.org&gt;</p></li>
+<li><p>Gisle Aas &lt;gisle@ActiveState.com&gt;</p></li>
+</ul>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2016 by Nigel Metheringham, 2002-2005
+Sean M Burke, 1999-2002 Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

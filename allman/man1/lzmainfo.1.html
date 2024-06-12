@@ -1,0 +1,37 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lzmainfo - show information stored in the .lzma file header</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lzmainfo</strong> [<strong>--help</strong>]
+[<strong>--version</strong>] [<em>file...</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>lzmainfo</strong> shows information stored in the
+<strong>.lzma</strong> file header. It reads the first 13 bytes from the
+specified <em>file</em>, decodes the header, and prints it to standard
+output in human readable format. If no <em>files</em> are given or
+<em>file</em> is <strong>-</strong>, standard input is read.</p>
+<p>Usually the most interesting information is the uncompressed size and
+the dictionary size. Uncompressed size can be shown only if the file is
+in the non-streamed <strong>.lzma</strong> format variant. The amount of
+memory required to decompress the file is a few dozen kilobytes plus the
+dictionary size.</p>
+<p><strong>lzmainfo</strong> is included in XZ Utils primarily for
+backward compatibility with LZMA Utils.</p>
+<h1>EXIT STATUS</h1>
+<dl>
+<dt><strong>0</strong></dt>
+<dd>
+<p>All is good.</p>
+</dd>
+<dt><strong>1</strong></dt>
+<dd>
+<p>An error occurred.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p><strong>lzmainfo</strong> uses <strong>MB</strong> while the correct
+suffix would be <strong>MiB</strong> (2^20 bytes). This is to keep the
+output compatible with LZMA Utils.</p>
+<h1>SEE ALSO</h1>
+<p><strong>xz</strong>(1)</p>

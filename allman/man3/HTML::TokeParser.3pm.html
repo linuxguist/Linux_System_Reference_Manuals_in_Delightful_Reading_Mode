@@ -1,0 +1,180 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTML::TokeParser - Alternative HTML::Parser interface</p>
+<h1>SYNOPSIS</h1>
+<p>require HTML::TokeParser; $p = HTML::TokeParser-&gt;new("index.html")
+|| die "Cant open: $!"; $p-&gt;empty_element_tags(1); # configure its
+behaviour while (my $token = $p-&gt;get_token) { #... }</p>
+<h1>DESCRIPTION</h1>
+<p>The <code>HTML::TokeParser</code> is an alternative interface to the
+<code>HTML::Parser</code> class. It is an <code>HTML::PullParser</code>
+subclass with a predeclared set of token types. If you wish the tokens
+to be reported differently you probably want to use the
+<code>HTML::PullParser</code> directly.</p>
+<p>The following methods are available:</p>
+<dl>
+<dt>$p = HTML::TokeParser-&gt;new( $filename, %opt );</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$p = HTML::TokeParser-&gt;new( $filehandle, %opt );</dt>
+<dd>
+
+</dd>
+<dt>$p = HTML::TokeParser-&gt;new( \$document, %opt );</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The object constructor argument is either a file name, a file handle
+object, or the complete document to be parsed. Extra options can be
+provided as key/value pairs and are processed as documented by the base
+classes. If the argument is a plain scalar, then it is taken as the name
+of a file to be opened and parsed. If the file can't be opened for
+reading, then the constructor will return <code>undef</code> and $! will
+tell you why it failed. If the argument is a reference to a plain
+scalar, then this scalar is taken to be the literal document to parse.
+The value of this scalar should not be changed before all tokens have
+been extracted. Otherwise the argument is taken to be some object that
+the <code>HTML::TokeParser</code> can <strong>read()</strong> from when
+it needs more data. Typically it will be a filehandle of some kind. The
+stream will be <strong>read()</strong> until EOF, but not closed. A
+newly constructed <code>HTML::TokeParser</code> differ from its base
+classes by having the <code>unbroken_text</code> attribute enabled by
+default. See HTML::Parser for a description of this and other attributes
+that influence how the document is parsed. It is often a good idea to
+enable <code>empty_element_tags</code> behaviour. Note that the parsing
+result will likely not be valid if raw undecoded UTF-8 is used as a
+source. When parsing UTF-8 encoded files turn on UTF-8 decoding: open(my
+$fh, "&lt;:utf8", "index.html") || die "Cant open index.html: $!"; my $p
+= HTML::TokeParser-&gt;new( $fh ); # ... If a <code>$filename</code> is
+passed to the constructor the file will be opened in raw mode and the
+parsing result will only be valid if its content is Latin-1 or pure
+ASCII. If parsing from an UTF-8 encoded string buffer decode it first:
+utf8::decode($document); my $p = HTML::TokeParser-&gt;new( \$document );
+# ...</p>
+<dl>
+<dt>$p-&gt;get_token</dt>
+<dd>
+<p>This method will return the next <em>token</em> found in the HTML
+document, or <code>undef</code> at the end of the document. The token is
+returned as an array reference. The first element of the array will be a
+string denoting the type of this token: S for start tag, E for end tag,
+T for text, C for comment, D for declaration, and PI for process
+instructions. The rest of the token array depend on the type like this:
+["S", $tag, $attr, $attrseq, $text] ["E", $tag, $text] ["T", $text,
+$is_data] ["C", $text] ["D", $text] ["PI", $token0, $text] where
+<code>$attr</code> is a hash reference, <code>$attrseq</code> is an
+array reference and the rest are plain scalars. The Argspec in
+HTML::Parser explains the details.</p>
+</dd>
+<dt>$p-&gt;unget_token( @tokens )</dt>
+<dd>
+<p>If you find you have read too many tokens you can push them back, so
+that they are returned the next time <code>$p</code>-&gt;get_token is
+called.</p>
+</dd>
+<dt>$p-&gt;get_tag</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$p-&gt;get_tag( @tags )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This method returns the next start or end tag (skipping any other
+tokens), or <code>undef</code> if there are no more tags in the
+document. If one or more arguments are given, then we skip tokens until
+one of the specified tag types is found. For example:
+$p-&gt;get_tag("font", "/font"); will find the next start or end tag for
+a font-element. The tag information is returned as an array reference in
+the same form as for <code>$p</code>-&gt;get_token above, but the type
+code (first element) is missing. A start tag will be returned like this:
+[$tag, $attr, $attrseq, $text] The tagname of end tags are prefixed with
+/, i.e. end tag is returned like this: ["/$tag", $text]</p>
+<dl>
+<dt>$p-&gt;get_text</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$p-&gt;get_text( @endtags )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This method returns all text found at the current position. It will
+return a zero length string if the next token is not text. Any entities
+will be converted to their corresponding character. If one or more
+arguments are given, then we return all text occurring before the first
+of the specified tags found. For example: $p-&gt;get_text("p", "br");
+will return the text up to either a paragraph of line break element. The
+text might span tags that should be <em>textified</em>. This is
+controlled by the <code>$p</code>-&gt;{textify} attribute, which is a
+hash that defines how certain tags can be treated as text. If the name
+of a start tag matches a key in this hash then this tag is converted to
+text. The hash value is used to specify which tag attribute to obtain
+the text from. If this tag attribute is missing, then the upper case
+name of the tag enclosed in brackets is returned, e.g. [IMG]. The hash
+value can also be a subroutine reference. In this case the routine is
+called with the start tag token content as its argument and the return
+value is treated as the text. The default <code>$p</code>-&gt;{textify}
+value is: {img =&gt; "alt", applet =&gt; "alt"} This means that
+&lt;IMG&gt; and &lt;APPLET&gt; tags are treated as text, and that the
+text to substitute can be found in the ALT attribute.</p>
+<dl>
+<dt>$p-&gt;get_trimmed_text</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$p-&gt;get_trimmed_text( @endtags )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Same as <code>$p</code>-&gt;get_text above, but will collapse any
+sequences of white space to a single space character. Leading and
+trailing white space is removed.</p>
+<dl>
+<dt>$p-&gt;get_phrase</dt>
+<dd>
+<p>This will return all text found at the current position ignoring any
+phrasal-level tags. Text is extracted until the first non phrasal-level
+tag. Textification of tags is the same as for
+<strong>get_text()</strong>. This method will collapse white space in
+the same way as <strong>get_trimmed_text()</strong> does. The definition
+of &lt;i&gt;phrasal-level tags&lt;/i&gt; is obtained from the
+HTML::Tagset module.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>This example extracts all links from a document. It will print one
+line for each link, containing the URL and the textual description
+between the &lt;A&gt;...&lt;/A&gt; tags:</p>
+<p>use HTML::TokeParser; $p =
+HTML::TokeParser-&gt;new(shift||"index.html"); while (my $token =
+$p-&gt;get_tag("a")) { my $url = $token-&gt;[1]{href} || "-"; my $text =
+$p-&gt;get_trimmed_text("/a"); print "$url\t$text\n"; }</p>
+<p>This example extract the &lt;TITLE&gt; from the document:</p>
+<p>use HTML::TokeParser; $p =
+HTML::TokeParser-&gt;new(shift||"index.html"); if
+($p-&gt;get_tag("title")) { my $title = $p-&gt;get_trimmed_text; print
+"Title: $title\n"; }</p>
+<h1>SEE ALSO</h1>
+<p>HTML::PullParser, HTML::Parser</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1998-2005 Gisle Aas.</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

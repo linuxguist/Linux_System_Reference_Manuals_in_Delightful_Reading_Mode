@@ -1,0 +1,62 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>aa-features-abi - Extract, validate and manipulate AppArmor feature
+abis</p>
+<h1>SYNOPSIS</h1>
+<p><strong>aa-features-abi</strong> [OPTIONS] &lt;SOURCE&gt; [OUTPUT
+OPTIONS]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>aa-features-abi</strong> is used to extract a features abi
+and output to either stdout or a specified file. A SOURCE_OPTION must be
+specified. If an output option is not specified the features abi is
+written to stdout.</p>
+<h1>OPTIONS</h1>
+<p><strong>aa-features-abi</strong> accepts the following arguments:</p>
+<dl>
+<dt>-h, --help</dt>
+<dd>
+<p>Display a brief usage guide.</p>
+</dd>
+<dt>-d, --debug</dt>
+<dd>
+<p>show messages with debugging information</p>
+</dd>
+<dt>-v, --verbose</dt>
+<dd>
+<p>show messages with stats</p>
+</dd>
+</dl>
+<h1>SOURCE</h1>
+<dl>
+<dt>-x, --extract</dt>
+<dd>
+<p>Extract the features abi for the kernel</p>
+</dd>
+<dt>-f FILE, --file=FILE</dt>
+<dd>
+<p>Load the features abi from FILE and send it to OUTPUT OPTIONS.</p>
+</dd>
+</dl>
+<h1>OUTPUT OPTIONS</h1>
+<dl>
+<dt>--stdout</dt>
+<dd>
+<p>Write the features abi to <em>stdout</em>, this is the default if no
+output option is specified.</p>
+</dd>
+<dt>-w FILE, --write FILE</dt>
+<dd>
+<p>Write the features abi to <em>FILE</em>.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>If you find any bugs, please report them at
+&lt;https://gitlab.com/apparmor/apparmor/-/issues&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>apparmor</strong> (7), <strong>apparmor.d</strong> (5),
+<strong>aa_features</strong> (3), and
+&lt;https://wiki.apparmor.net&gt;.</p>

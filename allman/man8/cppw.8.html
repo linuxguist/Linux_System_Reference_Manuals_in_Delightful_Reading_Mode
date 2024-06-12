@@ -1,0 +1,26 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>cppw, cpgr - copy with locking the given file to the password or
+group file</p>
+<h1>SYNOPSIS</h1>
+<p><strong>cppw</strong> [<strong>-h</strong>] [<strong>-s</strong>]
+password_file<br />
+<strong>cpgr</strong> [<strong>-h</strong>] [<strong>-s</strong>]
+group_file</p>
+<h1>DESCRIPTION</h1>
+<p><strong>cppw</strong> and <strong>cpgr</strong> will copy, with
+locking, the given file to <em>/etc/passwd</em> and <em>/etc/group</em>,
+respectively. With the <strong>-s</strong> flag, they will copy the
+shadow versions of those files, <em>/etc/shadow</em> and
+<em>/etc/gshadow</em>, respectively.</p>
+<p>With the <strong>-h</strong> flag, the commands display a short help
+message and exit silently.</p>
+<h1>SEE ALSO</h1>
+<p><strong>vipw</strong>(8), <strong>vigr</strong>(8),
+<strong>group</strong>(5), <strong>passwd</strong>(5),
+<strong>shadow</strong>(5), <strong>gshadow</strong>(5)</p>
+<h1>AUTHOR</h1>
+<p><strong>cppw</strong> and <strong>cpgr</strong> were written by
+Stephen Frost, based on <strong>vipw</strong> and <strong>vigr</strong>
+written by Guy Maor.</p>

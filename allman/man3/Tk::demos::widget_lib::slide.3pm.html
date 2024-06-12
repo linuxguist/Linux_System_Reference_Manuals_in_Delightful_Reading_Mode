@@ -1,0 +1,51 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::SlideSwitch - a 2 position horizontal or vertical switch.</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::SlideSwitch; my $sl = $frame1-&gt;SlideSwitch( -bg =&gt;
+gray, -orient =&gt; horizontal, -command =&gt; [$self =&gt; on], -llabel
+=&gt; [-text =&gt; OFF, -foreground =&gt; blue], -rlabel =&gt; [-text
+=&gt; ON, -foreground =&gt; blue], -troughcolor =&gt; tan,
+)-&gt;pack(qw/-side left -expand 1/);</p>
+<h1>DESCRIPTION</h1>
+<p>Tk::SlideSwitch is a Frame based composite mega-widget featuring a
+binary Scale widget surrounded by two Label widgets. The Scale's value
+can be either 0 or 1. The Labels are positioned to the left and right of
+the Scale if its orientation is horizontal, else on the top and bottom
+of the Scale.</p>
+<h1>OPTIONS</h1>
+<p>In addition to all Scale options, the following option/value pairs
+are also supported:</p>
+<dl>
+<dt>-llabel</dt>
+<dd>
+<p>A reference to an array of left (or top) Label configuration
+options.</p>
+</dd>
+<dt>-rlabel</dt>
+<dd>
+<p>A reference to an array of right (or bottom) Label configuration
+options.</p>
+</dd>
+</dl>
+<h1>METHODS</h1>
+<p>There are no special methods.</p>
+<h1>ADVERTISED WIDGETS</h1>
+<p>Component subwidgets can be accessed via the
+<strong>Subwidget</strong> method. This mega widget has no advertised
+subwidgets.</p>
+<h1>EXAMPLE</h1>
+<p>See Synopsis.</p>
+<h1>BUGS</h1>
+<p>This widget uses only the pack geometry manager.</p>
+<h1>AUTHOR</h1>
+<p>sol0@Lehigh.EDU</p>
+<p>Copyright (C) 2002 - 2003, Steve Lidie. All rights reserved.</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>
+<h1>KEYWORDS</h1>
+<p>SlideSwitch, Scale</p>

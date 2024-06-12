@@ -1,0 +1,29 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>exfatlabel - Get or Set volume label or volume serial of an exFAT
+filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>exfatlabel</strong> [ <strong>-i</strong> ] [
+<strong>-V</strong> ] <em>device</em> [ <em>label_string or
+serial_value</em> ]<br />
+<strong>exfatlabel -V</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>exfatlabel</strong> Print or set volume label of an existing
+exFAT filesystem.</p>
+<p>If there is a <em>label_string</em> in the argument of exfatlabel, it
+will be written to the volume label field on a given device. If not,
+exfatlabel will just print it after reading the volume label field from
+the given device. If -i or --volume-serial is given, it will switch to
+volume serial mode.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-i --volume-serial</strong></dt>
+<dd>
+<p>Switch to volume serial mode.</p>
+</dd>
+<dt><strong>-V</strong></dt>
+<dd>
+<p>Prints the version number and exits.</p>
+</dd>
+</dl>

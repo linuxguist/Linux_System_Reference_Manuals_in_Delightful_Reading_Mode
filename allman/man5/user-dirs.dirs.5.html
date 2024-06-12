@@ -1,0 +1,49 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>user-dirs.dirs - settings for XDG user dirs</p>
+<h1>DESCRIPTION</h1>
+<p>The $HOME/.config/user-dirs.dirs file is a text file that contains
+the user-specific values for the XDG user dirs. It is created and
+updated by the xdg-user-dirs-update command.</p>
+<p>This file contains lines of the form</p>
+<blockquote>
+<pre><code>XDG_NAME_DIR=VALUE</code></pre>
+</blockquote>
+<p>The following names are recognised:</p>
+<blockquote>
+<p>DESKTOP</p>
+</blockquote>
+<blockquote>
+<p>DOWNLOAD</p>
+</blockquote>
+<blockquote>
+<p>TEMPLATES</p>
+</blockquote>
+<blockquote>
+<p>PUBLICSHARE</p>
+</blockquote>
+<blockquote>
+<p>DOCUMENTS</p>
+</blockquote>
+<blockquote>
+<p>MUSIC</p>
+</blockquote>
+<blockquote>
+<p>PICTURES</p>
+</blockquote>
+<blockquote>
+<p>VIDEOS</p>
+</blockquote>
+<p><em>VALUE</em> must be of the form "$HOME/Path" or "/Path".</p>
+<p>Lines beginning with a # character are ignored.</p>
+<p>The format of user-dirs.dirs is designed to allow direct sourcing of
+this file in shell scripts.</p>
+<h1>ENVIRONMENT</h1>
+<p><strong>XDG_CONFIG_DIRS</strong></p>
+<blockquote>
+<p>The user-dirs.defaults file is located in this directory. The default
+is /etc/xdg.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>xdg-user-dirs-update</strong>(1)</p>

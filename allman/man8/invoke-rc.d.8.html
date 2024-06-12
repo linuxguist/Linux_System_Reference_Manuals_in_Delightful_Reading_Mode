@@ -1,0 +1,197 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>invoke-rc.d - executes System-V style init script actions</p>
+<h1>SYNOPSIS</h1>
+<p><strong>invoke-rc.d</strong> [<em>--quiet</em>] [<em>--force</em>]
+[<em>--try-anyway</em>] [<em>--disclose-deny</em>] [<em>--query</em>]
+[<em>--no-fallback</em>] <em>name</em> <em>action</em> [<em>init script
+parameters...</em>]</p>
+<p><strong>invoke-rc.d</strong> [<em>--help</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>invoke-rc.d</strong> is a generic interface to execute System
+V style init script <strong>/etc/init.d/</strong><em>name</em> actions,
+obeying runlevel constraints as well as any local policies set by the
+system administrator.</p>
+<p>All access to the init scripts by Debian packages' maintainer scripts
+should be done through <strong>invoke-rc.d</strong>.</p>
+<p>This manpage documents only the usage and behavior of
+<strong>invoke-rc.d</strong>. For a discussion of the System V style
+init script arrangements please see <strong>init</strong>(8). More
+information on invoke-rc.d can be found in the section on runlevels and
+init.d scripts of the <em>Debian Policy Manual</em>.</p>
+<h1>INIT SCRIPT ACTIONS</h1>
+<p>The standard actions are: <em>start</em>, <em>stop</em>,
+<em>force-stop</em>, <em>restart</em>, <em>try-restart</em>,
+<em>reload</em>, <em>force-reload</em>, and <em>status</em>. Other
+actions are accepted, but they can cause problems to
+<strong>policy-rc.d</strong> (see the <strong>INIT SCRIPT
+POLICY</strong> section), so warnings are generated if the policy layer
+is active.</p>
+<p>Please note that not all init scripts will implement all the actions
+listed above, and that the policy layer may override an action to
+another action(s), or even deny it.</p>
+<p>Any extra parameters will be passed to the init script(s) being
+executed.</p>
+<p>If an action must be carried out regardless of any local policies,
+use the <em>--force</em> switch.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong><em>--help</em></strong></dt>
+<dd>
+<p>Display usage help.</p>
+</dd>
+<dt><strong><em>--quiet</em></strong></dt>
+<dd>
+<p>Quiet mode, no error messages are generated.</p>
+</dd>
+<dt><strong><em>--force</em></strong></dt>
+<dd>
+<p>Tries to run the init script regardless of policy and init script
+subsystem errors. <strong>Use of this option in Debian maintainer
+scripts is severely discouraged.</strong></p>
+</dd>
+<dt><strong><em>--try-anyway</em></strong></dt>
+<dd>
+<p>Tries to run the init script if a non-fatal error is detected.</p>
+</dd>
+<dt><strong><em>--disclose-deny</em></strong></dt>
+<dd>
+<p>Return status code 101 instead of status code 0 if the init script
+action is denied by the policy layer.</p>
+</dd>
+<dt><strong><em>--query</em></strong></dt>
+<dd>
+<p>Returns one of the status codes 100-106. Does not run the init
+script, and implies <em>--disclose-deny</em> and
+<em>--no-fallback</em>.</p>
+</dd>
+<dt><strong><em>--no-fallback</em></strong></dt>
+<dd>
+<p>Ignores any fallback action requests by the policy layer.
+<strong>Warning:</strong> this is usually a very bad idea for any
+actions other than start.</p>
+</dd>
+<dt><strong><em>--skip-systemd-native</em></strong></dt>
+<dd>
+<p>Exits before doing anything if a systemd environment is detected and
+the requested service is a native systemd unit. This is useful for
+maintainer scripts that want to defer systemd actions to
+<strong>deb-systemd-invoke</strong>(1p)</p>
+</dd>
+</dl>
+</blockquote>
+<h1>STATUS CODES</h1>
+<p>Should an init script be executed, <strong>invoke-rc.d</strong>
+always returns the status code returned by the init script. Init scripts
+should not return status codes in the 100+ range (which is reserved in
+Debian and by the LSB). The status codes returned by invoke-rc.d proper
+are:</p>
+<blockquote>
+<dl>
+<dt><strong>0</strong></dt>
+<dd>
+<p><em>Success</em>. Either the init script was run and returned exit
+status 0 (note that a fallback action may have been run instead of the
+one given in the command line), or it was not run because of
+runlevel/local policy constrains and <strong>--disclose-deny</strong> is
+not in effect.</p>
+</dd>
+<dt><strong>1 - 99</strong></dt>
+<dd>
+<p>Reserved for init.d script, usually indicates a failure.</p>
+</dd>
+<dt><strong>100</strong></dt>
+<dd>
+<p><strong>Init script ID (</strong><em>name</em><strong>)
+unknown.</strong> This means the init script was not registered
+successfully through <strong>update-rc.d</strong> or that the init
+script does not exist.</p>
+</dd>
+<dt><strong>101</strong></dt>
+<dd>
+<p><strong>Action not allowed</strong>. The requested action will not be
+performed because of runlevel or local policy constraints.</p>
+</dd>
+<dt><strong>102</strong></dt>
+<dd>
+<p><strong>Subsystem error</strong>. Init script (or policy layer)
+subsystem malfunction. Also, forced init script execution due to
+<em>--try-anyway</em> or <em>--force</em> failed.</p>
+</dd>
+<dt><strong>103</strong></dt>
+<dd>
+<p><em>Syntax error.</em></p>
+</dd>
+<dt><strong>104</strong></dt>
+<dd>
+<p><em>Action allowed</em>. Init script would be run, but
+<strong>--query</strong> is in effect.</p>
+</dd>
+<dt><strong>105</strong></dt>
+<dd>
+<p><em>Behavior uncertain</em>. It cannot be determined if action should
+be carried out or not, and <strong>--query</strong> is in effect.</p>
+</dd>
+<dt><strong>106</strong></dt>
+<dd>
+<p><em>Fallback action requested</em>. The policy layer denied the
+requested action, and supplied an allowed fallback action to be used
+instead.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>INIT SCRIPT POLICY</h1>
+<p><strong>invoke-rc.d</strong> introduces the concept of a policy layer
+which is used to verify if an init script should be run or not, or if
+something else should be done instead. This layer has various uses, the
+most immediate ones being avoiding that package upgrades start daemons
+out-of-runlevel, and that a package starts or stops daemons while inside
+a chroot jail.</p>
+<p>The policy layer has the following abilities: deny or approve the
+execution of an action; request that another action (called a
+<em>fallback</em>) is to be taken, instead of the action requested in
+invoke-rc.d's command line; or request multiple actions to be tried in
+order, until one of them succeeds (a multiple <em>fallback</em>).</p>
+<p><strong>invoke-rc.d</strong> itself only pays attention to the
+current runlevel; it will block any attempts to start a service in a
+runlevel in which the service is disabled. Other policies are
+implemented with the use of the <strong>policy-rc.d</strong> helper, and
+are only available if <strong>/usr/sbin/policy-rc.d</strong> is
+installed in the system.</p>
+<h1>FILES</h1>
+<blockquote>
+<dl>
+<dt><strong>/etc/init.d/*</strong></dt>
+<dd>
+<p>System V init scripts.</p>
+</dd>
+<dt><strong>/usr/sbin/policy-rc.d</strong></dt>
+<dd>
+<p>Init script policy layer helper (not required).</p>
+</dd>
+<dt><strong>/etc/rc?.d/*</strong></dt>
+<dd>
+<p>System V runlevel configuration.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>NOTES</h1>
+<p><strong>invoke-rc.d</strong> special cases the <em>status</em>
+action, and returns exit status 4 instead of exit status 0 when it is
+denied.</p>
+<h1>BUGS</h1>
+<p>See <em>http://bugs.debian.org/sysv-rc</em> and
+<em>http://bugs.debian.org/init-system-helpers</em>.</p>
+<h1>SEE ALSO</h1>
+<pre><code>Debian Policy manual,
+/etc/init.d/skeleton,
+update-rc.d(8),
+init(8),
+/usr/share/doc/init-system-helpers/README.policy-rc.d.gz</code></pre>
+<h1>AUTHOR</h1>
+<p>Henrique de Moraes Holschuh</p>
+<p>License: GNU General Public License v2 or Later (GPLv2+)</p>
+<h1>COPYRIGHT</h1>
+<p>2001 Henrique de Moraes Holschuh</p>

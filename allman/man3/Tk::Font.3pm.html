@@ -1,0 +1,423 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Font - Create and inspect fonts.</p>
+<h1>SYNOPSIS</h1>
+<p>    <em><code>$widget</code></em>-&gt;<strong>Font</strong>(<em>option</em>?,
+<em>arg, arg, ...</em>?)</p>
+<p>    <em><code>$font</code></em>-&gt;<em>Option</em>?(<em>arg, arg,
+...</em>)?</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Font</strong> method provides several facilities for
+dealing with fonts, such as defining named fonts and inspecting the
+actual attributes of a font. The command has several different forms,
+determined by the first argument. The following forms are currently
+supported:</p>
+<dl>
+<dt>$font-&gt;actual(-option?)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$widget-&gt;fontActual(font?, -option?)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Returns information about the actual attributes that are obtained
+when <em>font</em> is used on <em><code>$font</code></em>'s display; the
+actual attributes obtained may differ from the attributes requested due
+to platform-dependant limitations, such as the availability of font
+families and pointsizes. <em>font</em> is a font description; see FONT
+DESCRIPTION below. If <em>option</em> is specified, returns the value of
+that attribute; if it is omitted, the return value is a list of all the
+attributes and their values. See FONT OPTIONS below for a list of the
+possible attributes.</p>
+<dl>
+<dt>$font-&gt;configure(-option??=&gt;value, -option=&gt;value,
+...?)</dt>
+<dd>
+<p>Query or modify the desired attributes for
+<em><code>$font</code></em>. If no <em>-option</em> is specified,
+returns a list describing all the options and their values for
+<em>fontname</em>. If a single <em>-option</em> is specified with no
+<em>value</em>, then returns the current value of that attribute. If one
+or more <em>option-value</em> pairs are specified, then the method
+modifies the given named font to have the given values; in this case,
+all widgets using that font will redisplay themselves using the new
+attributes for the font. See FONT OPTIONS below for a list of the
+possible attributes. Note: the above behaviour differs in detail to
+<strong>configure</strong> on widgets, images etc.</p>
+</dd>
+<dt>$font = $widget-&gt;Font(-option=&gt;value, ...&gt;?)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$font = $widget-&gt;fontCreate(?fontname??, -option=&gt;value,
+...&gt;?)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Creates a new font object and returns a reference to it.
+<em>fontname</em> specifies the name for the font; if it is omitted,
+then Tk generates a new name of the form
+<strong>font</strong><em>x</em>, where <em>x</em> is an integer. There
+may be any number of <em>option-value</em> pairs, which provide the
+desired attributes for the new named font. See FONT OPTIONS below for a
+list of the possible attributes. Note: the created font is <em>not</em>
+shared between widgets of different MainWindows.</p>
+<dl>
+<dt>$font-&gt;delete</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$widget-&gt;fontDelete(fontname?, fontname, ...?)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Delete the specified named fonts. If there are widgets using the
+named font, the named font won't actually be deleted until all the
+instances are released. Those widgets will continue to display using the
+last known values for the named font. If a deleted named font is
+subsequently recreated with another call to <strong>fontCreate</strong>,
+the widgets will use the new named font and redisplay themselves using
+the new attributes of that font.</p>
+<dl>
+<dt>$widget-&gt;fontFamilies</dt>
+<dd>
+<p>The return value is a list of the case-insensitive names of all font
+families that exist on <em><code>$widget</code></em>'s display.</p>
+</dd>
+<dt>$font-&gt;measure(text)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$widget-&gt;fontMeasure(font, text)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Measures the amount of space the string <em>text</em> would use in
+the given <em>font</em> when displayed in <em><code>$widget</code></em>.
+<em>font</em> is a font description; see FONT DESCRIPTION below. The
+return value is the total width in pixels of <em>text</em>, not
+including the extra pixels used by highly exagerrated characters such as
+cursive ``<em>f</em>''. If the string contains newlines or tabs, those
+characters are not expanded or treated specially when measuring the
+string.</p>
+<dl>
+<dt>$font-&gt;metrics(-option?)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$widget-&gt;fontMetrics(font?, -option?)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Returns information about the metrics (the font-specific data), for
+<em>font</em> when it is used on <em><code>$widget</code></em>'s
+display. <em>font</em> is a font description; see FONT DESCRIPTION
+below. If <em>option</em> is specified, returns the value of that
+metric; if it is omitted, the return value is a list of all the metrics
+and their values. See FONT METRICS below for a list of the possible
+metrics.</p>
+<dl>
+<dt>$widget-&gt;fontNames</dt>
+<dd>
+<p>The return value is a list of all font objects that are currently
+defined for <em><code>$widget</code></em>'s MainWindow.</p>
+</dd>
+</dl>
+<h1>FONT DESCRIPTION</h1>
+<p>The following formats are accepted as a font description anywhere
+<em>font</em> is specified as an argument above; these same forms are
+also permitted when specifying the <strong>-font</strong> option for
+widgets.</p>
+<dl>
+<dt>[1] fontname</dt>
+<dd>
+<p>The name of a named font, created using the
+<strong>fontCreate</strong> method. When a widget uses a named font, it
+is guaranteed that this will never cause an error, as long as the named
+font exists, no matter what potentially invalid or meaningless set of
+attributes the named font has. If the named font cannot be displayed
+with exactly the specified attributes, some other close font will be
+substituted automatically.</p>
+</dd>
+<dt>[1a] $font</dt>
+<dd>
+<p>A font object created using the <strong>Font</strong> method. This is
+essentially the same as using a named font. The object is a reference to
+the name, and carries additional information e.g. which MainWindow it
+relates to in an manner peculiar to perl/Tk.</p>
+</dd>
+<dt>[2] systemfont</dt>
+<dd>
+<p>The platform-specific name of a font, interpreted by the graphics
+server. This also includes, under X, an XLFD (see [4]) for which a
+single ``<strong>*</strong>'' character was used to elide more than one
+field in the middle of the name. See PLATFORM-SPECIFIC ISSUES for a list
+of the system fonts.</p>
+</dd>
+<dt>[3] [family,?size,??style,??style ...?]</dt>
+<dd>
+<p>A properly formed list whose first element is the desired font
+<em>family</em> and whose optional second element is the desired
+<em>size</em>. The interpretation of the <em>size</em> attribute follows
+the same rules described for -size in FONT OPTIONS below. Any additional
+optional arguments following the <em>size</em> are font <em>style</em>s.
+Possible values for the <em>style</em> arguments are as follows: normal
+bold roman italic underline overstrike</p>
+</dd>
+<dt>[4] X-font names (XLFD)</dt>
+<dd>
+<p>A Unix-centric font name of the form
+<em>-foundry-family-weight-slant-setwidth-addstyle-pixel-point-resx-resy-spacing-width-charset-encoding</em>.
+The ``<strong>*</strong>'' character may be used to skip individual
+fields that the user does not care about. There must be exactly one
+``<strong>*</strong>'' for each field skipped, except that a
+``<strong>*</strong>'' at the end of the XLFD skips any remaining
+fields; the shortest valid XLFD is simply ``<strong>*</strong>'',
+signifying all fields as defaults. Any fields that were skipped are
+given default values. For compatibility, an XLFD always chooses a font
+of the specified pixel size (not point size); although this
+interpretation is not strictly correct, all existing applications using
+XLFDs assumed that one ``point'' was in fact one pixel and would display
+incorrectly (generally larger) if the correct size font were actually
+used.</p>
+</dd>
+<dt>[5] option value ?option value ...?</dt>
+<dd>
+<p>A properly formed list of <em>option-value</em> pairs that specify
+the desired attributes of the font, in the same format used when
+defining a named font; see FONT OPTIONS below.</p>
+</dd>
+</dl>
+<p>When font description <em>font</em> is used, the system attempts to
+parse the description according to each of the above five rules, in the
+order specified. Cases [1] and [2] must match the name of an existing
+named font or of a system font. Cases [3], [4], and [5] are accepted on
+all platforms and the closest available font will be used. In some
+situations it may not be possible to find any close font (e.g., the font
+family was a garbage value); in that case, some system-dependant default
+font is chosen. If the font description does not match any of the above
+patterns, an error is generated.</p>
+<h1>FONT METRICS</h1>
+<p>The following options are used by the
+<strong>metrics</strong>/<strong>fontMetrics</strong> method to query
+font-specific data determined when the font was created. These
+properties are for the whole font itself and not for individual
+characters drawn in that font. In the following definitions, the
+``baseline'' of a font is the horizontal line where the bottom of most
+letters line up; certain letters, such as lower-case ``g'' stick below
+the baseline.</p>
+<dl>
+<dt>-ascent</dt>
+<dd>
+<p>The amount in pixels that the tallest letter sticks up above the
+baseline of the font, plus any extra blank space added by the designer
+of the font. (<em><code>$font</code></em>-&gt;<strong>ascent</strong> is
+provided for compatibility.)</p>
+</dd>
+<dt>-descent</dt>
+<dd>
+<p>The largest amount in pixels that any letter sticks down below the
+baseline of the font, plus any extra blank space added by the designer
+of the font. (<em><code>$font</code></em>-&gt;<strong>descent</strong>
+is provided for compatibility.)</p>
+</dd>
+<dt>-linespace</dt>
+<dd>
+<p>Returns how far apart vertically in pixels two lines of text using
+the same font should be placed so that none of the characters in one
+line overlap any of the characters in the other line. This is generally
+the sum of the ascent above the baseline line plus the descent below the
+baseline.</p>
+</dd>
+<dt>-fixed</dt>
+<dd>
+<p>Returns a boolean flag that is ``<strong>1</strong>'' if this is a
+fixed-width font, where each normal character is the the same width as
+all the other characters, or is ``<strong>0</strong>'' if this is a
+proportionally-spaced font, where individual characters have different
+widths. The widths of control characters, tab characters, and other
+non-printing characters are not included when calculating this
+value.</p>
+</dd>
+</dl>
+<h1>FONT OPTIONS</h1>
+<p>The following options are supported on all platforms, and are used
+when constructing a named font or when specifying a font using style [5]
+as above:</p>
+<dl>
+<dt>-family =&gt; name</dt>
+<dd>
+<p>The case-insensitive font family name. Tk guarantees to support the
+font families named <strong>Courier</strong> (a monospaced
+``typewriter'' font), <strong>Times</strong> (a serifed ``newspaper''
+font), and <strong>Helvetica</strong> (a sans-serif ``European'' font).
+The most closely matching native font family will automatically be
+substituted when one of the above font families is used. The
+<em>name</em> may also be the name of a native, platform-specific font
+family; in that case it will work as desired on one platform but may not
+display correctly on other platforms. If the family is unspecified or
+unrecognized, a platform-specific default font will be chosen.</p>
+</dd>
+<dt>-size =&gt; size</dt>
+<dd>
+<p>The desired size of the font. If the <em>size</em> argument is a
+positive number, it is interpreted as a size in points. If <em>size</em>
+is a negative number, its absolute value is interpreted as a size in
+pixels. If a font cannot be displayed at the specified size, a nearby
+size will be chosen. If <em>size</em> is unspecified or zero, a
+platform-dependent default size will be chosen. The original Tcl/Tk
+authors believe sizes should normally be specified in points so the
+application will remain the same ruler size on the screen, even when
+changing screen resolutions or moving scripts across platforms. While
+this is an admirable goal it does not work as well in practice as they
+hoped. The mapping between points and pixels is set when the application
+starts, based on alleged properties of the installed monitor, but it can
+be overridden by calling the scaling command. However this can be
+problematic when system has no way of telling if (say) an 11 or 22
+monitor is attached, also if it <em>can</em> tell then some monitor
+sizes may result in poorer quality scaled fonts being used rather than a
+tuned bitmap font. In addition specifying pixels is useful in certain
+circumstances such as when a piece of text must line up with respect to
+a fixed-size bitmap. At present the Tcl/Tk scheme is used unchanged,
+with point size being returned by <em>actual</em> (as an integer), and
+used internally. Suggestions for work-rounds to undesirable behaviour
+welcome.</p>
+</dd>
+<dt>-weight =&gt; weight</dt>
+<dd>
+<p>The nominal thickness of the characters in the font. The value
+<strong>normal</strong> specifies a normal weight font, while
+<strong>bold</strong> specifies a bold font. The closest available
+weight to the one specified will be chosen. The default weight is
+<strong>normal</strong>.</p>
+</dd>
+<dt>-slant =&gt; slant</dt>
+<dd>
+<p>The amount the characters in the font are slanted away from the
+vertical. Valid values for slant are <strong>roman</strong> and
+<strong>italic</strong>. A roman font is the normal, upright appearance
+of a font, while an italic font is one that is tilted some number of
+degrees from upright. The closest available slant to the one specified
+will be chosen. The default slant is <strong>roman</strong>.</p>
+</dd>
+<dt>-underline =&gt; boolean</dt>
+<dd>
+<p>The value is a boolean flag that specifies whether characters in this
+font should be underlined. The default value for underline is
+<strong>false</strong>.</p>
+</dd>
+<dt>-overstrike =&gt; boolean</dt>
+<dd>
+<p>The value is a boolean flag that specifies whether a horizontal line
+should be drawn through the middle of characters in this font. The
+default value for overstrike is <strong>false</strong>.</p>
+</dd>
+</dl>
+<h1>PLATFORM-SPECIFIC ISSUES</h1>
+<p>The following named system fonts are supported:</p>
+<dl>
+<dt>X Windows:</dt>
+<dd>
+<p>All valid X font names, including those listed by
+<strong>xlsfonts</strong> (1), are available.</p>
+</dd>
+<dt>MS Windows:</dt>
+<dd>
+<p> system ansi device systemfixed ansifixed oemfixed</p>
+</dd>
+<dt>Macintosh:</dt>
+<dd>
+<p> system application</p>
+</dd>
+</dl>
+<h1>COMPATIBILITY WITH PREVIOUS VERSIONS</h1>
+<p>In prior versions of perl/Tk the
+<em><code>$widget</code></em>-&gt;<strong>Font</strong> method was a
+perl wrapper on the original [4] X-font names (XLFD) style as described
+above (which was the only form supported by versions of core tk prior to
+version tk8.0). This module is provided in its original form (it has
+just been renamed) via:</p>
+<p>use Tk::X11Font;
+I&lt;$widget&gt;-E&lt;gt&gt;B&lt;X11Font&gt;(...)</p>
+<p>However the methods of the old scheme have been mimiced as closely as
+possible with the new scheme. It is intended that code should work
+without modification, except for the case of using :</p>
+<p>@names = $font-&gt;Name;</p>
+<p>i.e. the <em>Name</em> method in an array/list context. This now
+returns one element on all platforms (as it did on Win32), while
+previously on X systems it returned a list of fonts that matched an
+under-specified pattern.</p>
+<p>Briefly the methods supported for compatibility are as follows:</p>
+<dl>
+<dt>$newfont = $font-&gt;Clone(-option=&gt;value, ...&gt;?)</dt>
+<dd>
+<p>Returns a new font object <em><code>$newfont</code></em> related to
+the original <em><code>$font</code></em> by changing the values of the
+specified <em>-option</em>s.</p>
+</dd>
+<dt>$font-&gt;Family - maps to -family</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$font-&gt;Weight - maps to -weight</dt>
+<dd>
+
+</dd>
+<dt>$font-&gt;Slant - maps to -slant</dt>
+<dd>
+
+</dd>
+<dt>$font-&gt;Pixel and Point - map to -size</dt>
+<dd>
+
+</dd>
+</dl>
+<p>New code should use
+<em><code>$font</code></em>-&gt;<strong>configure</strong> to achieve
+same effect as last four items above.</p>
+<dl>
+<dt>Foundry, Swidth, Adstyle, Xres, Yres, Space, Avgwidth, Registry,
+Encoding</dt>
+<dd>
+<p>Are all ignored if set, and return '*' if queried.</p>
+</dd>
+<dt>$font-&gt;Name</dt>
+<dd>
+<p>Returns the name of a named font, or a string representation of an
+unnamed font. Using <em><code>$font</code></em> in a scalar context does
+the same. Note this is distinctly different from behaviour of X11Font's
+Name in a list context.</p>
+</dd>
+<dt>$font-&gt;Pattern</dt>
+<dd>
+<p>Returns a XLFD string for the font based on <em>actual</em> values,
+and some heuristics to map Tk's forms to the standard X conventions.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>Tk::options</p>
+<p>Tk::X11Font</p>
+<h1>KEYWORDS</h1>
+<p>font</p>

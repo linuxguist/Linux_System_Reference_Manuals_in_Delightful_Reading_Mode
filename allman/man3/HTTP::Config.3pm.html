@@ -1,0 +1,243 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTTP::Config - Configuration for request and response objects</p>
+<h1>VERSION</h1>
+<p>version 6.44</p>
+<h1>SYNOPSIS</h1>
+<p>use HTTP::Config; my $c = HTTP::Config-&gt;new; $c-&gt;add(m_domain
+=&gt; ".example.com", m_scheme =&gt; "http", verbose =&gt; 1); use
+HTTP::Request; my $request = HTTP::Request-&gt;new(GET =&gt;
+"http://www.example.com"); if (my @m = $c-&gt;matching($request)) {
+print "Yadayada\n" if $m[0]-&gt;{verbose}; }</p>
+<h1>DESCRIPTION</h1>
+<p>An <code>HTTP::Config</code> object is a list of entries that can be
+matched against request or request/response pairs. Its purpose is to
+hold configuration data that can be looked up given a request or
+response object.</p>
+<p>Each configuration entry is a hash. Some keys specify matching to
+occur against attributes of request/response objects. Other keys can be
+used to hold user data.</p>
+<p>The following methods are provided:</p>
+<dl>
+<dt>$conf = HTTP::Config-&gt;new</dt>
+<dd>
+<p>Constructs a new empty <code>HTTP::Config</code> object and returns
+it.</p>
+</dd>
+<dt>$conf-&gt;entries</dt>
+<dd>
+<p>Returns the list of entries in the configuration object. In scalar
+context returns the number of entries.</p>
+</dd>
+<dt>$conf-&gt;empty</dt>
+<dd>
+<p>Return true if there are no entries in the configuration object. This
+is just a shorthand for <code>not $conf-&gt;entries</code>.</p>
+</dd>
+<dt>$conf-&gt;add( %matchspec, %other )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$conf-&gt;add( \%entry )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Adds a new entry to the configuration. You can either pass separate
+key/value pairs or a hash reference.</p>
+<dl>
+<dt>$conf-&gt;remove( %spec )</dt>
+<dd>
+<p>Removes (and returns) the entries that have matches for all the
+key/value pairs in <code>%spec</code>. If <code>%spec</code> is empty
+this will match all entries; so it will empty the configuration
+object.</p>
+</dd>
+<dt>$conf-&gt;matching( $uri, $request, $response )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$conf-&gt;matching( $uri )</dt>
+<dd>
+
+</dd>
+<dt>$conf-&gt;matching( $request )</dt>
+<dd>
+
+</dd>
+<dt>$conf-&gt;matching( $response )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Returns the entries that match the given <code>$uri</code>,
+<code>$request</code> and <code>$response</code> triplet. If called with
+a single <code>$request</code> object then the <code>$uri</code> is
+obtained by calling its 'uri_canonical' method. If called with a single
+<code>$response</code> object, then the request object is obtained by
+calling its 'request' method; and then the <code>$uri</code> is obtained
+as if a single <code>$request</code> was provided. The entries are
+returned with the most specific matches first. In scalar context returns
+the most specific match or <code>undef</code> in none match.</p>
+<dl>
+<dt>$conf-&gt;add_item( $item, %matchspec )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$conf-&gt;remove_items( %spec )</dt>
+<dd>
+
+</dd>
+<dt>$conf-&gt;matching_items( $uri, $request, $response )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Wrappers that hides the entries themselves.</p>
+<h2>Matching</h2>
+<p>The following keys on a configuration entry specify matching. For all
+of these you can provide an array of values instead of a single value.
+The entry matches if at least one of the values in the array
+matches.</p>
+<p>Entries that require match against a response object attribute will
+never match unless a response object was provided.</p>
+<dl>
+<dt>m_scheme =&gt; $scheme</dt>
+<dd>
+<p>Matches if the URI uses the specified scheme; e.g. http.</p>
+</dd>
+<dt>m_secure =&gt; $bool</dt>
+<dd>
+<p>If <code>$bool</code> is TRUE; matches if the URI uses a secure
+scheme. If <code>$bool</code> is FALSE; matches if the URI does not use
+a secure scheme. An example of a secure scheme is https.</p>
+</dd>
+<dt>m_host_port =&gt; "$hostname:$port"</dt>
+<dd>
+<p>Matches if the URI's host_port method return the specified value.</p>
+</dd>
+<dt>m_host =&gt; $hostname</dt>
+<dd>
+<p>Matches if the URI's host method returns the specified value.</p>
+</dd>
+<dt>m_port =&gt; $port</dt>
+<dd>
+<p>Matches if the URI's port method returns the specified value.</p>
+</dd>
+<dt>m_domain =&gt; ".$domain"</dt>
+<dd>
+<p>Matches if the URI's host method return a value that within the given
+domain. The hostname www.example.com will for instance match the domain
+.com.</p>
+</dd>
+<dt>m_path =&gt; $path</dt>
+<dd>
+<p>Matches if the URI's path method returns the specified value.</p>
+</dd>
+<dt>m_path_prefix =&gt; $path</dt>
+<dd>
+<p>Matches if the URI's path is the specified path or has the specified
+path as prefix.</p>
+</dd>
+<dt>m_path_match =&gt; $Regexp</dt>
+<dd>
+<p>Matches if the regular expression matches the URI's path. Eg.
+qr/\.html$/.</p>
+</dd>
+<dt>m_method =&gt; $method</dt>
+<dd>
+<p>Matches if the request method matches the specified value. Eg. GET or
+POST.</p>
+</dd>
+<dt>m_code =&gt; $digit</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>m_code =&gt; $status_code</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Matches if the response status code matches. If a single digit is
+specified; matches for all response status codes beginning with that
+digit.</p>
+<dl>
+<dt>m_proxy =&gt; $url</dt>
+<dd>
+<p>Matches if the request is to be sent to the given Proxy server.</p>
+</dd>
+<dt>m_media_type =&gt; "*/*"</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>m_media_type =&gt; "text/*"</dt>
+<dd>
+
+</dd>
+<dt>m_media_type =&gt; "html"</dt>
+<dd>
+
+</dd>
+<dt>m_media_type =&gt; "xhtml"</dt>
+<dd>
+
+</dd>
+<dt>m_media_type =&gt; "text/html"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Matches if the response media type matches. With a value of html
+matches if <code>$response</code>-&gt;content_is_html returns TRUE. With
+a value of xhtml matches if <code>$response</code>-&gt;content_is_xhtml
+returns TRUE.</p>
+<dl>
+<dt>m_uri_ _$method =&gt; undef</dt>
+<dd>
+<p>Matches if the URI object provides the method.</p>
+</dd>
+<dt>m_uri_ _$method =&gt; $string</dt>
+<dd>
+<p>Matches if the URI's <code>$method</code> method returns the given
+value.</p>
+</dd>
+<dt>m_header_ _$field =&gt; $string</dt>
+<dd>
+<p>Matches if either the request or the response have a header
+<code>$field</code> with the given value.</p>
+</dd>
+<dt>m_response_attr_ _$key =&gt; undef</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>m_response_attr_ _$key =&gt; $string</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Matches if the response object has that key, or the entry has the
+given value.</p>
+<h1>SEE ALSO</h1>
+<p>URI, HTTP::Request, HTTP::Response</p>
+<h1>AUTHOR</h1>
+<p>Gisle Aas &lt;gisle@activestate.com&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 1994 by Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

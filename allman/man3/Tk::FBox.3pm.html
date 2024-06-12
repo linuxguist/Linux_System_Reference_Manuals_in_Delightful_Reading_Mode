@@ -1,0 +1,49 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::FBox - a file dialog</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::FBox; $file = $mw-&gt;FBox(...)-&gt;Show;</p>
+<h1>DESCRIPTION</h1>
+<p><code>Tk::FBox</code> is the dialog implementation behind the
+<code>getOpenFile</code>, <code>getSaveFile</code>, and
+<code>chooseDirectory</code> method calls in the Unix/X11 world. As
+such, it supports all options for these methods and additionally:</p>
+<dl>
+<dt>-sortcmd =&gt; sub { $_[0] cmp $_[1] }</dt>
+<dd>
+<p>Specified a callback for changing the sorting of the icons in the
+<code>IconList</code> widget. By default, perl's <code>cmp</code>
+operator will be used. From the source code: # Using -sortcmd is really
+strange :-( # $top-&gt;getOpenFile(-sortcmd =&gt; sub { package
+Tk::FBox; uc $b cmp uc $a}); # or, un-perlish, but useable (now
+activated in code): # $top-&gt;getOpenFile(-sortcmd =&gt; sub { uc $_[1]
+cmp uc $_[0]}); This is an experimental option!</p>
+</dd>
+<dt>-type =&gt; $type</dt>
+<dd>
+<p>Type should be open for choosing existing files to open (default),
+save for choosing existing or non-existing files to save, or dir for
+choosing directories.</p>
+</dd>
+<dt>-filter =&gt; $glob</dt>
+<dd>
+<p>A file glob to restrict displayed files. This is only active if no
+<strong>-filetypes</strong> are defined.</p>
+</dd>
+<dt>-force =&gt; $bool</dt>
+<dd>
+<p>If true, then there will be no dialog if a file already exists.</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>The original tkfbox.tcl from Tcl/Tk is:</p>
+<p>Copyright (c) 1994-1996 Sun Microsystems, Inc.</p>
+<p>See the file license.terms for information on usage and
+redistribution of this file, and for a DISCLAIMER OF ALL WARRANTIES.</p>
+<p>Translated to Perl/Tk by Slaven Rezic &lt;srezic@cpan.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p>Tk::getOpenFile, Tk::IconList.</p>

@@ -1,0 +1,37 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>appres - list X application resource database</p>
+<h1>SYNOPSIS</h1>
+<p><strong>appres</strong> [class [instance]] [-1] [-V]
+[toolkitoptions]</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>appres</em> program prints the resources seen by an
+application (or subhierarchy of an application) with the specified
+<em>class</em> and <em>instance</em> names. It can be used to determine
+which resources a particular program will load. For example,</p>
+<pre><code>% appres  XTerm</code></pre>
+<p>will list the resources that any <em>xterm</em> program will load. If
+no application class is specified, the class <em>-AppResTest-</em> is
+used.</p>
+<p>To match a particular instance name, specify an instance name
+explicitly after the class name, or use the normal Xt toolkit option.
+For example,</p>
+<pre><code>% appres  XTerm  myxterm</code></pre>
+<p>or</p>
+<pre><code>% appres  XTerm  -name  myxterm</code></pre>
+<p>To list resources that match a subhierarchy of an application,
+specify hierarchical class and instance names. The number of class and
+instance components must be equal, and the instance name should not be
+specified with a toolkit option. For example,</p>
+<pre><code>% appres  Xman.TopLevelShell.Form  xman.topBox.form</code></pre>
+<p>will list the resources of widgets of <em>xman</em> topBox hierarchy.
+To list just the resources matching a specific level in the hierarchy,
+use the -1 option. For example,</p>
+<pre><code>% appres  XTerm.VT100  xterm.vt100  -1</code></pre>
+<p>will list the resources matching the <em>xterm</em> vt100 widget.</p>
+<p>The -V option prints the appres command version and exits.</p>
+<h1>SEE ALSO</h1>
+<p>X(7), xrdb(1), listres(1)</p>
+<h1>AUTHOR</h1>
+<p>Jim Fulton, MIT X Consortium</p>

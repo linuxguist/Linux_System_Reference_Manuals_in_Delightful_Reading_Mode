@@ -1,0 +1,51 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lwp-dump - See what headers and content is returned for a URL</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lwp-dump</strong> [ <em>options</em> ] <em>URL</em></p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>lwp-dump</strong> program will get the resource
+identified by the URL and then dump the response object to STDOUT. This
+will display the headers returned and the initial part of the content,
+escaped so that it's safe to display even binary content. The escapes
+syntax used is the same as for Perl's double quoted strings. If there is
+no content the string (no content) is shown in its place.</p>
+<p>The following options are recognized:</p>
+<dl>
+<dt>--agent string</dt>
+<dd>
+<p>Override the user agent string passed to the server.</p>
+</dd>
+<dt>--keep-client-headers</dt>
+<dd>
+<p>LWP internally generate various <code>Client-*</code> headers that
+are stripped by <strong>lwp-dump</strong> in order to show the headers
+exactly as the server provided them. This option will suppress this.</p>
+</dd>
+<dt>--max-length n</dt>
+<dd>
+<p>How much of the content to show. The default is 512. Set this to 0
+for unlimited. If the content is longer then the string is chopped at
+the limit and the string ...\n(### more bytes not shown) appended.</p>
+</dd>
+<dt>--method string</dt>
+<dd>
+<p>Use the given method for the request instead of the default GET.</p>
+</dd>
+<dt>--parse-head</dt>
+<dd>
+<p>By default <strong>lwp-dump</strong> will not try to initialize
+headers by looking at the head section of HTML documents. This option
+enables this. This corresponds to parse_head in LWP::UserAgent.</p>
+</dd>
+<dt>--request</dt>
+<dd>
+<p>Also dump the request sent.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>lwp-request, LWP, dump in HTTP::Message</p>

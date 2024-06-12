@@ -1,0 +1,133 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkfontdir - create an index of X font files in a directory</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkfontdir</strong> [<strong>-n</strong>] [<strong>-x</strong>
+<em>suffix</em>] [<strong>-r</strong>] [<strong>-p</strong>
+<em>prefix</em>] [<strong>-e</strong> <em>encoding-directory-name</em>]
+ . . . [<strong>--</strong>] [<em>directory-name</em>  . . . ]</p>
+<h1>DESCRIPTION</h1>
+<p>For each directory argument, <em>mkfontdir</em> reads all of the font
+files in the directory searching for properties named "FONT", or
+(failing that) the name of the file stripped of its suffix. These are
+converted to lower case and used as font names, and, along with the name
+of the font file, are written out to the file "fonts.dir" in the
+directory. The X server and font server use "fonts.dir" to find font
+files.</p>
+<p>The kinds of font files read by <em>mkfontdir</em> depend on
+configuration parameters, but typically include PCF (suffix ".pcf"), SNF
+(suffix ".snf") and BDF (suffix ".bdf"). If a font exists in multiple
+formats, <em>mkfontdir</em> will first choose PCF, then SNF and finally
+BDF.</p>
+<p>The first line of fonts.dir gives the number of fonts in the file.
+The remaining lines list the fonts themselves, one per line, in two
+fields. First is the name of the font file, followed by a space and the
+name of the font.</p>
+<h1>SCALABLE FONTS</h1>
+<p>Because scalable font files do not usually include the X font name,
+the file "fonts.scale" can be used to name the scalable fonts in the
+directory. The fonts listed in it are copied to fonts.dir by
+<em>mkfontdir</em>. "fonts.scale" has the same format as the "fonts.dir"
+file, and can be created with the <em>mkfontscale</em>(1) program.</p>
+<h1>FONT NAME ALIASES</h1>
+<p>The file "fonts.alias", which can be put in any directory of the
+font-path, is used to map new names to existing fonts, and should be
+edited by hand. The format is two white-space separated columns, the
+first containing aliases and the second containing font-name patterns.
+Lines beginning with "!" are comment lines and are ignored.</p>
+<p>If neither the alias nor the value specifies the size fields of the
+font name, this is a scalable alias. A font name of any size that
+matches this alias will be mapped to the same size of the font that the
+alias resolves to.</p>
+<p>When a font alias is used, the name it references is searched for in
+the normal manner, looking through each font directory in turn. This
+means that the aliases need not mention fonts in the same directory as
+the alias file.</p>
+<p>To embed white space in either name, simply enclose it in
+double-quote marks; to embed double-quote marks (or any other
+character), precede them with back-slash:</p>
+<pre><code>&quot;magic-alias with spaces&quot;	&quot;\&quot;font name\&quot; with quotes&quot;
+regular-alias			fixed</code></pre>
+<p>If the string "FILE_NAMES_ALIASES" stands alone on a line, each
+file-name in the directory (stripped of its suffix) will be used as an
+alias for that font.</p>
+<h1>ENCODING FILES</h1>
+<p>The option <strong>-e</strong> can be used to specify a directory
+with encoding files. Every such directory is scanned for encoding files,
+the list of which is then written to an "encodings.dir" file in every
+font directory. The "encodings.dir" file is used by the server to find
+encoding information.</p>
+<p>The "encodings.dir" file has the same format as "fonts.dir". It maps
+encoding names (strings of the form
+<strong>CHARSET_REGISTRY</strong><em>-</em><strong>CHARSET_ENCODING</strong>
+) to encoding file names.</p>
+<h1>OPTIONS</h1>
+<p>The following options are supported:</p>
+<dl>
+<dt><strong>-e</strong></dt>
+<dd>
+<p>Specify a directory containing encoding files. The
+<strong>-e</strong> option may be specified multiple times, and all the
+specified directories will be read. The order of the entries is
+significant, as encodings found in earlier directories override those in
+later ones; encoding files in the same directory are discriminated by
+preferring compressed versions.</p>
+</dd>
+<dt><strong>-n</strong></dt>
+<dd>
+<p>do not scan for fonts, do not write font directory files. This option
+is useful when generating encoding directories only.</p>
+</dd>
+<dt><strong>-p</strong></dt>
+<dd>
+<p>Specify a prefix that is prepended to the encoding file path names
+when they are written to the "encodings.dir" file. The prefix is
+prepended as-is. If a `/' is required between the prefix and the path
+names, it must be supplied explicitly as part of the prefix.</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Keep non-absolute encoding directories in their relative form when
+writing the "encodings.dir" file. The default is to convert relative
+encoding directories to absolute directories by prepending the current
+directory. The positioning of this options is significant, as this
+option only applies to subsequent <strong>-e</strong> options.</p>
+</dd>
+<dt><strong>-x </strong><em>suffix</em></dt>
+<dd>
+<p>Ignore fonts files of type <em>suffix</em>.</p>
+</dd>
+<dt><strong>--</strong></dt>
+<dd>
+<p>End options.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><strong>fonts.dir</strong></dt>
+<dd>
+<p>List of fonts in the directory and the files they are stored in.
+Created by <em>mkfontdir</em>. Read by the X server and font server each
+time the font path is set (see xset(1)).</p>
+</dd>
+<dt><strong>fonts.scale</strong></dt>
+<dd>
+<p>List of scalable fonts in the directory. Contents are copied to
+fonts.dir by <em>mkfontdir</em>. Can be created with
+<em>mkfontscale</em>(1).</p>
+</dd>
+<dt><strong>fonts.alias</strong></dt>
+<dd>
+<p>List of font name aliases. Read by the X server and font server each
+time the font path is set (see xset(1)).</p>
+</dd>
+<dt><strong>encodings.dir</strong></dt>
+<dd>
+<p>List of known encodings and the files they are stored in. Created by
+<em>mkfontdir</em>. Read by the X server and font server each time a
+font with an unknown charset is opened.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>X(7), Xserver(1), mkfontscale(1), xfs(1), xset(1)</p>

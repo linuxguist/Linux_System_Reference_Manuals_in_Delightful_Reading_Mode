@@ -1,0 +1,51 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ctrlaltdel - set the function of the Ctrl-Alt-Del combination</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ctrlaltdel</strong>
+<strong>hard</strong>|<strong>soft</strong></p>
+<h1>DESCRIPTION</h1>
+<p>Based on examination of the <em>linux/kernel/reboot.c</em> code, it
+is clear that there are two supported functions that the
+&lt;Ctrl-Alt-Del&gt; sequence can perform.</p>
+<p><strong>hard</strong></p>
+<blockquote>
+<p>Immediately reboot the computer without calling
+<strong>sync</strong>(2) and without any other preparation. This is the
+default.</p>
+</blockquote>
+<p><strong>soft</strong></p>
+<blockquote>
+<p>Make the kernel send the <strong>SIGINT</strong> (interrupt) signal
+to the <strong>init</strong> process (this is always the process with
+PID 1). If this option is used, the <strong>init</strong>(8) program
+must support this feature. Since there are now several
+<strong>init</strong>(8) programs in the Linux community, please consult
+the documentation for the version that you are currently using.</p>
+</blockquote>
+<p>When the command is run without any argument, it will display the
+current setting.</p>
+<p>The function of <strong>ctrlaltdel</strong> is usually set in the
+<em>/etc/rc.local</em> file.</p>
+<h1>OPTIONS</h1>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>FILES</h1>
+<p><em>/etc/rc.local</em></p>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>init</strong>(8), <strong>systemd</strong>(1)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>ctrlaltdel</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

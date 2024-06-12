@@ -1,0 +1,22 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>LWP::MemberMixin - Member access mixin class</p>
+<h1>SYNOPSIS</h1>
+<p>package Foo; use parent qw(LWP::MemberMixin);</p>
+<h1>DESCRIPTION</h1>
+<p>A mixin class to get methods that provide easy access to member
+variables in the <code>%$self</code>. Ideally there should be better
+Perl language support for this.</p>
+<h1>METHODS</h1>
+<p>There is only one method provided:</p>
+<h2>_elem</h2>
+<p>_elem($elem [, $val])</p>
+<p>Internal method to get/set the value of member variable
+<code>$elem</code>. If <code>$val</code> is present it is used as the
+new value for the member variable. If it is not present the current
+value is not touched. In both cases the previous value of the member
+variable is returned.</p>

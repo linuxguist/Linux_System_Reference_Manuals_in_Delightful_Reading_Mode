@@ -1,0 +1,590 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-system.conf, system.conf.d, systemd-user.conf, user.conf.d -
+System and session service manager configuration files</p>
+<h1>SYNOPSIS</h1>
+<p>/etc/systemd/system.conf, /etc/systemd/system.conf.d/*.conf,
+/run/systemd/system.conf.d/*.conf, /lib/systemd/system.conf.d/*.conf</p>
+<p>~/.config/systemd/user.conf, /etc/systemd/user.conf,
+/etc/systemd/user.conf.d/*.conf, /run/systemd/user.conf.d/*.conf,
+/usr/lib/systemd/user.conf.d/*.conf</p>
+<h1>DESCRIPTION</h1>
+<p>When run as a system instance, <strong>systemd</strong> interprets
+the configuration file system.conf and the files in system.conf.d
+directories; when run as a user instance, it interprets the
+configuration file user.conf (either in the home directory of the user,
+or if not found, under /etc/systemd/) and the files in user.conf.d
+directories. These configuration files contain a few settings
+controlling basic manager operations.</p>
+<p>See <strong>systemd.syntax</strong>(7) for a general description of
+the syntax.</p>
+<h1>CONFIGURATION DIRECTORIES AND PRECEDENCE</h1>
+<p>The default configuration is set during compilation, so configuration
+is only needed when it is necessary to deviate from those defaults.
+Initially, the main configuration file in /etc/systemd/ contains
+commented out entries showing the defaults as a guide to the
+administrator. Local overrides can be created by editing this file or by
+creating drop-ins, as described below. Using drop-ins for local
+configuration is recommended over modifications to the main
+configuration file.</p>
+<p>In addition to the "main" configuration file, drop-in configuration
+snippets are read from /usr/lib/systemd/*.conf.d/,
+/usr/local/lib/systemd/*.conf.d/, and /etc/systemd/*.conf.d/. Those
+drop-ins have higher precedence and override the main configuration
+file. Files in the *.conf.d/ configuration subdirectories are sorted by
+their filename in lexicographic order, regardless of in which of the
+subdirectories they reside. When multiple files specify the same option,
+for options which accept just a single value, the entry in the file
+sorted last takes precedence, and for options which accept a list of
+values, entries are collected as they occur in the sorted files.</p>
+<p>When packages need to customize the configuration, they can install
+drop-ins under /usr/. Files in /etc/ are reserved for the local
+administrator, who may use this logic to override the configuration
+files installed by vendor packages. Drop-ins have to be used to override
+package drop-ins, since the main configuration file has lower
+precedence. It is recommended to prefix all filenames in those
+subdirectories with a two-digit number and a dash, to simplify the
+ordering of the files.</p>
+<p>To disable a configuration file supplied by the vendor, the
+recommended way is to place a symlink to /dev/null in the configuration
+directory in /etc/, with the same filename as the vendor configuration
+file.</p>
+<h1>OPTIONS</h1>
+<p>All options are configured in the [Manager] section:</p>
+<p><em>LogColor=</em>, <em>LogLevel=</em>, <em>LogLocation=</em>,
+<em>LogTarget=</em>, <em>LogTime=</em>, <em>DumpCore=yes</em>,
+<em>CrashChangeVT=no</em>, <em>CrashShell=no</em>,
+<em>CrashReboot=no</em>, <em>ShowStatus=yes</em>,
+<em>DefaultStandardOutput=journal</em>,
+<em>DefaultStandardError=inherit</em></p>
+<blockquote>
+<p>Configures various parameters of basic manager operation. These
+options may be overridden by the respective process and kernel command
+line arguments. See <strong>systemd</strong>(1) for details.</p>
+</blockquote>
+<p><em>CtrlAltDelBurstAction=</em></p>
+<blockquote>
+<p>Defines what action will be performed if user presses Ctrl-Alt-Delete
+more than 7 times in 2s. Can be set to "reboot-force", "poweroff-force",
+"reboot-immediate", "poweroff-immediate" or disabled with "none".
+Defaults to "reboot-force".</p>
+</blockquote>
+<p><em>CPUAffinity=</em></p>
+<blockquote>
+<p>Configures the CPU affinity for the service manager as well as the
+default CPU affinity for all forked off processes. Takes a list of CPU
+indices or ranges separated by either whitespace or commas. CPU ranges
+are specified by the lower and upper CPU indices separated by a dash.
+This option may be specified more than once, in which case the specified
+CPU affinity masks are merged. If the empty string is assigned, the mask
+is reset, all assignments prior to this will have no effect. Individual
+services may override the CPU affinity for their processes with the
+<em>CPUAffinity=</em> setting in unit files, see
+<strong>systemd.exec</strong>(5).</p>
+</blockquote>
+<p><em>NUMAPolicy=</em></p>
+<blockquote>
+<p>Configures the NUMA memory policy for the service manager and the
+default NUMA memory policy for all forked off processes. Individual
+services may override the default policy with the <em>NUMAPolicy=</em>
+setting in unit files, see <strong>systemd.exec</strong>(5).</p>
+</blockquote>
+<p><em>NUMAMask=</em></p>
+<blockquote>
+<p>Configures the NUMA node mask that will be associated with the
+selected NUMA policy. Note that <strong>default</strong> and
+<strong>local</strong> NUMA policies dont require explicit NUMA node
+mask and value of the option can be empty. Similarly to
+<em>NUMAPolicy=</em>, value can be overridden by individual services in
+unit files, see <strong>systemd.exec</strong>(5).</p>
+</blockquote>
+<p><em>RuntimeWatchdogSec=</em>, <em>RebootWatchdogSec=</em>,
+<em>KExecWatchdogSec=</em></p>
+<blockquote>
+<p>Configure the hardware watchdog at runtime and at reboot. Takes a
+timeout value in seconds (or in other time units if suffixed with "ms",
+"min", "h", "d", "w"), or the special strings "off" or "default". If set
+to "off" (alternatively: "0") the watchdog logic is disabled: no
+watchdog device is opened, configured, or pinged. If set to the special
+string "default" the watchdog is opened and pinged in regular intervals,
+but the timeout is not changed from the default. If set to any other
+time value the watchdog timeout is configured to the specified value (or
+a value close to it, depending on hardware capabilities).</p>
+<p>If <em>RuntimeWatchdogSec=</em> is set to a non-zero value, the
+watchdog hardware (/dev/watchdog0 or the path specified with
+<em>WatchdogDevice=</em> or the kernel option
+<em>systemd.watchdog-device=</em>) will be programmed to automatically
+reboot the system if it is not contacted within the specified timeout
+interval. The system manager will ensure to contact it at least once in
+half the specified timeout interval. This feature requires a hardware
+watchdog device to be present, as it is commonly the case in embedded
+and server systems. Not all hardware watchdogs allow configuration of
+all possible reboot timeout values, in which case the closest available
+timeout is picked.</p>
+<p><em>RebootWatchdogSec=</em> may be used to configure the hardware
+watchdog when the system is asked to reboot. It works as a safety net to
+ensure that the reboot takes place even if a clean reboot attempt times
+out. Note that the <em>RebootWatchdogSec=</em> timeout applies only to
+the second phase of the reboot, i.e. after all regular services are
+already terminated, and after the system and service manager process
+(PID 1) got replaced by the systemd-shutdown binary, see system
+<strong>bootup</strong>(7) for details. During the first phase of the
+shutdown operation the system and service manager remains running and
+hence <em>RuntimeWatchdogSec=</em> is still honoured. In order to define
+a timeout on this first phase of system shutdown, configure
+<em>JobTimeoutSec=</em> and <em>JobTimeoutAction=</em> in the [Unit]
+section of the shutdown.target unit. By default
+<em>RuntimeWatchdogSec=</em> defaults to 0 (off), and
+<em>RebootWatchdogSec=</em> to 10min.</p>
+<p><em>KExecWatchdogSec=</em> may be used to additionally enable the
+watchdog when kexec is being executed rather than when rebooting. Note
+that if the kernel does not reset the watchdog on kexec (depending on
+the specific hardware and/or driver), in this case the watchdog might
+not get disabled after kexec succeeds and thus the system might get
+rebooted, unless <em>RuntimeWatchdogSec=</em> is also enabled at the
+same time. For this reason it is recommended to enable
+<em>KExecWatchdogSec=</em> only if <em>RuntimeWatchdogSec=</em> is also
+enabled.</p>
+<p>These settings have no effect if a hardware watchdog is not
+available.</p>
+</blockquote>
+<p><em>RuntimeWatchdogPreSec=</em></p>
+<blockquote>
+<p>Configure the hardware watchdog device pre-timeout value. Takes a
+timeout value in seconds (or in other time units similar to
+<em>RuntimeWatchdogSec=</em>). A watchdog pre-timeout is a notification
+generated by the watchdog before the watchdog reset might occur in the
+event the watchdog has not been serviced. This notification is handled
+by the kernel and can be configured to take an action (i.e. generate a
+kernel panic) using <em>RuntimeWatchdogPreGovernor=</em>. Not all
+watchdog hardware or drivers support generating a pre-timeout and
+depending on the state of the system, the kernel may be unable to take
+the configured action before the watchdog reboot. The watchdog will be
+configured to generate the pre-timeout event at the amount of time
+specified by <em>RuntimeWatchdogPreSec=</em> before the runtime watchdog
+timeout (set by <em>RuntimeWatchdogSec=</em>). For example, if the we
+have <em>RuntimeWatchdogSec=30</em> and
+<em>RuntimeWatchdogPreSec=10</em>, then the pre-timeout event will occur
+if the watchdog has not pinged for 20s (10s before the watchdog would
+fire). By default, <em>RuntimeWatchdogPreSec=</em> defaults to 0 (off).
+The value set for <em>RuntimeWatchdogPreSec=</em> must be smaller than
+the timeout value for <em>RuntimeWatchdogSec=</em>. This setting has no
+effect if a hardware watchdog is not available or the hardware watchdog
+does not support a pre-timeout and will be ignored by the kernel if the
+setting is greater than the actual watchdog timeout.</p>
+</blockquote>
+<p><em>RuntimeWatchdogPreGovernor=</em></p>
+<blockquote>
+<p>Configure the action taken by the hardware watchdog device when the
+pre-timeout expires. The default action for the pre-timeout event
+depends on the kernel configuration, but it is usually to log a kernel
+message. For a list of valid actions available for a given watchdog
+device, check the content of the
+/sys/class/watchdog/watchdog<em>X</em>/pretimeout_available_governors
+file. Typically, available governor types are <em>noop</em> and
+<em>panic</em>. Availability, names and functionality might vary
+depending on the specific device driver in use. If the
+pretimeout_available_governors sysfs file is empty, the governor might
+be built as a kernel module and might need to be manually loaded (e.g.
+<em>pretimeout_noop.ko</em>), or the watchdog device might not support
+pre-timeouts.</p>
+</blockquote>
+<p><em>WatchdogDevice=</em></p>
+<blockquote>
+<p>Configure the hardware watchdog device that the runtime and shutdown
+watchdog timers will open and use. Defaults to /dev/watchdog0. This
+setting has no effect if a hardware watchdog is not available.</p>
+</blockquote>
+<p><em>CapabilityBoundingSet=</em></p>
+<blockquote>
+<p>Controls which capabilities to include in the capability bounding set
+for PID 1 and its children. See <strong>capabilities</strong>(7) for
+details. Takes a whitespace-separated list of capability names as read
+by <strong>cap_from_name</strong>(3). Capabilities listed will be
+included in the bounding set, all others are removed. If the list of
+capabilities is prefixed with ~, all but the listed capabilities will be
+included, the effect of the assignment inverted. Note that this option
+also affects the respective capabilities in the effective, permitted and
+inheritable capability sets. The capability bounding set may also be
+individually configured for units using the
+<em>CapabilityBoundingSet=</em> directive for units, but note that
+capabilities dropped for PID 1 cannot be regained in individual units,
+they are lost for good.</p>
+</blockquote>
+<p><em>NoNewPrivileges=</em></p>
+<blockquote>
+<p>Takes a boolean argument. If true, ensures that PID 1 and all its
+children can never gain new privileges through
+<strong>execve</strong>(2) (e.g. via setuid or setgid bits, or
+filesystem capabilities). Defaults to false. General purpose
+distributions commonly rely on executables with setuid or setgid bits
+and will thus not function properly with this option enabled. Individual
+units cannot disable this option. Also see <strong>No New Privileges
+Flag</strong>[1].</p>
+</blockquote>
+<p><em>SystemCallArchitectures=</em></p>
+<blockquote>
+<p>Takes a space-separated list of architecture identifiers. Selects
+from which architectures system calls may be invoked on this system.
+This may be used as an effective way to disable invocation of non-native
+binaries system-wide, for example to prohibit execution of 32-bit x86
+binaries on 64-bit x86-64 systems. This option operates system-wide, and
+acts similar to the <em>SystemCallArchitectures=</em> setting of unit
+files, see <strong>systemd.exec</strong>(5) for details. This setting
+defaults to the empty list, in which case no filtering of system calls
+based on architecture is applied. Known architecture identifiers are
+"x86", "x86-64", "x32", "arm" and the special identifier "native". The
+latter implicitly maps to the native architecture of the system (or more
+specifically, the architecture the system manager was compiled for). Set
+this setting to "native" to prohibit execution of any non-native
+binaries. When a binary executes a system call of an architecture that
+is not listed in this setting, it will be immediately terminated with
+the SIGSYS signal.</p>
+</blockquote>
+<p><em>TimerSlackNSec=</em></p>
+<blockquote>
+<p>Sets the timer slack in nanoseconds for PID 1, which is inherited by
+all executed processes, unless overridden individually, for example with
+the <em>TimerSlackNSec=</em> setting in service units (for details see
+<strong>systemd.exec</strong>(5)). The timer slack controls the accuracy
+of wake-ups triggered by system timers. See <strong>prctl</strong>(2)
+for more information. Note that in contrast to most other time span
+definitions this parameter takes an integer value in nano-seconds if no
+unit is specified. The usual time units are understood too.</p>
+</blockquote>
+<p><em>StatusUnitFormat=</em></p>
+<blockquote>
+<p>Takes <strong>name</strong>, <strong>description</strong> or
+<strong>combined</strong> as the value. If <strong>name</strong>, the
+system manager will use unit names in status messages (e.g.
+"systemd-journald.service"), instead of the longer and more informative
+descriptions set with <em>Description=</em> (e.g. "Journal Logging
+Service"). If <strong>combined</strong>, the system manager will use
+both unit names and descriptions in status messages (e.g.
+"systemd-journald.service - Journal Logging Service").</p>
+<p>See <strong>systemd.unit</strong>(5) for details about unit names and
+<em>Description=</em>.</p>
+</blockquote>
+<p><em>DefaultTimerAccuracySec=</em></p>
+<blockquote>
+<p>Sets the default accuracy of timer units. This controls the global
+default for the <em>AccuracySec=</em> setting of timer units, see
+<strong>systemd.timer</strong>(5) for details. <em>AccuracySec=</em> set
+in individual units override the global default for the specific unit.
+Defaults to 1min. Note that the accuracy of timer units is also affected
+by the configured timer slack for PID 1, see <em>TimerSlackNSec=</em>
+above.</p>
+</blockquote>
+<p><em>DefaultTimeoutStartSec=</em>, <em>DefaultTimeoutStopSec=</em>,
+<em>DefaultTimeoutAbortSec=</em>, <em>DefaultRestartSec=</em></p>
+<blockquote>
+<p>Configures the default timeouts for starting, stopping and aborting
+of units, as well as the default time to sleep between automatic
+restarts of units, as configured per-unit in <em>TimeoutStartSec=</em>,
+<em>TimeoutStopSec=</em>, <em>TimeoutAbortSec=</em> and
+<em>RestartSec=</em> (for services, see
+<strong>systemd.service</strong>(5) for details on the per-unit
+settings). Disabled by default, when service with <em>Type=oneshot</em>
+is used. For non-service units, <em>DefaultTimeoutStartSec=</em> sets
+the default <em>TimeoutSec=</em> value. <em>DefaultTimeoutStartSec=</em>
+and <em>DefaultTimeoutStopSec=</em> default to 90s.
+<em>DefaultTimeoutAbortSec=</em> is not set by default so that all units
+fall back to <em>TimeoutStopSec=</em>. <em>DefaultRestartSec=</em>
+defaults to 100ms.</p>
+</blockquote>
+<p><em>DefaultDeviceTimeoutSec=</em></p>
+<blockquote>
+<p>Configures the default timeout for waiting for devices. It can be
+changed per device via the <em>x-systemd.device-timeout=</em> option in
+/etc/fstab and /etc/crypttab (see <strong>systemd.mount</strong>(5),
+<strong>crypttab</strong>(5)). Defaults to 90s.</p>
+</blockquote>
+<p><em>DefaultStartLimitIntervalSec=</em>,
+<em>DefaultStartLimitBurst=</em></p>
+<blockquote>
+<p>Configure the default unit start rate limiting, as configured
+per-service by <em>StartLimitIntervalSec=</em> and
+<em>StartLimitBurst=</em>. See <strong>systemd.service</strong>(5) for
+details on the per-service settings.
+<em>DefaultStartLimitIntervalSec=</em> defaults to 10s.
+<em>DefaultStartLimitBurst=</em> defaults to 5.</p>
+</blockquote>
+<p><em>DefaultEnvironment=</em></p>
+<blockquote>
+<p>Configures environment variables passed to all executed processes.
+Takes a space-separated list of variable assignments. See
+<strong>environ</strong>(7) for details about environment variables.</p>
+<p>Simple "%"-specifier expansion is supported, see below for a list of
+supported specifiers.</p>
+<p>Example:</p>
+<blockquote>
+<pre><code>DefaultEnvironment=&quot;VAR1=word1 word2&quot; VAR2=word3 &quot;VAR3=word 5 6&quot;</code></pre>
+</blockquote>
+<p>Sets three variables "VAR1", "VAR2", "VAR3".</p>
+</blockquote>
+<p><em>ManagerEnvironment=</em></p>
+<blockquote>
+<p>Takes the same arguments as <em>DefaultEnvironment=</em>, see above.
+Sets environment variables just for the manager process itself. In
+contrast to user managers, these variables are not inherited by
+processes spawned by the system manager, use
+<em>DefaultEnvironment=</em> for that. Note that these variables are
+merged into the existing environment block. In particular, in case of
+the system manager, this includes variables set by the kernel based on
+the kernel command line.</p>
+<p>Setting environment variables for the manager process may be useful
+to modify its behaviour. See <strong>ENVIRONMENT</strong>[2] for a
+descriptions of some variables understood by
+<strong>systemd</strong>.</p>
+<p>Simple "%"-specifier expansion is supported, see below for a list of
+supported specifiers.</p>
+</blockquote>
+<p><em>DefaultCPUAccounting=</em>, <em>DefaultMemoryAccounting=</em>,
+<em>DefaultTasksAccounting=</em>, <em>DefaultIOAccounting=</em>,
+<em>DefaultIPAccounting=</em></p>
+<blockquote>
+<p>Configure the default resource accounting settings, as configured
+per-unit by <em>CPUAccounting=</em>, <em>MemoryAccounting=</em>,
+<em>TasksAccounting=</em>, <em>IOAccounting=</em> and
+<em>IPAccounting=</em>. See <strong>systemd.resource-control</strong>(5)
+for details on the per-unit settings. <em>DefaultTasksAccounting=</em>
+defaults to yes, <em>DefaultMemoryAccounting=</em> to yes.
+<em>DefaultCPUAccounting=</em> defaults to yes, but really has no effect
+if enabling CPU accounting doesnt require the <strong>cpu</strong>
+controller to be enabled (Linux 4.15+ using the unified hierarchy for
+resource control), otherwise it defaults to no. The other three settings
+default to no.</p>
+</blockquote>
+<p><em>DefaultTasksMax=</em></p>
+<blockquote>
+<p>Configure the default value for the per-unit <em>TasksMax=</em>
+setting. See <strong>systemd.resource-control</strong>(5) for details.
+This setting applies to all unit types that support resource control
+settings, with the exception of slice units. Defaults to 15% of the
+minimum of <em>kernel.pid_max=</em>, <em>kernel.threads-max=</em> and
+root cgroup <em>pids.max</em>. Kernel has a default value for
+<em>kernel.pid_max=</em> and an algorithm of counting in case of more
+than 32 cores. For example with the default <em>kernel.pid_max=</em>,
+<em>DefaultTasksMax=</em> defaults to 4915, but might be greater in
+other systems or smaller in OS containers.</p>
+</blockquote>
+<p><em>DefaultLimitCPU=</em>, <em>DefaultLimitFSIZE=</em>,
+<em>DefaultLimitDATA=</em>, <em>DefaultLimitSTACK=</em>,
+<em>DefaultLimitCORE=</em>, <em>DefaultLimitRSS=</em>,
+<em>DefaultLimitNOFILE=</em>, <em>DefaultLimitAS=</em>,
+<em>DefaultLimitNPROC=</em>, <em>DefaultLimitMEMLOCK=</em>,
+<em>DefaultLimitLOCKS=</em>, <em>DefaultLimitSIGPENDING=</em>,
+<em>DefaultLimitMSGQUEUE=</em>, <em>DefaultLimitNICE=</em>,
+<em>DefaultLimitRTPRIO=</em>, <em>DefaultLimitRTTIME=</em></p>
+<blockquote>
+<p>These settings control various default resource limits for processes
+executed by units. See <strong>setrlimit</strong>(2) for details. These
+settings may be overridden in individual units using the corresponding
+<em>LimitXXX=</em> directives and they accept the same parameter syntax,
+see <strong>systemd.exec</strong>(5) for details. Note that these
+resource limits are only defaults for units, they are not applied to the
+service manager process (i.e. PID 1) itself.</p>
+<p>Most of these settings are unset, which means the resource limits are
+inherited from the kernel or, if invoked in a container, from the
+container manager. However, the following have defaults:</p>
+<blockquote>
+<p>·</p>
+<p><em>DefaultLimitNOFILE=</em> defaults to 1024:524288.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p><em>DefaultLimitMEMLOCK=</em> defaults to 8M.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p><em>DefaultLimitCORE=</em> does not have a default but it is worth
+mentioning that <em>RLIMIT_CORE</em> is set to "infinity" by PID 1 which
+is inherited by its children.</p>
+</blockquote>
+<p>Note that the service manager internally in PID 1 bumps
+<em>RLIMIT_NOFILE</em> and <em>RLIMIT_MEMLOCK</em> to higher values,
+however the limit is reverted to the mentioned defaults for all child
+processes forked off.</p>
+</blockquote>
+<p><em>DefaultOOMPolicy=</em></p>
+<blockquote>
+<p>Configure the default policy for reacting to processes being killed
+by the Linux Out-Of-Memory (OOM) killer or
+<strong>systemd-oomd</strong>. This may be used to pick a global default
+for the per-unit <em>OOMPolicy=</em> setting. See
+<strong>systemd.service</strong>(5) for details. Note that this default
+is not used for services that have <em>Delegate=</em> turned on.</p>
+</blockquote>
+<p><em>DefaultOOMScoreAdjust=</em></p>
+<blockquote>
+<p>Configures the default OOM score adjustments of processes run by the
+service manager. This defaults to unset (meaning the forked off
+processes inherit the service managers OOM score adjustment value),
+except if the service manager is run for an unprivileged user, in which
+case this defaults to the service managers OOM adjustment value plus 100
+(this makes service processes slightly more likely to be killed under
+memory pressure than the manager itself). This may be used to pick a
+global default for the per-unit <em>OOMScoreAdjust=</em> setting. See
+<strong>systemd.exec</strong>(5) for details. Note that this setting has
+no effect on the OOM score adjustment value of the service manager
+process itself, it retains the original value set during its
+invocation.</p>
+</blockquote>
+<p><em>DefaultSmackProcessLabel=</em></p>
+<blockquote>
+<p>Takes a <strong>SMACK64</strong> security label as the argument. The
+process executed by a unit will be started under this label if
+<em>SmackProcessLabel=</em> is not set in the unit. See
+<strong>systemd.exec</strong>(5) for the details.</p>
+<p>If the value is "/", only labels specified with
+<em>SmackProcessLabel=</em> are assigned and the compile-time default is
+ignored.</p>
+</blockquote>
+<h1>SPECIFIERS</h1>
+<p>Specifiers may be used in the <em>DefaultEnvironment=</em> and
+<em>ManagerEnvironment=</em> settings. The following expansions are
+understood:</p>
+<p><br />
+<strong>Table 1. Specifiers available</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Specifier</td>
+<td style="text-align: left;">Meaning</td>
+<td style="text-align: left;">Details</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%a"</td>
+<td style="text-align: left;">Architecture</td>
+<td style="text-align: left;">A short string identifying the
+architecture of the local system. A string such as <strong>x86</strong>,
+<strong>x86-64</strong> or <strong>arm64</strong>. See the architectures
+defined for <em>ConditionArchitecture=</em> in
+<strong>systemd.unit</strong>(5) for a full list.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%A"</td>
+<td style="text-align: left;">Operating system image version</td>
+<td style="text-align: left;">The operating system image version
+identifier of the running system, as read from the
+<em>IMAGE_VERSION=</em> field of /etc/os-release. If not set, resolves
+to an empty string. See <strong>os-release</strong>(5) for more
+information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%b"</td>
+<td style="text-align: left;">Boot ID</td>
+<td style="text-align: left;">The boot ID of the running system,
+formatted as string. See <strong>random</strong>(4) for more
+information.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%B"</td>
+<td style="text-align: left;">Operating system build ID</td>
+<td style="text-align: left;">The operating system build identifier of
+the running system, as read from the <em>BUILD_ID=</em> field of
+/etc/os-release. If not set, resolves to an empty string. See
+<strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%H"</td>
+<td style="text-align: left;">Host name</td>
+<td style="text-align: left;">The hostname of the running system.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%l"</td>
+<td style="text-align: left;">Short host name</td>
+<td style="text-align: left;">The hostname of the running system,
+truncated at the first dot to remove any domain component.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%m"</td>
+<td style="text-align: left;">Machine ID</td>
+<td style="text-align: left;">The machine ID of the running system,
+formatted as string. See <strong>machine-id</strong>(5) for more
+information.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%M"</td>
+<td style="text-align: left;">Operating system image identifier</td>
+<td style="text-align: left;">The operating system image identifier of
+the running system, as read from the <em>IMAGE_ID=</em> field of
+/etc/os-release. If not set, resolves to an empty string. See
+<strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%o"</td>
+<td style="text-align: left;">Operating system ID</td>
+<td style="text-align: left;">The operating system identifier of the
+running system, as read from the <em>ID=</em> field of /etc/os-release.
+See <strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%v"</td>
+<td style="text-align: left;">Kernel release</td>
+<td style="text-align: left;">Identical to <strong>uname -r</strong>
+output.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%w"</td>
+<td style="text-align: left;">Operating system version ID</td>
+<td style="text-align: left;">The operating system version identifier of
+the running system, as read from the <em>VERSION_ID=</em> field of
+/etc/os-release. If not set, resolves to an empty string. See
+<strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%W"</td>
+<td style="text-align: left;">Operating system variant ID</td>
+<td style="text-align: left;">The operating system variant identifier of
+the running system, as read from the <em>VARIANT_ID=</em> field of
+/etc/os-release. If not set, resolves to an empty string. See
+<strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%T"</td>
+<td style="text-align: left;">Directory for temporary files</td>
+<td style="text-align: left;">This is either /tmp or the path "$TMPDIR",
+"$TEMP" or "$TMP" are set to. (Note that the directory may be specified
+without a trailing slash.)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%V"</td>
+<td style="text-align: left;">Directory for larger and persistent
+temporary files</td>
+<td style="text-align: left;">This is either /var/tmp or the path
+"$TMPDIR", "$TEMP" or "$TMP" are set to. (Note that the directory may be
+specified without a trailing slash.)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%%"</td>
+<td style="text-align: left;">Single percent sign</td>
+<td style="text-align: left;">Use "%%" in place of "%" to specify a
+single percent sign.</td>
+</tr>
+</tbody>
+</table>
+<h1>HISTORY</h1>
+<p>systemd 252</p>
+<blockquote>
+<p>Option <em>DefaultBlockIOAccounting=</em> was deprecated. Please
+switch to the unified cgroup hierarchy.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>systemd.directives</strong>(7),
+<strong>systemd.exec</strong>(5), <strong>systemd.service</strong>(5),
+<strong>environ</strong>(7), <strong>capabilities</strong>(7)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>No New Privileges Flag</p>
+<p>https://docs.kernel.org/userspace-api/no_new_privs.html</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>ENVIRONMENT</p>
+<p>https://systemd.io/ENVIRONMENT</p>
+</dd>
+</dl>

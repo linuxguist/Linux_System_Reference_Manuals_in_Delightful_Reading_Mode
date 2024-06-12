@@ -1,0 +1,69 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_MAC-CMAC - The CMAC EVP_MAC implementation</p>
+<h1>DESCRIPTION</h1>
+<p>Support for computing CMAC MACs through the <strong>EVP_MAC</strong>
+API.</p>
+<p>This implementation uses EVP_CIPHER functions to get access to the
+underlying cipher.</p>
+<h2>Identity</h2>
+<p>This implementation is identified with this name and properties, to
+be used with <strong>EVP_MAC_fetch()</strong>:</p>
+<dl>
+<dt>"CMAC", "provider=default" or "provider=fips"</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Supported parameters</h2>
+<p>The general description of these parameters can be found in
+PARAMETERS in <strong>EVP_MAC</strong> (3).</p>
+<p>The following parameter can be set with
+<strong>EVP_MAC_CTX_set_params()</strong>:</p>
+<dl>
+<dt>"key" (OSSL_MAC_PARAM_KEY) &lt;octet string&gt;</dt>
+<dd>
+<p>Sets the MAC key. Setting this parameter is identical to passing a
+<em>key</em> to <strong>EVP_MAC_init</strong> (3).</p>
+</dd>
+<dt>"cipher" (OSSL_MAC_PARAM_CIPHER) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>Sets the name of the underlying cipher to be used.</p>
+</dd>
+<dt>"properties" (OSSL_MAC_PARAM_PROPERTIES) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>Sets the properties to be queried when trying to fetch the underlying
+cipher. This must be given together with the cipher naming parameter to
+be considered valid.</p>
+</dd>
+</dl>
+<p>The following parameters can be retrieved with
+<strong>EVP_MAC_CTX_get_params()</strong>:</p>
+<dl>
+<dt>"size" (OSSL_MAC_PARAM_SIZE) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>The size parameter can also be retrieved with with
+<strong>EVP_MAC_CTX_get_mac_size()</strong>. The length of the size
+parameter is equal to that of an <strong>unsigned int</strong>.</p>
+</dd>
+<dt>"block-size" (OSSL_MAC_PARAM_SIZE) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>Gets the MAC block size. The block-size parameter can also be
+retrieved with <strong>EVP_MAC_CTX_get_block_size()</strong>.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_MAC_CTX_get_params</strong> (3),
+<strong>EVP_MAC_CTX_set_params</strong> (3), PARAMETERS in
+<strong>EVP_MAC</strong> (3), <strong>OSSL_PARAM</strong> (3)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2018-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

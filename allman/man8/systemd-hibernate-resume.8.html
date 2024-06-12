@@ -1,0 +1,31 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-hibernate-resume@.service, systemd-hibernate-resume - Resume
+from hibernation</p>
+<h1>SYNOPSIS</h1>
+<p>systemd-hibernate-resume@.service</p>
+<p>/lib/systemd/systemd-hibernate-resume</p>
+<h1>DESCRIPTION</h1>
+<p>systemd-hibernate-resume@.service initiates the resume from
+hibernation. It is instantiated with the device to resume from as the
+template argument.</p>
+<p>systemd-hibernate-resume only supports the in-kernel hibernation
+implementation, see <strong>Swap suspend</strong>[1]. Internally, it
+works by writing the major:minor of specified device node to
+/sys/power/resume.</p>
+<p>Failing to initiate a resume is not an error condition. It may mean
+that there was no resume image (e. g. if the system has been simply
+powered off and not hibernated). In such case, the boot is ordinarily
+continued.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1),
+<strong>systemd-hibernate-resume-generator</strong>(8)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>Swap suspend</p>
+<p>https://docs.kernel.org/power/swsusp.html</p>
+</dd>
+</dl>

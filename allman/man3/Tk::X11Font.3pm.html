@@ -1,0 +1,48 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Font - a class for finding X Fonts</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::X11Font; $font = $widget-&gt;X11Font(foundry =&gt; adobe,
+family =&gt; times, point =&gt; 120 ); $font =
+$widget-&gt;X11Font(*-courier-medium-r-normal-*-*);</p>
+<h1>DESCRIPTION</h1>
+<p>This module can be use to interrogate the X server what fonts are
+available.</p>
+<h1>METHODS</h1>
+<h2>Foundry( [ $val ] )</h2>
+<h2>Family( [ $val ] )</h2>
+<h2>Weight( [ $val ] )</h2>
+<h2>Slant( [ $val ] )</h2>
+<h2>Swidth( [ $val ] )</h2>
+<h2>Adstyle( [ $val ] )</h2>
+<h2>Pixel( [ $val ] )</h2>
+<h2>Point( [ $val ] )</h2>
+<h2>Xres( [ $val ] )</h2>
+<h2>Yres( [ $val ] )</h2>
+<h2>Space( [ $val ] )</h2>
+<h2>Avgwidth( [ $val ] )</h2>
+<h2>Registry( [ $val ] )</h2>
+<h2>Encoding( [ $val ] )</h2>
+<p>Set the given field in the font name to <code>$val</code> if given
+and return the current or previous value</p>
+<h2>Name( [ $max ] )</h2>
+<p>In a list context it returns a list of all font names that match the
+fields given. It will return a maximum of <code>$max</code> names, or
+128 if <code>$max</code> is not given.</p>
+<p>In a scalar contex it returns the first matching name or undef</p>
+<h2>Clone( [ key =&gt; value, [ ...]] )</h2>
+<p>Create a duplicate of the curent font object and modify the given
+fields</p>
+<h1>AUTHOR</h1>
+<p>Graham Barr &lt;Graham.Barr@tiuk.ti.com&gt;</p>
+<h1>HISTORY</h1>
+<p>11-Jan-96 Initial version</p>
+<p>08-Nov-98 Renamed for Tk800.012</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 1995-1996 Graham Barr. All rights reserved. This
+program is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.</p>

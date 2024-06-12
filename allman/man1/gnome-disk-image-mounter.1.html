@@ -1,0 +1,33 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gnome-disk-image-mounter - Attach and mount disk images</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gnome-disk-image-mounter</strong> [--writable]
+[<em>URI</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>gnome-disk-image-mounter</strong> can be used to set up disk
+images. Both regular files and <em>GVfs</em> URIs (such as
+smb://filer/media/file.iso) can be used in the <em>URI</em> parameter.
+If no <em>URI</em>s are given and a window server is running, a
+graphical file chooser will be presented.</p>
+<p>Note that <strong>gnome-disk-image-mounter</strong> will not mount
+filesystems or unlock encrypted volumes in the disk image - this
+responsibility is left to the automounter in GNOME Shell to ensure that
+the same interactions happen as if the disk image was a regular physical
+device or disc.</p>
+<p>By default the disk images are attached read-only, use the option
+<strong>--writable</strong> to change this.</p>
+<h1>RETURN VALUE</h1>
+<p><strong>gnome-disk-image-mounter</strong> returns 0 on success and
+non-zero on failure.</p>
+<h1>AUTHOR</h1>
+<p>Written by David Zeuthen &lt;zeuthen@gmail.com&gt; with a lot of help
+from many others.</p>
+<h1>BUGS</h1>
+<p>Please send bug reports to either the distribution bug tracker or the
+upstream bug tracker at
+<strong>https://gitlab.gnome.org/GNOME/gnome-disk-utility/-/issues/</strong>.</p>
+<h1>SEE ALSO</h1>
+<p><strong>gnome-shell</strong>(1), <strong>gnome-disks</strong>(1),
+<strong>udisks</strong>(8), <strong>losetup</strong>(8)</p>

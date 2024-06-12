@@ -1,0 +1,622 @@
+<p>protocol</p>
+<p>The</p>
+<p>command is used to communicate with another host using the</p>
+<p>protocol. If</p>
+<p>is invoked without the</p>
+<p>argument, it enters command mode, indicated by its prompt</p>
+<p>In this mode, it accepts and executes the commands listed below. If
+it is invoked with arguments, it performs an</p>
+<p>command with those arguments.</p>
+<p>Use IPv4 to connect to hosts.</p>
+<p>Use IPv6 to connect to hosts.</p>
+<p>Specifies an 8-bit data path. This causes an attempt to negotiate
+the</p>
+<p>option on both input and output.</p>
+<p>Specifies an 8-bit data path on output. This causes the BINARY option
+to be negotiated on output.</p>
+<p>Sets the initial</p>
+<p>escape character to</p>
+<p>If</p>
+<p>is omitted, then there will be no escape character.</p>
+<p>Stops any character from being recognized as an escape character.</p>
+<p>Attempt automatic login. Currently, this sends the user name via
+the</p>
+<p>variable of the</p>
+<p>option if supported by the remote system. The name used is that of
+the current user as returned by</p>
+<p>if it agrees with the current user ID, otherwise it is the name
+associated with the user ID.</p>
+<p>Specifies no automatic login to the remote system.</p>
+<p>When connecting to the remote system, if the remote system
+understands the</p>
+<p>option, then</p>
+<p>will be sent to the remote system as the value for the variable USER.
+This option implies the</p>
+<p>option. This option may also be used with the</p>
+<p>command.</p>
+<p>Opens</p>
+<p>for recording trace information. See the</p>
+<p>command below.</p>
+<p>Specifies a user interface similar to</p>
+<p>In this mode, the escape character is set to the tilde (~) character,
+unless modified by the -e option.</p>
+<p>Disables the reading of the user's</p>
+<p>file. (See the</p>
+<p>command on this man page.)</p>
+<p>Sets the initial value of the</p>
+<p>toggle to</p>
+<p>Turns on encryption of the data stream if possible.</p>
+<p>Disables the</p>
+<p>type of authentication.</p>
+<p>If Kerberos authentication is being used, the</p>
+<p>option requests that telnet obtain tickets for the remote host in
+realm realm instead of the remote host's realm, as determined by</p>
+<p>Indicates the official name, an alias, or the Internet address of a
+remote host.</p>
+<p>Indicates a port number (address of an application). If a number is
+not specified, the default</p>
+<p>port is used.</p>
+<p>When in rlogin mode, a line of the form ~. disconnects from the
+remote host; ~ is the telnet escape character. Similarly, the line ~^Z
+suspends the telnet session. The line ~^] escapes to the normal telnet
+escape prompt.</p>
+<p>Once a connection has been opened,</p>
+<p>will attempt to enable the</p>
+<p>option. If this fails, then</p>
+<p>will revert to one of two input modes: either character at a time or
+old line by line depending on what the remote system supports.</p>
+<p>When</p>
+<p>is enabled, character processing is done on the local system, under
+the control of the remote system. When input editing or character
+echoing is to be disabled, the remote system will relay that
+information. The remote system will also relay changes to any special
+characters that happen on the remote system, so that they can take
+effect on the local system.</p>
+<p>In character at a time mode, most text typed is immediately sent to
+the remote host for processing.</p>
+<p>In old line by line mode, all text is echoed locally, and (normally)
+only completed lines are sent to the remote host. The local echo
+character (initially ^E) may be used to turn off and on the local echo
+(this would mostly be used to enter passwords without the password being
+echoed).</p>
+<p>If the</p>
+<p>option is enabled, or if the</p>
+<p>toggle is</p>
+<p>(the default for old line by line; see below), the user's</p>
+<p>and</p>
+<p>characters are trapped locally, and sent as</p>
+<p>protocol sequences to the remote side. If</p>
+<p>has ever been enabled, then the user's</p>
+<p>and</p>
+<p>are also sent as</p>
+<p>protocol sequences, and</p>
+<p>is sent as a</p>
+<p>instead of</p>
+<p>There are options (see</p>
+<p>and</p>
+<p>below) which cause this action to flush subsequent output to the
+terminal (until the remote host acknowledges the</p>
+<p>sequence) and flush previous terminal input (in the case of</p>
+<p>and</p>
+<p>While connected to a remote host,</p>
+<p>command mode may be entered by typing the</p>
+<p>escape character (initially ^]). When in command mode, the normal
+terminal editing conventions are available.</p>
+<p>The following</p>
+<p>commands are available. Only enough of each command to uniquely
+identify it need be typed (this is also true for arguments to the</p>
+<p>and</p>
+<p>commands).</p>
+<p>The auth command manipulates the information sent through the</p>
+<p>option. Valid arguments for the auth command are as follows:</p>
+<p>Disables the specified type of authentication. To obtain a list of
+available types, use the</p>
+<p>command.</p>
+<p>Enables the specified type of authentication. To obtain a list of
+available types, use the</p>
+<p>command.</p>
+<p>Lists the current status of the various types of authentication.</p>
+<p>Close a</p>
+<p>session and return to command mode.</p>
+<p>Displays all, or some, of the</p>
+<p>and</p>
+<p>values (see below).</p>
+<p>The encrypt command manipulates the information sent through the</p>
+<p>option.</p>
+<p>Note: Because of export controls, the</p>
+<p>option is not supported outside of the United States and Canada.</p>
+<p>Valid arguments for the encrypt command are as follows:</p>
+<p>Disables the specified type of encryption. If you omit the input and
+output, both input and output are disabled. To obtain a list of
+available types, use the</p>
+<p>command.</p>
+<p>Enables the specified type of encryption. If you omit input and
+output, both input and output are enabled. To obtain a list of available
+types, use the</p>
+<p>command.</p>
+<p>This is the same as the</p>
+<p>command.</p>
+<p>This is the same as the</p>
+<p>command.</p>
+<p>This is the same as the</p>
+<p>command.</p>
+<p>This is the same as the</p>
+<p>command.</p>
+<p>Attempts to start encryption. If you omit</p>
+<p>and</p>
+<p>both input and output are enabled. To obtain a list of available
+types, use the</p>
+<p>command.</p>
+<p>Lists the current status of encryption.</p>
+<p>Stops encryption. If you omit input and output, encryption is on both
+input and output.</p>
+<p>Sets the default type of encryption to be used with later</p>
+<p>or</p>
+<p>commands.</p>
+<p>The</p>
+<p>command is used to manipulate the the variables that my be sent
+through the</p>
+<p>option. The initial set of variables is taken from the users
+environment, with only the</p>
+<p>and</p>
+<p>variables being exported by default. The</p>
+<p>variable is also exported if the</p>
+<p>or</p>
+<p>options are used.<br />
+Valid arguments for the</p>
+<p>command are:</p>
+<p>Define the variable</p>
+<p>to have a value of</p>
+<p>Any variables defined by this command are automatically exported.
+The</p>
+<p>may be enclosed in single or double quotes so that tabs and spaces
+may be included.</p>
+<p>Remove</p>
+<p>from the list of environment variables.</p>
+<p>Mark the variable</p>
+<p>to be exported to the remote side.</p>
+<p>Mark the variable</p>
+<p>to not be exported unless explicitly asked for by the remote
+side.</p>
+<p>List the current set of environment variables. Those marked with
+a</p>
+<p>will be sent automatically, other variables will only be sent if
+explicitly requested.</p>
+<p>Prints out help information for the</p>
+<p>command.</p>
+<p>Sends the</p>
+<p>option to the remote side. This command is similar to a</p>
+<p>command; however, if the remote side does not support the</p>
+<p>option, nothing happens. If, however, the remote side does support
+the</p>
+<p>option, this command should cause the remote side to close the</p>
+<p>connection. If the remote side also supports the concept of
+suspending a user's session for later reattachment, the logout argument
+indicates that you should terminate the session immediately.</p>
+<p>is one of several options, depending on the state of the</p>
+<p>session. The remote host is asked for permission to go into the
+requested mode. If the remote host is capable of entering that mode, the
+requested mode will be entered.</p>
+<p>Disable the</p>
+<p>option, or, if the remote side does not understand the</p>
+<p>option, then enter character at a time mode.</p>
+<p>Enable the</p>
+<p>option, or, if the remote side does not understand the</p>
+<p>option, then attempt to enter old-line-by-line mode.</p>
+<p>Attempt to enable (disable) the</p>
+<p>mode of the</p>
+<p>option. This requires that the</p>
+<p>option be enabled.</p>
+<p>Attempt to enable (disable) the</p>
+<p>mode of the</p>
+<p>option. This requires that the</p>
+<p>option be enabled.</p>
+<p>Attempt to enable (disable) the</p>
+<p>mode of the</p>
+<p>option. This requires that the</p>
+<p>option be enabled.</p>
+<p>Attempt to enable (disable) the</p>
+<p>mode of the</p>
+<p>option. This requires that the</p>
+<p>option be enabled.</p>
+<p>Prints out help information for the</p>
+<p>command.</p>
+<p>Open a connection to the named host. If no port number is
+specified,</p>
+<p>will attempt to contact a</p>
+<p>server at the default port. The host specification may be either a
+host name (see</p>
+<p>or an Internet address specified in the dot notation (see</p>
+<p>The</p>
+<p>option may be used to specify the user name to be passed to the
+remote system via the</p>
+<p>option. When connecting to a non-standard port,</p>
+<p>omits any automatic initiation of</p>
+<p>options. When the port number is preceded by a minus sign, the
+initial option negotiation is done. After establishing a connection, the
+file</p>
+<p>in the users home directory is opened. Lines beginning with a # are
+comment lines. Blank lines are ignored. Lines that begin without white
+space are the start of a machine entry. The first thing on the line is
+the name of the machine that is being connected to. The rest of the
+line, and successive lines that begin with white space are assumed to
+be</p>
+<p>commands and are processed as if they had been typed in manually to
+the</p>
+<p>command prompt.</p>
+<p>Close any open</p>
+<p>session and exit</p>
+<p>An end of file (in command mode) will also close a session and
+exit.</p>
+<p>Sends one or more special character sequences to the remote host. The
+following are the arguments which may be specified (more than one
+argument may be specified at a time):</p>
+<p>Sends the</p>
+<p>(Abort processes) sequence.</p>
+<p>Sends the</p>
+<p>(Abort Output) sequence, which should cause the remote system to
+flush all output</p>
+<p>the remote system</p>
+<p>the user's terminal.</p>
+<p>Sends the</p>
+<p>(Are You There) sequence, to which the remote system may or may not
+choose to respond.</p>
+<p>Sends the</p>
+<p>(Break) sequence, which may have significance to the remote
+system.</p>
+<p>Sends the</p>
+<p>(Erase Character) sequence, which should cause the remote system to
+erase the last character entered.</p>
+<p>Sends the</p>
+<p>(Erase Line) sequence, which should cause the remote system to erase
+the line currently being entered.</p>
+<p>Sends the</p>
+<p>(End Of File) sequence.</p>
+<p>Sends the</p>
+<p>(End of Record) sequence.</p>
+<p>Sends the current</p>
+<p>escape character (initially ^).</p>
+<p>Sends the</p>
+<p>(Go Ahead) sequence, which likely has no significance to the remote
+system.</p>
+<p>If the remote side supports the</p>
+<p>command,</p>
+<p>will send the subnegotiation to request that the server send its
+current option status.</p>
+<p>Sends the</p>
+<p>(Interrupt Process) sequence, which should cause the remote system to
+abort the currently running process.</p>
+<p>Sends the</p>
+<p>(No OPeration) sequence.</p>
+<p>Sends the</p>
+<p>(SUSPend process) sequence.</p>
+<p>Sends the</p>
+<p>sequence. This sequence causes the remote system to discard all
+previously typed (but not yet read) input. This sequence is sent as</p>
+<p>urgent data (and may not work if the remote system is a</p>
+<p>system -- if it doesn't work, a lower case r may be echoed on the
+terminal).</p>
+<p>Sends the</p>
+<p>sequence.</p>
+<p>can be either a decimal number between 0 and 255, or a symbolic name
+for a specific</p>
+<p>command.</p>
+<p>can also be either</p>
+<p>or</p>
+<p>to print out help information, including a list of known symbolic
+names.</p>
+<p>Prints out help information for the</p>
+<p>command.</p>
+<p>The</p>
+<p>command will set any one of a number of</p>
+<p>variables to a specific value or to</p>
+<p>The special value</p>
+<p>turns off the function associated with the variable, this is
+equivalent to using the</p>
+<p>command. The</p>
+<p>command will disable or set to</p>
+<p>any of the specified functions. The values of variables may be
+interrogated with the</p>
+<p>command. The variables which may be set or unset, but not toggled,
+are listed here. In addition, any of the variables for the</p>
+<p>command may be explicitly set or unset using the</p>
+<p>and</p>
+<p>commands.</p>
+<p>If</p>
+<p>is in localchars mode, or</p>
+<p>is enabled, and the status character is typed, a</p>
+<p>sequence (see</p>
+<p>preceding) is sent to the remote host. The initial value for the "Are
+You There" character is the terminal's status character.</p>
+<p>This is the value (initially ^E) which, when in line by line mode,
+toggles between doing local echoing of entered characters (for normal
+processing), and suppressing echoing of entered characters (for
+entering, say, a password).</p>
+<p>If</p>
+<p>is operating in</p>
+<p>or old line by line mode, entering this character as the first
+character on a line will cause this character to be sent to the remote
+system. The initial value of the eof character is taken to be the
+terminal's</p>
+<p>character.</p>
+<p>If</p>
+<p>is in</p>
+<p>mode (see</p>
+<p>below),</p>
+<p>if</p>
+<p>is operating in character at a time mode, then when this character is
+typed, a</p>
+<p>sequence (see</p>
+<p>above) is sent to the remote system. The initial value for the erase
+character is taken to be the terminal's</p>
+<p>character.</p>
+<p>This is the</p>
+<p>escape character (initially ^[) which causes entry into</p>
+<p>command mode (when connected to a remote system).</p>
+<p>If</p>
+<p>is in</p>
+<p>mode (see</p>
+<p>below) and the</p>
+<p>character is typed, a</p>
+<p>sequence (see</p>
+<p>above) is sent to the remote host. The initial value for the flush
+character is taken to be the terminal's</p>
+<p>character.</p>
+<p>If</p>
+<p>is operating in</p>
+<p>these are the characters that, when typed, cause partial lines to be
+forwarded to the remote system. The initial value for the forwarding
+characters are taken from the terminal's eol and eol2 characters.</p>
+<p>If</p>
+<p>is in</p>
+<p>mode (see</p>
+<p>below) and the</p>
+<p>character is typed, a</p>
+<p>sequence (see</p>
+<p>above) is sent to the remote host. The initial value for the
+interrupt character is taken to be the terminal's</p>
+<p>character.</p>
+<p>If</p>
+<p>is in</p>
+<p>mode (see</p>
+<p>below),</p>
+<p>if</p>
+<p>is operating in character at a time mode, then when this character is
+typed, a</p>
+<p>sequence (see</p>
+<p>above) is sent to the remote system. The initial value for the kill
+character is taken to be the terminal's</p>
+<p>character.</p>
+<p>If</p>
+<p>is operating in</p>
+<p>or old line by line mode, then this character is taken to be the
+terminal's</p>
+<p>character. The initial value for the lnext character is taken to be
+the terminal's</p>
+<p>character.</p>
+<p>If</p>
+<p>is in</p>
+<p>mode (see</p>
+<p>below) and the</p>
+<p>character is typed, a</p>
+<p>sequence (see</p>
+<p>above) is sent to the remote host. The initial value for the quit
+character is taken to be the terminal's</p>
+<p>character.</p>
+<p>If</p>
+<p>is operating in</p>
+<p>or old line by line mode, then this character is taken to be the
+terminal's</p>
+<p>character. The initial value for the reprint character is taken to be
+the terminal's</p>
+<p>character.</p>
+<p>This is the rlogin escape character. If set, the normal</p>
+<p>escape character is ignored unless it is preceded by this character
+at the beginning of a line. This character, at the beginning of a line
+followed by a "." closes the connection; when followed by a ^Z it
+suspends the telnet command. The initial state is to disable the rlogin
+escape character.</p>
+<p>If the</p>
+<p>option has been enabled, then this character is taken to be the
+terminal's</p>
+<p>character. The initial value for the kill character is taken to be
+the terminal's</p>
+<p>character.</p>
+<p>If the</p>
+<p>option has been enabled, then this character is taken to be the
+terminal's</p>
+<p>character. The initial value for the kill character is taken to be
+the terminal's</p>
+<p>character.</p>
+<p>If</p>
+<p>is in</p>
+<p>mode, or</p>
+<p>is enabled, and the</p>
+<p>character is typed, a</p>
+<p>sequence (see</p>
+<p>above) is sent to the remote host. The initial value for the suspend
+character is taken to be the terminal's</p>
+<p>character.</p>
+<p>This is the file to which the output, caused by</p>
+<p>or</p>
+<p>tracing being</p>
+<p>will be written. If it is set to</p>
+<p>then tracing information will be written to standard output (the
+default).</p>
+<p>If</p>
+<p>is operating in</p>
+<p>or old line by line mode, then this character is taken to be the
+terminal's</p>
+<p>character. The initial value for the worderase character is taken to
+be the terminal's</p>
+<p>character.</p>
+<p>Displays the legal</p>
+<p>commands.</p>
+<p>The</p>
+<p>command (Set Local Characters) is used to set or change the state of
+the the special characters when the</p>
+<p>option has been enabled. Special characters are characters that get
+mapped to</p>
+<p>commands sequences (like</p>
+<p>or</p>
+<p>or line editing characters (like</p>
+<p>and</p>
+<p>By default, the local special characters are exported.</p>
+<p>Verify the current settings for the current special characters. The
+remote side is requested to send all the current special character
+settings, and if there are any discrepancies with the local side, the
+local side will switch to the remote value.</p>
+<p>Switch to the local defaults for the special characters. The local
+default characters are those of the local terminal at the time when</p>
+<p>was started.</p>
+<p>Switch to the remote defaults for the special characters. The remote
+default characters are those of the remote system at the time when
+the</p>
+<p>connection was established.</p>
+<p>Prints out help information for the</p>
+<p>command.</p>
+<p>Show the current status of</p>
+<p>This includes the peer one is connected to, as well as the current
+mode.</p>
+<p>Toggle (between</p>
+<p>and</p>
+<p>various flags that control how</p>
+<p>responds to events. These flags may be set explicitly to</p>
+<p>or</p>
+<p>using the</p>
+<p>and</p>
+<p>commands listed above. More than one argument may be specified. The
+state of these flags may be interrogated with the</p>
+<p>command. Valid arguments are:</p>
+<p>Turns on debugging information for the authentication code.</p>
+<p>If</p>
+<p>and</p>
+<p>are both</p>
+<p>then when the</p>
+<p>or</p>
+<p>characters are recognized (and transformed into</p>
+<p>sequences; see</p>
+<p>above for details),</p>
+<p>refuses to display any data on the user's terminal until the remote
+system acknowledges (via a</p>
+<p>option) that it has processed those</p>
+<p>sequences. The initial value for this toggle is</p>
+<p>if the terminal user had not done an "stty noflsh", otherwise</p>
+<p>(see</p>
+<p>When the</p>
+<p>option is negotiated, by default the actual encryption (decryption)
+of the data stream does not start automatically. The autoencrypt
+(autodecrypt) command states that encryption of the output (input)
+stream should be enabled as soon as possible.</p>
+<p>Note: Because of export controls, the</p>
+<p>option is not supported outside the United States and Canada.</p>
+<p>If the remote side supports the</p>
+<p>option</p>
+<p>attempts to use it to perform automatic authentication. If the</p>
+<p>option is not supported, the user's login name are propagated through
+the</p>
+<p>option. This command is the same as specifying</p>
+<p>option on the</p>
+<p>command.</p>
+<p>If</p>
+<p>and</p>
+<p>are both</p>
+<p>then when either the</p>
+<p>or</p>
+<p>characters is typed (see</p>
+<p>above for descriptions of the</p>
+<p>and</p>
+<p>characters), the resulting</p>
+<p>sequence sent is followed by the</p>
+<p>sequence. This procedure</p>
+<p>cause the remote system to begin throwing away all previously typed
+input until both of the</p>
+<p>sequences have been read and acted upon. The initial value of this
+toggle is</p>
+<p>Enable or disable the</p>
+<p>option on both input and output.</p>
+<p>Enable or disable the</p>
+<p>option on input.</p>
+<p>Enable or disable the</p>
+<p>option on output.</p>
+<p>If this is</p>
+<p>then carriage returns will be sent as</p>
+<p>If this is</p>
+<p>then carriage returns will be send as</p>
+<p>The initial value for this toggle is</p>
+<p>Toggle carriage return mode. When this mode is enabled, most carriage
+return characters received from the remote host will be mapped into a
+carriage return followed by a line feed. This mode does not affect those
+characters typed by the user, only those received from the remote host.
+This mode is not very useful unless the remote host only sends carriage
+return, but never line feed. The initial value for this toggle is</p>
+<p>Toggles socket level debugging (useful only to the</p>
+<p>The initial value for this toggle is</p>
+<p>Turns on debugging information for the encryption code.</p>
+<p>If this is</p>
+<p>then the</p>
+<p>and</p>
+<p>characters (see</p>
+<p>above) are recognized locally, and transformed into (hopefully)
+appropriate</p>
+<p>control sequences (respectively</p>
+<p>and</p>
+<p>see</p>
+<p>above). The initial value for this toggle is</p>
+<p>in old line by line mode, and</p>
+<p>in character at a time mode. When the</p>
+<p>option is enabled, the value of</p>
+<p>is ignored, and assumed to always be</p>
+<p>If</p>
+<p>has ever been enabled, then</p>
+<p>is sent as</p>
+<p>and</p>
+<p>are sent as</p>
+<p>see</p>
+<p>above).</p>
+<p>Toggles the display of all network data (in hexadecimal format). The
+initial value for this toggle is</p>
+<p>Toggles the display of some internal</p>
+<p>protocol processing (having to do with</p>
+<p>options). The initial value for this toggle is</p>
+<p>When the</p>
+<p>toggle is enabled, if</p>
+<p>is enabled the output from the</p>
+<p>command will be formatted in a more user readable format. Spaces are
+put between each character in the output, and the beginning of any</p>
+<p>escape sequence is preceded by a '*' to aid in locating them.</p>
+<p>When the skiprc toggle is</p>
+<p>skips the reading of the</p>
+<p>file in the users home directory when connections are opened. The
+initial value for this toggle is</p>
+<p>Toggles the display of all terminal data (in hexadecimal format). The
+initial value for this toggle is</p>
+<p>When the</p>
+<p>toggle is</p>
+<p>prints out a message each time encryption is enabled or disabled. The
+initial value for this toggle is</p>
+<p>Note: Because of export controls, data encryption is not supported
+outside of the United States and Canada.</p>
+<p>Displays the legal</p>
+<p>commands.</p>
+<p>Suspend</p>
+<p>This command only works when the user is using the</p>
+<p>Execute a single command in a subshell on the local system. If</p>
+<p>is omitted, then an interactive subshell is invoked.</p>
+<p>Get help. With no arguments,</p>
+<p>prints a help summary. If a command is specified,</p>
+<p>will print the help information for just that command.</p>
+<p>uses at least the</p>
+<p>and</p>
+<p>environment variables. Other environment variables may be propagated
+to the other side via the</p>
+<p>option.</p>
+<p>user customized telnet startup values</p>
+<p>The</p>
+<p>command appeared in</p>
+<p>On some remote systems, echo has to be turned off manually when in
+old line by line mode.</p>
+<p>In old line by line mode or</p>
+<p>the terminal's</p>
+<p>character is only recognized (and sent to the remote system) when it
+is the first character on a line.</p>

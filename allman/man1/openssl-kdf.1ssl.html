@@ -1,0 +1,209 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-kdf - perform Key Derivation Function operations</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl kdf</strong> [<strong>-help</strong>]
+[<strong>-cipher</strong>] [<strong>-digest</strong>]
+[<strong>-mac</strong>] [<strong>-kdfopt</strong>
+<em>nm</em>:<em>v</em>] [<strong>-keylen</strong> <em>num</em>]
+[<strong>-out</strong> <em>filename</em>] [<strong>-binary</strong>]
+[<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>] <em>kdf_name</em></p>
+<h1>DESCRIPTION</h1>
+<p>The key derivation functions generate a derived key from either a
+secret or password.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print a usage message.</p>
+</dd>
+<dt>-keylen num</dt>
+<dd>
+<p>The output size of the derived key. This field is required.</p>
+</dd>
+<dt>-out filename</dt>
+<dd>
+<p>Filename to output to, or standard output by default.</p>
+</dd>
+<dt>-binary</dt>
+<dd>
+<p>Output the derived key in binary form. Uses hexadecimal text format
+if not specified.</p>
+</dd>
+<dt>-cipher name</dt>
+<dd>
+<p>Specify the cipher to be used by the KDF. Not all KDFs require a
+cipher and it is an error to use this option in such cases.</p>
+</dd>
+<dt>-digest name</dt>
+<dd>
+<p>Specify the digest to be used by the KDF. Not all KDFs require a
+digest and it is an error to use this option in such cases. To see the
+list of supported digests, use
+<code>openssl list -digest-commands</code>.</p>
+</dd>
+<dt>-mac name</dt>
+<dd>
+<p>Specify the MAC to be used by the KDF. Not all KDFs require a MAC and
+it is an error to use this option in such cases.</p>
+</dd>
+<dt>-kdfopt nm:v</dt>
+<dd>
+<p>Passes options to the KDF algorithm. A comprehensive list of
+parameters can be found in PARAMETERS in <strong>EVP_KDF</strong> (3).
+Common parameter names used by <strong>EVP_KDF_CTX_set_params()</strong>
+are:</p>
+<dl>
+<dt>key:string</dt>
+<dd>
+<p>Specifies the secret key as an alphanumeric string (use if the key
+contains printable characters only). The string length must conform to
+any restrictions of the KDF algorithm. A key must be specified for most
+KDF algorithms.</p>
+</dd>
+<dt>hexkey:string</dt>
+<dd>
+<p>Alternative to the <strong>key:</strong> option where the secret key
+is specified in hexadecimal form (two hex digits per byte).</p>
+</dd>
+<dt>pass:string</dt>
+<dd>
+<p>Specifies the password as an alphanumeric string (use if the password
+contains printable characters only). The password must be specified for
+PBKDF2 and scrypt.</p>
+</dd>
+<dt>hexpass:string</dt>
+<dd>
+<p>Alternative to the <strong>pass:</strong> option where the password
+is specified in hexadecimal form (two hex digits per byte).</p>
+</dd>
+<dt>salt:string</dt>
+<dd>
+<p>Specifies a non-secret unique cryptographic salt as an alphanumeric
+string (use if it contains printable characters only). The length must
+conform to any restrictions of the KDF algorithm. A salt parameter is
+required for several KDF algorithms, such as
+<strong>EVP_KDF-PBKDF2</strong> (7).</p>
+</dd>
+<dt>hexsalt:string</dt>
+<dd>
+<p>Alternative to the <strong>salt:</strong> option where the salt is
+specified in hexadecimal form (two hex digits per byte).</p>
+</dd>
+<dt>info:string</dt>
+<dd>
+<p>Some KDF implementations, such as <strong>EVP_KDF-HKDF</strong> (7),
+take an 'info' parameter for binding the derived key material to
+application- and context-specific information. Specifies the info, fixed
+info, other info or shared info argument as an alphanumeric string (use
+if it contains printable characters only). The length must conform to
+any restrictions of the KDF algorithm.</p>
+</dd>
+<dt>hexinfo:string</dt>
+<dd>
+<p>Alternative to the <strong>info:</strong> option where the info is
+specified in hexadecimal form (two hex digits per byte).</p>
+</dd>
+<dt>digest:string</dt>
+<dd>
+<p>This option is identical to the <strong>-digest</strong> option.</p>
+</dd>
+<dt>cipher:string</dt>
+<dd>
+<p>This option is identical to the <strong>-cipher</strong> option.</p>
+</dd>
+<dt>mac:string</dt>
+<dd>
+<p>This option is identical to the <strong>-mac</strong> option.</p>
+</dd>
+</dl>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<dl>
+<dt>kdf_name</dt>
+<dd>
+<p>Specifies the name of a supported KDF algorithm which will be used.
+The supported algorithms names include TLS1-PRF, HKDF, SSKDF, PBKDF2,
+SSHKDF, X942KDF-ASN1, X942KDF-CONCAT, X963KDF and SCRYPT.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>Use TLS1-PRF to create a hex-encoded derived key from a secret key
+and seed:</p>
+<p>openssl kdf -keylen 16 -kdfopt digest:SHA2-256 -kdfopt key:secret \
+-kdfopt seed:seed TLS1-PRF</p>
+<p>Use HKDF to create a hex-encoded derived key from a secret key, salt
+and info:</p>
+<p>openssl kdf -keylen 10 -kdfopt digest:SHA2-256 -kdfopt key:secret \
+-kdfopt salt:salt -kdfopt info:label HKDF</p>
+<p>Use SSKDF with KMAC to create a hex-encoded derived key from a secret
+key, salt and info:</p>
+<p>openssl kdf -keylen 64 -kdfopt mac:KMAC-128 -kdfopt maclen:20 \
+-kdfopt hexkey:b74a149a161545 -kdfopt hexinfo:348a37a2 \ -kdfopt
+hexsalt:3638271ccd68a2 SSKDF</p>
+<p>Use SSKDF with HMAC to create a hex-encoded derived key from a secret
+key, salt and info:</p>
+<p>openssl kdf -keylen 16 -kdfopt mac:HMAC -kdfopt digest:SHA2-256 \
+-kdfopt hexkey:b74a149a -kdfopt hexinfo:348a37a2 \ -kdfopt
+hexsalt:3638271c SSKDF</p>
+<p>Use SSKDF with Hash to create a hex-encoded derived key from a secret
+key, salt and info:</p>
+<p>openssl kdf -keylen 14 -kdfopt digest:SHA2-256 \ -kdfopt
+hexkey:6dbdc23f045488 \ -kdfopt hexinfo:a1b2c3d4 SSKDF</p>
+<p>Use SSHKDF to create a hex-encoded derived key from a secret key,
+hash and session_id:</p>
+<p>openssl kdf -keylen 16 -kdfopt digest:SHA2-256 \ -kdfopt
+hexkey:0102030405 \ -kdfopt hexxcghash:06090A \ -kdfopt
+hexsession_id:01020304 \ -kdfopt type:A SSHKDF</p>
+<p>Use PBKDF2 to create a hex-encoded derived key from a password and
+salt:</p>
+<p>openssl kdf -keylen 32 -kdfopt digest:SHA256 -kdfopt pass:password \
+-kdfopt salt:salt -kdfopt iter:2 PBKDF2</p>
+<p>Use scrypt to create a hex-encoded derived key from a password and
+salt:</p>
+<p>openssl kdf -keylen 64 -kdfopt pass:password -kdfopt salt:NaCl \
+-kdfopt n:1024 -kdfopt r:8 -kdfopt p:16 \ -kdfopt maxmem_bytes:10485760
+SCRYPT</p>
+<h1>NOTES</h1>
+<p>The KDF mechanisms that are available will depend on the options used
+when building OpenSSL.</p>
+<h1>SEE ALSO</h1>
+<p><strong>openssl</strong> (1), <strong>openssl-pkeyutl</strong> (1),
+<strong>EVP_KDF</strong> (3), <strong>EVP_KDF-SCRYPT</strong> (7),
+<strong>EVP_KDF-TLS1_PRF</strong> (7),
+<strong>EVP_KDF-PBKDF2</strong> (7), <strong>EVP_KDF-HKDF</strong> (7),
+<strong>EVP_KDF-SS</strong> (7), <strong>EVP_KDF-SSHKDF</strong> (7),
+<strong>EVP_KDF-X942-ASN1</strong> (7),
+<strong>EVP_KDF-X942-CONCAT</strong> (7),
+<strong>EVP_KDF-X963</strong> (7)</p>
+<h1>HISTORY</h1>
+<p>Added in OpenSSL 3.0</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2019-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

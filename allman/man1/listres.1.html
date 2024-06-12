@@ -1,0 +1,61 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>listres - list resources in widgets</p>
+<h1>SYNOPSIS</h1>
+<p><strong>listres</strong> [-option ...]</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>listres</em> program generates a list of a widget's resource
+database. The class in which each resource is first defined, the
+instance and class name, and the type of each resource is listed. If no
+specific widgets or the <em>-all</em> switch are given, a two-column
+list of widget names and their class hierarchies is printed.</p>
+<h1>OPTIONS</h1>
+<p><em>Listres</em> accepts all of the standard toolkit command line
+options along with those listed below:</p>
+<dl>
+<dt><strong>-all</strong></dt>
+<dd>
+<p>This option indicates that <em>listres</em> should print information
+for all known widgets and objects.</p>
+</dd>
+<dt><strong>-nosuper</strong></dt>
+<dd>
+<p>This option indicates that resources that are inherited from a
+superclass should not be listed. This is useful for determining which
+resources are new to a subclass.</p>
+</dd>
+<dt><strong>-variable</strong></dt>
+<dd>
+<p>This option indicates that widgets should be identified by the names
+of the class record variables rather than the class name given in the
+variable. This is useful for distinguishing subclasses that have the
+same class name as their superclasses.</p>
+</dd>
+<dt><strong>-top <em>name</em></strong></dt>
+<dd>
+<p>This option specifies the name of the widget to be treated as the top
+of the hierarchy. Case is not significant, and the name may match either
+the class variable name or the class name. The default is ``core''.</p>
+</dd>
+<dt><strong>-format <em>printf-string</em></strong></dt>
+<dd>
+<p>This option specifies the <em>printf</em>-style format string to be
+used to print out the name, instance, class, and type of each
+resource.</p>
+</dd>
+</dl>
+<h1>X DEFAULTS</h1>
+<p>To be written.</p>
+<h1>SEE ALSO</h1>
+<p>X(7), xrdb(1), appropriate widget documents</p>
+<h1>BUGS</h1>
+<p>On operating systems that do not support dynamic linking of run-time
+routines, this program must have all of its known widgets compiled in.
+The sources provide several tools for automating this process for
+various widget sets.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1994 X Consortium<br />
+See <em>X(7)</em> for a full statement of rights and permissions.</p>
+<h1>AUTHOR</h1>
+<p>Jim Fulton, MIT X Consortium</p>

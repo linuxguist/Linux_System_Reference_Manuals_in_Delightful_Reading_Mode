@@ -1,0 +1,380 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Radiobutton - Create and manipulate Radiobutton widgets</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$radiobutton</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>Radiobutton</strong>(?<em>options</em>?);</p>
+<h1>STANDARD OPTIONS</h1>
+<p><strong>-activebackground</strong> <strong>-activeforeground</strong>
+<strong>-anchor</strong> <strong>-background</strong>
+<strong>-bitmap</strong> <strong>-borderwidth</strong>
+<strong>-compound</strong> <strong>-cursor</strong>
+<strong>-disabledforeground</strong> <strong>-font</strong>
+<strong>-foreground</strong> <strong>-highlightbackground</strong>
+<strong>-highlightcolor</strong> <strong>-highlightthickness</strong>
+<strong>-image</strong> <strong>-justify</strong> <strong>-padx</strong>
+<strong>-pady</strong> <strong>-relief</strong>
+<strong>-takefocus</strong> <strong>-text</strong>
+<strong>-textvariable</strong> <strong>-underline</strong>
+<strong>-wraplength</strong></p>
+<p>See Tk::options for details of the standard options.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Name: command</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Command</dt>
+<dd>
+
+</dd>
+<dt>Switch: -command</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a perl/Tk callback to associate with the button. This
+command is typically invoked when mouse button 1 is released over the
+button window. The button's global variable (<strong>-variable</strong>
+option) will be updated before the command is invoked.</p>
+<dl>
+<dt>Name: height</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Height</dt>
+<dd>
+
+</dd>
+<dt>Switch: -height</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a desired height for the button. If an image or bitmap is
+being displayed in the button then the value is in screen units (i.e.
+any of the forms acceptable to <strong>Tk_GetPixels</strong>); for text
+it is in lines of text. If this option isn't specified, the button's
+desired height is computed from the size of the image or bitmap or text
+being displayed in it.</p>
+<dl>
+<dt>Name: indicatorOn</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: IndicatorOn</dt>
+<dd>
+
+</dd>
+<dt>Switch: -indicatoron</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies whether or not the indicator should be drawn. Must be a
+proper boolean value. If false, the <strong>relief</strong> option is
+ignored and the widget's relief is always sunken if the widget is
+selected and raised otherwise.</p>
+<dl>
+<dt>Command-Line Name: -offrelief</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Database Name: offRelief</dt>
+<dd>
+
+</dd>
+<dt>Database Class: OffRelief</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the relief for the checkbutton when the indicator is not
+drawn and the checkbutton is off. The default value is
+<strong>raised</strong>. By setting this option to <strong>flat</strong>
+and setting <strong>-indicatoron false -overrelief raised</strong>, the
+effect is achieved of having a flat button that raises on mouse-over and
+which is depressed when activated. This is the behavior typically
+exhibited by the Bold, Italic, and Underline checkbuttons on the toolbar
+of a word-processor, for example.</p>
+<dl>
+<dt>Command-Line Name: -overrelief</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Database Name: overRelief</dt>
+<dd>
+
+</dd>
+<dt>Database Class: OverRelief</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies an alternative relief for the button, to be used when the
+mouse cursor is over the widget. This option can be used to make toolbar
+buttons, by configuring <strong>-relief flat -overrelief</strong>
+raised. If the value of this option is the empty string, then no
+alternative relief is used when the mouse cursor is over the button. The
+empty string is the default value.</p>
+<dl>
+<dt>Name: selectColor</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Background</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectcolor</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a background color to use when the button is selected. If
+<strong>indicatorOn</strong> is true then the color applies to the
+indicator. Under Windows, this color is used as the background for the
+indicator regardless of the select state. If
+<strong>indicatorOn</strong> is false, this color is used as the
+background for the entire widget, in place of
+<strong>background</strong> or <strong>activeBackground</strong>,
+whenever the widget is selected. If specified as an empty string then no
+special color is used for displaying when the widget is selected.</p>
+<dl>
+<dt>Name: selectImage</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SelectImage</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectimage</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies an image to display (in place of the <strong>image</strong>
+option) when the radiobutton is selected. This option is ignored unless
+the <strong>image</strong> option has been specified.</p>
+<dl>
+<dt>Name: state</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: State</dt>
+<dd>
+
+</dd>
+<dt>Switch: -state</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies one of three states for the radiobutton:
+<strong>normal</strong>, <strong>active</strong>, or
+<strong>disabled</strong>. In normal state the radiobutton is displayed
+using the <strong>foreground</strong> and <strong>background</strong>
+options. The active state is typically used when the pointer is over the
+radiobutton. In active state the radiobutton is displayed using the
+<strong>activeForeground</strong> and <strong>activeBackground</strong>
+options. Disabled state means that the radiobutton should be
+insensitive: the default bindings will refuse to activate the widget and
+will ignore mouse button presses. In this state the
+<strong>disabledForeground</strong> and <strong>background</strong>
+options determine how the radiobutton is displayed.</p>
+<dl>
+<dt>Name: value</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Value</dt>
+<dd>
+
+</dd>
+<dt>Switch: -value</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies value to store in the button's associated variable whenever
+this button is selected.</p>
+<dl>
+<dt>Name: variable</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Variable</dt>
+<dd>
+
+</dd>
+<dt>Switch: -variable</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies reference to a variable to set whenever this button is
+selected. Changes in this variable also cause the button to select or
+deselect itself. Defaults to the value
+<code>\$Tk::selectedButton</code>.</p>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+<dt>Switch: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a desired width for the button. If an image or bitmap is
+being displayed in the button, the value is in screen units (i.e. any of
+the forms acceptable to <strong>Tk_GetPixels</strong>); for text it is
+in characters. If this option isn't specified, the button's desired
+width is computed from the size of the image or bitmap or text being
+displayed in it.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Radiobutton</strong> method creates a new window (given
+by the <code>$widget</code> argument) and makes it into a radiobutton
+widget. Additional options, described above, may be specified on the
+command line or in the option database to configure aspects of the
+radiobutton such as its colors, font, text, and initial relief. The
+<strong>radiobutton</strong> command returns its <code>$widget</code>
+argument. At the time this command is invoked, there must not exist a
+window named <code>$widget</code>, but <code>$widget</code>'s parent
+must exist.</p>
+<p>A radiobutton is a widget that displays a textual string, bitmap or
+image and a diamond or circle called an <em>indicator</em>. If text is
+displayed, it must all be in a single font, but it can occupy multiple
+lines on the screen (if it contains newlines or if wrapping occurs
+because of the <strong>wrapLength</strong> option) and one of the
+characters may optionally be underlined using the
+<strong>underline</strong> option. A radiobutton has all of the behavior
+of a simple button: it can display itself in either of three different
+ways, according to the <strong>state</strong> option; it can be made to
+appear raised, sunken, or flat; it can be made to flash; and it invokes
+a perl/Tk callback whenever mouse button 1 is clicked over the check
+button.</p>
+<p>In addition, radiobuttons can be <em>selected</em>. If a radiobutton
+is selected, the indicator is normally drawn with a selected appearance,
+and a Tcl variable associated with the radiobutton is set to a
+particular value (normally 1). Under Unix, the indicator is drawn with a
+sunken relief and a special color. Under Windows, the indicator is drawn
+with a round mark inside. If the radiobutton is not selected, then the
+indicator is drawn with a deselected appearance, and the associated
+variable is set to a different value (typically 0). Under Unix, the
+indicator is drawn with a raised relief and no special color. Under
+Windows, the indicator is drawn without a round mark inside. Typically,
+several radiobuttons share a single variable and the value of the
+variable indicates which radiobutton is to be selected. When a
+radiobutton is selected it sets the value of the variable to indicate
+that fact; each radiobutton also monitors the value of the variable and
+automatically selects and deselects itself when the variable's value
+changes. By default the variable <strong>selectedButton</strong> is
+used; its contents give the name of the button that is selected, or the
+empty string if no button associated with that variable is selected. The
+name of the variable for a radiobutton, plus the variable to be stored
+into it, may be modified with options on the command line or in the
+option database. Configuration options may also be used to modify the
+way the indicator is displayed (or whether it is displayed at all). By
+default a radiobutton is configured to select itself on button
+clicks.</p>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>Radiobutton</strong> method creates a widget object. This
+object supports the <strong>configure</strong> and <strong>cget</strong>
+methods described in Tk::options which can be used to enquire and modify
+the options described above. The widget also inherits all the methods
+provided by the generic Tk::Widget class.</p>
+<p>The following additional methods are available for radiobutton
+widgets:</p>
+<dl>
+<dt>$radiobutton-&gt;deselect</dt>
+<dd>
+<p>Deselects the radiobutton and sets the associated variable to an
+empty string. If this radiobutton was not currently selected, the
+command has no effect.</p>
+</dd>
+<dt>$radiobutton-&gt;flash</dt>
+<dd>
+<p>Flashes the radiobutton. This is accomplished by redisplaying the
+radiobutton several times, alternating between active and normal colors.
+At the end of the flash the radiobutton is left in the same
+normal/active state as when the command was invoked. This command is
+ignored if the radiobutton's state is <strong>disabled</strong>.</p>
+</dd>
+<dt>$radiobutton-&gt;invoke</dt>
+<dd>
+<p>Does just what would have happened if the user invoked the
+radiobutton with the mouse: selects the button and invokes its
+associated Tcl command, if there is one. The return value is the return
+value from the Tcl command, or an empty string if there is no command
+associated with the radiobutton. This command is ignored if the
+radiobutton's state is <strong>disabled</strong>.</p>
+</dd>
+<dt>$radiobutton-&gt;select</dt>
+<dd>
+<p>Selects the radiobutton and sets the associated variable to the value
+corresponding to this widget.</p>
+</dd>
+</dl>
+<h1>BINDINGS</h1>
+<p>Tk automatically creates class bindings for radiobuttons that give
+them the following default behavior:</p>
+<dl>
+<dt>[1]</dt>
+<dd>
+<p>On Unix systems, a radiobutton activates whenever the mouse passes
+over it and deactivates whenever the mouse leaves the radiobutton. On
+Mac and Windows systems, when mouse button 1 is pressed over a
+radiobutton, the button activates whenever the mouse pointer is inside
+the button, and deactivates whenever the mouse pointer leaves the
+button.</p>
+</dd>
+<dt>[2]</dt>
+<dd>
+<p>When mouse button 1 is pressed over a radiobutton it is invoked (it
+becomes selected and the command associated with the button is invoked,
+if there is one).</p>
+</dd>
+<dt>[3]</dt>
+<dd>
+<p>When a radiobutton has the input focus, the space key causes the
+radiobutton to be invoked. If the radiobutton's state is
+<strong>disabled</strong> then none of the above actions occur: the
+radiobutton is completely non-responsive. The behavior of radiobuttons
+can be changed by defining new bindings for individual widgets or by
+redefining the class bindings.</p>
+</dd>
+</dl>
+<h1>KEYWORDS</h1>
+<p>radiobutton, widget</p>

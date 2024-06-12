@@ -1,0 +1,62 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mcookie - generate magic cookies for xauth</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mcookie</strong> [options]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>mcookie</strong> generates a 128-bit random hexadecimal
+number for use with the X authority system. Typical usage:</p>
+<blockquote>
+<p><strong>xauth add :0 .</strong> <code>mcookie</code><br />
+</p>
+</blockquote>
+<p>The "random" number generated is actually the MD5 message digest of
+random information coming from one of the sources
+<strong>getrandom</strong><code>(2) system call, </code><em>/dev/urandom</em><code>, </code><em>/dev/random</em><code>, or the </code><em>libc
+pseudo-random
+functions</em><code>, in this preference order. See also the option </code><strong>--file</strong><code>.</code></p>
+<h1>OPTIONS</h1>
+<p><strong>-f</strong><code>, </code><strong>--file</strong><code> </code><em>file</em></p>
+<blockquote>
+<p>Use this
+<em>file</em><code> as an additional source of randomness (for example </code><em>/dev/urandom</em><code>). When </code><em>file</em><code> is '-', characters are read from standard input.</code></p>
+</blockquote>
+<p><strong>-m</strong><code>, </code><strong>--max-size</strong><code> </code><em>number</em></p>
+<blockquote>
+<p>Read from
+<em>file</em><code> only this </code><em>number</em><code> of bytes. This option is meant to be used when reading additional randomness from a file or device.</code></p>
+<p>The
+<em>number</em><code> argument may be followed by the multiplicative suffixes KiB=1024, MiB=1024*1024, and so on for GiB, TiB, PiB, EiB, ZiB and YiB (the "iB" is optional, e.g., "K" has the same meaning as "KiB") or the suffixes KB=1000, MB=1000*1000, and so on for GB, TB, PB, EB, ZB and YB.</code></p>
+</blockquote>
+<p><strong>-v</strong><code>, </code><strong>--verbose</strong></p>
+<blockquote>
+<p>Inform where randomness originated, with amount of entropy read from
+each source.</p>
+</blockquote>
+<p><strong>-h</strong><code>, </code><strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong><code>, </code><strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>FILES</h1>
+<p><em>/dev/urandom</em></p>
+<p><em>/dev/random</em></p>
+<h1>BUGS</h1>
+<p>It is assumed that none of the randomness sources will block.</p>
+<h1>SEE ALSO</h1>
+<p><strong>md5sum</strong><code>(1),</code>
+<strong>X</strong><code>(7),</code>
+<strong>xauth</strong><code>(1),</code>
+<strong>rand</strong><code>(3)</code></p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The
+<strong>mcookie</strong><code> command is part of the util-linux package which can be downloaded from </code>
+<em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

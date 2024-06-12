@@ -1,0 +1,35 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>user-dirs.conf - configuration for xdg-user-dirs-update</p>
+<h1>DESCRIPTION</h1>
+<p>The /etc/xdg/user-dirs.conf file is a text file that controls the
+behavior of the xdg-user-dirs-update command. Users can have their own
+~/.config/user-dirs.conf file, which overrides the system-wide
+configuration.</p>
+<p>The following keys are recognised:</p>
+<p>enabled=<em>boolean</em></p>
+<blockquote>
+<p>When set to False, xdg-user-dirs-update will not change the XDG user
+dirs configuration.</p>
+</blockquote>
+<p>filename_encoding=<em>encoding</em></p>
+<blockquote>
+<p>This sets the filename encoding to use. <em>encoding</em> can be an
+explicit encoding name, such as UTF-8, or "locale", which means the
+encoding of the users locale will be used.</p>
+</blockquote>
+<p>Lines beginning with a # character are ignored.</p>
+<h1>ENVIRONMENT</h1>
+<p><strong>XDG_CONFIG_DIRS</strong></p>
+<blockquote>
+<p>The system-wide user-dirs.conf file is located in this directory. The
+default is /etc/xdg.</p>
+</blockquote>
+<p><strong>XDG_CONFIG_HOME</strong></p>
+<blockquote>
+<p>The per-user user-dirs.conf file is located in this directory. The
+default is $HOME/.config.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>xdg-user-dirs-update</strong>(1)</p>

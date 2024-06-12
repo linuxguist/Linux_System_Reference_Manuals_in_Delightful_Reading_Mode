@@ -1,0 +1,193 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pw-cat - Play and record media with PipeWire</p>
+<h1>SYNOPSIS</h1>
+<pre><code>pw-cat [options] [FILE | -]
+pw-play [options] [FILE | -]
+pw-record [options] [FILE | -]
+pw-midiplay [options] [FILE | -]
+pw-midirecord [options] [FILE | -]
+pw-dsdplay [options] [FILE | -]</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>pw-cat</strong> is a simple tool for playing back or
+capturing raw or encoded media files on a PipeWire server. It
+understands all audio file formats supported by
+<strong>libsndfile</strong> for PCM capture and playback.</p>
+<p>It understands standard MIDI files for playback and recording. This
+tool will not render MIDI files, it will simply make the MIDI events
+available to the graph. You need a MIDI renderer such as qsynth,
+timidity or a hardware MIDI rendered to hear the MIDI.</p>
+<p>DSD playback is supported with the DSF file format. This tool will
+only work with native DSD capable hardware and will produce an error
+when no such hardware was found.</p>
+<p>When the <em>FILE</em> is - input and output will be from STDIN and
+STDOUT respectively.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-h | --help</strong></dt>
+<dd>
+<p>Show help.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Show version information.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-v | --verbose</strong></dt>
+<dd>
+<p>Verbose operation.</p>
+</dd>
+<dt><strong>-R | --remote=NAME</strong></dt>
+<dd>
+<p>The name the <em>remote</em> instance to connect to. If left
+unspecified, a connection is made to the default PipeWire instance.</p>
+</dd>
+<dt><strong>-p | --playback</strong></dt>
+<dd>
+<p>Playback mode. Read data from the specified file, and play it back.
+If the tool is called under the name <strong>pw-play</strong> or
+<strong>pw-midiplay</strong> this is the default.</p>
+</dd>
+<dt><strong>-r | --record</strong></dt>
+<dd>
+<p>Recording mode. Capture data and write it to the specified file. If
+the tool is called under the name <strong>pw-record</strong> or
+<strong>pw-midirecord</strong> this is the default.</p>
+</dd>
+<dt><strong>-m | --midi</strong></dt>
+<dd>
+<p>MIDI mode. <em>FILE</em> is a MIDI file. If the tool is called under
+the name <strong>pw-midiplay</strong> or <strong>pw-midirecord</strong>
+this is the default. Note that this program will <em>not</em> render the
+MIDI events into audible samples, it will simply provide the MIDI events
+in the graph. You need a separate MIDI renderer such as qsynth, timidity
+or a hardware renderer to hear the MIDI.</p>
+</dd>
+<dt><strong>-d | --dsd</strong></dt>
+<dd>
+<p>DSD mode. <em>FILE</em> is a DSF file. If the tool is called under
+the name <strong>pw-dsdplay</strong> this is the default. Note that this
+program will <em>not</em> render the DSD audio. You need a DSD capable
+device to play DSD content or this program will exit with an error.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>--media-type<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>Set the media type property (default Audio/Midi depending on mode).
+The media type is used by the session manager to select a suitable
+target to link to.</p>
+</dd>
+<dt><strong>--media-category<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>Set the media category property (default Playback/Capture depending
+on mode). The media type is used by the session manager to select a
+suitable target to link to.</p>
+</dd>
+<dt><strong>--media-role<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>Set the media role property (default Music). The media type is used
+by the session manager to select a suitable target to link to.</p>
+</dd>
+<dt><strong>--target<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>Set a node target (default auto). The value can be:</p>
+<dl>
+<dt><strong>auto</strong></dt>
+<dd>
+<p>Automatically select (Default)</p>
+</dd>
+<dt><strong>0</strong></dt>
+<dd>
+<p>Don't try to link this node</p>
+</dd>
+<dt><strong>&lt;id&gt;</strong></dt>
+<dd>
+<p>The object.serial or the node.name of a target node</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>--latency=VALUE[<em>units</em><strong>]</strong></strong></dt>
+<dd>
+<p>Set the node latency (default 100ms)</p>
+<p>The latency determines the minimum amount of time it takes for a
+sample to travel from application to device (playback) and from device
+to application (capture).</p>
+<p>The latency determines the size of the buffers that the application
+will be able to fill. Lower latency means smaller buffers but higher
+overhead. Higher latency means larger buffers and lower overhead.</p>
+<p>Units can be <strong>s for seconds, ms for milliseconds,</strong>
+<strong>us for microseconds, ns for nanoseconds.</strong> If no units
+are given, the latency value is samples with the samplerate of the
+file.</p>
+</dd>
+<dt><strong>-P | --properties=VALUE</strong></dt>
+<dd>
+<p>Set extra stream properties as a JSON object.</p>
+</dd>
+<dt><strong>-q | --quality=VALUE</strong></dt>
+<dd>
+<p>Resampler quality. When the samplerate of the source or destination
+file does not match the samplerate of the server, the data will be
+resampled. Higher quality uses more CPU. Values between 0 and 15 are
+allowed, the default quality is 4.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>--rate<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>The sample rate, default 48000.</p>
+</dd>
+<dt><strong>--channels<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>The number of channels, default 2.</p>
+</dd>
+<dt><strong>--channel-map<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>The channelmap. Possible values include: <strong>mono, stereo,
+surround-21,</strong> <strong>quad, surround-22, surround-40,</strong>
+<strong>surround-31, surround-41,</strong> <strong>surround-50,
+surround-51,</strong> <strong>surround-51r, surround-70,</strong>
+<strong>surround-71 or a comma separated list of channel names:</strong>
+<strong>FL, FR, FC, LFE,</strong> <strong>SL, SR, FLC, FRC,</strong>
+<strong>RC, RL, RR, TC,</strong> <strong>TFL, TFC, TFR, TRL,</strong>
+<strong>TRC, TRR, RLC, RRC,</strong> <strong>FLW, FRW, LFE2,
+FLH,</strong> <strong>FCH, FRH, TFLC, TFRC,</strong> <strong>TSL, TSR,
+LLFR, RLFE,</strong> <strong>BC, BLC, BRC</strong></p>
+</dd>
+<dt><strong>--format<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>The sample format to use. One of: <strong>u8, s8, s16 (default), s24,
+s32,</strong> <strong>f32, f64.</strong></p>
+</dd>
+<dt><strong>--volume<strong>=</strong></strong><em>VALUE</em></dt>
+<dd>
+<p>The stream volume, default 1.000. Depending on the locale you have
+configured, "," or "." may be used as a decimal separator. Check with
+<strong>locale command.</strong></p>
+</dd>
+</dl>
+</blockquote>
+<h1>AUTHORS</h1>
+<p>The PipeWire Developers
+&lt;<em>https://gitlab.freedesktop.org/pipewire/pipewire/issues</em><strong>&gt;;
+PipeWire is available from</strong> <em>https://pipewire.org</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>PipeWire(1),</strong> <strong>pw-mon(1),</strong></p>

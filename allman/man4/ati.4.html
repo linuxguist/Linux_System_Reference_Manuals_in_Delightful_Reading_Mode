@@ -1,0 +1,26 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ati - ATI video driver</p>
+<h1>SYNOPSIS</h1>
+<pre><code>Section Device
+ Identifier devname
+ Driver ati
+  ...
+EndSection</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>ati</strong> is an Xorg wrapper driver for ATI video cards.
+It autodetects whether your hardware has a Radeon, Rage 128, or Mach64
+or earlier class of chipset, and loads the radeon(4), r128(4), or mach64
+driver as appropriate.</p>
+<h1>SUPPORTED HARDWARE</h1>
+<p>The <strong>ati</strong> driver supports Radeon, Rage 128, and Mach64
+and earlier chipsets by loading those drivers. See those manpages for
+specific cards supported.</p>
+<h1>CONFIGURATION DETAILS</h1>
+<p>Please refer to xorg.conf(5) for general configuration details, and
+the specific card driver for driver configuration details.</p>
+<h1>SEE ALSO</h1>
+<p>Xorg(1), xorg.conf(5), Xserver(1), X(7), r128(4), radeon(4)</p>
+<h1>AUTHORS</h1>
+<p>See the individual driver pages for authors.</p>

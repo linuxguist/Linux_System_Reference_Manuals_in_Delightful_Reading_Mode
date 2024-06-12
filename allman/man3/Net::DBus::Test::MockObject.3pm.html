@@ -1,0 +1,114 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Test::MockObject - Fake an object from the bus for unit
+testing</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::DBus; use Net::DBus::Test::MockObject; my $bus =
+Net::DBus-&gt;test # Lets fake presence of HAL... # First we need to
+define the service my $service =
+$bus-&gt;export_service("org.freedesktop.Hal"); # Then create a mock
+object my $object = Net::DBus::Test::MockObject-&gt;new($service,
+"/org/freedesktop/Hal/Manager"); # Fake the GetAllDevices method
+$object-&gt;seed_action("org.freedesktop.Hal.Manager", "GetAllDevices",
+reply =&gt; { return =&gt; [
+"/org/freedesktop/Hal/devices/computer_i8042_Aux_Port",
+"/org/freedesktop/Hal/devices/computer_i8042_Aux_Port_logicaldev_input",
+"/org/freedesktop/Hal/devices/computer_i8042_Kbd_Port",
+"/org/freedesktop/Hal/devices/computer_i8042_Kbd_Port_logicaldev_input"
+], }); # Now can test any class which calls out to GetAllDevices in HAL
+....test stuff....</p>
+<h1>DESCRIPTION</h1>
+<p>This provides an alternate for Net::DBus::Object to enable bus
+objects to be quickly mocked up, thus facilitating creation of unit
+tests for services which may need to call out to objects provided by 3rd
+party services on the bus. It is typically used as a companion to the
+Net::DBus::MockBus object, to enable complex services to be tested
+without actually starting a real bus.</p>
+<p>!!!!! WARNING !!!</p>
+<p>This object &amp; its APIs should be considered very experimental at
+this point in time, and no guarantees about future API compatibility are
+provided what-so-ever. Comments &amp; suggestions on how to evolve this
+framework are, however, welcome &amp; encouraged.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $object = Net::DBus::Test::MockObject-&gt;new($service, $path,
+$interface);</dt>
+<dd>
+<p>Create a new mock object, attaching to the service defined by the
+<code>$service</code> parameter. This would be an instance of the
+Net::DBus::Service object. The <code>$path</code> parameter defines the
+object path at which to attach this mock object, and
+<code>$interface</code> defines the interface it will support.</p>
+</dd>
+<dt>my $service = $object-&gt;get_service</dt>
+<dd>
+<p>Retrieves the Net::DBus::Service object within which this object is
+exported.</p>
+</dd>
+<dt>my $path = $object-&gt;get_object_path</dt>
+<dd>
+<p>Retrieves the path under which this object is exported</p>
+</dd>
+<dt>my $msg = $object-&gt;get_last_message</dt>
+<dd>
+<p>Retrieves the last message processed by this object. The returned
+object is an instance of Net::DBus::Binding::Message</p>
+</dd>
+<dt>my $sig = $object-&gt;get_last_message_signature</dt>
+<dd>
+<p>Retrieves the type signature of the last processed message.</p>
+</dd>
+<dt>my $value = $object-&gt;get_last_message_param</dt>
+<dd>
+<p>Returns the first value supplied as an argument to the last processed
+message.</p>
+</dd>
+<dt>my @values = $object-&gt;get_last_message_param_list</dt>
+<dd>
+<p>Returns a list of all the values supplied as arguments to the last
+processed message.</p>
+</dd>
+<dt>$object-&gt;seed_action($interface, $method, %action);</dt>
+<dd>
+<p>Registers an action to be performed when a message corresponding to
+the method <code>$method</code> within the interface
+<code>$interface</code> is received. The <code>%action</code> parameter
+can have a number of possible keys set:</p>
+<dl>
+<dt>signals</dt>
+<dd>
+<p>Causes a signal to be emitted when the method is invoked. The value
+associated with this key should be an instance of the
+Net::DBus::Binding::Message::Signal class.</p>
+</dd>
+<dt>error</dt>
+<dd>
+<p>Causes an error to be generated when the method is invoked. The value
+associated with this key should be a hash reference, with two elements.
+The first, <code>name</code>, giving the error name, and the second,
+<code>description</code>, providing the descriptive text.</p>
+</dd>
+<dt>reply</dt>
+<dd>
+<p>Causes a normal method return to be generated. The value associated
+with this key should be an array reference, whose elements are the
+values to be returned by the method.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>It doesn't completely replicate the API of
+Net::DBus::Binding::Object, merely enough to make the high level
+bindings work in a test scenario.</p>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2004-2009 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus, Net::DBus::Object, Net::DBus::Test::MockConnection,
+&lt;http://www.mockobjects.com/Faq.html&gt;</p>

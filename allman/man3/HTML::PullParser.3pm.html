@@ -1,0 +1,81 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTML::PullParser - Alternative HTML::Parser interface</p>
+<h1>SYNOPSIS</h1>
+<p>use HTML::PullParser; $p = HTML::PullParser-&gt;new(file =&gt;
+"index.html", start =&gt; event, tagname, @attr, end =&gt; event,
+tagname, ignore_elements =&gt; [qw(script style)], ) || die "Cant open:
+$!"; while (my $token = $p-&gt;get_token) { #...do something with $token
+}</p>
+<h1>DESCRIPTION</h1>
+<p>The HTML::PullParser is an alternative interface to the HTML::Parser
+class. It basically turns the HTML::Parser inside out. You associate a
+file (or any IO::Handle object or string) with the parser at
+construction time and then repeatedly call
+<code>$parser</code>-&gt;get_token to obtain the tags and text found in
+the parsed document.</p>
+<p>The following methods are provided:</p>
+<dl>
+<dt>$p = HTML::PullParser-&gt;new( file =&gt; $file, %options )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$p = HTML::PullParser-&gt;new( doc =&gt; \$doc, %options )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>A <code>HTML::PullParser</code> can be made to parse from either a
+file or a literal document based on whether the <code>file</code> or
+<code>doc</code> option is passed to the parser's constructor. The
+<code>file</code> passed in can either be a file name or a file handle
+object. If a file name is passed, and it can't be opened for reading,
+then the constructor will return an undefined value and $! will tell you
+why it failed. Otherwise the argument is taken to be some object that
+the <code>HTML::PullParser</code> can <strong>read()</strong> from when
+it needs more data. The stream will be <strong>read()</strong> until
+EOF, but not closed. A <code>doc</code> can be passed plain or as a
+reference to a scalar. If a reference is passed then the value of this
+scalar should not be changed before all tokens have been extracted. Next
+the information to be returned for the different token types must be set
+up. This is done by simply associating an argspec (as defined in
+HTML::Parser) with the events you have an interest in. For instance, if
+you want <code>start</code> tokens to be reported as the string
+<code>S</code> followed by the tagname and the attributes you might pass
+an <code>start</code>-option like this: $p = HTML::PullParser-&gt;new(
+doc =&gt; $document_to_parse, start =&gt; "S", tagname, @attr, end =&gt;
+"E", tagname, ); At last other <code>HTML::Parser</code> options, like
+<code>ignore_tags</code>, and <code>unbroken_text</code>, can be passed
+in. Note that you should not use the <em>event</em>_h options to set up
+parser handlers. That would confuse the inner logic of
+<code>HTML::PullParser</code>.</p>
+<dl>
+<dt>$token = $p-&gt;get_token</dt>
+<dd>
+<p>This method will return the next <em>token</em> found in the HTML
+document, or <code>undef</code> at the end of the document. The token is
+returned as an array reference. The content of this array match the
+argspec set up during <code>HTML::PullParser</code> construction.</p>
+</dd>
+<dt>$p-&gt;unget_token( @tokens )</dt>
+<dd>
+<p>If you find out you have read too many tokens you can push them back,
+so that they are returned again the next time
+<code>$p</code>-&gt;get_token is called.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>The 'eg/hform' script shows how we might parse the form section of
+HTML::Documents using HTML::PullParser.</p>
+<h1>SEE ALSO</h1>
+<p>HTML::Parser, HTML::TokeParser</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1998-2001 Gisle Aas.</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

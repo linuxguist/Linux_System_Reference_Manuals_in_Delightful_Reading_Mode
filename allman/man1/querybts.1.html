@@ -1,0 +1,128 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>querybts - view outstanding bug reports on a debbugs server</p>
+<h1>SYNOPSIS</h1>
+<p><strong>querybts</strong> <em>[options] &lt;package | number
+[number2]...&gt;</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>querybts</strong> is designed to provide a convenient and
+easy-to-use interface to the Debbugs bug tracking system, as used by
+Debian and several other projects. You can specify a package name or one
+or more report numbers.</p>
+<h1>OPTIONS</h1>
+<p>The program follows the usual GNU command line syntax, with long
+options starting with two dashes (`<strong>--</strong>'). A summary of
+options are included below.</p>
+<dl>
+<dt><strong>-h, --help</strong></dt>
+<dd>
+<p>Show summary of options.</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Show the version of <strong>querybts</strong> and exit.</p>
+</dd>
+<dt><strong>-A, --archive</strong></dt>
+<dd>
+<p>Browse archived bugs instead of current reports. Debbugs servers
+clear out closed reports after 28 days and place them in a separate
+archive; this option allows those older, resolved reports to be viewed
+(at least for servers that maintain an archive).</p>
+</dd>
+<dt><strong>-B SYSTEM, --bts=SYSTEM</strong></dt>
+<dd>
+<p>Instead of the Debian bug server, use the server specified by
+<strong>SYSTEM</strong>. Valid options are <strong>default</strong> and
+<strong>debian</strong> but check <strong>--help</strong> for an updated
+list.</p>
+</dd>
+<dt><strong>-b, --buglist</strong></dt>
+<dd>
+<p>Display a bugs list for the given package.</p>
+</dd>
+<dt><strong>--latest-first</strong></dt>
+<dd>
+<p>Display the bug reports list sorted and with the latest reports at
+the top.</p>
+</dd>
+<dt><strong>--mbox-reader-cmd=MBOX_READER_CMD</strong></dt>
+<dd>
+<p>Specify a command to open the bug reports mbox file. You can use
+<strong>%s</strong> to substitute the mbox file to be used, and
+<strong>%%</strong> to insert a literal percent sign. If no
+<strong>%s</strong> is specified, the mbox file name is supplied at the
+end of the argument list.</p>
+</dd>
+<dt><strong>-m, --mbox</strong></dt>
+<dd>
+<p>Retrieve the given bug number(s) or package name(s) as a mailbox
+file, instead of viewing it. It will be dumped to standard output.</p>
+</dd>
+<dt><strong>--proxy=PROXY, --http_proxy=PROXY</strong></dt>
+<dd>
+<p>Specify the WWW proxy server to use to handle the queries to the bug
+tracking system. You should only need this parameter if you are behind a
+firewall.</p>
+</dd>
+<dt><strong>-s, --source</strong></dt>
+<dd>
+<p>Query on source packages, rather than binary packages.</p>
+</dd>
+<dt><strong>--timeout=SECONDS</strong></dt>
+<dd>
+<p>Specify the network timeout, the number of seconds to wait for a
+resource to respond. If nothing is specified, a default timeout of 1
+minute is selected.</p>
+<p>In case of a network error, there are chances it's due to a too low
+timeout: try passing the --timeout option with a higher value than
+default.</p>
+</dd>
+<dt><strong>-u INTERFACE, --ui=INTERFACE,
+--interface=INTERFACE</strong></dt>
+<dd>
+<p>Specify the user interface to use. Valid options are
+<strong>text</strong>, <strong>urwid</strong>, <strong>gtk</strong>;
+default is taken from the reportbug configuration files.</p>
+</dd>
+<dt><strong>-w, --web</strong></dt>
+<dd>
+<p>Launch a web browser to view bug reports, instead of using the
+internal interface. This will also allow you to see the whole discussion
+about a particular bug at once, instead of one message at a time as
+<strong>querybts</strong> would do. (Only the first bug number on the
+command line will be opened.)</p>
+</dd>
+</dl>
+<h1>CONFIGURATION FILES</h1>
+<p><strong>querybts</strong> supports a simple run control file syntax.
+Commands are read from <strong>/etc/reportbug.conf</strong> and
+<strong>$HOME/.reportbugrc</strong> with commands in the latter
+overriding those in the former.</p>
+<p>Commands are not case sensitive, and currently take 0 or 1 argument;
+arguments containing whitespace must be enclosed in quotes.</p>
+<p>Any line starting with # is taken to be a comment and will be
+ignored.</p>
+<p>Generally, options corresponding to the long options for
+<strong>querybts</strong> are supported, without leading
+<strong>--</strong> sequences. See the default
+<strong>/etc/reportbug.conf</strong> for all acceptable options and
+<strong>reportbug.conf(5)</strong> for all acceptable options and
+detailed information.</p>
+<p>Options only supported by <strong>reportbug</strong> will be silently
+ignored.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>http_proxy</strong></dt>
+<dd>
+<p>Provides the address of a proxy server to handle the BTS query. This
+should be a valid <strong>http</strong> URL for a proxy server,
+including any required port number (simply specifying a hostname, or
+omitting a port other than 80, WILL NOT WORK).</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>reportbug(1), reportbug.conf(5)</p>
+<h1>AUTHOR</h1>
+<p>Chris Lawrence &lt;lawrencc@debian.org&gt;, Sandro Tosi
+&lt;morph@debian.org&gt;.</p>

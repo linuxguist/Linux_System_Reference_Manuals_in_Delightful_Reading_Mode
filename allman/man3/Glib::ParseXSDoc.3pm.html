@@ -1,0 +1,147 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::ParseXSDoc - Parse POD and XSub declarations from XS files.</p>
+<h1>DESCRIPTION</h1>
+<p>This is the heart of an automatic API reference documentation system
+for XS-based Perl modules. FIXME more info here!!</p>
+<p>FIXME document recognized POD directives and the output data
+structures</p>
+<h1>FUNCTIONS</h1>
+<dl>
+<dt>xsdocparse (@filenames)</dt>
+<dd>
+<p>Parse xs files for xsub signatures and pod. Writes to standard output
+a data structure suitable for eval'ing in another Perl script,
+describing all the stuff found. The output contains three variables:</p>
+<dl>
+<dt>$xspods = ARRAYREF</dt>
+<dd>
+<p>array of pods found in the verbatim C portion of the XS file, listed
+in the order found. These are assumed to pertain to the XS/C api, not
+the Perl api. Any <code>=for apidoc</code> paragraphs following an
+<code>=object</code> paragraphs in the verbatim sections are stripped
+(as are the <code>=object</code> paragraphs), and will appear instead in
+<code>$data-&gt;{$package}{pods}</code>.</p>
+</dd>
+<dt>$data = HASHREF</dt>
+<dd>
+<p>big hash keyed by package name (as found in the MODULE line),
+containing under each key a hash with all the xsubs and pods in that
+package, in the order found. Packages are consolidated across multiple
+files.</p>
+</dd>
+</dl>
+<p>FYI, this creates a new parser and calls <code>parse_file</code> on
+it for each input filename; then calls <code>swizzle_pods</code> to
+ensure that any <code>=for apidoc name</code> pods are matched up with
+their target xsubs; and finally calls Data::Dumper to write the data to
+stdout. So, if you want to get finer control over how the output is
+created, or keep all the data in-process, now you know how. :-)</p>
+</dd>
+</dl>
+<h1>METHODS</h1>
+<dl>
+<dt>$Glib::ParseXSDoc::verbose</dt>
+<dd>
+<p>If true, this causes the parser to be verbose.</p>
+</dd>
+<dt>$parser = Glib::ParseXSDoc-&gt;new</dt>
+<dd>
+<p>Create a new xsub parser.</p>
+</dd>
+<dt>string = $parser-&gt;package</dt>
+<dd>
+<p>Get the current package name. Falls back to the module name. Will be
+undef if the parser hasn't reached the first MODULE line.</p>
+</dd>
+<dt>HASHREF = $parser-&gt;pkgdata</dt>
+<dd>
+<p>The data hash corresponding to the current package, honoring the most
+recently encountered <code>=for object</code> directive. Ensures that it
+exists. Returns a reference to the member of the main data structure, so
+modifications are permanent and useful.</p>
+</dd>
+<dt>$parser-&gt;parse_file (filename)</dt>
+<dd>
+<p>Parse one xs file. Stores all the collected data in
+<em><code>$parser</code></em>'s internal data structures.</p>
+</dd>
+<dt>$parser-&gt;swizzle_pods</dt>
+<dd>
+<p>Match <code>=for apidoc</code> pods to xsubs.</p>
+</dd>
+<dt>$parser-&gt;preprocess_pods</dt>
+<dd>
+<p>Honor the <code>_ _hide_ _</code> and <code>_ _function_ _</code>
+directives in <code>=for apidoc</code> lines. We look for the strings
+anywhere, but you'll typically have it at the end of the line, e.g.:
+=for apidoc symname _ _hide_ _ for detached blocks =for apidoc
+_ _hide_ _ for attached blocks =for apidoc symname _ _function_ _ for
+functions rather than methods =for apidoc _ _function_ _ for functions
+rather than methods</p>
+</dd>
+<dt>bool = $parser-&gt;is_module_line ($line)</dt>
+<dd>
+<p>Analyze <em><code>$line</code></em> to see if it contains an XS
+MODULE directive. If so, returns true after setting the
+<em><code>$parser</code></em>'s <em>module</em>, <em>package</em>, and
+<em>prefix</em> accordingly.</p>
+</dd>
+<dt>$pod = $parser-&gt;slurp_pod_paragraph ($firstline,
+$term_regex=/^=cut\s*/)</dt>
+<dd>
+<p>Slurp up POD lines from <em><code>$filehandle</code></em> from here
+to the next <em><code>$term_regex</code></em> or EOF. Since you probably
+already read a line to determine that we needed to start a pod, you can
+pass that first line to be included.</p>
+</dd>
+<dt>$xsub = $parser-&gt;parse_xsub (\@lines)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$xsub = $parser-&gt;parse_xsub (@lines)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Parse an xsub header, in the form of a list of lines, into a data
+structure describing the xsub. That includes pulling out the argument
+types, aliases, and code type. Without artificial intelligence, we
+cannot reliably determine anything about the types or number of
+parameters returned from xsubs with PPCODE bodies. OUTLIST parameters
+are pulled from the args list and put into an outlist key. IN_OUTLIST
+parameters are put into both. Data type names are not mangled at all.
+Note that the method can take either a list of lines or a reference to a
+list of lines. The flat list form is provided for compatibility; the
+reference form is preferred, to avoid duplicating a potentially large
+list of strings.</p>
+<dl>
+<dt>$parser-&gt;clean_out_empty_pods</dt>
+<dd>
+<p>Looks through the data member of the parser and removes any keys (and
+associated values) when no pod, enums, and xsubs exist for the
+package.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>muppet &lt;scott at asofyet dot org&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>Copyright (C) 2003, 2004 by muppet</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License as
+published by the Free Software Foundation; either version 2.1 of the
+License, or (at your option) any later version.</p>
+<p>This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library
+General Public License for more details.</p>
+<p>You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
+USA.</p>

@@ -1,0 +1,224 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>viewres - graphical class browser for Xt</p>
+<h1>SYNOPSIS</h1>
+<p><strong>viewres</strong> [-option ...]</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>viewres</em> program displays a tree showing the widget class
+hierarchy of the Athena Widget Set. Each node in the tree can be
+expanded to show the resources that the corresponding class adds (i.e.
+does not inherit from its parent) when a widget is created. This
+application allows the user to visually examine the structure and
+inherited resources for the Athena Widget Set.</p>
+<h1>OPTIONS</h1>
+<p><em>Viewres</em> accepts all of the standard toolkit command line
+options as well as the following:</p>
+<dl>
+<dt><strong>-top <em>name</em></strong></dt>
+<dd>
+<p>This option specifies the name of the highest widget in the hierarchy
+to display. This is typically used to limit the display to a subset of
+the tree. The default is <em>Object</em>.</p>
+</dd>
+<dt><strong>-variable</strong></dt>
+<dd>
+<p>This option indicates that the widget variable names (as declared in
+header files) should be displayed in the nodes rather than the widget
+class name. This is sometimes useful to distinguish widget classes that
+share the same name (such as <em>Text</em>).</p>
+</dd>
+<dt><strong>-vertical</strong></dt>
+<dd>
+<p>This option indicates that the tree should be displayed top to bottom
+rather left to right.</p>
+</dd>
+</dl>
+<h1>VIEW MENU</h1>
+<p>The way in which the tree is displayed may be changed through the
+entries in the <strong>View</strong> menu:</p>
+<dl>
+<dt><strong>Show Variable Names</strong></dt>
+<dd>
+<p>This entry causes the node labels to be set to the variable names
+used to declare the corresponding widget class. This operation may also
+be performed with the <strong>SetLabelType(variable)</strong>
+translation.</p>
+</dd>
+<dt><strong>Show Class Names</strong></dt>
+<dd>
+<p>This entry causes the node labels to be set to the class names used
+when specifying resources. This operation may also be performed with the
+<strong>SetLabelType(class)</strong> translation.</p>
+</dd>
+<dt><strong>Layout Horizontal</strong></dt>
+<dd>
+<p>This entry causes the tree to be laid out from left to right. This
+operation may also be performed with the <em>SetOrientation(West)</em>
+translation.</p>
+</dd>
+<dt><strong>Layout Vertical</strong></dt>
+<dd>
+<p>This entry causes the tree to be laid out from top to bottom. This
+operation may also be performed with the <em>SetOrientation(North)</em>
+translation.</p>
+</dd>
+<dt><strong>Show Resource Boxes</strong></dt>
+<dd>
+<p>This entry expands the selected nodes (see next section) to show the
+new widget and constraint resources. This operation may also be
+performed with the <em>Resources(on)</em> translation.</p>
+</dd>
+<dt><strong>Hide Resource Boxes</strong></dt>
+<dd>
+<p>This entry removes the resource displays from the selected nodes
+(usually to conserve space). This operation may also be performed with
+the <em>Resources(off)</em> translation.</p>
+</dd>
+</dl>
+<h1>SELECT MENU</h1>
+<p>Resources for a single widget class can be displayed by clicking
+<strong>Button2</strong> on the corresponding node, or by adding the
+node to the selection list with <strong>Button1</strong> and using the
+<strong>Show Resource Boxes</strong> entry in the <strong>View</strong>
+menu. Since <strong>Button1</strong> actually toggles the selection
+state of a node, clicking on a selected node will cause it to be removed
+from the selected list.</p>
+<p>Collections of nodes may also be selected through the various entries
+in the <strong>Select</strong> menu:</p>
+<dl>
+<dt><strong>Unselect All</strong></dt>
+<dd>
+<p>This entry removes all nodes from the selection list. This operation
+may also be performed with the <em>Select(nothing)</em> translation.</p>
+</dd>
+<dt><strong>Select All</strong></dt>
+<dd>
+<p>This entry adds all nodes to the selection list. This operation may
+also be performed with the <em>Select(all)</em> translation.</p>
+</dd>
+<dt><strong>Invert All</strong></dt>
+<dd>
+<p>This entry adds unselected nodes to, and removes selected nodes from,
+the selection list. This operation may also be performed with the
+<em>Select(invert)</em> translation.</p>
+</dd>
+<dt><strong>Select Parent</strong></dt>
+<dd>
+<p>This entry selects the immediate parents of all selected nodes. This
+operation may also be performed with the <em>Select(parent)</em>
+translation.</p>
+</dd>
+<dt><strong>Select Ancestors</strong></dt>
+<dd>
+<p>This entry recursively selects all parents of all selected nodes.
+This operation may also be performed with the <em>Select(ancestors)</em>
+translation.</p>
+</dd>
+<dt><strong>Select Children</strong></dt>
+<dd>
+<p>This entry selects the immediate children of all selected nodes. This
+operation may also be performed with the <em>Select(children)</em>
+translation.</p>
+</dd>
+<dt><strong>Select Descendants</strong></dt>
+<dd>
+<p>This entry recursively selects all children of all selected nodes.
+This operation may also be performed with the
+<em>Select(descendants)</em> translation.</p>
+</dd>
+<dt><strong>Select Has Resources</strong></dt>
+<dd>
+<p>This entry selects all nodes that add new resources (regular or
+constraint) to their corresponding widget classes. This operation may
+also be performed with the <em>Select(resources)</em> translation.</p>
+</dd>
+<dt><strong>Select Shown Resource Boxes</strong></dt>
+<dd>
+<p>This entry selects all nodes whose resource boxes are currently
+expanded (usually so that they can be closed with <strong>Hide Resource
+Boxes</strong>). This operation may also be performed with the
+<em>Select(shown)</em> translation.</p>
+</dd>
+</dl>
+<h1>ACTIONS</h1>
+<p>The following application actions are provided:</p>
+<dl>
+<dt><strong>Quit()</strong></dt>
+<dd>
+<p><br />
+This action causes <em>viewres</em> to exit.</p>
+</dd>
+<dt><strong>SetLabelType(<em>type</em>)</strong></dt>
+<dd>
+<p>This action sets the node labels to display the widget
+<em>variable</em> or <em>class</em> names, according to the argument
+<em>type</em>.</p>
+</dd>
+<dt><strong>SetOrientation(<em>direction</em>)</strong></dt>
+<dd>
+<p>This action sets the root of the tree to be one of the following
+areas of the window: <em>West</em>, <em>North</em>, <em>East</em>, or
+<em>South</em>.</p>
+</dd>
+<dt><strong>Select(<em>what</em>)</strong></dt>
+<dd>
+<p>This action selects the indicated nodes, as described in the
+<strong>VIEW MENU</strong> section: <em>nothing</em> (unselects all
+nodes), <em>invert</em>, <em>parent</em>, <em>ancestors</em>,
+<em>children</em>, <em>descendants</em>, <em>resources</em>,
+<em>shown</em>.</p>
+</dd>
+<dt><strong>Resources(<em>op</em>)</strong></dt>
+<dd>
+<p>This action turns <em>on</em>, <em>off</em>, or <em>toggles</em> the
+resource boxes for the selected nodes. If invoked from within one of the
+nodes (through the keyboard or pointer), only that node is used.</p>
+</dd>
+</dl>
+<h1>WIDGET HIERARCHY</h1>
+<p>Resources may be specified for the following widgets:</p>
+<pre><code>Viewres viewres
+        Paned pane
+                Box buttonbox
+                        Command quit
+                        MenuButton view
+                                SimpleMenu viewMenu
+                                        SmeBSB layoutHorizontal
+                                        SmeBSB layoutVertical
+                                        SmeLine line1
+                                        SmeBSB namesVariable
+                                        SmeBSB namesClass
+                                        SmeLine line2
+                                        SmeBSB viewResources
+                                        SmeBSB viewNoResources
+                        MenuButton select
+                                SimpleMenu selectMenu
+                                        SmeBSB unselect
+                                        SmeBSB selectAll
+                                        SmeBSB selectInvert
+                                        SmeLine line1
+                                        SmeBSB selectParent
+                                        SmeBSB selectAncestors
+                                        SmeBSB selectChildren
+                                        SmeBSB selectDescendants
+                                        SmeLine line2
+                                        SmeBSB selectHasResources
+                                        SmeBSB selectShownResources
+                Form treeform
+                        Porthole porthole
+                                Tree tree
+                                        Box variable-name
+                                                Toggle variable-name
+                                                List variable-name
+                        Panner panner</code></pre>
+<p>where <em>variable-name</em> is the widget variable name of each
+node.</p>
+<h1>SEE ALSO</h1>
+<p>X(7), xrdb(1), listres(1), editres(1), appres(1), appropriate widget
+documents</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1994 X Consortium<br />
+See <em>X(7)</em> for a full statement of rights and permissions.</p>
+<h1>AUTHOR</h1>
+<p>Jim Fulton, MIT X Consortium</p>

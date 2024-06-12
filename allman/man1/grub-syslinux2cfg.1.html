@@ -1,0 +1,76 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-syslinux2cfg - transform syslinux config into grub.cfg</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-syslinux2cfg</strong> [<em>OPTION</em>...]
+<em>FILE</em></p>
+<h1>DESCRIPTION</h1>
+<p>Transform syslinux config into GRUB one.</p>
+<dl>
+<dt><strong>-c</strong>, <strong>--cwd</strong>=<em>DIR</em></dt>
+<dd>
+<p>current directory of syslinux [default is parent directory of input
+file].</p>
+</dd>
+<dt><strong>-i</strong>, <strong>--isolinux</strong></dt>
+<dd>
+<p>assume input is an isolinux configuration file.</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--output</strong>=<em>FILE</em></dt>
+<dd>
+<p>write output to FILE [default=stdout].</p>
+</dd>
+<dt><strong>-p</strong>, <strong>--pxelinux</strong></dt>
+<dd>
+<p>assume input is a pxelinux configuration file.</p>
+</dd>
+<dt><strong>-r</strong>, <strong>--root</strong>=<em>DIR</em></dt>
+<dd>
+<p>root directory of the syslinux disk [default=/].</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--syslinux</strong></dt>
+<dd>
+<p>assume input is a syslinux configuration file.</p>
+</dd>
+<dt><strong>-t</strong>,
+<strong>--target-root</strong>=<em>DIR</em></dt>
+<dd>
+<p>root directory as it will be seen on runtime [default=/].</p>
+</dd>
+<dt><strong>-T</strong>, <strong>--target-cwd</strong>=<em>DIR</em></dt>
+<dd>
+<p>current directory of syslinux as it will be seen on runtime [default
+is parent directory of input file].</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-menulst2cfg</strong>(8)</p>
+<p>The full documentation for <strong>grub-syslinux2cfg</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-syslinux2cfg</strong> programs are properly installed at
+your site, the command</p>
+<blockquote>
+<p><strong>info grub-syslinux2cfg</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

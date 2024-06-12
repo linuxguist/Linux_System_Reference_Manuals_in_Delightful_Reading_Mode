@@ -1,0 +1,36 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_KEYEXCH-X25519, EVP_KEYEXCH-X448 - X25519 and X448 Key Exchange
+algorithm support</p>
+<h1>DESCRIPTION</h1>
+<p>Key exchange support for the <strong>X25519</strong> and
+<strong>X448</strong> key types.</p>
+<h2>Key exchange parameters</h2>
+<dl>
+<dt>"pad" (OSSL_EXCHANGE_PARAM_PAD) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>See Common Key Exchange parameters in
+<strong>provider-keyexch</strong> (7).</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>Keys for the host and peer can be generated as shown in Examples in
+<strong>EVP_PKEY-X25519</strong> (7).</p>
+<p>The code to generate a shared secret is identical to Examples in
+<strong>EVP_KEYEXCH-DH</strong> (7).</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY-FFC</strong> (7), <strong>EVP_PKEY-DH</strong> (7)
+<strong>EVP_PKEY</strong> (3), <strong>provider-keyexch</strong> (7),
+<strong>provider-keymgmt</strong> (7),
+<strong>OSSL_PROVIDER-default</strong> (7),
+<strong>OSSL_PROVIDER-FIPS</strong> (7),</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

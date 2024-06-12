@@ -1,0 +1,32 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>select-default-ispell - select default ispell dictionary</p>
+<h1>SYNOPSIS</h1>
+<p>select-default-ispell [options] Options (all long only options):
+--set-default=regexp Try regexp to get a single match and set it as
+default. Fail otherwise. --show-choices Show available choices to STDERR
+and exit. --debug Enable debug mode</p>
+<h1>DESCRIPTION</h1>
+<p>This program is responsible for selecting default ispell
+dictionary.</p>
+<p>If <strong>--show-choices</strong> is used will just output a list of
+available choices to STDERR and exit. STDOUT cannot be used, this
+program loads <strong>debconf</strong> and <strong>debconf</strong>
+captures STDOUT.</p>
+<p>If <strong>--set-default</strong> is used, program will try to get a
+single regexp match from available choices, failing if not. Will try
+case dependent match first, then case independent.</p>
+<p>If <strong>--set-default</strong> is not used this program will make
+debconf always ask the shared question about the default ispell
+dictionary to be used in your system according to the installed
+ones.</p>
+<p>In both cases, will do the appropriate settings if needed.</p>
+<p>Calls internally <strong>update-default-ispell</strong>.</p>
+<h1>SEE ALSO</h1>
+<p>The dictionaries-common policy document</p>
+<h1>AUTHORS</h1>
+<p>Rafael Laboissiere, Agustin Martin</p>

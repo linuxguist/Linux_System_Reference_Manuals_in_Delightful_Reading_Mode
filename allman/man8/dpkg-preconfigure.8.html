@@ -1,0 +1,50 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dpkg-preconfigure - let packages ask questions prior to their
+installation</p>
+<h1>SYNOPSIS</h1>
+<p>dpkg-preconfigure [options] package.deb dpkg-preconfigure --apt</p>
+<h1>DESCRIPTION</h1>
+<p><strong>dpkg-preconfigure</strong> lets packages ask questions before
+they are installed. It operates on a set of debian packages, and all
+packages that use debconf will have their config script run so they can
+examine the system and ask questions.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-ftype, --frontend=type</dt>
+<dd>
+<p>Select the frontend to use.</p>
+</dd>
+<dt>-pvalue, --priority=value</dt>
+<dd>
+<p>Set the lowest priority of questions you are interested in. Any
+questions with a priority below the selected priority will be ignored
+and their default answers will be used.</p>
+</dd>
+<dt>--terse</dt>
+<dd>
+<p>Enables terse output mode. This affects only some frontends.</p>
+</dd>
+<dt>--apt</dt>
+<dd>
+<p>Run in apt mode. It will expect to read a set of package filenames
+from stdin, rather than getting them as parameters. Typically this is
+used to make apt run dpkg-preconfigure on all packages before they are
+installed. To do this, add something like this to /etc/apt/apt.conf: //
+Pre-configure all packages before // they are installed.
+DPkg::Pre-Install-Pkgs { "dpkg-preconfigure --apt --priority=low";
+};</p>
+</dd>
+<dt>-h, --help</dt>
+<dd>
+<p>Display usage help.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>debconf</strong> (7)</p>
+<h1>AUTHOR</h1>
+<p>Joey Hess &lt;joeyh@debian.org&gt;</p>

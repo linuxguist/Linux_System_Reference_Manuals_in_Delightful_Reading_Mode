@@ -1,0 +1,28 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>vdpa-dev - vdpa management device view</p>
+<h1>SYNOPSIS</h1>
+<p><strong>vdpa</strong> <strong>mgmtdev</strong> {
+<em>COMMAND</em>|<em> </em> <strong>help</strong> }</p>
+<p><em>OPTIONS</em> := { <strong>-V</strong>[<em>ersion</em>] }</p>
+<p><strong>vdpa mgmtdev show</strong> [ <em>MGMTDEV</em> ]</p>
+<p><strong>vdpa mgmtdev help</strong></p>
+<h1>DESCRIPTION</h1>
+<h2>vdpa mgmtdev show - display vdpa management device attributes</h2>
+<p><em>MGMTDEV</em> - specifies the vdpa management device to show. If
+this argument is omitted all management devices are listed.</p>
+<h1>EXAMPLES</h1>
+<p>vdpa mgmtdev show</p>
+<blockquote>
+<p>Shows all the vdpa management devices on the system.</p>
+</blockquote>
+<p>vdpa mgmtdev show bar</p>
+<blockquote>
+<p>Shows the specified vdpa management device.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>vdpa</strong>(8), <strong>vdpa-dev</strong>(8),<br />
+</p>
+<h1>AUTHOR</h1>
+<p>Parav Pandit &lt;parav@nvidia.com&gt;</p>

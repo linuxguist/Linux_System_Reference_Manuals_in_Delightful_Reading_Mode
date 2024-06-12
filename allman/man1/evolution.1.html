@@ -1,0 +1,80 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>evolution - groupware suite for GNOME containing e-mail, calendar,
+addressbook, to-do list and memo tools</p>
+<h1>SYNOPSIS</h1>
+<p><strong>evolution</strong> [<em>OPTIONS</em>]<em>
+</em>[<em>MAILTO</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>This manual page briefly introduces the <strong>evolution</strong>
+command. Evolution is a graphical groupware suite, a single application
+for reading and sending e-mail and for managing calendars, address
+books, notes, to-do lists and memos. It is written for the GNOME
+graphical desktop.</p>
+<p>An optional <em>MAILTO</em> expression can be specified, typically
+invoked from another application. An example <em>MAILTO</em> expression
+is `mailto:username@example.com`. This will open a new composer window
+with an empty e-mail to `username@example.com`. More advanced
+expressions are also supported, but should conform to RFC 2368.</p>
+<p>For a more detailed explanation of Evolution, please see the Help
+menu.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-?, --help</strong></dt>
+<dd>
+<p>Show a help message listing all the options and their meanings.</p>
+</dd>
+<dt><strong>-c, --component=</strong><em>COMPONENT</em></dt>
+<dd>
+<p>Start Evolution by activating the desired component.
+<em>COMPONENT</em> is one of `mail', `calendar', `contacts', `tasks' or
+`memos'.</p>
+</dd>
+<dt><strong>--offline</strong></dt>
+<dd>
+<p>Start in offline mode.</p>
+</dd>
+<dt><strong>--online</strong></dt>
+<dd>
+<p>Start in online mode.</p>
+</dd>
+<dt><strong>--force-online</strong></dt>
+<dd>
+<p>Ignore network availability.</p>
+</dd>
+<dt><strong>--force-shutdown</strong></dt>
+<dd>
+<p>Forcibly shut down all Evolution components.</p>
+</dd>
+<dt><strong>--disable-eplugin</strong></dt>
+<dd>
+<p>Disable loading of any plugins.</p>
+</dd>
+<dt><strong>--disable-preview</strong></dt>
+<dd>
+<p>Disable preview pane of Mail, Contacts and Tasks.</p>
+</dd>
+<dt><strong>-i, --import</strong></dt>
+<dd>
+<p>Import URIs or file names given as rest of arguments.</p>
+</dd>
+<dt><strong>-q, --quit</strong></dt>
+<dd>
+<p>Request a running Evolution process to quit.</p>
+</dd>
+<dt><strong>--display=</strong><em>DISPLAY</em></dt>
+<dd>
+<p>X display to use.</p>
+</dd>
+</dl>
+<p>In addition, the usual GTK+ and GNOME command line options apply. See
+the output of --help for details.</p>
+<h1>SEE ALSO</h1>
+<p>http://projects.gnome.org/evolution/</p>
+<h1>AUTHOR</h1>
+<p>Evolution was originally developed by the company Ximian, now a part
+of Novell. Evolution is now part of GNOME, and many people have touched
+the code. See the "About" item in the "Help" menu for a list.</p>
+<p>This manual page was originally written by Lars Wirzenius for the
+Debian system.</p>

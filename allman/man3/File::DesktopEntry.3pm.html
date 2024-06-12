@@ -1,0 +1,243 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>File::DesktopEntry - Object to handle .desktop files</p>
+<h1>SYNOPSIS</h1>
+<p>use File::DesktopEntry; my $entry =
+File::DesktopEntry-&gt;new(firefox); print "Using ".$entry-&gt;Name." to
+open http://perl.org\n"; $entry-&gt;run(http://perl.org);</p>
+<h1>DESCRIPTION</h1>
+<p>This module is designed to work with <em>.desktop</em> files. The
+format of these files is specified by the freedesktop Desktop Entry
+specification. This module can parse these files but also knows how to
+run the applications defined by these files.</p>
+<p>For this module version 1.0 of the specification was used.</p>
+<p>This module was written to support File::MimeInfo::Applications.</p>
+<p>Please remember: case is significant for the names of Desktop Entry
+keys.</p>
+<h1>VARIABLES</h1>
+<p>You can set the global variable
+<code>$File::DesktopEntry::VERBOSE</code>. If set the module prints a
+warning every time a command gets executed.</p>
+<p>The global variable <code>$File::DesktopEntry::LOCALE</code> tells
+you what the default locale being used is. However, changing it will not
+change the default locale.</p>
+<h1>AUTOLOAD</h1>
+<p>All methods that start with a capital are autoloaded as
+<code>get(KEY)</code> where key is the autoloaded method name.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>"new(FILE)"</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"new(\$TEXT)"</dt>
+<dd>
+
+</dd>
+<dt>"new(NAME)"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Constructor. FILE, NAME or TEXT are optional arguments. When a name
+is given (a string without '<code>/</code>', '<code>\</code>' or
+'<code>.</code>') a lookup is done using File::BaseDir. If the file
+found in this lookup is not writable or if no file was found, the
+XDG_DATA_HOME path will be used when writing.</p>
+<dl>
+<dt>"lookup(NAME)"</dt>
+<dd>
+<p>Returns a filename for a desktop entry with desktop file id NAME.</p>
+</dd>
+<dt>"wants_uris( )"</dt>
+<dd>
+<p>Returns true if the Exec string for this desktop entry specifies that
+the application uses URIs instead of paths. This can be used to
+determine whether an application uses a VFS library.</p>
+</dd>
+<dt>"wants_list( )"</dt>
+<dd>
+<p>Returns true if the Exec string for this desktop entry specifies that
+the application can handle multiple arguments at once.</p>
+</dd>
+<dt>"run(@FILES)"</dt>
+<dd>
+<p>Forks and runs the application specified in this Desktop Entry with
+arguments FILES as a background process. Returns the pid. The child
+process fails when this is not a Desktop Entry of type Application or if
+the Exec key is missing or invalid. If the desktop entry specifies that
+the program needs to be executed in a terminal the
+<code>$TERMINAL</code> environment variable is used. If this variable is
+not set <code>x-terminal-emulator -e</code> is used as default on Debian
+systems. (On Windows this method returns a Win32::Process object.)</p>
+</dd>
+<dt>"system(@FILES)"</dt>
+<dd>
+<p>Like <code>run()</code> but using the <code>system()</code> system
+call. It only return after the application has ended.</p>
+</dd>
+<dt>"exec(@FILES)"</dt>
+<dd>
+<p>Like <code>run()</code> but using the <code>exec()</code> system
+call. This method is expected not to return but to replace the current
+process with the application you try to run. On Windows this method
+doesn't always work the way you want it to due to the
+<code>fork()</code> emulation on this platform. Try using
+<code>run()</code> or <code>system()</code> instead.</p>
+</dd>
+<dt>"parse_Exec(@FILES)"</dt>
+<dd>
+<p>Expands the Exec format in this desktop entry with. Returns a
+properly quoted string in scalar context or a list of words in list
+context. Dies when the Exec key is invalid. It supports the following
+fields: %f single file %F multiple files %u single url %U multiple urls
+%i Icon field prefixed by --icon %c Name field, possibly translated %k
+location of this .desktop file %% literal % If necessary this method
+tries to convert between paths and URLs but this is not perfect. Fields
+that are deprecated, but (still) supported by this module: %d single
+directory %D multiple directories The fields <code>%n</code>,
+<code>%N</code>, <code>%v</code> and <code>%m</code> are deprecated and
+will cause a warning if <code>$VERBOSE</code> is used. Any other unknown
+fields will cause an error. The fields <code>%F</code>, <code>%U</code>,
+<code>%D</code> and <code>%i</code> can only occur as separate words
+because they expand to multiple arguments. Also see LIMITATIONS.</p>
+</dd>
+<dt>"get(KEY)"</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"get(GROUP, KEY)"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Get a value for KEY from GROUP. If GROUP is not specified 'Desktop
+Entry' is used. All values are treated as string, so e.g. booleans will
+be returned as the literal strings true and false. When KEY does not
+contain a language code you get the translation in the current locale if
+available or a sensible default. The request a specific language you can
+add the language part. E.g. <code>$entry-&gt;get(Name[nl_NL])</code> can
+return either the value of the 'Name[nl_NL]', the 'Name[nl]' or the
+'Name' key in the Desktop Entry file. Exact language parsing order can
+be found in the spec. To force you get the untranslated key use either
+'Name[C]' or 'Name[POSIX]'.</p>
+<dl>
+<dt>"set(KEY =&gt; VALUE, ...)"</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"set(GROUP, KEY =&gt; VALUE, ...)"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Set values for one or more keys. If GROUP is not given Desktop Entry
+is used. All values are treated as strings, backslashes, newlines and
+tabs are escaped. To set a boolean key you need to use the literal
+strings true and false. Unlike the <code>get()</code> call languages are
+not handled automatically for <code>set()</code>. KEY should include the
+language part if you want to set a translation. E.g.
+<code>$entry-&gt;set("Name[nl_NL]" =&gt; "Tekst Verwerker")</code> will
+set a Dutch translation for the Name key. Using either Name[C] or
+Name[POSIX] will be equivalent with not giving a language argument. When
+setting the Exec key without specifying a group it will be parsed and
+quoted correctly as required by the spec. You can use quoted arguments
+to include whitespace in a argument, escaping whitespace does not work.
+To circumvent this quoting explicitly give the group name 'Desktop
+Entry'.</p>
+<dl>
+<dt>"text()"</dt>
+<dd>
+<p>Returns the (modified) text of the file.</p>
+</dd>
+<dt>"read(FILE)"</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"read(\$SCALAR)"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read Desktop Entry data from file or memory buffer. Without argument
+defaults to file given at constructor. If you gave a file, text buffer
+or name to the constructor this method will be called automatically.</p>
+<dl>
+<dt>"read_fh(IO)"</dt>
+<dd>
+<p>Read Desktop Entry data from filehandle or IO object.</p>
+</dd>
+<dt>"write(FILE)"</dt>
+<dd>
+<p>Write the Desktop Entry data to FILE. Without arguments it writes to
+the filename given to the constructor if any. The keys Name and Type are
+required. Type can be either <code>Application</code>, <code>Link</code>
+or <code>Directory</code>. For an application set the optional key
+<code>Exec</code>. For a link set the <code>URL</code> key.</p>
+</dd>
+</dl>
+<h2>Backwards Compatibility</h2>
+<p>Methods supported for backwards compatibility with 0.02.</p>
+<dl>
+<dt>"new_from_file(FILE)"</dt>
+<dd>
+<p>Alias for <code>new(FILE)</code>.</p>
+</dd>
+<dt>"new_from_data(TEXT)"</dt>
+<dd>
+<p>Alias for <code>new(\$TEXT)</code>.</p>
+</dd>
+<dt>"get_value(NAME, GROUP, LANG)"</dt>
+<dd>
+<p>Identical to <code>get(GROUP, "NAME[LANG]")</code>. LANG defaults to
+'C', GROUP is optional.</p>
+</dd>
+</dl>
+<h1>NON-UNIX PLATFORMS</h1>
+<p>This module has a few bits of code to make it work on Windows. It
+handles <code>file://</code> uri a bit different and it uses
+Win32::Process. On other platforms your mileage may vary.</p>
+<p>Please note that the specification is targeting Unix platforms only
+and will only have limited relevance on other platforms. Any
+platform-dependent behavior in this module should be considered an
+extension of the spec.</p>
+<h1>LIMITATIONS</h1>
+<p>If you try to exec a remote file with an application that can only
+handle files on the local file system we should -according to the spec-
+download the file to a temp location. This is not supported. Use the
+<code>wants_uris()</code> method to check if an application supports
+urls.</p>
+<p>The values of the various Desktop Entry keys are not parsed (except
+for the Exec key). This means that booleans will be returned as the
+strings true and false and lists will still be ; separated.</p>
+<p>If the icon is given as name and not as path it should be resolved
+for the <code>%i</code> code in the Exec key. We need a separate module
+for the icon spec to deal with this.</p>
+<p>According to the spec comments can contain any encoding. However
+since this module read files as utf8, invalid UTF-8 characters in a
+comment will cause an error.</p>
+<p>There is no support for Legacy-Mixed Encoding. Everybody is using
+utf8 now ... right ?</p>
+<h1>AUTHOR</h1>
+<p>Jaap Karssenberg (Pardus) &lt;pardus@cpan.org&gt;</p>
+<p>Maintained by Michiel Beijen &lt;michielb@cpan.org&gt;</p>
+<p>Copyright (c) 2005, 2007 Jaap G Karssenberg. All rights reserved.</p>
+<h1>LICENSE</h1>
+<p>This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>
+<h1>SEE ALSO</h1>
+<p>&lt;http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html&gt;</p>
+<p>File::BaseDir and File::MimeInfo::Applications</p>
+<p>X11::FreeDesktop::DesktopEntry</p>

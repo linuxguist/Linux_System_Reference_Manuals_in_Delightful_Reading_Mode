@@ -1,0 +1,39 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-kbdcomp - generate a GRUB keyboard layout file</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-kbdcomp</strong> <em>-o OUTPUT
+CKBMAP_ARGUMENTS</em>...</p>
+<h1>DESCRIPTION</h1>
+<p>grub-kbdcomp processes a X keyboard layout description in
+<strong>keymaps</strong>(5) format into a format that can be used by
+GRUB's <strong>keymap</strong> command.</p>
+<p>Make GRUB keyboard layout file.</p>
+<dl>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>print this message and exit</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print the version information and exit</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--output</strong>=<em>FILE</em></dt>
+<dd>
+<p>save output in FILE [required]</p>
+</dd>
+</dl>
+<p>grub-kbdcomp generates a keyboard layout for GRUB using ckbcomp</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-mklayout</strong>(8)</p>
+<p>The full documentation for <strong>grub-kbdcomp</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-kbdcomp</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-kbdcomp</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

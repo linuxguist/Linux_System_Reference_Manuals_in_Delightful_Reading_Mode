@@ -1,0 +1,63 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-probe - probe device information for GRUB</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-probe</strong> [<em>OPTION</em>...] [<em>OPTION</em>]...
+[<em>PATH|DEVICE</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Probe device information for a given path (or device, if the
+<strong>-d</strong> option is given).</p>
+<dl>
+<dt><strong>-0</strong></dt>
+<dd>
+<p>separate items in output using ASCII NUL characters</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--device</strong></dt>
+<dd>
+<p>given argument is a system device, not a path</p>
+</dd>
+<dt><strong>-m</strong>,
+<strong>--device-map</strong>=<em>FILE</em></dt>
+<dd>
+<p>use FILE as the device map [default=/boot/grub/device.map]</p>
+</dd>
+<dt><strong>-t</strong>, <strong>--target</strong>=<em>TARGET</em></dt>
+<dd>
+<p>print TARGET available targets: abstraction, arc_hints,
+baremetal_hints, bios_hints, compatibility_hint, cryptodisk_uuid,
+device, disk, drive, efi_hints, fs, fs_label, fs_uuid, gpt_parttype,
+hints_string, ieee1275_hints, msdos_parttype, partmap, partuuid,
+zero_check [default=fs]</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-fstest</strong>(1)</p>
+<p>The full documentation for <strong>grub-probe</strong> is maintained
+as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-probe</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-probe</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

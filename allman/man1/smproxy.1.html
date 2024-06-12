@@ -1,0 +1,57 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>smproxy - Session Manager Proxy</p>
+<h1>SYNOPSIS</h1>
+<p><strong>smproxy</strong> [-clientId id] [-restore saveFile]
+[-version]</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-clientId <em>id</em></strong></dt>
+<dd>
+<p>Specifies the session ID used by <em>smproxy</em> in the previous
+session.</p>
+</dd>
+<dt><strong>-restore <em>saveFile</em></strong></dt>
+<dd>
+<p>Specifies the file used by <em>smproxy</em> to save state in the
+previous session.</p>
+</dd>
+<dt><strong>-version</strong></dt>
+<dd>
+<p>Prints the program version and exits.</p>
+</dd>
+</dl>
+<h1>DESCRIPTION</h1>
+<p><em>smproxy</em> allows X applications that do not support X11R6
+session management to participate in an X11R6 session.<br />
+</p>
+<p>In order for <em>smproxy</em> to act as a proxy for an X application,
+one of the following must be true:<br />
+</p>
+<p>- The application maps a top level window containing the
+<strong>WM_CLIENT_LEADER</strong> property. This property provides a
+pointer to the client leader window which contains the
+<strong>WM_CLASS</strong>, <strong>WM_NAME</strong>,
+<strong>WM_COMMAND</strong>, and <strong>WM_CLIENT_MACHINE</strong>
+properties.<br />
+</p>
+<p>or ...<br />
+</p>
+<p>- The application maps a top level window which does not contain the
+<strong>WM_CLIENT_LEADER</strong> property. However, this top level
+window contains the <strong>WM_CLASS</strong>, <strong>WM_NAME</strong>,
+<strong>WM_COMMAND</strong>, and <strong>WM_CLIENT_MACHINE</strong>
+properties.</p>
+<p>An application that support the <strong>WM_SAVE_YOURSELF</strong>
+protocol will receive a <strong>WM_SAVE_YOURSELF</strong> client message
+each time the session manager issues a checkpoint or shutdown. This
+allows the application to save state. If an application does not support
+the <strong>WM_SAVE_YOURSELF</strong> protocol, then the proxy will
+provide enough information to the session manager to restart the
+application (using <strong>WM_COMMAND</strong>), but no state will be
+restored.</p>
+<h1>SEE ALSO</h1>
+<p>xsm(1)</p>
+<h1>AUTHOR</h1>
+<p>Ralph Mor, X Consortium</p>

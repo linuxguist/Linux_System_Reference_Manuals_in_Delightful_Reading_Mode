@@ -1,0 +1,76 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pivot_root - change the root filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>pivot_root</strong> <em>new_root</em> <em>put_old</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>pivot_root</strong> moves the root file system of the current
+process to the directory <em>put_old</em> and makes <em>new_root</em>
+the new root file system. Since <strong>pivot_root</strong>(8) simply
+calls <strong>pivot_root</strong>(2), we refer to the man page of the
+latter for further details.</p>
+<p>Note that, depending on the implementation of
+<strong>pivot_root</strong>, root and current working directory of the
+caller may or may not change. The following is a sequence for invoking
+<strong>pivot_root</strong> that works in either case, assuming that
+<strong>pivot_root</strong> and <strong>chroot</strong> are in the
+current <strong>PATH</strong>:</p>
+<blockquote>
+<pre><code>cd new_root
+pivot_root . put_old
+exec chroot . command</code></pre>
+</blockquote>
+<p>Note that <strong>chroot</strong> must be available under the old
+root and under the new root, because <strong>pivot_root</strong> may or
+may not have implicitly changed the root directory of the shell.</p>
+<p>Note that <strong>exec chroot</strong> changes the running
+executable, which is necessary if the old root directory should be
+unmounted afterwards. Also note that standard input, output, and error
+may still point to a device on the old root file system, keeping it
+busy. They can easily be changed when invoking <strong>chroot</strong>
+(see below; note the absence of leading slashes to make it work whether
+<strong>pivot_root</strong> has changed the shell’s root or not).</p>
+<h1>OPTIONS</h1>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXAMPLE</h1>
+<p>Change the root file system to <em>/dev/hda1</em> from an interactive
+shell:</p>
+<blockquote>
+<pre><code>mount /dev/hda1 /new-root
+cd /new-root
+pivot_root . old-root
+exec chroot . sh &lt;dev/console &gt;dev/console 2&gt;&amp;1
+umount /old-root</code></pre>
+</blockquote>
+<p>Mount the new root file system over NFS from 10.0.0.1:/my_root and
+run <strong>init</strong>:</p>
+<blockquote>
+<pre><code>ifconfig lo 127.0.0.1 up   # for portmap
+# configure Ethernet or such
+portmap   # for lockd (implicitly started by mount)
+mount -o ro 10.0.0.1:/my_root /mnt
+killall portmap   # portmap keeps old root busy
+cd /mnt
+pivot_root . old_root
+exec chroot . sh -c &#39;umount /old_root; exec /sbin/init&#39; \
+  &lt;dev/console &gt;dev/console 2&gt;&amp;1</code></pre>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>chroot</strong>(1), <strong>pivot_root</strong>(2),
+<strong>mount</strong>(8), <strong>switch_root</strong>(8),
+<strong>umount</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>pivot_root</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

@@ -1,0 +1,210 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>rhythmbox-client - controls a running instance of rhythmbox</p>
+<h1>SYNOPSIS</h1>
+<p><strong>rhythmbox-client</strong>
+[<em>option...</em>]<em>[</em>file...<em>]</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>rhythmbox-client</strong> is a tool for controlling an
+already running instance of <strong>rhythmbox.</strong> It's useful for
+remote control scripting, adding specific files to the library from the
+shell, or printing details of what's playing. It also has an interactive
+mode, useful for controlling playback remotely via ssh. Any files
+specified after the option arguments will be added to the library. If
+the <strong>--enqueue</strong> option is given, the files will also be
+added to the play queue.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-?,--help</strong></dt>
+<dd>
+<p>Show help options</p>
+</dd>
+<dt><strong>--debug</strong></dt>
+<dd>
+<p>Enable debug output</p>
+</dd>
+<dt><strong>--no-start</strong></dt>
+<dd>
+<p>Do not start a new instance of rhythmbox</p>
+</dd>
+<dt><strong>--quit</strong></dt>
+<dd>
+<p>Quit rhythmbox</p>
+</dd>
+<dt><strong>-i,--interactive</strong></dt>
+<dd>
+<p>Start interactive mode <strong>--no-present</strong> Don't present an
+existing rhythmbox window</p>
+</dd>
+<dt><strong>--next</strong></dt>
+<dd>
+<p>Jump to next song</p>
+</dd>
+<dt><strong>--previous</strong></dt>
+<dd>
+<p>Jump to previous song</p>
+</dd>
+<dt><strong>--play</strong></dt>
+<dd>
+<p>Resume playback if currently paused</p>
+</dd>
+<dt><strong>--pause</strong></dt>
+<dd>
+<p>Pause playback if currently playing</p>
+</dd>
+<dt><strong>--play-pause</strong></dt>
+<dd>
+<p>Toggle play/pause mode</p>
+</dd>
+<dt><strong>--stop</strong></dt>
+<dd>
+<p>Stop playback if currently playing</p>
+</dd>
+<dt><strong>--play-uri=</strong><em>URI</em></dt>
+<dd>
+<p>Play a specified URI, importing it if necessary</p>
+</dd>
+<dt><strong>--enqueue</strong></dt>
+<dd>
+<p>Add specified tracks already in the library to the play queue</p>
+</dd>
+<dt><strong>--clear-queue</strong></dt>
+<dd>
+<p>Empty the play queue before adding new tracks</p>
+</dd>
+<dt><strong>--print-playing</strong></dt>
+<dd>
+<p>Print the title and artist of the playing song</p>
+</dd>
+<dt><strong>--print-playing-format=</strong><em>format</em></dt>
+<dd>
+<p>Print formatted details of the song (see</p>
+</dd>
+</dl>
+<p><strong>FORMAT OPTIONS</strong> below).</p>
+<dl>
+<dt><strong>--set-volume</strong></dt>
+<dd>
+<p>Set the playback volume</p>
+</dd>
+<dt><strong>--volume-up</strong></dt>
+<dd>
+<p>Increase the playback volume</p>
+</dd>
+<dt><strong>--volume-down</strong></dt>
+<dd>
+<p>Decrease the playback volume</p>
+</dd>
+<dt><strong>--print-volume</strong></dt>
+<dd>
+<p>Print the current playback volume</p>
+</dd>
+<dt><strong>--select-source=</strong><em>URI</em></dt>
+<dd>
+<p>Select the source corresponding to a URI (device or mount point)</p>
+</dd>
+<dt><strong>--activate-source=</strong><em>URI</em></dt>
+<dd>
+<p>Select the source corresponding to a URI (device or mount point) and
+start playing from it if not already playing.</p>
+</dd>
+<dt><strong>--play-source=</strong><em>URI</em></dt>
+<dd>
+<p>Select the source corresponding to a URI (device or mount point) and
+start playing from it.</p>
+</dd>
+</dl>
+<h1>FORMAT OPTIONS</h1>
+<dl>
+<dt>%at</dt>
+<dd>
+<p>album title</p>
+</dd>
+<dt>%aa</dt>
+<dd>
+<p>album artist</p>
+</dd>
+<dt>%aA</dt>
+<dd>
+<p>album artist (lowercase)</p>
+</dd>
+<dt>%as</dt>
+<dd>
+<p>album artist sortname</p>
+</dd>
+<dt>%aS</dt>
+<dd>
+<p>album artist sortname (lowercase)</p>
+</dd>
+<dt>%ay</dt>
+<dd>
+<p>album year</p>
+</dd>
+<dt>%ag</dt>
+<dd>
+<p>album genre</p>
+</dd>
+<dt>%aG</dt>
+<dd>
+<p>album genre (lowercase)</p>
+</dd>
+<dt>%an</dt>
+<dd>
+<p>album disc number</p>
+</dd>
+<dt>%aN</dt>
+<dd>
+<p>album disc number, zero padded</p>
+</dd>
+<dt>%st</dt>
+<dd>
+<p>stream title</p>
+</dd>
+<dt>%tn</dt>
+<dd>
+<p>track number (i.e 8)</p>
+</dd>
+<dt>%tN</dt>
+<dd>
+<p>track number, zero padded (i.e 08)</p>
+</dd>
+<dt>%tt</dt>
+<dd>
+<p>track title</p>
+</dd>
+<dt>%ta</dt>
+<dd>
+<p>track artist</p>
+</dd>
+<dt>%tA</dt>
+<dd>
+<p>track artist (lowercase)</p>
+</dd>
+<dt>%ts</dt>
+<dd>
+<p>track artist sortname</p>
+</dd>
+<dt>%tS</dt>
+<dd>
+<p>track artist sortname (lowercase)</p>
+</dd>
+<dt>%td</dt>
+<dd>
+<p>track duration</p>
+</dd>
+<dt>%te</dt>
+<dd>
+<p>track elapsed time</p>
+</dd>
+<dt>Variables can be combined using quotes. For example "%tn %aa %tt",
+will print the track number followed by the artist and the title of the
+track.</dt>
+<dd>
+<h1>AUTHOR</h1>
+</dd>
+</dl>
+<p>This manual page was written by Sven Arvidsson &lt;sa@whiz.se&gt;,
+for the Debian system (but may be used by others).</p>
+<h1>SEE ALSO</h1>
+<p><strong>rhythmbox</strong>(1).</p>

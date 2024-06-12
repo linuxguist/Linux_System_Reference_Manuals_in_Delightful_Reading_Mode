@@ -1,0 +1,330 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Binding::Iterator - Reading and writing message
+parameters</p>
+<h1>SYNOPSIS</h1>
+<p>Creating a new message</p>
+<p>my $msg = new Net::DBus::Binding::Message::Signal; my $iterator =
+$msg-&gt;iterator; $iterator-&gt;append_boolean(1);
+$iterator-&gt;append_byte(123);</p>
+<p>Reading from a message</p>
+<p>my $msg = ...get it from somewhere... my $iter = $msg-&gt;iterator();
+my $i = 0; while ($iter-&gt;has_next()) { $iter-&gt;next(); $i++; if ($i
+== 1) { my $val = $iter-&gt;get_boolean(); } elsif ($i == 2) { my $val =
+$iter-&gt;get_byte(); } }</p>
+<h1>DESCRIPTION</h1>
+<p>Provides an iterator for reading or writing message fields. This
+module provides a Perl API to access the dbus_message_iter_XXX methods
+in the C API. The array and dictionary types are not yet supported, and
+there are bugs in the Quad support (ie it always returns -1!).</p>
+<h1>METHODS</h1>
+<dl>
+<dt>$res = $iter-&gt;has_next()</dt>
+<dd>
+<p>Determines if there are any more fields in the message itertor to be
+read. Returns a positive value if there are more fields, zero
+otherwise.</p>
+</dd>
+<dt>$success = $iter-&gt;next()</dt>
+<dd>
+<p>Skips the iterator onto the next field in the message. Returns a
+positive value if the current field pointer was successfully advanced,
+zero otherwise.</p>
+</dd>
+<dt>my $val = $iter-&gt;get_boolean()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_boolean($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a boolean value from/to the message iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_byte()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_byte($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a single byte value from/to the message iterator.</p>
+<dl>
+<dt>my $val = $iter-&gt;get_string()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_string($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a UTF-8 string value from/to the message iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_object_path()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_object_path($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a UTF-8 string value, whose contents is a valid object
+path, from/to the message iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_signature()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_signature($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a UTF-8 string, whose contents is a valid type
+signature, value from/to the message iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_int16()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_int16($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a signed 16 bit value from/to the message iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_uint16()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_uint16($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write an unsigned 16 bit value from/to the message
+iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_int32()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_int32($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a signed 32 bit value from/to the message iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_uint32()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_uint32($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write an unsigned 32 bit value from/to the message
+iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_int64()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_int64($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a signed 64 bit value from/to the message iterator. An
+error will be raised if this build of Perl does not support 64 bit
+integers</p>
+<dl>
+<dt>my $val = $iter-&gt;get_uint64()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_uint64($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write an unsigned 64 bit value from/to the message iterator.
+An error will be raised if this build of Perl does not support 64 bit
+integers</p>
+<dl>
+<dt>my $val = $iter-&gt;get_double()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_double($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a double precision floating point value from/to the
+message iterator</p>
+<dl>
+<dt>my $val = $iter-&gt;get_unix_fd()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append_unix_fd($val);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Read or write a unix_fd value from/to the message iterator</p>
+<dl>
+<dt>my $value = $iter-&gt;get()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>my $value = $iter-&gt;get($type);</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Get the current value pointed to by this iterator. If the optional
+<code>$type</code> parameter is supplied, the wire type will be compared
+with the desired type &amp; a warning output if their differ. The
+<code>$type</code> value must be one of the
+<code>Net::DBus::Binding::Message::TYPE*</code> constants.</p>
+<dl>
+<dt>my $hashref = $iter-&gt;get_dict()</dt>
+<dd>
+<p>If the iterator currently points to a dictionary value, unmarshalls
+and returns the value as a hash reference.</p>
+</dd>
+<dt>my $hashref = $iter-&gt;get_array()</dt>
+<dd>
+<p>If the iterator currently points to an array value, unmarshalls and
+returns the value as a array reference.</p>
+</dd>
+<dt>my $hashref = $iter-&gt;get_variant()</dt>
+<dd>
+<p>If the iterator currently points to a variant value, unmarshalls and
+returns the value contained in the variant.</p>
+</dd>
+<dt>my $hashref = $iter-&gt;get_struct()</dt>
+<dd>
+<p>If the iterator currently points to an struct value, unmarshalls and
+returns the value as a array reference. The values in the array
+correspond to members of the struct.</p>
+</dd>
+<dt>$iter-&gt;append($value)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$iter-&gt;append($value, $type)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Appends a value to the message associated with this iterator. The
+value is marshalled into wire format, according to the following rules.
+If the <code>$value</code> is an instance of Net::DBus::Binding::Value,
+the embedded data type is used. If the <code>$type</code> parameter is
+supplied, that is taken to represent the data type. The type must be one
+of the <code>Net::DBus::Binding::Message::TYPE_*</code> constants.
+Otherwise, the data type is chosen to be a string, dict or array
+according to the perl data types SCALAR, HASH or ARRAY.</p>
+<dl>
+<dt>my $type = $iter-&gt;guess_type($value)</dt>
+<dd>
+<p>Make a best guess at the on the wire data type to use for marshalling
+<code>$value</code>. If the value is a hash reference, the dictionary
+type is returned; if the value is an array reference the array type is
+returned; otherwise the string type is returned.</p>
+</dd>
+<dt>my $sig = $iter-&gt;format_signature($type)</dt>
+<dd>
+<p>Given a data type representation, construct a corresponding signature
+string</p>
+</dd>
+<dt>$iter-&gt;append_array($value, $type)</dt>
+<dd>
+<p>Append an array of values to the message. The <code>$value</code>
+parameter must be an array reference, whose elements all have the same
+data type specified by the <code>$type</code> parameter.</p>
+</dd>
+<dt>$iter-&gt;append_struct($value, $type)</dt>
+<dd>
+<p>Append a struct to the message. The <code>$value</code> parameter
+must be an array reference, whose elements correspond to members of the
+structure. The <code>$type</code> parameter encodes the type of each
+member of the struct.</p>
+</dd>
+<dt>$iter-&gt;append_dict($value, $type)</dt>
+<dd>
+<p>Append a dictionary to the message. The <code>$value</code> parameter
+must be an hash reference.The <code>$type</code> parameter encodes the
+type of the key and value of the hash.</p>
+</dd>
+<dt>$iter-&gt;append_variant($value)</dt>
+<dd>
+<p>Append a value to the message, encoded as a variant type. The
+<code>$value</code> can be of any type, however, the variant will be
+encoded as either a string, dictionary or array according to the rules
+of the <code>guess_type</code> method.</p>
+</dd>
+<dt>my $type = $iter-&gt;get_arg_type</dt>
+<dd>
+<p>Retrieves the type code of the value pointing to by this iterator.
+The returned code will correspond to one of the constants
+<code>Net::DBus::Binding::Message::TYPE_*</code></p>
+</dd>
+<dt>my $type = $iter-&gt;get_element_type</dt>
+<dd>
+<p>If the iterator points to an array, retrieves the type code of array
+elements. The returned code will correspond to one of the constants
+<code>Net::DBus::Binding::Message::TYPE_*</code></p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2004-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::Binding::Message</p>

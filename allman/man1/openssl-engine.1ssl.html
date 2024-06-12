@@ -1,0 +1,97 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-engine - load and query engines</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl engine</strong> [<strong>-help</strong>]
+[<strong>-v</strong>] [<strong>-vv</strong>] [<strong>-vvv</strong>]
+[<strong>-vvvv</strong>] [<strong>-c</strong>] [<strong>-t</strong>]
+[<strong>-tt</strong>] [<strong>-pre</strong> <em>command</em>] ...
+[<strong>-post</strong> <em>command</em>] ... [<em>engine</em> ...]</p>
+<h1>DESCRIPTION</h1>
+<p>This command has been deprecated. Providers should be used instead of
+engines.</p>
+<p>This command is used to query the status and capabilities of the
+specified <em>engine</em>s. Engines may be specified before and after
+all other command-line flags. Only those specified are queried.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Display an option summary.</p>
+</dd>
+<dt>-v -vv -vvv -vvvv</dt>
+<dd>
+<p>Provides information about each specified engine. The first flag
+lists all the possible run-time control commands; the second adds a
+description of each command; the third adds the input flags, and the
+final option adds the internal input flags.</p>
+</dd>
+<dt>-c</dt>
+<dd>
+<p>Lists the capabilities of each engine.</p>
+</dd>
+<dt>-t</dt>
+<dd>
+<p>Tests if each specified engine is available, and displays the
+answer.</p>
+</dd>
+<dt>-tt</dt>
+<dd>
+<p>Displays an error trace for any unavailable engine.</p>
+</dd>
+<dt>-pre command</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-post command</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Command-line configuration of engines. The <strong>-pre</strong>
+command is given to the engine before it is loaded and the
+<strong>-post</strong> command is given after the engine is loaded. The
+<em>command</em> is of the form <em>cmd</em>:<em>val</em> where
+<em>cmd</em> is the command, and <em>val</em> is the value for the
+command. See the example below. These two options are cumulative, so
+they may be given more than once in the same command.</p>
+<h1>EXAMPLES</h1>
+<p>To list all the commands available to a dynamic engine:</p>
+<p>$ openssl engine -t -tt -vvvv dynamic (dynamic) Dynamic engine
+loading support [ unavailable ] SO_PATH: Specifies the path to the new
+ENGINE shared library (input flags): STRING NO_VCHECK: Specifies to
+continue even if version checking fails (boolean) (input flags): NUMERIC
+ID: Specifies an ENGINE id name for loading (input flags): STRING
+LIST_ADD: Whether to add a loaded ENGINE to the internal list
+(0=no,1=yes,2=mandatory) (input flags): NUMERIC DIR_LOAD: Specifies
+whether to load from DIR_ADD directories (0=no,1=yes,2=mandatory) (input
+flags): NUMERIC DIR_ADD: Adds a directory from which ENGINEs can be
+loaded (input flags): STRING LOAD: Load up the ENGINE specified by other
+settings (input flags): NO_INPUT</p>
+<p>To list the capabilities of the <strong>rsax</strong> engine:</p>
+<p>$ openssl engine -c (rsax) RSAX engine support [RSA] (dynamic)
+Dynamic engine loading support</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt>OPENSSL_ENGINES</dt>
+<dd>
+<p>The path to the engines directory.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>openssl</strong> (1), <strong>config</strong> (5)</p>
+<h1>HISTORY</h1>
+<p>This command was deprecated in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2016-2020 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

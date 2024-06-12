@@ -1,0 +1,120 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>IO::InnerFile - define a file inside another file</p>
+<h1>SYNOPSIS</h1>
+<p>### Read a subset of a file: $inner = IO::InnerFile-&gt;new($fh,
+$start, $length); while (&lt;$inner&gt;) { ... }</p>
+<h1>DESCRIPTION</h1>
+<p>If you have a filehandle that can <strong>seek()</strong> and
+<strong>tell()</strong>, then you can open an IO::InnerFile on a range
+of the underlying file.</p>
+<h1>PUBLIC INTERFACE</h1>
+<dl>
+<dt>new FILEHANDLE, [START, [LENGTH]]</dt>
+<dd>
+<p><em>Class method, constructor.</em> Create a new inner-file opened on
+the given FILEHANDLE, from bytes START to START+LENGTH. Both START and
+LENGTH default to 0; negative values are silently coerced to zero. Note
+that FILEHANDLE must be able to <strong>seek()</strong> and
+<strong>tell()</strong>, in addition to whatever other methods you may
+desire for reading it.</p>
+</dd>
+<dt>set_length LENGTH</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>get_length</dt>
+<dd>
+
+</dd>
+<dt>add_length NBYTES</dt>
+<dd>
+
+</dd>
+</dl>
+<p><em>Instance methods.</em> Get/set the virtual length of the inner
+file.</p>
+<dl>
+<dt>set_start START</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>get_start</dt>
+<dd>
+
+</dd>
+<dt>add_start NBYTES</dt>
+<dd>
+
+</dd>
+</dl>
+<p><em>Instance methods.</em> Get/set the virtual start position of the
+inner file.</p>
+<dl>
+<dt>binmode</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>close</dt>
+<dd>
+
+</dd>
+<dt>flush</dt>
+<dd>
+
+</dd>
+<dt>getc</dt>
+<dd>
+
+</dd>
+<dt>getline</dt>
+<dd>
+
+</dd>
+<dt>print LIST</dt>
+<dd>
+
+</dd>
+<dt>printf LIST</dt>
+<dd>
+
+</dd>
+<dt>read BUF, NBYTES</dt>
+<dd>
+
+</dd>
+<dt>readline</dt>
+<dd>
+
+</dd>
+<dt>seek OFFFSET, WHENCE</dt>
+<dd>
+
+</dd>
+<dt>tell</dt>
+<dd>
+
+</dd>
+<dt>write ARGS...</dt>
+<dd>
+
+</dd>
+</dl>
+<p><em>Instance methods.</em> Standard filehandle methods.</p>
+<h1>VERSION</h1>
+<p><code>$Id:</code> InnerFile.pm,v 1.4 2005/02/10 21:21:53 dfs Exp
+$</p>
+<h1>AUTHOR</h1>
+<p>Original version by Doru Petrescu (pdoru@kappa.ro).</p>
+<p>Documentation and by Eryq (eryq@zeegee.com).</p>
+<p>Currently maintained by Dianne Skoll (dfs@roaringpenguin.com).</p>

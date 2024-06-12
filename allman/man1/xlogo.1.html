@@ -1,0 +1,80 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xlogo - X Window System logo</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xlogo</strong> [-<em>toolkitoption</em> ...]</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>xlogo</em> program displays the X Window System logo.</p>
+<h1>OPTIONS</h1>
+<p><em>Xlogo</em> accepts all of the standard X Toolkit command line
+options, as well as the following:</p>
+<dl>
+<dt><strong>-render</strong></dt>
+<dd>
+<p>This option indicates that the logo should be drawn with anti-aliased
+edges using the RENDER extension.</p>
+</dd>
+<dt><strong>-sharp</strong></dt>
+<dd>
+<p>If -render is also specified, this forces the edges to be rendered in
+sharp mode, (ie. 1-bit alpha channel).</p>
+</dd>
+<dt><strong>-shape</strong></dt>
+<dd>
+<p>This option indicates that the logo window should be shaped rather
+than rectangular.</p>
+</dd>
+</dl>
+<h1>RESOURCES</h1>
+<p>The default width and the default height are each 100 pixels. This
+program uses the <em>Logo</em> widget in the Athena widget set. It
+understands all of the Simple widget resource names and classes as well
+as:</p>
+<dl>
+<dt><strong>foreground (<em>class</em> Foreground)</strong></dt>
+<dd>
+<p>Specifies the color for the logo. The default is depends on whether
+<em>reverseVideo</em> <strong>is specified. If</strong>
+<em>reverseVideo</em> <strong>is specified</strong> the default is
+<em>XtDefaultForeground</em><strong>, otherwise the default is</strong>
+<em>XtDefaultBackground</em><strong>.</strong></p>
+</dd>
+<dt><strong>shapeWindow (<em>class</em> ShapeWindow)</strong></dt>
+<dd>
+<p>Specifies that the window is shaped to the X logo. The default is
+False.</p>
+</dd>
+</dl>
+<h1>WIDGETS</h1>
+<p>In order to specify resources, it is useful to know the hierarchy of
+the widgets which compose <em>xlogo</em>. In the notation below,
+indentation indicates hierarchical structure. The widget class name is
+given first, followed by the widget instance name.</p>
+<pre><code>XLogo  xlogo
+        Logo  xlogo</code></pre>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p>to get the default host and display number.</p>
+</dd>
+<dt><strong>XENVIRONMENT</strong></dt>
+<dd>
+<p>to get the name of a resource file that overrides the global
+resources stored in the RESOURCE_MANAGER property.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/X11/app-defaults/XLogo</em></dt>
+<dd>
+<p>specifies required resources</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>X(7), xrdb(1)</p>
+<h1>AUTHORS</h1>
+<p>Ollie Jones of Apollo Computer and Jim Fulton of the MIT X Consortium
+wrote the logo graphics routine, based on a graphic design by Danny
+Chong and Ross Chapman of Apollo Computer.</p>

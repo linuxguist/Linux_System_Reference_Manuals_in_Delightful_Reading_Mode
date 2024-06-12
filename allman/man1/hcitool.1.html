@@ -1,0 +1,264 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>hcitool - Configure Bluetooth connections</p>
+<h1>SYNOPSIS</h1>
+<p><strong>hcitool</strong> -h</p>
+<p><strong>hcitool</strong> <em>COMMAND</em> --help</p>
+<p><strong>hcitool</strong> [-i <em>hciX</em>] [<em>COMMAND</em>
+[<em>PARAMETERS</em>]]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>hcitool(1)</strong> is used to configure Bluetooth
+connections and send some special command to Bluetooth devices. If no
+<strong>command</strong> is given, or if the option <strong>-h</strong>
+is used, <em>hcitool</em> prints some usage information and exits.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-i</strong><em> &lt;hciX&gt;</em></dt>
+<dd>
+<p>The command is applied to device <em>hciX</em>, which must be the
+name of an installed Bluetooth device. If not specified, the command
+will be sent to the first available Bluetooth device.</p>
+</dd>
+<dt><strong>-h</strong></dt>
+<dd>
+<p>Gives a list of possible commands</p>
+</dd>
+</dl>
+</blockquote>
+<h1>COMMANDS</h1>
+<blockquote>
+<dl>
+<dt><strong>dev</strong></dt>
+<dd>
+<p>Display local devices</p>
+</dd>
+<dt><strong>inq</strong></dt>
+<dd>
+<p>Inquire remote devices. For each discovered device, Bluetooth device
+address, clock offset and class are printed.</p>
+</dd>
+<dt><strong>scan</strong></dt>
+<dd>
+<p>Inquire remote devices. For each discovered device, device name are
+printed.</p>
+</dd>
+<dt><strong>name &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Print device name of remote device with Bluetooth address
+<em>bdaddr</em>.</p>
+</dd>
+<dt><strong>info &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Print device name, version and supported features of remote device
+with Bluetooth address <em>bdaddr</em>.</p>
+</dd>
+<dt><strong>spinq</strong></dt>
+<dd>
+<p>Start periodic inquiry process. No inquiry results are printed.</p>
+</dd>
+<dt><strong>epinq</strong></dt>
+<dd>
+<p>Exit periodic inquiry process.</p>
+</dd>
+<dt><strong>cmd &lt;<em>ogf</em>&gt; &lt;<em>ocf</em>&gt;
+[<em>parameters</em>]</strong></dt>
+<dd>
+<p>Submit an arbitrary HCI command to local device. <em>ogf</em>,
+<em>ocf</em> and parameters are hexadecimal bytes.</p>
+</dd>
+<dt><strong>con</strong></dt>
+<dd>
+<p>Display active baseband connections</p>
+</dd>
+<dt><strong>cc [--<em>role</em>=c|p]
+[--<em>pkt-type</em>=&lt;<em>ptype</em>&gt;]
+&lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Create baseband connection to remote device with Bluetooth address
+<em>bdaddr</em>.</p>
+<p>Option <strong>--pkt-type</strong> specifies a list of allowed packet
+types. &lt;<em>ptype</em>&gt; is a comma-separated list of packet types,
+where the possible packet types are <strong>DM1</strong>,
+<strong>DM3</strong>, <strong>DM5</strong>, <strong>DH1</strong>,
+<strong>DH3</strong>, <strong>DH5</strong>, <strong>HV1</strong>,
+<strong>HV2</strong>, <strong>HV3</strong>. Default is to allow all
+packet types.</p>
+<p>Option <strong>--role</strong> can have value <strong>c</strong> (do
+not allow role switch, stay central) or <strong>p</strong> (allow role
+switch, become peripheral if the peer asks to become central). Default
+is <strong>c</strong>.</p>
+</dd>
+<dt><strong>dc &lt;<em>bdaddr</em>&gt; [<em>reason</em>]</strong></dt>
+<dd>
+<p>Delete baseband connection from remote device with Bluetooth address
+<em>bdaddr</em>.</p>
+<p>The reason can be one of the Bluetooth HCI error codes. Default is
+<strong>19</strong> for user ended connections. The value must be given
+in decimal.</p>
+</dd>
+<dt><strong>sr &lt;<em>bdaddr</em>&gt;
+&lt;<em>role</em>&gt;</strong></dt>
+<dd>
+<p>Switch role for the baseband connection from the remote device to
+<strong>central</strong> or <strong>peripheral</strong>.</p>
+</dd>
+<dt><strong>cpt &lt;<em>bdaddr</em>&gt;
+&lt;<em>ptypes</em>&gt;</strong></dt>
+<dd>
+<p>Change packet types for baseband connection to device with Bluetooth
+address <em>bdaddr</em>. <em>ptypes</em> is a comma-separated list of
+packet types, where the possible packet types are <strong>DM1</strong>,
+<strong>DM3</strong>, <strong>DM5</strong>, <strong>DH1</strong>,
+<strong>DH3</strong>, <strong>DH5</strong>, <strong>HV1</strong>,
+<strong>HV2</strong>, <strong>HV3</strong>.</p>
+</dd>
+<dt><strong>rssi &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Display received signal strength information for the connection to
+the device with Bluetooth address <em>bdaddr</em>.</p>
+</dd>
+<dt><strong>lq &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Display link quality for the connection to the device with Bluetooth
+address <em>bdaddr</em>.</p>
+</dd>
+<dt><strong>tpl &lt;<em>bdaddr</em>&gt; [<em>type</em>]</strong></dt>
+<dd>
+<p>Display transmit power level for the connection to the device with
+Bluetooth address <em>bdaddr</em>.</p>
+<p>The <em>type</em> can be <strong>0</strong> for the current transmit
+power level (which is default) or <strong>1</strong> for the maximum
+transmit power level.</p>
+</dd>
+<dt><strong>afh &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Display AFH channel map for the connection to the device with
+Bluetooth address <em>bdaddr</em>.</p>
+</dd>
+<dt><strong>lp &lt;<em>bdaddr</em>&gt; [<em>value</em>]</strong></dt>
+<dd>
+<p>With no value, displays link policy settings for the connection to
+the device with Bluetooth address <em>bdaddr</em>.</p>
+<p>If <em>value</em> is given, sets the link policy settings for that
+connection to <em>value</em>. Possible values are
+<strong>RSWITCH</strong>, <strong>HOLD</strong>, <strong>SNIFF</strong>
+and <strong>PARK</strong>.</p>
+</dd>
+<dt><strong>lst &lt;<em>bdaddr</em>&gt; [<em>value</em>]</strong></dt>
+<dd>
+<p>With no value, displays link supervision timeout for the connection
+to the device with Bluetooth address <em>bdaddr</em>.</p>
+<p>If <em>value</em> is given, sets the link supervision timeout for
+that connection to <em>value</em> slots, or to infinite if value is
+0.</p>
+</dd>
+<dt><strong>auth &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Request authentication for the device with Bluetooth address
+<em>bdaddr</em>.</p>
+</dd>
+<dt><strong>enc &lt;<em>bdaddr</em>&gt; [<em>encrypt</em>]</strong></dt>
+<dd>
+<p><strong>enable</strong> or <strong>disable</strong> the encryption
+for the device with Bluetooth address <em>bdaddr</em>.</p>
+</dd>
+<dt><strong>key &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Change the connection link key for the device with Bluetooth address
+<em>bdaddr</em>.</p>
+</dd>
+<dt><strong>clkoff &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Read the clock offset for the device with Bluetooth address
+<em>bdaddr</em>.</p>
+</dd>
+<dt><strong>clock [<em>bdaddr</em>] [<em>clock</em>]</strong></dt>
+<dd>
+<p>Read the clock for the device with Bluetooth address
+<em>bdaddr</em>.</p>
+<p>The <em>clock</em> can be <strong>0</strong> for the local clock or
+<strong>1</strong> for the piconet clock (which is default).</p>
+</dd>
+<dt><strong>lescan [--<em>privacy</em>] [--<em>passive</em>]
+[--<em>acceptlist</em>] [--<em>discovery</em>=g|l]
+[--<em>duplicates</em>]</strong></dt>
+<dd>
+<p>Start LE scan</p>
+</dd>
+<dt><strong>leinfo [--<em>static</em>] [--<em>random</em>]
+&lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Get LE remote information</p>
+</dd>
+<dt><strong>lealadd [--<em>random</em>]
+&lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Add device to LE Accept List</p>
+</dd>
+<dt><strong>lealrm &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Remove device from LE Accept List</p>
+</dd>
+<dt><strong>lealsz</strong></dt>
+<dd>
+<p>Read size of LE Accept List</p>
+</dd>
+<dt><strong>lealclr</strong></dt>
+<dd>
+<p>Clear LE Accept List</p>
+</dd>
+<dt><strong>lerladd [--<em>local_irk</em>] [--<em>peer_irk</em>]
+[--<em>random</em>] &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Add device to LE Resolving List</p>
+</dd>
+<dt><strong>lerlrm &lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>Remove device from LE Resolving List</p>
+</dd>
+<dt><strong>lerlclr</strong></dt>
+<dd>
+<p>Clear LE Resolving List</p>
+</dd>
+<dt><strong>lerlsz</strong></dt>
+<dd>
+<p>Read size of LE Resolving List</p>
+</dd>
+<dt><strong>lerlon</strong></dt>
+<dd>
+<p>Enable LE Address Resolution</p>
+</dd>
+<dt><strong>lerloff</strong></dt>
+<dd>
+<p>Disable LE Address Resolution</p>
+</dd>
+<dt><strong>lecc [--<em>static</em>] [--<em>random</em>]
+&lt;<em>bdaddr</em>&gt; | [--<em>acceptlist</em>]</strong></dt>
+<dd>
+<p>Create a LE Connection</p>
+</dd>
+<dt><strong>ledc &lt;<em>handle</em>&gt; [<em>reason</em>]</strong></dt>
+<dd>
+<p>Disconnect a LE Connection</p>
+</dd>
+<dt><strong>lecup &lt;<em>handle</em>&gt; &lt;<em>min</em>&gt;
+&lt;<em>max</em>&gt; &lt;<em>latency</em>&gt;
+&lt;<em>timeout</em>&gt;</strong></dt>
+<dd>
+<p>LE Connection Update</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;, Marcel Holtmann
+&lt;marcel@holtmann.org&gt;, Fabrizio Gennari
+&lt;fabrizio.gennari@philips.com&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

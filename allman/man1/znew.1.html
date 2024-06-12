@@ -1,0 +1,52 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>znew - recompress .Z files to .gz files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>znew</strong> [ -ftv9PK] [ name.Z ... ]</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Znew</strong> command recompresses files from .Z
+(compress) format to .gz (gzip) format. If you want to recompress a file
+already in gzip format, rename the file to force a .Z extension then
+apply znew.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-f</strong></dt>
+<dd>
+<p>Force recompression from .Z to .gz format even if a .gz file already
+exists.</p>
+</dd>
+<dt><strong>-t</strong></dt>
+<dd>
+<p>Tests the new files before deleting originals.</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>Verbose. Display the name and percentage reduction for each file
+compressed.</p>
+</dd>
+<dt><strong>-9</strong></dt>
+<dd>
+<p>Use the slowest compression method (optimal compression).</p>
+</dd>
+<dt><strong>-P</strong></dt>
+<dd>
+<p>Use pipes for the conversion to reduce disk space usage.</p>
+</dd>
+<dt><strong>-K</strong></dt>
+<dd>
+<p>Keep a .Z file when it is smaller than the .gz file; implies
+<strong>-t</strong>.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>gzip</strong>(1), <strong>zmore</strong>(1),
+<strong>zdiff</strong>(1), <strong>zgrep</strong>(1),
+<strong>zforce</strong>(1), <strong>gzexe</strong>(1),
+<strong>compress(1)</strong></p>
+<h1>BUGS</h1>
+<p>If the <strong>-P</strong> option is used, <strong>znew</strong> does
+not maintain the timestamp if <strong>touch</strong>(1) does not support
+the <strong>-r</strong> option, and does not maintain permissions if
+<strong>chmod</strong>(1) does not support the
+<strong>--reference</strong> option.</p>

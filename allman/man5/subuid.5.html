@@ -1,0 +1,55 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>subuid - the configuration for subordinate user ids</p>
+<h1>DESCRIPTION</h1>
+<p>Subuid authorizes a user id to map ranges of user ids from its
+namespace into child namespaces.</p>
+<p>The delegation of the subordinate uids can be configured via the
+<em>subid</em> field in /etc/nsswitch.conf file. Only one value can be
+set as the delegation source. Setting this field to <em>files</em>
+configures the delegation of uids to /etc/subuid. Setting any other
+value treats the delegation as a plugin following with a name of the
+form <em>libsubid_$value.so</em>. If the value or plugin is missing,
+then the subordinate uid delegation falls back to <em>files</em>.</p>
+<p>Note, that <strong>useradd</strong> will only create entries in
+/etc/subuid if subid delegation is managed via subid files.</p>
+<h1>LOCAL SUBORDINATE DELEGATION</h1>
+<p>Each line in /etc/subuid contains a user name and a range of
+subordinate user ids that user is allowed to use. This is specified with
+three fields delimited by colons (“:”). These fields are:</p>
+<blockquote>
+<p>·</p>
+<p>login name or UID</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>numerical subordinate user ID</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>numerical subordinate user ID count</p>
+</blockquote>
+<p>This file specifies the user IDs that ordinary users can use, with
+the <strong>newuidmap</strong> command, to configure uid mapping in a
+user namespace.</p>
+<p>Multiple ranges may be specified per user.</p>
+<p>When large number of entries (10000-100000 or more) are defined in
+/etc/subuid, parsing performance penalty will become noticeable. In this
+case it is recommended to use UIDs instead of login names. Benchmarks
+have shown speed-ups up to 20x.</p>
+<h1>FILES</h1>
+<p>/etc/subuid</p>
+<blockquote>
+<p>Per user subordinate user IDs.</p>
+</blockquote>
+<p>/etc/subuid-</p>
+<blockquote>
+<p>Backup file for /etc/subuid.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>login.defs</strong>(5), <strong>newgidmap</strong>(1),
+<strong>newuidmap</strong>(1), <strong>newusers</strong>(1),
+<strong>subgid</strong>(5), <strong>useradd</strong>(8),
+<strong>userdel</strong>(8), <strong>usermod</strong>(8),
+<strong>user_namespaces</strong>(7).</p>

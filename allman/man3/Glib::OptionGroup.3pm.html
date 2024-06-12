@@ -1,0 +1,122 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::OptionGroup - group of options for command line option
+parsing</p>
+<h1>SYNOPSIS</h1>
+<p>my ($verbose, $source, $filenames) = (, undef, []); my $entries = [ {
+long_name =&gt; verbose, short_name =&gt; v, arg_type =&gt; none,
+arg_value =&gt; \$verbose, description =&gt; be verbose }, { long_name
+=&gt; source, short_name =&gt; s, arg_type =&gt; string, arg_value =&gt;
+\$source, description =&gt; set the source, arg_description =&gt; source
+}, [ filenames, f, filename-array, \$filenames ], ]; my $context =
+Glib::OptionContext-&gt;new (- urgsify your life);
+$context-&gt;add_main_entries ($entries, C); $context-&gt;parse (); #
+$verbose, $source, and $filenames are now updated according to the #
+command line options given</p>
+<h1>HIERARCHY</h1>
+<p>Glib::Boxed +----Glib::OptionGroup</p>
+<h1>METHODS</h1>
+<h2>optioncontext = Glib::OptionContext-&gt;<strong>new</strong>
+($parameter_string)</h2>
+<ul>
+<li><p><code>$parameter_string</code> (string)</p></li>
+</ul>
+<h2>optiongroup = Glib::OptionGroup-&gt;<strong>new</strong> (key =&gt;
+value, ...)</h2>
+<p>Creates a new option group from the given key-value pairs. The valid
+keys are name, description, help_description, and entries. The first
+three specify strings while the last one, entries, specifies an array
+reference of option entries. Example:</p>
+<p>my $group = Glib::OptionGroup-&gt;new ( name =&gt; urgs, description
+=&gt; Urgs Urgs Urgs, help_description =&gt; Help with Urgs, entries
+=&gt; \@entries);</p>
+<p>An option entry is a hash reference like this:</p>
+<p>{ long_name =&gt; verbose, short_name =&gt; v, flags =&gt;
+[qw/reverse hidden in-main/], arg_type =&gt; none, arg_value =&gt;
+\$verbose, description =&gt; verbose desc., arg_description =&gt;
+verbose arg desc. }</p>
+<p>Of those keys only long_name, arg_type, and arg_value are required.
+So this is a valid option entry too:</p>
+<p>{ long_name =&gt; package-names, arg_type =&gt; string-array,
+arg_value =&gt; \$package_names }</p>
+<p>For convenience, option entries can also be specified as array
+references containing long_name, short_name, arg_type, and
+arg_value:</p>
+<p>[ filenames, f, filename-array, \$filenames ]</p>
+<p>If you don't want an option to have a short name, specify undef for
+it:</p>
+<p>[ filenames, undef, filename-array, \$filenames ]</p>
+<h2>$context-&gt;<strong>add_group</strong> ($group)</h2>
+<ul>
+<li><p><code>$group</code> (Glib::OptionGroup)</p></li>
+</ul>
+<h2>$context-&gt;<strong>add_main_entries</strong> ($entries,
+$translation_domain)</h2>
+<ul>
+<li><p><code>$entries</code> (scalar) reference to an array of option
+entries</p></li>
+<li><p><code>$translation_domain</code> (string)</p></li>
+</ul>
+<h2>boolean = $context-&gt;<strong>get_help_enabled</strong></h2>
+<h2>$context-&gt;<strong>set_help_enabled</strong> ($help_enabled)</h2>
+<ul>
+<li><p><code>$help_enabled</code> (boolean)</p></li>
+</ul>
+<h2>boolean =
+$context-&gt;<strong>get_ignore_unknown_options</strong></h2>
+<h2>$context-&gt;<strong>set_ignore_unknown_options</strong>
+($ignore_unknown)</h2>
+<ul>
+<li><p><code>$ignore_unknown</code> (boolean)</p></li>
+</ul>
+<h2>optiongroup = $context-&gt;<strong>get_main_group</strong></h2>
+<h2>$context-&gt;<strong>set_main_group</strong> ($group)</h2>
+<ul>
+<li><p><code>$group</code> (Glib::OptionGroup)</p></li>
+</ul>
+<h2>boolean = $context-&gt;<strong>parse</strong></h2>
+<p>This method works directly on <em><code>@ARGV</code></em>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$group-&gt;<strong>set_translate_func</strong> ($func,
+$data=undef)</h2>
+<ul>
+<li><p><code>$func</code> (scalar)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+</ul>
+<h2>$group-&gt;<strong>set_translation_domain</strong> ($domain)</h2>
+<ul>
+<li><p><code>$domain</code> (string)</p></li>
+</ul>
+<h1>ENUMS AND FLAGS</h1>
+<h2>enum Glib::OptionArg</h2>
+<ul>
+<li><p>'none' / 'G_OPTION_ARG_NONE'</p></li>
+<li><p>'string' / 'G_OPTION_ARG_STRING'</p></li>
+<li><p>'int' / 'G_OPTION_ARG_INT'</p></li>
+<li><p>'callback' / 'G_OPTION_ARG_CALLBACK'</p></li>
+<li><p>'filename' / 'G_OPTION_ARG_FILENAME'</p></li>
+<li><p>'string-array' / 'G_OPTION_ARG_STRING_ARRAY'</p></li>
+<li><p>'filename-array' / 'G_OPTION_ARG_FILENAME_ARRAY'</p></li>
+<li><p>'double' / 'G_OPTION_ARG_DOUBLE'</p></li>
+<li><p>'int64' / 'G_OPTION_ARG_INT64'</p></li>
+</ul>
+<h2>flags Glib::OptionFlags</h2>
+<ul>
+<li><p>'hidden' / 'G_OPTION_FLAG_HIDDEN'</p></li>
+<li><p>'in-main' / 'G_OPTION_FLAG_IN_MAIN'</p></li>
+<li><p>'reverse' / 'G_OPTION_FLAG_REVERSE'</p></li>
+<li><p>'no-arg' / 'G_OPTION_FLAG_NO_ARG'</p></li>
+<li><p>'filename' / 'G_OPTION_FLAG_FILENAME'</p></li>
+<li><p>'optional-arg' / 'G_OPTION_FLAG_OPTIONAL_ARG'</p></li>
+<li><p>'noalias' / 'G_OPTION_FLAG_NOALIAS'</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Glib, Glib::Boxed</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

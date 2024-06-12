@@ -1,0 +1,70 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ciptool - Bluetooth Common ISDN Access Profile (CIP)</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ciptool</strong> [<em>OPTIONS</em>] <em>COMMANDS</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>ciptool(1)</strong> is used to set up, maintain, and inspect
+the CIP configuration of the Bluetooth subsystem in the Linux
+kernel.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-i</strong><em> &lt;hciX|BDADDR&gt;</em></dt>
+<dd>
+<p>The command is applied to device <em>hciX</em> , which must be the
+name or the address of an installed Bluetooth device.</p>
+<p>If not specified, the command will be use the first available
+Bluetooth device.</p>
+</dd>
+<dt><strong>-h<em>,</em> --help</strong></dt>
+<dd>
+<p>Show help options</p>
+</dd>
+</dl>
+</blockquote>
+<h1>COMMANDS</h1>
+<blockquote>
+<dl>
+<dt><strong>show</strong></dt>
+<dd>
+<p>Display information about the connected devices.</p>
+</dd>
+<dt><strong>search</strong></dt>
+<dd>
+<p>Search for Bluetooth devices and connect to first one that offers CIP
+support.</p>
+</dd>
+<dt><strong>connect &lt;<em>BDADDR</em><strong>&gt;</strong>
+[<em>PSM</em><strong>]</strong></strong></dt>
+<dd>
+<p>Connect the local device to the remote Bluetooth device on the
+specified <em>PSM</em> <strong>number. If no</strong> <em>PSM</em>
+<strong>is specified, it will use the SDP to retrieve</strong> it from
+the remote device.</p>
+</dd>
+<dt><strong>release [<em>BDADDR</em><strong>]</strong></strong></dt>
+<dd>
+<p>Release a connection to the specific device. If no <em>BDADDR</em>
+<strong>is given and</strong> only one device is connected this will be
+released.</p>
+</dd>
+<dt><strong>loopback &lt;<em>BDADDR</em><strong>&gt;</strong>
+[<em>PSM</em><strong>]</strong></strong></dt>
+<dd>
+<p>Create a connection to the remote device for Bluetooth testing. This
+command will not provide a CAPI controller, because it is only for
+testing the CAPI Message Transport Protocol.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Marcel Holtmann &lt;marcel@holtmann.org&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

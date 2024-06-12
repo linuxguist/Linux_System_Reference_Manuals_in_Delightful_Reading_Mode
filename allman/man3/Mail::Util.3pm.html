@@ -1,0 +1,79 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Mail::Util - mail utility functions</p>
+<h1>INHERITANCE</h1>
+<p>Mail::Util is a Exporter</p>
+<h1>SYNOPSIS</h1>
+<p>use Mail::Util qw( ... );</p>
+<h1>DESCRIPTION</h1>
+<p>This package provides several mail related utility functions. Any
+function required must by explicitly listed on the use line to be
+exported into the calling package.</p>
+<h1>FUNCTIONS</h1>
+<dl>
+<dt>mailaddress( [$address] )</dt>
+<dd>
+<p>Return a guess at the current users mail address. The user can force
+the return value by setting the MAILADDRESS environment variable. [2.10]
+You may set the <code>$address</code> via the parameter. WARNING: When
+not supplied via the environment variable, &lt;mailaddress&gt; looks at
+various configuration files and other environmental data. Although this
+seems to be smart behavior, this is not predictable enough (IMHO) to be
+used. Please set the MAILADDRESS explicitly, and do not trust on the
+automatic detection, even when that produces a correct address (on the
+moment) example: # in your main script $ENV{MAILADDRESS} =
+me@example.com; # everywhere else use Mail::Util mailaddress; print
+mailaddress; # since v2.10 mailaddress "me@example.com";</p>
+</dd>
+<dt>maildomain()</dt>
+<dd>
+<p>Attempt to determine the current user mail domain string via the
+following methods</p>
+<ul>
+<li><p>Look for the MAILDOMAIN environment variable, which can be set
+from outside the program. This is by far the best way to configure the
+domain.</p></li>
+<li><p>Look for a sendmail.cf file and extract DH parameter</p></li>
+<li><p>Look for a smail config file and usr the first host defined in
+hostname(s)</p></li>
+<li><p>Try an SMTP connect (if Net::SMTP exists) first to mailhost then
+localhost</p></li>
+<li><p>Use value from Net::Domain::domainname (if Net::Domain
+exists)</p></li>
+</ul>
+<p>WARNING: On modern machines, there is only one good way to provide
+information to this method: the first; always explicitly configure the
+MAILDOMAIN. example: # in your main script $ENV{MAILDOMAIN} =
+example.com; # everywhere else use Mail::Util maildomain; print
+maildomain;</p>
+</dd>
+<dt>read_mbox($file)</dt>
+<dd>
+<p>Read <code>$file</code>, a binmail mailbox file, and return a list of
+references. Each reference is a reference to an array containing one
+message. WARNING: This method does not quote lines which accidentally
+also start with the message separator <code>From</code>, so this
+implementation can be considered broken. See Mail::Box::Mbox</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>This module is part of the MailTools distribution,
+<em>http://perl.overmeer.net/mailtools/</em>.</p>
+<h1>AUTHORS</h1>
+<p>The MailTools bundle was developed by Graham Barr. Later, Mark
+Overmeer took over maintenance without commitment to further
+development.</p>
+<p>Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;. Mail::Field::AddrList
+by Peter Orbaek &lt;poe@cit.dk&gt;. Mail::Mailer and Mail::Send by Tim
+Bunce &lt;Tim.Bunce@ig.co.uk&gt;. For other contributors see
+ChangeLog.</p>
+<h1>LICENSE</h1>
+<p>Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and
+2001-2017 Mark Overmeer &lt;perl@overmeer.net&gt;.</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself. See
+<em>http://www.perl.com/perl/misc/Artistic.html</em></p>

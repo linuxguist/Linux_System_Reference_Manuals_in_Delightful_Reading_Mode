@@ -1,0 +1,938 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Spinbox - Create and manipulate Spinbox widgets</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$spinbox</code></em> =
+<em><code>$parent</code></em>-&gt;Spinbox(?<em>options</em>?);</p>
+<p>-activebackground -highlightthickness -repeatinterval -background
+-insertbackground -selectbackground -borderwidth -insertborderwidth
+-selectborderwidth -cursor -insertontime -selectforeground
+-exportselection -insertwidth -takefocus -font -insertofftime
+-textvariable -foreground -justify -xscrollcommand -highlightbackground
+-relief -highlightcolor -repeatdelay</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Option: -buttonbackground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: buttonBackground</dt>
+<dd>
+
+</dd>
+<dt>Class: Background</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The background color to be used for the spin buttons.</p>
+<dl>
+<dt>Option: -buttoncursor</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: buttonCursor</dt>
+<dd>
+
+</dd>
+<dt>Class: Cursor</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The cursor to be used when over the spin buttons. If this is empty
+(the default), a default cursor will be used.</p>
+<dl>
+<dt>Option: -buttondownrelief</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: buttonDownRelief</dt>
+<dd>
+
+</dd>
+<dt>Class: Relief</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The relief to be used for the upper spin button.</p>
+<dl>
+<dt>Option: -buttonuprelief</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: buttonUpRelief</dt>
+<dd>
+
+</dd>
+<dt>Class: Relief</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The relief to be used for the lower spin button.</p>
+<dl>
+<dt>Option: -command</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: command</dt>
+<dd>
+
+</dd>
+<dt>Class: Command</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a Perl/Tk callback to invoke whenever a Spinbutton is
+invoked. The callback has these two arguments <em>appended</em> to any
+existing callback arguments: the current value of the widget and the
+direction of the button press (<strong>up</strong> or
+<strong>down</strong>).</p>
+<dl>
+<dt>Option: -disabledbackground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: disabledBackground</dt>
+<dd>
+
+</dd>
+<dt>Class: DisabledBackground</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the background color to use when the Spinbox is disabled.
+If this option is the empty string, the normal background color is
+used.</p>
+<dl>
+<dt>Option: -disabledforeground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: disabledForeground</dt>
+<dd>
+
+</dd>
+<dt>Class: DisabledForeground</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the foreground color to use when the Spinbox is disabled.
+If this option is the empty string, the normal foreground color is
+used.</p>
+<dl>
+<dt>Option: -format</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: format</dt>
+<dd>
+
+</dd>
+<dt>Class: Format</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies an alternate format to use when setting the string value
+when using the <strong>-from</strong> and <strong>-to</strong> range.
+This must be a format specifier of the form
+<strong>%&lt;pad&gt;.&lt;pad&gt;f</strong>, as it will format a
+floating-point number.</p>
+<dl>
+<dt>Option: -from</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: from</dt>
+<dd>
+
+</dd>
+<dt>Class: From</dt>
+<dd>
+
+</dd>
+</dl>
+<p>A floating-point value corresponding to the lowest value for a
+Spinbox, to be used in conjunction with <strong>-to</strong> and
+<strong>-increment</strong>. When all are specified correctly, the
+Spinbox will use these values to control its contents. This value must
+be less than the <strong>-to</strong> option. If
+<strong>-values</strong> is specified, it supercedes this option.</p>
+<dl>
+<dt>Option: -invalidcommand</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Alias: -invcmd</dt>
+<dd>
+
+</dd>
+<dt>Name: invalidCommand</dt>
+<dd>
+
+</dd>
+<dt>Class: InvalidCommand</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a script to eval when <strong>validateCommand</strong>
+returns 0. Setting it to an empty string disables this feature (the
+default). The best use of this option is to set it to <em>bell</em>. See
+<strong>Validation</strong> below for more information.</p>
+<dl>
+<dt>Option: -increment</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: increment</dt>
+<dd>
+
+</dd>
+<dt>Class: Increment</dt>
+<dd>
+
+</dd>
+</dl>
+<p>A floating-point value specifying the increment. When used with
+<strong>-from</strong> and <strong>-to</strong>, the value in the widget
+will be adjusted by <strong>-increment</strong> when a spin button is
+pressed (up adds the value, down subtracts the value).</p>
+<dl>
+<dt>Option: -readonlybackground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: readonlyBackground</dt>
+<dd>
+
+</dd>
+<dt>Class: ReadonlyBackground</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the background color to use when the Spinbox is readonly.
+If this option is the empty string, the normal background color is
+used.</p>
+<dl>
+<dt>Option: -state</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: state</dt>
+<dd>
+
+</dd>
+<dt>Class: State</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies one of three states for the Spinbox:
+<strong>normal</strong>, <strong>disabled</strong>, or
+<strong>readonly</strong>. If the Spinbox is readonly, then the value
+may not be changed using methods and no insertion cursor will be
+displayed, even if the input focus is in the widget; the contents of the
+widget may still be selected. If the Spinbox is disabled, the value may
+not be changed, no insertion cursor will be displayed, the contents will
+not be selectable, and the Spinbox may be displayed in a different
+color, depending on the values of the
+<strong>-disabledforeground</strong> and
+<strong>-disabledbackground</strong> options.</p>
+<dl>
+<dt>Option: -to</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: to</dt>
+<dd>
+
+</dd>
+<dt>Class: To</dt>
+<dd>
+
+</dd>
+</dl>
+<p>A floating-point value corresponding to the highest value for the
+Spinbox, to be used in conjunction with <strong>-from</strong> and
+<strong>-increment</strong>. When all are specified correctly, the
+Spinbox will use these values to control its contents. This value must
+be greater than the <strong>-from</strong> option. If
+<strong>-values</strong> is specified, it supercedes this option.</p>
+<dl>
+<dt>Option: -validate</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: validate</dt>
+<dd>
+
+</dd>
+<dt>Class: Validate</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the mode in which validation should operate:
+<strong>none</strong>, <strong>focus</strong>, <strong>focusin</strong>,
+<strong>focusout</strong>, <strong>key</strong>, or
+<strong>all</strong>. It defaults to <strong>none</strong>. When you
+want validation, you must explicitly state which mode you wish to use.
+See <strong>Validation</strong> below for more.</p>
+<dl>
+<dt>Option: -validatecommand</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Alias: -vcmd</dt>
+<dd>
+
+</dd>
+<dt>Name: validateCommand</dt>
+<dd>
+
+</dd>
+<dt>Class: ValidateCommand</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a script to evaluate when you want to validate the input in
+the widget. Setting it to an empty string disables this feature (the
+default). Validation occurs according to the value of
+<strong>-validate</strong>. This command must return a valid boolean
+value. If it returns 0 (or the valid boolean equivalent) then the value
+of the widget will not change and the <strong>invalidCommand</strong>
+will be evaluated if it is set. If it returns 1, then value will be
+changed. See <strong>Validation</strong> below for more information.</p>
+<dl>
+<dt>Option: -values</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: values</dt>
+<dd>
+
+</dd>
+<dt>Class: Values</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Must be a proper list value. If specified, the Spinbox will use these
+values as to control its contents, starting with the first value. This
+option has precedence over the <strong>-from</strong> and
+<strong>-to</strong> range.</p>
+<dl>
+<dt>Option: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies an integer value indicating the desired width of the
+Spinbox window, in average-size characters of the widget's font. If the
+value is less than or equal to zero, the widget picks a size just large
+enough to hold its current text.</p>
+<dl>
+<dt>Option: -wrap</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: wrap</dt>
+<dd>
+
+</dd>
+<dt>Class: Wrap</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Must be a proper boolean value. If on, the Spinbox will wrap around
+the values of data in the widget.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Spinbox</strong> method creates a new window (given by
+the <code>$spinbox</code> argument) and makes it into a Spinbox widget.
+Additional options, described above, may be specified on the command
+line or in the option database to configure aspects of the Spinbox such
+as its colors, font, and relief.</p>
+<p>A <strong>Spinbox</strong> is an extended <strong>Entry</strong>
+widget that allows he user to move, or spin, through a fixed set of
+ascending or descending values such as times or dates in addition to
+editing the value as in an <strong>entry</strong>. When first created, a
+Spinbox's string is empty. A portion of the Spinbox may be selected as
+described below. If a Spinbox is exporting its selection (see the
+<strong>exportSelection</strong> option), then it will observe the
+standard protocols for handling the selection; Spinbox selections are
+available as type <strong>STRING</strong>. Spinboxes also observe the
+standard Tk rules for dealing with the input focus. When a Spinbox has
+the input focus it displays an <em>insertion cursor</em> to indicate
+where new characters will be inserted.</p>
+<p>Spinboxes are capable of displaying strings that are too long to fit
+entirely within the widget's window. In this case, only a portion of the
+string will be displayed; commands described below may be used to change
+the view in the window. Spinboxes use the standard
+<strong>-xscrollcommand</strong> mechanism for interacting with
+scrollbars (see the description of the <strong>-xscrollcommand</strong>
+option for details). They also support scanning, as described below.</p>
+<h1>VALIDATION</h1>
+<p>Validation works by setting the <strong>validateCommand</strong>
+option to a callback which will be evaluated according to the
+<strong>validate</strong> option as follows:</p>
+<dl>
+<dt>none</dt>
+<dd>
+<p>Default. This means no validation will occur.</p>
+</dd>
+<dt>focus</dt>
+<dd>
+<p><strong>validateCommand</strong> will be called when the Spinbox
+receives or loses focus.</p>
+</dd>
+<dt>focusin</dt>
+<dd>
+<p><strong>validateCommand</strong> will be called when the Spinbox
+receives focus.</p>
+</dd>
+<dt>focusout</dt>
+<dd>
+<p><strong>validateCommand</strong> will be called when the Spinbox
+loses focus.</p>
+</dd>
+<dt>key</dt>
+<dd>
+<p><strong>validateCommand</strong> will be called when the Spinbox is
+edited.</p>
+</dd>
+<dt>all</dt>
+<dd>
+<p><strong>validateCommand</strong> will be called for all above
+conditions. The <strong>validateCommand</strong> and
+<strong>invalidCommand</strong> callbacks are invoked with at least 5
+positional arguments, which are <em>appended</em> to any already
+existing callback arguments:</p>
+<ul>
+<li><p>1 The proposed value of the entry. If you are configuring the
+entry widget to have a new textVariable, this will be the value of that
+textVariable.</p></li>
+<li><p>2 The characters to be added (or deleted). This will be
+<code>undef</code> if validation is due to focus, explcit call to
+validate or if change is due to <code>-textvariable</code>
+changing.</p></li>
+<li><p>3 The current value of entry i.e. before the proposed
+change.</p></li>
+<li><p>4 The index of character string to be added/deleted, if any.
+Otherwise -1.</p></li>
+<li><p>5 Type of action. 1 == INSERT, 0 == DELETE, -1 if it's a forced
+validation or textVariable validation.</p></li>
+</ul>
+<p>In general, the <strong>textVariable</strong> and
+<strong>validateCommand</strong> can be dangerous to mix. Any problems
+have been overcome so that using the <strong>validateCommand</strong>
+will not interfere with the traditional behavior of the Spinbox widget.
+Using the <strong>textVariable</strong> for read-only purposes will
+never cause problems. The danger comes when you try set the
+<strong>textVariable</strong> to something that the
+<strong>validateCommand</strong> would not accept, which causes
+<strong>validate</strong> to become <em>none</em> (the
+<strong>invalidCommand</strong> will not be triggered). The same happens
+when an error occurs evaluating the <strong>validateCommand</strong>.
+Primarily, an error will occur when the <strong>validateCommand</strong>
+or <strong>invalidCommand</strong> encounters an error in its script
+while evaluating or <strong>validateCommand</strong> does not return a
+valid boolean value. The <strong>validate</strong> option will also set
+itself to <strong>none</strong> when you edit the Spinbox widget from
+within either the <strong>validateCommand</strong> or the
+<strong>invalidCommand</strong>. Such editions will override the one
+that was being validated. If you wish to edit the value of the widget
+during validation and still have the <strong>validate</strong> option
+set, you should include the command my $val =
+$spinbox-&gt;cget(-validate); $spinbox-&gt;configure(-validate =&gt;
+$val); in the <strong>validateCommand</strong> or
+<strong>invalidCommand</strong> (whichever one you were editing the
+Spinbox widget from). It is also recommended to not set an associated
+<strong>textVariable</strong> during validation, as that can cause the
+Spinbox widget to become out of sync with the
+<strong>textVariable</strong>.</p>
+</dd>
+</dl>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>Spinbox</strong> command creates a widget object whose
+name is <code>$widget</code>. This command may be used to invoke various
+operations on the widget. It has the following general form:</p>
+<p>$widget-&gt;method(?arg arg ...?);</p>
+<p>Many of the methods for Spinboxes take one or more indices as
+arguments. An index specifies a particular character in the Spinbox's
+string, in any of the following ways:</p>
+<dl>
+<dt>number</dt>
+<dd>
+<p>Specifies the character as a numerical index, where 0 corresponds to
+the first character in the string.</p>
+</dd>
+<dt>anchor</dt>
+<dd>
+<p>Indicates the anchor point for the selection, which is set with the
+<strong>select from</strong> and <strong>select adjust</strong>
+methods.</p>
+</dd>
+<dt>end</dt>
+<dd>
+<p>Indicates the character just after the last one in the Spinbox's
+string. This is equivalent to specifying a numerical index equal to the
+length of the Spinbox's string.</p>
+</dd>
+<dt>insert</dt>
+<dd>
+<p>Indicates the character adjacent to and immediately following the
+insertion cursor.</p>
+</dd>
+<dt>sel.first</dt>
+<dd>
+<p>Indicates the first character in the selection. It is an error to use
+this form if the selection isn't in the Spinbox window.</p>
+</dd>
+<dt>sel.last</dt>
+<dd>
+<p>Indicates the character just after the last one in the selection. It
+is an error to use this form if the selection isn't in the Spinbox
+window.</p>
+</dd>
+</dl>
+<ol class="example" type="1">
+<li><p>In this form, <em>number</em> is treated as an x-coordinate in
+the Spinbox's window; the character spanning that x-coordinate is used.
+For example, ``<strong><code>@0</code></strong>'' indicates the
+left-most character in the window.</p></li>
+</ol>
+<p>Abbreviations may be used for any of the forms above, e.g.
+``<strong>e</strong>'' or ``<strong>sel.f</strong>''. In general,
+out-of-range indices are automatically rounded to the nearest legal
+value.</p>
+<p>The following commands are possible for Spinbox widgets:</p>
+<dl>
+<dt>$widget-&gt;bbox(index);</dt>
+<dd>
+<p>Returns a list of four numbers describing the bounding box of the
+character given by <em>index</em>. The first two elements of the list
+give the x and y coordinates of the upper-left corner of the screen area
+covered by the character (in pixels relative to the widget) and the last
+two elements give the width and height of the character, in pixels. The
+bounding box may refer to a region outside the visible area of the
+window.</p>
+</dd>
+<dt>$widget-&gt;cget(option);</dt>
+<dd>
+<p>Returns the current value of the configuration option given by
+<em>option</em>. <em>Option</em> may have any of the values accepted by
+the <strong>Spinbox</strong> command.</p>
+</dd>
+<dt>$widget-&gt;configure(?option?, ?value, option, value, ...?);</dt>
+<dd>
+<p>Query or modify the configuration options of the widget. If no
+<em>option</em> is specified, returns a list describing all of the
+available options for <code>$widget</code> (see Tk::configure for
+information on the format of this list). If <em>option</em> is specified
+with no <em>value</em>, then the command returns a list describing the
+one named option (this list will be identical to the corresponding
+sublist of the value returned if no <em>option</em> is specified). If
+one or more <em>option-value</em> pairs are specified, then the command
+modifies the given widget option(s) to have the given value(s); in this
+case the command returns an empty string. <em>Option</em> may have any
+of the values accepted by the <strong>Spinbox</strong> command.</p>
+</dd>
+<dt>$widget-&gt;delete(first, ?last?);</dt>
+<dd>
+<p>Delete one or more elements of the Spinbox. <em>First</em> is the
+index of the first character to delete, and <em>last</em> is the index
+of the character just after the last one to delete. If <em>last</em>
+isn't specified it defaults to <em>first</em>+1, i.e. a single character
+is deleted. This command returns an empty string.</p>
+</dd>
+<dt>$widget-&gt;get;</dt>
+<dd>
+<p>Returns the Spinbox's string.</p>
+</dd>
+<dt>$widget-&gt;icursor(index);</dt>
+<dd>
+<p>Arrange for the insertion cursor to be displayed just before the
+character given by <em>index</em>. Returns an empty string.</p>
+</dd>
+<dt>$widget-&gt;identify(x, y);</dt>
+<dd>
+<p>Returns the name of the window element corresponding to coordinates
+<em>x</em> and <em>y</em> in the Spinbox. Return value is one of:
+<strong>none</strong>, <strong>buttondown</strong>,
+<strong>buttonup</strong>, <strong>entry</strong>.</p>
+</dd>
+<dt>$widget-&gt;index(index);</dt>
+<dd>
+<p>Returns the numerical index corresponding to <em>index</em>.</p>
+</dd>
+<dt>$widget-&gt;insert(index, string);</dt>
+<dd>
+<p>Insert the characters of <em>string</em> just before the character
+indicated by <em>index</em>. Returns an empty string.</p>
+</dd>
+<dt>$widget-&gt;invoke(element);</dt>
+<dd>
+<p>Causes the specified element, either <strong>buttondown</strong> or
+<strong>buttonup</strong>, to be invoked, triggering the action
+associated with it.</p>
+</dd>
+<dt>$widget-&gt;scan(option, args);</dt>
+<dd>
+<p>This command is used to implement scanning on Spinboxes. It has two
+forms, depending on <em>option</em>:</p>
+<dl>
+<dt>$widget-&gt;scanMark(x);</dt>
+<dd>
+<p>Records <em>x</em> and the current view in the Spinbox window; used
+in conjunction with later <strong>scan dragto</strong> commands.
+Typically this command is associated with a mouse button press in the
+widget. It returns an empty string.</p>
+</dd>
+<dt>$widget-&gt;scanDragto(x);</dt>
+<dd>
+<p>This command computes the difference between its <em>x</em> argument
+and the <em>x</em> argument to the last <strong>scan mark</strong>
+command for the widget. It then adjusts the view left or right by 10
+times the difference in x-coordinates. This command is typically
+associated with mouse motion events in the widget, to produce the effect
+of dragging the Spinbox at high speed through the window. The return
+value is an empty string.</p>
+</dd>
+</dl>
+</dd>
+<dt>$widget-&gt;selection(option, arg);</dt>
+<dd>
+<p>This command is used to adjust the selection within a Spinbox. It has
+several forms, depending on <em>option</em>:</p>
+<dl>
+<dt>$widget-&gt;selectionAdjust(index);</dt>
+<dd>
+<p>Locate the end of the selection nearest to the character given by
+<em>index</em>, and adjust that end of the selection to be at
+<em>index</em> (i.e including but not going beyond <em>index</em>). The
+other end of the selection is made the anchor point for future
+<strong>select to</strong> commands. If the selection isn't currently in
+the Spinbox, then a new selection is created to include the characters
+between <em>index</em> and the most recent selection anchor point,
+inclusive. Returns an empty string.</p>
+</dd>
+<dt>$widget-&gt;selectionClear;</dt>
+<dd>
+<p>Clear the selection if it is currently in this widget. If the
+selection isn't in this widget then the command has no effect. Returns
+an empty string.</p>
+</dd>
+<dt>$widget-&gt;selectionElement(?element?);</dt>
+<dd>
+<p>Sets or gets the currently selected element. If a spinbutton element
+is specified, it will be displayed depressed.</p>
+</dd>
+<dt>$widget-&gt;selectionFrom(index);</dt>
+<dd>
+<p>Set the selection anchor point to just before the character given by
+<em>index</em>. Doesn't change the selection. Returns an empty
+string.</p>
+</dd>
+<dt>$widget-&gt;selectionPresent;</dt>
+<dd>
+<p>Returns 1 if there is are characters selected in the Spinbox, 0 if
+nothing is selected.</p>
+</dd>
+<dt>$widget-&gt;selectionRange(start, end);</dt>
+<dd>
+<p>Sets the selection to include the characters starting with the one
+indexed by <em>start</em> and ending with the one just before
+<em>end</em>. If <em>end</em> refers to the same character as
+<em>start</em> or an earlier one, then the Spinbox's selection is
+cleared.</p>
+</dd>
+<dt>$widget-&gt;selectionTo(index);</dt>
+<dd>
+<p>If <em>index</em> is before the anchor point, set the selection to
+the characters from <em>index</em> up to but not including the anchor
+point. If <em>index</em> is the same as the anchor point, do nothing. If
+<em>index</em> is after the anchor point, set the selection to the
+characters from the anchor point up to but not including <em>index</em>.
+The anchor point is determined by the most recent <strong>select
+from</strong> or <strong>select adjust</strong> command in this widget.
+If the selection isn't in this widget then a new selection is created
+using the most recent anchor point specified for the widget. Returns an
+empty string.</p>
+</dd>
+</dl>
+</dd>
+<dt>$widget-&gt;set(?string?);</dt>
+<dd>
+<p>If <em>string</em> is specified, the Spinbox will try and set it to
+this value, otherwise it just returns the Spinbox's string. If
+validation is on, it will occur when setting the string.</p>
+</dd>
+<dt>$widget-&gt;validate;</dt>
+<dd>
+<p>This command is used to force an evaluation of the
+<strong>validateCommand</strong> independent of the conditions specified
+by the <strong>validate</strong> option. This is done by temporarily
+setting the <strong>validate</strong> option to <strong>all</strong>. It
+returns 0 or 1.</p>
+</dd>
+<dt>$widget-&gt;xview(args);</dt>
+<dd>
+<p>This command is used to query and change the horizontal position of
+the text in the widget's window. It can take any of the following
+forms:</p>
+<dl>
+<dt>$widget-&gt;xview;</dt>
+<dd>
+<p>Returns a list containing two elements. Each element is a real
+fraction between 0 and 1; together they describe the horizontal span
+that is visible in the window. For example, if the first element is .2
+and the second element is .6, 20% of the Spinbox's text is off-screen to
+the left, the middle 40% is visible in the window, and 40% of the text
+is off-screen to the right. These are the same values passed to
+scrollbars via the <strong>-xscrollcommand</strong> option.</p>
+</dd>
+<dt>$widget-&gt;xview(index);</dt>
+<dd>
+<p>Adjusts the view in the window so that the character given by
+<em>index</em> is displayed at the left edge of the window.</p>
+</dd>
+<dt>$widget-&gt;xviewMoveto(fraction);</dt>
+<dd>
+<p>Adjusts the view in the window so that the character
+<em>fraction</em> of the way through the text appears at the left edge
+of the window. <em>Fraction</em> must be a fraction between 0 and 1.</p>
+</dd>
+<dt>$widget-&gt;xviewScroll(number, what);</dt>
+<dd>
+<p>This command shifts the view in the window left or right according to
+<em>number</em> and <em>what</em>. <em>Number</em> must be an integer.
+<em>What</em> must be either <strong>units</strong> or
+<strong>pages</strong> or an abbreviation of one of these. If
+<em>what</em> is <strong>units</strong>, the view adjusts left or right
+by <em>number</em> average-width characters on the display; if it is
+<strong>pages</strong> then the view adjusts by <em>number</em>
+screenfuls. If <em>number</em> is negative then characters farther to
+the left become visible; if it is positive then characters farther to
+the right become visible.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h1>DEFAULT BINDINGS</h1>
+<p>Tk automatically creates class bindings for Spinboxes that give them
+the following default behavior. In the descriptions below, ``word''
+refers to a contiguous group of letters, digits, or ``_'' characters, or
+any single character other than these.</p>
+<dl>
+<dt>[1]</dt>
+<dd>
+<p>Clicking mouse button 1 positions the insertion cursor just before
+the character underneath the mouse cursor, sets the input focus to this
+widget, and clears any selection in the widget. Dragging with mouse
+button 1 strokes out a selection between the insertion cursor and the
+character under the mouse.</p>
+</dd>
+<dt>[2]</dt>
+<dd>
+<p>Double-clicking with mouse button 1 selects the word under the mouse
+and positions the insertion cursor at the beginning of the word.
+Dragging after a double click will stroke out a selection consisting of
+whole words.</p>
+</dd>
+<dt>[3]</dt>
+<dd>
+<p>Triple-clicking with mouse button 1 selects all of the text in the
+Spinbox and positions the insertion cursor before the first
+character.</p>
+</dd>
+<dt>[4]</dt>
+<dd>
+<p>The ends of the selection can be adjusted by dragging with mouse
+button 1 while the Shift key is down; this will adjust the end of the
+selection that was nearest to the mouse cursor when button 1 was
+pressed. If the button is double-clicked before dragging then the
+selection will be adjusted in units of whole words.</p>
+</dd>
+<dt>[5]</dt>
+<dd>
+<p>Clicking mouse button 1 with the Control key down will position the
+insertion cursor in the Spinbox without affecting the selection.</p>
+</dd>
+<dt>[6]</dt>
+<dd>
+<p>If any normal printing characters are typed in a Spinbox, they are
+inserted at the point of the insertion cursor.</p>
+</dd>
+<dt>[7]</dt>
+<dd>
+<p>The view in the Spinbox can be adjusted by dragging with mouse button
+2. If mouse button 2 is clicked without moving the mouse, the selection
+is copied into the Spinbox at the position of the mouse cursor.</p>
+</dd>
+<dt>[8]</dt>
+<dd>
+<p>If the mouse is dragged out of the Spinbox on the left or right sides
+while button 1 is pressed, the Spinbox will automatically scroll to make
+more text visible (if there is more text off-screen on the side where
+the mouse left the window).</p>
+</dd>
+<dt>[9]</dt>
+<dd>
+<p>The Left and Right keys move the insertion cursor one character to
+the left or right; they also clear any selection in the Spinbox and set
+the selection anchor. If Left or Right is typed with the Shift key down,
+then the insertion cursor moves and the selection is extended to include
+the new character. Control-Left and Control-Right move the insertion
+cursor by words, and Control-Shift-Left and Control-Shift-Right move the
+insertion cursor by words and also extend the selection. Control-b and
+Control-f behave the same as Left and Right, respectively. Meta-b and
+Meta-f behave the same as Control-Left and Control-Right,
+respectively.</p>
+</dd>
+<dt>[10]</dt>
+<dd>
+<p>The Home key, or Control-a, will move the insertion cursor to the
+beginning of the Spinbox and clear any selection in the Spinbox.
+Shift-Home moves the insertion cursor to the beginning of the Spinbox
+and also extends the selection to that point.</p>
+</dd>
+<dt>[11]</dt>
+<dd>
+<p>The End key, or Control-e, will move the insertion cursor to the end
+of the Spinbox and clear any selection in the Spinbox. Shift-End moves
+the cursor to the end and extends the selection to that point.</p>
+</dd>
+<dt>[12]</dt>
+<dd>
+<p>The Select key and Control-Space set the selection anchor to the
+position of the insertion cursor. They don't affect the current
+selection. Shift-Select and Control-Shift-Space adjust the selection to
+the current position of the insertion cursor, selecting from the anchor
+to the insertion cursor if there was not any selection previously.</p>
+</dd>
+<dt>[13]</dt>
+<dd>
+<p>Control-/ selects all the text in the Spinbox.</p>
+</dd>
+<dt>[14]</dt>
+<dd>
+<p>Control-\ clears any selection in the Spinbox.</p>
+</dd>
+<dt>[15]</dt>
+<dd>
+<p>The F16 key (labelled Copy on many Sun workstations) or Meta-w copies
+the selection in the widget to the clipboard, if there is a
+selection.</p>
+</dd>
+<dt>[16]</dt>
+<dd>
+<p>The F20 key (labelled Cut on many Sun workstations) or Control-w
+copies the selection in the widget to the clipboard and deletes the
+selection. If there is no selection in the widget then these keys have
+no effect.</p>
+</dd>
+<dt>[17]</dt>
+<dd>
+<p>The F18 key (labelled Paste on many Sun workstations) or Control-y
+inserts the contents of the clipboard at the position of the insertion
+cursor.</p>
+</dd>
+<dt>[18]</dt>
+<dd>
+<p>The Delete key deletes the selection, if there is one in the Spinbox.
+If there is no selection, it deletes the character to the right of the
+insertion cursor.</p>
+</dd>
+<dt>[19]</dt>
+<dd>
+<p>The BackSpace key and Control-h delete the selection, if there is one
+in the Spinbox. If there is no selection, it deletes the character to
+the left of the insertion cursor.</p>
+</dd>
+<dt>[20]</dt>
+<dd>
+<p>Control-d deletes the character to the right of the insertion
+cursor.</p>
+</dd>
+<dt>[21]</dt>
+<dd>
+<p>Meta-d deletes the word to the right of the insertion cursor.</p>
+</dd>
+<dt>[22]</dt>
+<dd>
+<p>Control-k deletes all the characters to the right of the insertion
+cursor.</p>
+</dd>
+<dt>[23]</dt>
+<dd>
+<p>Control-t reverses the order of the two characters to the right of
+the insertion cursor. If the Spinbox is disabled using the
+<strong>-state</strong> option, then the Spinbox's view can still be
+adjusted and text in the Spinbox can still be selected, but no insertion
+cursor will be displayed and no text modifications will take place. The
+behavior of Spinboxes can be changed by defining new bindings for
+individual widgets or by redefining the class bindings.</p>
+</dd>
+</dl>
+<h1>KEYWORDS</h1>
+<p>Spinbox, Entry, widget</p>

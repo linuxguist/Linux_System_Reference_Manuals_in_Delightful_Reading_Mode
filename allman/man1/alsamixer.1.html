@@ -1,0 +1,450 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>alsamixer - soundcard mixer for ALSA soundcard driver, with ncurses
+interface</p>
+<h1>SYNOPSIS</h1>
+<p><strong>alsamixer</strong> [<em>options</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>alsamixer</strong> is an ncurses mixer program for use with
+the ALSA soundcard drivers. It supports multiple soundcards with
+multiple devices.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><em>-h, --help</em></dt>
+<dd>
+<p>Help: show available flags.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-c, --card</em> &lt;card number or identification&gt;</dt>
+<dd>
+<p>Select the soundcard to use, if you have more than one. Cards are
+numbered from 0 (the default).</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-D, --device</em> &lt;device identification&gt;</dt>
+<dd>
+<p>Select the mixer device to control.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-V, --view</em> &lt;mode&gt;</dt>
+<dd>
+<p>Select the starting view mode, either <em>playback</em>,
+<em>capture</em> or <em>all</em>.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-g, --no-color</em></dt>
+<dd>
+<p>Toggle the using of colors.</p>
+</dd>
+</dl>
+<h1>MIXER VIEWS</h1>
+<p>The top-left corner of <strong>alsamixer</strong> shows some basic
+information: the card name, the mixer chip name, the current view mode
+and the currently selected mixer item. When the mixer item is switched
+off, <em>[Off]</em> is displayed in its name.</p>
+<p>Volume bars are located below the basic information area. You can
+scroll left/right when all controls can't be put in a single screen. The
+name of each control is shown in the bottom below the volume bars. The
+currently selected item is drawn in red and/or emphasized.</p>
+<p>Each mixer control with volume capability shows a box and the current
+volume filled in that box. The volume percentages are displayed below
+the volume bar for left and right channels. For a mono control, only one
+value is shown there.</p>
+<p>When a mixer control is turned off, <em>M</em> (mute) appears below
+the volume bar. When it's turned on, <em>O</em> in green appears
+instead. You can toggle the switch via <em>m</em> key.</p>
+<p>When a mixer control has capture capability, the capture flag appears
+below the volume bar, too. When the capture is turned off, ------- is
+shown. <em>CAPTURE</em> in red appears when the capture switch is turned
+on. In addition, <em>L</em> and <em>R</em> letters appear in left and
+right side to indicate that left and the right channels are turned
+on.</p>
+<p>Some controls have the enumeration list, and don't show boxes but
+only texts which indicate the currently active item. You can change the
+item via up/down keys.</p>
+<h1>VIEW MODES</h1>
+<p><strong>alsamixer</strong> has three view modes: playback, capture
+and all. In the playback view, only the controls related with playback
+are shown. Similarly, only the controls for capture (recording) are
+shown in the capture view. The all view mode shows all controls. The
+current view mode is displayed in the top-left position together with
+the mixer name, etc.</p>
+<p>The default view mode is the playback view. You can change it via
+<em>-V</em> option.</p>
+<p>Each view mode can be switched via keyboard commands, too. See the
+next section.</p>
+<h1>KEYBOARD COMMANDS</h1>
+<p><strong>alsamixer</strong> recognizes the following keyboard commands
+to control the soundcard. Commands shown here in upper case can also be
+given in lower case. To be reminded of these keystrokes, hit the
+<em>h</em> key.</p>
+<h2>General Controls</h2>
+<p>The <em>Left</em> and <em>right arrow</em> keys are used to select
+the channel (or device, depending on your preferred terminology). You
+can also use <em>n</em> ("next") and <em>p</em> ("previous").</p>
+<p>The <em>Up</em> and <em>Down Arrows</em> control the volume for the
+currently selected device. You can also use <em>+</em> or <em>-</em> for
+the same purpose. Both the left and right signals are affected. For
+independent left and right control, see below. The <em>B</em> or
+<em>=</em> key adjusts the balance of volumes on left and right
+channels.</p>
+<p><em>M</em> toggles muting for the current channel (both left and
+right). If the hardware supports it, you can mute left and right
+independently by using <em>,</em> (or <em>&lt;</em>) and <em>.</em> (or
+<em>&gt;</em>) respectively.</p>
+<p><em>SPACE</em> enables recording for the current channel. If any
+other channels have recording enabled, they will have their recording
+function disabled first. This only works for valid input channels, of
+course.</p>
+<p><em>L</em> re-draws the screen.</p>
+<h2>View Mode Controls</h2>
+<p>Function keys are used to change view modes. You can switch to the
+help mode and the proc info mode via <em>F1</em> and <em>F2</em> keys,
+respectively. On terminals that can't use function keys like
+gnome-terminal, <em>?</em> and <em>/</em> keys can be used alternatively
+for help and proc modes.</p>
+<p><em>F3</em>, <em>F4</em> and <em>F5</em> keys are used to switch to
+playback, capture and all view mode, respectively. <em>TAB</em> key
+toggles the current view mode circularly.</p>
+<h2>Quick Volume Changes</h2>
+<p><em>PageUp</em> increases volume by 5.</p>
+<p><em>PageDown</em> decreases volume by 5.</p>
+<p><em>End</em> sets volume to 0.</p>
+<p>You can also control left &amp; right levels for the current channel
+independently, as follows:</p>
+<p>[<em>Q</em> | <em>W</em> | <em>E</em> ] -- turn UP [ left | both |
+right ]</p>
+<p>[<em>Z</em> | <em>X</em> | <em>C</em> ] -- turn DOWN [ left | both |
+right ]</p>
+<p>If the currently selected mixer channel is not a stereo channel, then
+all UP keys will work like <em>W</em>, and all DOWN keys will work like
+<em>X</em>.</p>
+<p>The number keys from <em>0</em> to <em>9</em> are to change the
+absolute volume quickly. They correspond to 0 to 90% volume.</p>
+<h2>Selecting the Sound Card</h2>
+<p>You can select another sound card by pressing the <em>F6</em> or
+<em>S</em> keys. This will show a list of available sound cards to
+choose from, and an entry to enter the mixer device name by hand.</p>
+<h2>Exiting</h2>
+<p>Quit the program with <em>ALT Q</em>, or by hitting <em>ESC</em>.
+Please note that you might need to hit <em>ESC</em> twice on some
+terminals since it's regarded as a prefix key.</p>
+<h1>VOLUME MAPPING</h1>
+<p>In <strong>alsamixer</strong>, the volume is mapped to a value that
+is more natural for a human ear. The mapping is designed so that the
+position in the interval is proportional to the volume as a human ear
+would perceive it, i.e. the position is the cubic root of the linear
+sample multiplication factor. For controls with a small range (24 dB or
+less), the mapping is linear in the dB values so that each step has the
+same size visually.</p>
+<p>Only for controls without dB information, a linear mapping of the
+hardware volume register values is used (this is the same algorithm as
+used in the old <strong>alsamixer</strong>).</p>
+<h1>FILES</h1>
+<p>Configuration is read from the following files:</p>
+<p><em>$XDG_CONFIG_HOME</em>/alsamixer.rc</p>
+<p><em>$HOME</em>/.config/alsamixer.rc</p>
+<h1>CONFIGURATION</h1>
+<p>Comments start with '#'.</p>
+<dl>
+<dt><strong>color</strong> <em>element</em> <em>foreground</em>
+<em>background</em> [<em>attribute...</em>]</dt>
+<dd>
+<p>Valid values for <em>foreground</em> and <em>background</em> are:
+red, green, yellow, blue, magenta, cyan, white, black, none /
+default.</p>
+<p>Valid values for <em>attribute</em> are: bold, normal, reverse,
+underline, dim, italic, blink.</p>
+<p>See section <strong>THEME ELEMENTS</strong> for a list of
+<em>elements</em>.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>set</strong> <em>option</em> <em>value</em></dt>
+<dd>
+<p><strong>mouse_wheel_step</strong> <em>&lt;N&gt;</em></p>
+<p>Set the mouse wheel step to <em>&lt;N&gt;</em></p>
+<p><strong>mouse_wheel_focuses_control</strong> <em>0|1</em></p>
+<p>If enabled (<em>1</em>), mixer controls can be changed by hovering
+over them and scrolling the mouse wheel.</p>
+<p><strong>background</strong> <em>color</em></p>
+<p>Set the default background color</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>bind</strong> <em>key_definition</em> <em>command</em></dt>
+<dd>
+<p>A <em>key_definition</em> may be: - a single character - a
+combination with control: C-a - a combination with alt: M-a - a special
+keyname: Enter, Escape, PageUp, PageDown, Left, Down, Right, Up, Home,
+End, Backspace, F1 .. F12</p>
+<p>See section <strong>COMMANDS</strong> for a list of
+<em>commands</em>.</p>
+</dd>
+</dl>
+<h2>COMMANDS</h2>
+<dl>
+<dt><em>textbox_close</em></dt>
+<dd>
+<p>Close textbox</p>
+</dd>
+</dl>
+<dl>
+<dt><em>textbox_up</em> / <em>textbox_down</em></dt>
+<dd>
+<p>Scroll text up/down by one line</p>
+</dd>
+</dl>
+<dl>
+<dt><em>textbox_left</em> / <em>textbox_right</em></dt>
+<dd>
+<p>Scroll text left/right by one column</p>
+</dd>
+</dl>
+<dl>
+<dt><em>textbox_page_up</em> / <em>textbox_page_down</em></dt>
+<dd>
+<p>Scroll text up/down one page</p>
+</dd>
+</dl>
+<dl>
+<dt><em>textbox_page_left</em> / <em>textbox_page_right</em></dt>
+<dd>
+<p>Scroll text left/right one page</p>
+</dd>
+</dl>
+<dl>
+<dt><em>textbox_top</em> / <em>textbox_bottom</em></dt>
+<dd>
+<p>Go to top/bottom position of text</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_balance_volumes</em></dt>
+<dd>
+<p>Balance both channels</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_close</em></dt>
+<dd>
+<p>Close alsamixer application</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_help</em></dt>
+<dd>
+<p>Show help</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_mode_playback</em></dt>
+<dd>
+<p>Show playback controls</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_mode_capture</em></dt>
+<dd>
+<p>Show capture controls</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_mode_all</em></dt>
+<dd>
+<p>Show playback and capture controls</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_mode_toggle</em></dt>
+<dd>
+<p>Toggle between playback/capture/all controls</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_refresh</em></dt>
+<dd>
+<p>Refresh screen</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_previous</em> / <em>mixer_next</em></dt>
+<dd>
+<p>Select previous/next mixer control</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_control_focus_&lt;N&gt;</em></dt>
+<dd>
+<p>Focus control number <em>&lt;N&gt;</em>.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_control_set_&lt;N&gt;</em>[<em>_left</em>|<em>_right</em>]</dt>
+<dd>
+<p>Change volume of current control to <em>&lt;N&gt;</em> percent.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_control_up_&lt;N&gt;</em>[<em>_left</em>|<em>_right</em>]</dt>
+<dd>
+<p>Increase volume of current control by <em>&lt;N&gt;</em> percent.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_control_down_&lt;N&gt;</em>[<em>_left</em>|<em>_right</em>]</dt>
+<dd>
+<p>Decrease volume of current control by <em>&lt;N&gt;</em> percent.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_toggle_mute</em>[<em>_left</em>|<em>_right</em>]</dt>
+<dd>
+<p>Toggle mute state of both/left/right channels</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_toggle_capture</em>[<em>_left</em>|<em>_right</em>]</dt>
+<dd>
+<p>Toggle capture state of both/left/right channels</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_select_card</em></dt>
+<dd>
+<p>Show window for selecting sound card</p>
+</dd>
+</dl>
+<dl>
+<dt><em>mixer_system_information</em></dt>
+<dd>
+<p>Show system information</p>
+</dd>
+</dl>
+<h2>THEME ELEMENTS</h2>
+<dl>
+<dt><em>mixer_frame</em> Color of the box around the mixer</dt>
+<dd>
+<dl>
+<dt><em>mixer_text</em> Color of text at the top of the mixer</dt>
+<dd>
+<dl>
+<dt><em>mixer_active</em> Color of <em>AlsaMixer</em> heading</dt>
+<dd>
+<dl>
+<dt><em>ctl_frame</em> Color of the frame around the mixer controls</dt>
+<dd>
+<dl>
+<dt><em>ctl_mute</em> Color indicating the mute state (<em>MM</em>)</dt>
+<dd>
+<dl>
+<dt><em>ctl_nomute</em> Color indicating the unmute state
+(<em>00</em>)</dt>
+<dd>
+<dl>
+<dt><em>ctl_capture</em> Color of <em>CAPTURE</em> text</dt>
+<dd>
+<dl>
+<dt><em>ctl_nocapture</em> Colof of disabled capture label</dt>
+<dd>
+<dl>
+<dt><em>ctl_label</em> Color of label underneath mixer controls</dt>
+<dd>
+<dl>
+<dt><em>ctl_label_focus</em> Color of label underneath focused mixer
+control</dt>
+<dd>
+<dl>
+<dt><em>ctl_mark_focus</em> Color of <em>&lt;&gt;</em> marks beside
+focused mixer label</dt>
+<dd>
+<dl>
+<dt><em>ctl_bar_lo</em> Color of lower volume bar</dt>
+<dd>
+<dl>
+<dt><em>ctl_bar_mi</em> Color of middle volume bar</dt>
+<dd>
+<dl>
+<dt><em>ctl_bar_hi</em> Color of top volume bar</dt>
+<dd>
+<dl>
+<dt><em>ctl_inactive</em> Color for inactive control</dt>
+<dd>
+<dl>
+<dt><em>ctl_label_inactive</em> Color for inactive label</dt>
+<dd>
+<dl>
+<dt><em>errormsg</em> Color used for error message</dt>
+<dd>
+<dl>
+<dt><em>infomsg</em> Color used for information message</dt>
+<dd>
+<dl>
+<dt><em>textbox</em> Color used for textbox (user input)</dt>
+<dd>
+<dl>
+<dt><em>textfield</em> Color used for textbox</dt>
+<dd>
+<dl>
+<dt><em>menu</em> Color used for menu</dt>
+<dd>
+<dl>
+<dt><em>menu_selected</em> Color used for selected entry in menu</dt>
+<dd>
+<h1>SEE ALSO</h1>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>amixer(1), aplay(1), arecord(1)</p>
+<h1>AUTHOR</h1>
+<p><strong>alsamixer</strong> has been written by Tim Janik and been
+further improved by Jaroslav Kysela &lt;perex@perex.cz&gt; and Clemens
+Ladisch &lt;clemens@ladisch.de&gt;.</p>
+<p>This manual page was provided by Paul Winkler
+&lt;zarmzarm@erols.com&gt;.</p>

@@ -1,0 +1,108 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-fstest - debug tool for GRUB filesystem drivers</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-fstest</strong> [<em>OPTION</em>...] <em>IMAGE_PATH
+COMMANDS</em></p>
+<h1>DESCRIPTION</h1>
+<p>Debug tool for filesystem driver.</p>
+<blockquote>
+<p>Commands:</p>
+</blockquote>
+<dl>
+<dt>blocklist FILE</dt>
+<dd>
+<p>Display blocklist of FILE.</p>
+</dd>
+<dt>cat FILE</dt>
+<dd>
+<p>Copy FILE to standard output.</p>
+</dd>
+<dt>cmp FILE LOCAL</dt>
+<dd>
+<p>Compare FILE with local file LOCAL.</p>
+</dd>
+<dt>cp FILE LOCAL</dt>
+<dd>
+<p>Copy FILE to local file LOCAL.</p>
+</dd>
+<dt>crc FILE</dt>
+<dd>
+<p>Get crc32 checksum of FILE.</p>
+</dd>
+<dt>hex FILE</dt>
+<dd>
+<p>Show contents of FILE in hex.</p>
+</dd>
+<dt>ls PATH</dt>
+<dd>
+<p>List files in PATH.</p>
+</dd>
+<dt>xnu_uuid DEVICE</dt>
+<dd>
+<p>Compute XNU UUID of the device.</p>
+</dd>
+<dt><strong>-c</strong>, <strong>--diskcount</strong>=<em>NUM</em></dt>
+<dd>
+<p>Specify the number of input files.</p>
+</dd>
+<dt><strong>-C</strong>, <strong>--crypto</strong></dt>
+<dd>
+<p>Mount crypto devices.</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--debug</strong>=<em>STRING</em></dt>
+<dd>
+<p>Set debug environment variable.</p>
+</dd>
+<dt><strong>-K</strong>,
+<strong>--zfs-key</strong>=<em>FILE</em>|prompt</dt>
+<dd>
+<p>Load zfs crypto key.</p>
+</dd>
+<dt><strong>-n</strong>, <strong>--length</strong>=<em>NUM</em></dt>
+<dd>
+<p>Handle N bytes in output file.</p>
+</dd>
+<dt><strong>-r</strong>,
+<strong>--root</strong>=<em>DEVICE_NAME</em></dt>
+<dd>
+<p>Set root device.</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--skip</strong>=<em>NUM</em></dt>
+<dd>
+<p>Skip N bytes from output file.</p>
+</dd>
+<dt><strong>-u</strong>, <strong>--uncompress</strong></dt>
+<dd>
+<p>Uncompress data.</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-probe</strong>(8)</p>
+<p>The full documentation for <strong>grub-fstest</strong> is maintained
+as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-fstest</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-fstest</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

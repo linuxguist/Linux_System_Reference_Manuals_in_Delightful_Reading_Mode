@@ -1,0 +1,62 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Binding::PendingCall - A handler for pending method
+replies</p>
+<h1>SYNOPSIS</h1>
+<p>my $call = Net::DBus::Binding::PendingCall-&gt;new(method_call =&gt;
+$call, pending_call =&gt; $reply); # Wait for completion
+$call-&gt;block; # And get the reply message my $msg =
+$call-&gt;get_reply;</p>
+<h1>DESCRIPTION</h1>
+<p>This object is used when it is necessary to make asynchronous method
+calls. It provides the means to be notified when the reply is finally
+received.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $call = Net::DBus::Binding::PendingCall-&gt;new(method_call =&gt;
+$method_call, pending_call =&gt; $pending_call);</dt>
+<dd>
+<p>Creates a new pending call object, with the <code>method_call</code>
+parameter being a reference to the
+<code>Net::DBus::Binding::Message::MethodCall</code> object whose reply
+is being waiting for. The <code>pending_call</code> parameter is a
+reference to the raw C pending call object.</p>
+</dd>
+<dt>$call-&gt;cancel</dt>
+<dd>
+<p>Cancel the pending call, causing any reply that is later received to
+be discarded.</p>
+</dd>
+<dt>my $boolean = $call-&gt;get_completed</dt>
+<dd>
+<p>Returns a true value if the pending call has received its reply, or a
+timeout has occurred.</p>
+</dd>
+<dt>$call-&gt;block</dt>
+<dd>
+<p>Block the caller until the reply is received or a timeout
+occurrs.</p>
+</dd>
+<dt>my $msg = $call-&gt;get_reply;</dt>
+<dd>
+<p>Retrieves the <code>Net::DBus::Binding::Message</code> object
+associated with the complete call.</p>
+</dd>
+<dt>$call-&gt;set_notify($coderef);</dt>
+<dd>
+<p>Sets a notification function to be invoked when the pending call
+completes. The callback will be passed a single argument which is this
+pending call object.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2006-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::Binding::Connection, Net::DBus::Binding::Message,
+Net::DBus::ASyncReply</p>

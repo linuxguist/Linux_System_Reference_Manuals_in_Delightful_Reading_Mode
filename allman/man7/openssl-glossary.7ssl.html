@@ -1,0 +1,188 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-glossary - An OpenSSL Glossary</p>
+<h1>DESCRIPTION</h1>
+<dl>
+<dt>Algorithm</dt>
+<dd>
+<p>Cryptographic primitives such as the SHA256 digest, or AES encryption
+are referred to in OpenSSL as algorithms. There can be more than one
+implementation for any given algorithm available for use.
+<strong>crypto</strong> (7)</p>
+</dd>
+<dt>ASN.1, ASN1</dt>
+<dd>
+<p>ASN.1 (Abstract Syntax Notation One) is a notation for describing
+abstract types and values. It is defined in the ITU-T documents X.680 to
+X.683: &lt;https://www.itu.int/rec/T-REC-X.680&gt;,
+&lt;https://www.itu.int/rec/T-REC-X.681&gt;,
+&lt;https://www.itu.int/rec/T-REC-X.682&gt;,
+&lt;https://www.itu.int/rec/T-REC-X.683&gt;</p>
+</dd>
+<dt>Base Provider</dt>
+<dd>
+<p>An OpenSSL Provider that contains encoders and decoders for OpenSSL
+keys. All the algorithm implementations in the Base Provider are also
+available in the Default Provider.
+<strong>OSSL_PROVIDER-base</strong> (7)</p>
+</dd>
+<dt>Decoder</dt>
+<dd>
+<p>A decoder is a type of algorithm used for decoding keys and
+parameters from some external format such as PEM or DER.
+<strong>OSSL_DECODER_CTX_new_for_pkey</strong> (3)</p>
+</dd>
+<dt>Default Provider</dt>
+<dd>
+<p>An OpenSSL Provider that contains the most common OpenSSL algorithm
+implementations. It is loaded by default if no other provider is
+available. All the algorithm implementations in the Base Provider are
+also available in the Default Provider.
+<strong>OSSL_PROVIDER-default</strong> (7)</p>
+</dd>
+<dt>DER ("Distinguished Encoding Rules")</dt>
+<dd>
+<p>DER is a binary encoding of data, structured according to an ASN.1
+specification. This is a common encoding used for cryptographic objects
+such as private and public keys, certificates, CRLs, ... It is defined
+in ITU-T document X.690: &lt;https://www.itu.int/rec/T-REC-X.690&gt;</p>
+</dd>
+<dt>Encoder</dt>
+<dd>
+<p>An encoder is a type of algorithm used for encoding keys and
+parameters to some external format such as PEM or DER.
+<strong>OSSL_ENCODER_CTX_new_for_pkey</strong> (3)</p>
+</dd>
+<dt>Explicit Fetching</dt>
+<dd>
+<p>Explicit Fetching is a type of Fetching (see Fetching). Explicit
+Fetching is where a function call is made to obtain an algorithm object
+representing an implementation such as <strong>EVP_MD_fetch</strong> (3)
+or <strong>EVP_CIPHER_fetch</strong> (3)</p>
+</dd>
+<dt>Fetching</dt>
+<dd>
+<p>Fetching is the process of looking through the available algorithm
+implementations, applying selection criteria (via a property query
+string), and finally choosing the implementation that will be used. Also
+see Explicit Fetching and Implicit Fetching.
+<strong>crypto</strong> (7)</p>
+</dd>
+<dt>FIPS Provider</dt>
+<dd>
+<p>An OpenSSL Provider that contains OpenSSL algorithm implementations
+that have been validated according to the FIPS 140-2 standard.
+<strong>OSSL_PROVIDER-FIPS</strong> (7)</p>
+</dd>
+<dt>Implicit Fetching</dt>
+<dd>
+<p>Implicit Fetching is a type of Fetching (see Fetching). Implicit
+Fetching is where an algorithm object with no associated implementation
+is used such as the return value from <strong>EVP_sha256</strong> (3) or
+<strong>EVP_aes_128_cbc</strong> (3). With implicit fetching an
+implementation is fetched automatically using default selection criteria
+the first time the algorithm is used.</p>
+</dd>
+<dt>Legacy Provider</dt>
+<dd>
+<p>An OpenSSL Provider that contains algorithm implementations that are
+considered insecure or are no longer in common use.
+<strong>OSSL_PROVIDER-legacy</strong> (7)</p>
+</dd>
+<dt>Library Context</dt>
+<dd>
+<p>A Library Context in OpenSSL is represented by the type
+<strong>OSSL_LIB_CTX</strong>. It can be thought of as a scope within
+which configuration options apply. If an application does not explicitly
+create a library context then the default one is used. Many OpenSSL
+functions can take a library context as an argument. A NULL value can
+always be passed to indicate the default library context.
+<strong>OSSL_LIB_CTX</strong> (3)</p>
+</dd>
+<dt>MSBLOB</dt>
+<dd>
+<p>MSBLOB is a Microsoft specific binary format for RSA and DSA keys,
+both private and public. This form is never passphrase protected.</p>
+</dd>
+<dt>Null Provider</dt>
+<dd>
+<p>An OpenSSL Provider that contains no algorithm implementations. This
+can be useful to prevent the default provider from being automatically
+loaded in a library context. <strong>OSSL_PROVIDER-null</strong> (7)</p>
+</dd>
+<dt>Operation</dt>
+<dd>
+<p>An operation is a group of OpenSSL functions with a common purpose
+such as encryption, or digesting. <strong>crypto</strong> (7)</p>
+</dd>
+<dt>PEM ("Privacy Enhanced Message")</dt>
+<dd>
+<p>PEM is a format used for encoding of binary content into a mail and
+ASCII friendly form. The content is a series of base64-encoded lines,
+surrounded by begin/end markers each on their own line. For example:
+-----BEGIN PRIVATE KEY----- MIICdg.... ... bhTQ== -----END PRIVATE
+KEY----- Optional header line(s) may appear after the begin line, and
+their existence depends on the type of object being written or read. For
+all OpenSSL uses, the binary content is expected to be a DER encoded
+structure. This is defined in IETF RFC 1421:
+&lt;https://tools.ietf.org/html/rfc1421&gt;</p>
+</dd>
+<dt>PKCS#8</dt>
+<dd>
+<p>PKCS#8 is a specification of ASN.1 structures that OpenSSL uses for
+storing or transmitting any private key in a key type agnostic manner.
+There are two structures worth noting for OpenSSL use, one that contains
+the key data in unencrypted form (known as PrivateKeyInfo) and an
+encrypted wrapper structure (known as EncryptedPrivateKeyInfo). This is
+specified in RFC 5208: &lt;https://tools.ietf.org/html/rfc5208&gt;</p>
+</dd>
+<dt>Property</dt>
+<dd>
+<p>A property is a way of classifying and selecting algorithm
+implementations. A property is a key/value pair expressed as a string.
+For example all algorithm implementations in the default provider have
+the property provider=default. An algorithm implementation can have
+multiple properties defined against it. Also see Property Query String.
+<strong>property</strong> (7)</p>
+</dd>
+<dt>Property Query String</dt>
+<dd>
+<p>A property query string is a string containing a sequence of
+properties that can be used to select an algorithm implementation. For
+example the query string provider=example,foo=bar will select algorithms
+from the example provider that have a foo property defined for them with
+a value of bar. Property Query Strings are used during fetching. See
+Fetching. <strong>property</strong> (7)</p>
+</dd>
+<dt>Provider</dt>
+<dd>
+<p>A provider in OpenSSL is a component that groups together algorithm
+implementations. Providers can come from OpenSSL itself or from third
+parties. <strong>provider</strong> (7)</p>
+</dd>
+<dt>PVK</dt>
+<dd>
+<p>PVK is a Microsoft specific binary format for RSA and DSA private
+keys. This form may be passphrase protected.</p>
+</dd>
+<dt>SubjectPublicKeyInfo</dt>
+<dd>
+<p>SubjectPublicKeyInfo is an ASN.1 structure that OpenSSL uses for
+storing and transmitting any public key in a key type agnostic manner.
+This is specified as part of the specification for certificates, RFC
+5280: &lt;https://tools.ietf.org/html/rfc5280&gt;</p>
+</dd>
+</dl>
+<h1>HISTORY</h1>
+<p>This glossary was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

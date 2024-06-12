@@ -1,0 +1,78 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::RemoteService - Access services provided on the bus</p>
+<h1>SYNOPSIS</h1>
+<p>my $bus = Net::DBus-&gt;find; my $service =
+$bus-&gt;get_service("org.freedesktop.DBus"); my $object =
+$service-&gt;get_object("/org/freedesktop/DBus"); foreach
+(@{$object-&gt;ListNames}) { print "$_\n"; }</p>
+<h1>DESCRIPTION</h1>
+<p>This object provides a handle to a remote service on the bus. From
+this handle it is possible to access objects associated with the
+service. If a service is not running, an attempt will be made to
+activate it the first time a method is called against one of its
+objects.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $service = Net::DBus::RemoteService-&gt;new($bus, $owner,
+$service_name);</dt>
+<dd>
+<p>Creates a new handle for a remote service. The <code>$bus</code>
+parameter is an instance of Net::DBus, <code>$owner</code> is the name
+of the client providing the service, while <code>$service_name</code> is
+the well known name of the service on the bus. Service names consist of
+two or more tokens, separated by periods, while the tokens comprise the
+letters a-z, A-Z, 0-9 and _, for example
+<code>org.freedesktop.DBus</code>. There is generally no need to call
+this constructor, instead the <code>get_service</code> method on
+Net::DBus should be used. This caches handles to remote services,
+eliminating repeated retrieval of introspection data.</p>
+</dd>
+<dt>my $bus = $service-&gt;get_bus;</dt>
+<dd>
+<p>Retrieves a handle for the bus to which this service is attached. The
+returned object will be an instance of Net::DBus.</p>
+</dd>
+<dt>my $service_name = $service-&gt;get_service_name</dt>
+<dd>
+<p>Retrieves the name of the remote service as known to the bus.</p>
+</dd>
+<dt>my $owner_name = $service-&gt;get_owner_name;</dt>
+<dd>
+<p>Retrieves the name of the client owning the service at the time it
+was connected to.</p>
+</dd>
+<dt>my $object = $service-&gt;get_object($object_path[, $interface]);
+=item my $object = $service-&gt;get_object($object_path, \%params);</dt>
+<dd>
+<p>Retrieves a handle to the remote object provided by the service with
+the name of <code>$object_path</code>. If the optional
+<code>$interface</code> parameter is provided, the object will
+immediately be cast to the designated interface. NB, it is only
+necessary to cast an object to a specific interface if there are
+multiple interfaces on the object providing methods with the same name,
+or the remote object does support introspection. The returned object
+will be an instance of Net::DBus::RemoteObject. An alternate form of the
+method is available, passing a hash reference of extra parameters. Valid
+keys in the hash are <code>interface</code> specifying the interface
+name to cast to, and <code>timeout</code> specifying a timeout in
+milliseconds</p>
+</dd>
+<dt>my $timeout = $service-&gt;timeout(60 * 1000);</dt>
+<dd>
+<p>Sets or retrieves the timeout value which will be used for DBus
+requests belongs to this service. The value is in milliseconds. If the
+timeout for a service is undefined, then the default timeout from the
+bus will apply.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel Berrange &lt;dan@berrange.com&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copright (C) 2004-2011, Daniel Berrange.</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::RemoteObject, Net::DBus::Service, Net::DBus</p>

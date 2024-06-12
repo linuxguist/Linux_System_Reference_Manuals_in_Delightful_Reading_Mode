@@ -1,0 +1,39 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-reset - Reset the index and configuration</p>
+<h1>SYNOPSIS</h1>
+<p><strong>tracker3 reset</strong> [--filesystem | --rss] [--file
+<em>FILE</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>The reset command will change either your configuration or index
+irreversibly and should be used with care. Other than tags, actual data
+(e.g. files) should not be affected by this command.</p>
+<p>The "index" is a link between your content (either locally or
+remotely) and how it can be found quickly using a number of different
+queries. Under the hood, this is done using a database.</p>
+<p>Removing all data and starting again from the beginning with an empty
+data set (which is a common use of this command) is done by using the
+hard reset option. This behaves as if Tracker was just installed.</p>
+<h1>OPTIONS</h1>
+<p><strong>-s, --filesystem</strong></p>
+<blockquote>
+<p>Removes data stored by tracker-miner-fs(1). The miner will
+automatically recreate its cache from the filesystem when it
+restarts.</p>
+</blockquote>
+<p><strong>-r, --rss</strong></p>
+<blockquote>
+<p>Removes data stored by tracker-miner-rss(1).</p>
+</blockquote>
+<p><strong>-f, --file</strong> <em>FILE</em></p>
+<blockquote>
+<p>Resets all indexed information about <em>FILE</em>, works recursively
+for directories. Nothing will be done if <em>FILE</em> is not currently
+indexed. After deletion, a request to reindex this data will be
+immediately issued.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-daemon</strong>(1).
+<strong>tracker-miner-fs-3</strong>(1),
+<strong>tracker-miner-rss-3</strong>(1).</p>

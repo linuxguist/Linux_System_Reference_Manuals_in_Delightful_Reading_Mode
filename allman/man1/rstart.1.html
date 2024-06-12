@@ -1,0 +1,78 @@
+<pre><code></code></pre>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>rstart - a sample implementation of a Remote Start client</p>
+<h1>SYNOPSIS</h1>
+<p><strong>rstart</strong> [-c <em>context</em>] [-g] [-l
+<em>username</em>] [-v] <em>hostname</em> <em>command args ...</em></p>
+<h1>DESCRIPTION</h1>
+<p><em>Rstart</em> is a simple implementation of a Remote Start client
+as defined in "A Flexible Remote Execution Protocol Based on
+<strong>rsh</strong>". It uses <em>rsh</em> as its underlying remote
+execution mechanism.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-c <em>context</em></strong></dt>
+<dd>
+<p>This option specifies the <em>context</em> in which the command is to
+be run. A <em>context</em> specifies a general environment the program
+is to be run in. The details of this environment are host-specific; the
+intent is that the client need not know how the environment must be
+configured. If omitted, the context defaults to <strong>X</strong>. This
+should be suitable for running X programs from the host's "usual" X
+installation.</p>
+</dd>
+<dt><strong>-g</strong></dt>
+<dd>
+<p>Interprets <em>command</em> as a <em>generic command</em>, as
+discussed in the protocol document. This is intended to allow common
+applications to be invoked without knowing what they are called on the
+remote system. Currently, the only generic commands defined are
+<strong>Terminal</strong>, <strong>LoadMonitor</strong>,
+<strong>ListContexts</strong>, and
+<strong>ListGenericCommands</strong>.</p>
+</dd>
+<dt><strong>-l <em>username</em></strong></dt>
+<dd>
+<p>This option is passed to the underlying <em>rsh</em>; it requests
+that the command be run as the specified user.</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>This option requests that <em>rstart</em> be verbose in its
+operation. Without this option, <em>rstart</em> discards output from the
+remote's <em>rstart</em> helper, and directs the <em>rstart</em> helper
+to detach the program from the <em>rsh</em> connection used to start it.
+With this option, responses from the helper are displayed and the
+resulting program is not detached from the connection.</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>This is a trivial implementation. Far more sophisticated
+implementations are possible and should be developed.</p>
+<p>Error handling is nonexistent. Without <strong>-v</strong>, error
+reports from the remote are discarded silently. With
+<strong>-v</strong>, error reports are displayed.</p>
+<p>The $DISPLAY environment variable is passed. If it starts with a
+colon, the local hostname is prepended. The local domain name should be
+appended to unqualified host names, but isn't.</p>
+<p>The $SESSION_MANAGER environment variable should be passed, but
+isn't.</p>
+<p>X11 authority information is passed for the current display.</p>
+<p>ICE authority information should be passed, but isn't. It isn't
+completely clear how <em>rstart</em> should select what ICE authority
+information to pass.</p>
+<p>Even without <strong>-v</strong>, the sample <em>rstart</em> helper
+will leave a shell waiting for the program to complete. This causes no
+real harm and consumes relatively few resources, but if it is
+undesirable it can be avoided by explicitly specifying the "exec"
+command to the shell, eg rstart somehost exec xterm</p>
+<p>This is obviously dependent on the command interpreter being used on
+the remote system; the example given will work for the Bourne and C
+shells.</p>
+<h1>SEE ALSO</h1>
+<p>rstartd(1), rsh(1), A Flexible Remote Execution Protocol Based on
+<strong>rsh</strong></p>
+<h1>AUTHOR</h1>
+<p>Jordan Brown, Quarterdeck Office Systems</p>

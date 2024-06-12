@@ -1,0 +1,799 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lesskey - specify key bindings for less</p>
+<h1>SYNOPSIS (deprecated)</h1>
+<p><strong>lesskey [-o output] [--] [input]</strong><br />
+<strong>lesskey [--output=output] [--] [input]</strong><br />
+<strong>lesskey -V</strong><br />
+<strong>lesskey --version</strong></p>
+<h1>SCOPE</h1>
+<p>This document describes the format of the <em>lesskey</em> source
+file, which is used by <em>less</em> version 582 and later. In previous
+versions of <em>less</em>, a separate program called <em>lesskey</em>
+was used to compile the <em>lesskey</em> source file into a format
+understood by <em>less</em>. This compilation step is no longer required
+and the <em>lesskey</em> program is therefore deprecated although the
+file format remains supported by <em>less</em> itself.</p>
+<h1>FILE FORMAT</h1>
+<p>The input file consists of one or more <em>sections.</em> Each
+section starts with a line that identifies the type of section. Possible
+sections are:</p>
+<dl>
+<dt>#command</dt>
+<dd>
+<p>Defines new command keys.</p>
+</dd>
+<dt>#line-edit</dt>
+<dd>
+<p>Defines new line-editing keys.</p>
+</dd>
+<dt>#env</dt>
+<dd>
+<p>Defines environment variables.</p>
+</dd>
+</dl>
+<p>Blank lines and lines which start with a pound sign (#) are ignored,
+except for the special section header lines.</p>
+<h1>COMMAND SECTION</h1>
+<p>The command section begins with the line</p>
+<p>#command</p>
+<p>If the command section is the first section in the file, this line
+may be omitted. The command section consists of lines of the form:</p>
+<p><em>string</em> &lt;whitespace&gt; <em>action</em> [extra-string]
+&lt;newline&gt;</p>
+<p>Whitespace is any sequence of one or more spaces and/or tabs. The
+<em>string</em> is the command key(s) which invoke the action. The
+<em>string</em> may be a single command key, or a sequence of up to 15
+keys. The <em>action</em> is the name of the less action, from the list
+below. The characters in the <em>string</em> may appear literally, or be
+prefixed by a caret to indicate a control key. A backslash followed by
+one to three octal digits may be used to specify a character by its
+octal value. A backslash followed by certain characters specifies input
+characters as follows:</p>
+<dl>
+<dt>\b</dt>
+<dd>
+<p>BACKSPACE</p>
+</dd>
+<dt>\e</dt>
+<dd>
+<p>ESCAPE</p>
+</dd>
+<dt>\n</dt>
+<dd>
+<p>NEWLINE</p>
+</dd>
+<dt>\r</dt>
+<dd>
+<p>RETURN</p>
+</dd>
+<dt>\t</dt>
+<dd>
+<p>TAB</p>
+</dd>
+<dt>\ku</dt>
+<dd>
+<p>UP ARROW</p>
+</dd>
+<dt>\kd</dt>
+<dd>
+<p>DOWN ARROW</p>
+</dd>
+<dt>\kr</dt>
+<dd>
+<p>RIGHT ARROW</p>
+</dd>
+<dt>\kl</dt>
+<dd>
+<p>LEFT ARROW</p>
+</dd>
+<dt>\kU</dt>
+<dd>
+<p>PAGE UP</p>
+</dd>
+<dt>\kD</dt>
+<dd>
+<p>PAGE DOWN</p>
+</dd>
+<dt>\kh</dt>
+<dd>
+<p>HOME</p>
+</dd>
+<dt>\ke</dt>
+<dd>
+<p>END</p>
+</dd>
+<dt>\kx</dt>
+<dd>
+<p>DELETE</p>
+</dd>
+</dl>
+<p>A backslash followed by any other character indicates that character
+is to be taken literally. Characters which must be preceded by backslash
+include caret, space, tab and the backslash itself.</p>
+<p>An action may be followed by an "extra" string. When such a command
+is entered while running <em>less</em>, the action is performed, and
+then the extra string is parsed, just as if it were typed in to
+<em>less</em>. This feature can be used in certain cases to extend the
+functionality of a command. For example, see the "{" and ":t" commands
+in the example below. The extra string has a special meaning for the
+"quit" action: when <em>less</em> quits, the first character of the
+extra string is used as its exit status.</p>
+<h1>EXAMPLE</h1>
+<p>The following input file describes the set of default command keys
+used by less:</p>
+<blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">#command</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\r</td>
+<td style="text-align: left;">forw-line</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\n</td>
+<td style="text-align: left;">forw-line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">e</td>
+<td style="text-align: left;">forw-line</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">j</td>
+<td style="text-align: left;">forw-line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\kd</td>
+<td style="text-align: left;">forw-line</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^E</td>
+<td style="text-align: left;">forw-line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">^N</td>
+<td style="text-align: left;">forw-line</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">k</td>
+<td style="text-align: left;">back-line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y</td>
+<td style="text-align: left;">back-line</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^Y</td>
+<td style="text-align: left;">back-line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">^K</td>
+<td style="text-align: left;">back-line</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^P</td>
+<td style="text-align: left;">back-line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">forw-line-force</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">K</td>
+<td style="text-align: left;">back-line-force</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Y</td>
+<td style="text-align: left;">back-line-force</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">d</td>
+<td style="text-align: left;">forw-scroll</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">^D</td>
+<td style="text-align: left;">forw-scroll</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">u</td>
+<td style="text-align: left;">back-scroll</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">^U</td>
+<td style="text-align: left;">back-scroll</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\40</td>
+<td style="text-align: left;">forw-screen</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f</td>
+<td style="text-align: left;">forw-screen</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^F</td>
+<td style="text-align: left;">forw-screen</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">^V</td>
+<td style="text-align: left;">forw-screen</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\kD</td>
+<td style="text-align: left;">forw-screen</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">b</td>
+<td style="text-align: left;">back-screen</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^B</td>
+<td style="text-align: left;">back-screen</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\ev</td>
+<td style="text-align: left;">back-screen</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\kU</td>
+<td style="text-align: left;">back-screen</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">z</td>
+<td style="text-align: left;">forw-window</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">w</td>
+<td style="text-align: left;">back-window</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e\40</td>
+<td style="text-align: left;">forw-screen-force</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">forw-forever</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\eF</td>
+<td style="text-align: left;">forw-until-hilite</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">repaint-flush</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">r</td>
+<td style="text-align: left;">repaint</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^R</td>
+<td style="text-align: left;">repaint</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">^L</td>
+<td style="text-align: left;">repaint</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\eu</td>
+<td style="text-align: left;">undo-hilite</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\eU</td>
+<td style="text-align: left;">clear-search</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">g</td>
+<td style="text-align: left;">goto-line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\kh</td>
+<td style="text-align: left;">goto-line</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&lt;</td>
+<td style="text-align: left;">goto-line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e&lt;</td>
+<td style="text-align: left;">goto-line</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p</td>
+<td style="text-align: left;">percent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">%</td>
+<td style="text-align: left;">percent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\e[</td>
+<td style="text-align: left;">left-scroll</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e]</td>
+<td style="text-align: left;">right-scroll</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\e(</td>
+<td style="text-align: left;">left-scroll</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e)</td>
+<td style="text-align: left;">right-scroll</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\kl</td>
+<td style="text-align: left;">left-scroll</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\kr</td>
+<td style="text-align: left;">right-scroll</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\e{</td>
+<td style="text-align: left;">no-scroll</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e}</td>
+<td style="text-align: left;">end-scroll</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">{</td>
+<td style="text-align: left;">forw-bracket {}</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">}</td>
+<td style="text-align: left;">back-bracket {}</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">(</td>
+<td style="text-align: left;">forw-bracket ()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">)</td>
+<td style="text-align: left;">back-bracket ()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[</td>
+<td style="text-align: left;">forw-bracket []</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">]</td>
+<td style="text-align: left;">back-bracket []</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\e^F</td>
+<td style="text-align: left;">forw-bracket</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e^B</td>
+<td style="text-align: left;">back-bracket</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">G</td>
+<td style="text-align: left;">goto-end</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e&gt;</td>
+<td style="text-align: left;">goto-end</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&gt;</td>
+<td style="text-align: left;">goto-end</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\ke</td>
+<td style="text-align: left;">goto-end</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\eG</td>
+<td style="text-align: left;">goto-end-buffered</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">=</td>
+<td style="text-align: left;">status</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^G</td>
+<td style="text-align: left;">status</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">:f</td>
+<td style="text-align: left;">status</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">/</td>
+<td style="text-align: left;">forw-search</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">?</td>
+<td style="text-align: left;">back-search</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\e/</td>
+<td style="text-align: left;">forw-search *</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e?</td>
+<td style="text-align: left;">back-search *</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">n</td>
+<td style="text-align: left;">repeat-search</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\en</td>
+<td style="text-align: left;">repeat-search-all</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">reverse-search</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\eN</td>
+<td style="text-align: left;">reverse-search-all</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">&amp;</td>
+<td style="text-align: left;">filter</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">set-mark</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">set-mark-bottom</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\em</td>
+<td style="text-align: left;">clear-mark</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">goto-mark</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">^X^X</td>
+<td style="text-align: left;">goto-mark</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">E</td>
+<td style="text-align: left;">examine</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">:e</td>
+<td style="text-align: left;">examine</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^X^V</td>
+<td style="text-align: left;">examine</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">:n</td>
+<td style="text-align: left;">next-file</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">:p</td>
+<td style="text-align: left;">prev-file</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">t</td>
+<td style="text-align: left;">next-tag</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">prev-tag</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">:x</td>
+<td style="text-align: left;">index-file</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">:d</td>
+<td style="text-align: left;">remove-file</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">toggle-option</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">:t</td>
+<td style="text-align: left;">toggle-option t</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">toggle-option o</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;">display-option</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">|</td>
+<td style="text-align: left;">pipe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">v</td>
+<td style="text-align: left;">visual</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">!</td>
+<td style="text-align: left;">shell</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">firstcmd</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">H</td>
+<td style="text-align: left;">help</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">h</td>
+<td style="text-align: left;">help</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">V</td>
+<td style="text-align: left;">version</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">digit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">q</td>
+<td style="text-align: left;">quit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">quit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">:q</td>
+<td style="text-align: left;">quit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">:Q</td>
+<td style="text-align: left;">quit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ZZ</td>
+<td style="text-align: left;">quit</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h1>PRECEDENCE</h1>
+<p>Commands specified by <em>lesskey</em> take precedence over the
+default commands. A default command key may be disabled by including it
+in the input file with the action "invalid". Alternatively, a key may be
+defined to do nothing by using the action "noaction". "noaction" is
+similar to "invalid", but <em>less</em> will give an error beep for an
+"invalid" command, but not for a "noaction" command. In addition, ALL
+default commands may be disabled by adding this control line to the
+input file:</p>
+<p>#stop</p>
+<p>This will cause all default commands to be ignored. The #stop line
+should be the last line in that section of the file.</p>
+<p>Be aware that #stop can be dangerous. Since all default commands are
+disabled, you must provide sufficient commands before the #stop line to
+enable all necessary actions. For example, failure to provide a "quit"
+command can lead to frustration.</p>
+<h1>LINE EDITING SECTION</h1>
+<p>The line-editing section begins with the line:</p>
+<p>#line-edit</p>
+<p>This section specifies new key bindings for the line editing
+commands, in a manner similar to the way key bindings for ordinary
+commands are specified in the #command section. The line-editing section
+consists of a list of keys and actions, one per line as in the example
+below.</p>
+<h1>EXAMPLE</h1>
+<p>The following input file describes the set of default line-editing
+keys used by less:</p>
+<blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">#line-edit</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\t</td>
+<td style="text-align: left;">forw-complete</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\17</td>
+<td style="text-align: left;">back-complete</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e\t</td>
+<td style="text-align: left;">back-complete</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^L</td>
+<td style="text-align: left;">expand</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">^V</td>
+<td style="text-align: left;">literal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^A</td>
+<td style="text-align: left;">literal</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\el</td>
+<td style="text-align: left;">right</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\kr</td>
+<td style="text-align: left;">right</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\eh</td>
+<td style="text-align: left;">left</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\kl</td>
+<td style="text-align: left;">left</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\eb</td>
+<td style="text-align: left;">word-left</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\e\kl</td>
+<td style="text-align: left;">word-left</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\ew</td>
+<td style="text-align: left;">word-right</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\e\kr</td>
+<td style="text-align: left;">word-right</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\ei</td>
+<td style="text-align: left;">insert</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\ex</td>
+<td style="text-align: left;">delete</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\kx</td>
+<td style="text-align: left;">delete</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\eX</td>
+<td style="text-align: left;">word-delete</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\ekx</td>
+<td style="text-align: left;">word-delete</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\e\b</td>
+<td style="text-align: left;">word-backspace</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e0</td>
+<td style="text-align: left;">home</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\kh</td>
+<td style="text-align: left;">home</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\e$</td>
+<td style="text-align: left;">end</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\ke</td>
+<td style="text-align: left;">end</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\ek</td>
+<td style="text-align: left;">up</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">\ku</td>
+<td style="text-align: left;">up</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">\ej</td>
+<td style="text-align: left;">down</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">^G</td>
+<td style="text-align: left;">abort</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h1>LESS ENVIRONMENT VARIABLES</h1>
+<p>The environment variable section begins with the line</p>
+<p>#env</p>
+<p>Following this line is a list of environment variable assignments.
+Each line consists of an environment variable name, an equals sign (=)
+and the value to be assigned to the environment variable. White space
+before and after the equals sign is ignored. Variables assigned in this
+way are visible only to <em>less</em>. If a variable is specified in the
+system environment and also in a lesskey file, the value in the lesskey
+file takes precedence. Although the lesskey file can be used to override
+variables set in the environment, the main purpose of assigning
+variables in the lesskey file is simply to have all <em>less</em>
+configuration information stored in one file.</p>
+<h1>EXAMPLE</h1>
+<p>The following input file sets the -i option whenever <em>less</em> is
+run, and specifies the character set to be "latin1":</p>
+<pre><code>	#env
+	LESS = -i
+	LESSCHARSET = latin1</code></pre>
+<h1>SEE ALSO</h1>
+<p><strong>less</strong>(1)</p>
+<h1>WARNINGS</h1>
+<p>On MS-DOS and OS/2 systems, certain keys send a sequence of
+characters which start with a NUL character (0). This NUL character
+should be represented as \340 in a lesskey file.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 1984-2021 Mark Nudelman</p>
+<p>less is part of the GNU project and is free software. You can
+redistribute it and/or modify it under the terms of either (1) the GNU
+General Public License as published by the Free Software Foundation; or
+(2) the Less License. See the file README in the less distribution for
+more details regarding redistribution. You should have received a copy
+of the GNU General Public License along with the source for less; see
+the file COPYING. If not, write to the Free Software Foundation, 59
+Temple Place, Suite 330, Boston, MA 02111-1307, USA. You should also
+have received a copy of the Less License; see the file LICENSE.</p>
+<p>less is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+more details.</p>
+<h1>AUTHOR</h1>
+<p>Mark Nudelman<br />
+Report bugs at https://github.com/gwsw/less/issues.</p>

@@ -1,0 +1,710 @@
+<pre><code></code></pre>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xcalc - scientific calculator for X</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xcalc</strong> [-stipple] [-rpn]
+[-<em>toolkitoption...</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><em>xcalc</em> is a scientific calculator desktop accessory that can
+emulate a TI-30 or an HP-10C.</p>
+<h1>OPTIONS</h1>
+<p><em>xcalc</em> accepts all of the standard toolkit command line
+options along with two additional options:</p>
+<dl>
+<dt><strong>-stipple</strong></dt>
+<dd>
+<p>This option indicates that the background of the calculator should be
+drawn using a stipple of the foreground and background colors. On
+monochrome displays improves the appearance.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-rpn</strong></dt>
+<dd>
+<p>This option indicates that Reverse Polish Notation should be used. In
+this mode the calculator will look and behave like an HP-10C. Without
+this flag, it will emulate a TI-30.</p>
+</dd>
+</dl>
+<h1>OPERATION</h1>
+<p><em>Pointer Usage:</em> Operations may be performed with pointer
+button 1, or in some cases, with the keyboard. Many common calculator
+operations have keyboard accelerators. To quit, press pointer button 3
+on the AC key of the TI calculator, or the ON key of the HP
+calculator.</p>
+<p><em>Calculator Key Usage (TI mode):</em> The numbered keys, the +/-
+key, and the +, -, *, /, and = keys all do exactly what you would expect
+them to. It should be noted that the operators obey the standard rules
+of precedence. Thus, entering "3+4*5=" results in "23", not "35". The
+parentheses can be used to override this. For example,
+"(1+2+3)*(4+5+6)=" results in "6*15=90".</p>
+<p>The entire number in the calculator display can be selected, in order
+to paste the result of a calculation into text.</p>
+<p>The action procedures associated with each function are given below.
+These are useful if you are interested in defining a custom calculator.
+The action used for all digit keys is
+<strong>digit(</strong><em>n</em><strong>)</strong>, where <em>n</em> is
+the corresponding digit, 0..9.</p>
+<dl>
+<dt><strong>1/x</strong></dt>
+<dd>
+<p>Replaces the number in the display with its reciprocal. The
+corresponding action procedure is <strong>reciprocal()</strong>.</p>
+</dd>
+<dt><strong>x^2</strong></dt>
+<dd>
+<p>Squares the number in the display. The corresponding action procedure
+is <strong>square()</strong>.</p>
+</dd>
+<dt><strong>SQRT</strong></dt>
+<dd>
+<p>Takes the square root of the number in the display. The corresponding
+action procedure is <strong>squareRoot()</strong>.</p>
+</dd>
+<dt><strong>CE/C</strong></dt>
+<dd>
+<p>When pressed once, clears the number in the display without clearing
+the state of the machine. Allows you to re-enter a number if you make a
+mistake. Pressing it twice clears the state, also. The corresponding
+action procedure for TI mode is <strong>clear()</strong>.</p>
+</dd>
+<dt><strong>AC</strong></dt>
+<dd>
+<p>Clears the display, the state, and the memory. Pressing it with the
+third pointer button turns off the calculator, in that it exits the
+program. The action procedure to clear the state is
+<strong>off()</strong>; to quit, <strong>quit()</strong>.</p>
+</dd>
+<dt><strong>INV</strong></dt>
+<dd>
+<p>Invert function. See the individual function keys for details. The
+corresponding action procedure is <strong>inverse()</strong>.</p>
+</dd>
+<dt><strong>sin</strong></dt>
+<dd>
+<p>Computes the sine of the number in the display, as interpreted by the
+current DRG mode (see DRG, below). If inverted, it computes the arcsine.
+The corresponding action procedure is <strong>sine()</strong>.</p>
+</dd>
+<dt><strong>cos</strong></dt>
+<dd>
+<p>Computes the cosine, or arccosine when inverted. The corresponding
+action procedure is <strong>cosine()</strong>.</p>
+</dd>
+<dt><strong>tan</strong></dt>
+<dd>
+<p>Computes the tangent, or arctangent when inverted. The corresponding
+action procedure is <strong>tangent()</strong>.</p>
+</dd>
+<dt><strong>DRG</strong></dt>
+<dd>
+<p>Changes the DRG mode, as indicated by 'DEG', 'RAD', or 'GRAD' at the
+bottom of the calculator ``liquid crystal'' display. When in 'DEG' mode,
+numbers in the display are taken as being degrees. In 'RAD' mode,
+numbers are in radians, and in 'GRAD' mode, numbers are in grads. When
+inverted, the DRG key has a feature of converting degrees to radians to
+grads and vice-versa. Example: put the calculator into 'DEG' mode, and
+enter "45 INV DRG". The display should now show something along the
+lines of ".785398", which is 45 degrees converted to radians. The
+corresponding action procedure is <strong>degree()</strong>.</p>
+</dd>
+<dt><strong>e</strong></dt>
+<dd>
+<p>The constant 'e'. (2.7182818...). The corresponding action procedure
+is <strong>e()</strong>.</p>
+</dd>
+<dt><strong>EE</strong></dt>
+<dd>
+<p>Used for entering exponential numbers. For example, to get "-2.3E-4"
+you'd enter "2 . 3 +/- EE 4 +/-". The corresponding action procedure is
+<strong>scientific()</strong>.</p>
+</dd>
+<dt><strong>log</strong></dt>
+<dd>
+<p>Calculates the log (base 10) of the number in the display. When
+inverted, it raises "10.0" to the number in the display. For example,
+entering "3 INV log" should result in "1000". The corresponding action
+procedure is <strong>logarithm()</strong>.</p>
+</dd>
+<dt><strong>ln</strong></dt>
+<dd>
+<p>Calculates the log (base e) of the number in the display. When
+inverted, it raises "e" to the number in the display. For example,
+entering "e ln" should result in "1". The corresponding action procedure
+is <strong>naturalLog()</strong>.</p>
+</dd>
+<dt><strong>y^x</strong></dt>
+<dd>
+<p>Raises the number on the left to the power of the number on the
+right. For example "2 y^x 3 =" results in "8", which is 2^3. For a
+further example, "(1+2+3) y^x (1+2) =" equals "6 y^x 3" which equals
+"216". The corresponding action procedure is
+<strong>power()</strong>.</p>
+</dd>
+<dt><strong>not</strong></dt>
+<dd>
+<p>Performs a bitwise not. The corresponding action procedure is
+<strong>not()</strong>.</p>
+</dd>
+<dt><strong>and</strong></dt>
+<dd>
+<p>Performs a bitwise and. The corresponding action procedure is
+<strong>and()</strong>.</p>
+</dd>
+<dt><strong>or</strong></dt>
+<dd>
+<p>Performs a bitwise or. The corresponding action procedure is
+<strong>or()</strong>.</p>
+</dd>
+<dt><strong>xor</strong></dt>
+<dd>
+<p>Performs a bitwise exclusive or. The corresponding action procedure
+is <strong>xor()</strong>.</p>
+</dd>
+<dt><strong>trunc</strong></dt>
+<dd>
+<p>Truncates the number in the display to an integer. The corresponding
+action procedure is <strong>trunc()</strong>.</p>
+</dd>
+<dt><strong>PI</strong></dt>
+<dd>
+<p>The constant 'pi'. (3.1415927....) The corresponding action procedure
+is <strong>pi()</strong>.</p>
+</dd>
+<dt><strong>x!</strong></dt>
+<dd>
+<p>Computes the factorial of the number in the display. The number in
+the display must be an integer in the range 0-500, though, depending on
+your math library, it might overflow long before that. The corresponding
+action procedure is <strong>factorial()</strong>.</p>
+</dd>
+<dt><strong>(</strong></dt>
+<dd>
+<p>Left parenthesis. The corresponding action procedure for TI
+calculators is <strong>leftParen()</strong>.</p>
+</dd>
+<dt><strong>)</strong></dt>
+<dd>
+<p>Right parenthesis. The corresponding action procedure for TI
+calculators is <strong>rightParen()</strong>.</p>
+</dd>
+<dt><strong>base</strong></dt>
+<dd>
+<p>Changes the number base, as indicated by 'DEC', 'HEX, or 'OCT' at the
+bottom of the calculator display. When in 'DEC' mode, numbers in the
+display are taken as being decimal (base 10). In 'HEX' mode, numbers are
+in hexadecimal (base 16), and in 'OCT' mode, numbers are in octal (base
+8). The corresponding action procedure is <strong>base()</strong>.</p>
+</dd>
+<dt><strong>shl</strong></dt>
+<dd>
+<p>Performs an arithmetic bitwise shift left, For example, entering "1
+shl 2" should result in "4". The corresponding action procedure is
+<strong>shl()</strong>.</p>
+</dd>
+<dt><strong>shr</strong></dt>
+<dd>
+<p>Performs an arithmetic bitwise shift right, For example, entering "8
+shr 1" should result in "4". The corresponding action procedure is
+<strong>shr()</strong>.</p>
+</dd>
+<dt><strong>mod</strong></dt>
+<dd>
+<p>Performs the modulo operation, which calculates the remainder when
+dividing the first number by the second. For example, entering "14 mod
+8" should result in "6". The corresponding action procedure is
+<strong>mod()</strong>.</p>
+</dd>
+<dt><strong>/</strong></dt>
+<dd>
+<p>Division. The corresponding action procedure is
+<strong>divide()</strong>.</p>
+</dd>
+<dt><strong>*</strong></dt>
+<dd>
+<p>Multiplication. The corresponding action procedure is
+<strong>multiply()</strong>.</p>
+</dd>
+<dt><strong>-</strong></dt>
+<dd>
+<p>Subtraction. The corresponding action procedure is
+<strong>subtract()</strong>.</p>
+</dd>
+<dt><strong>+</strong></dt>
+<dd>
+<p>Addition. The corresponding action procedure is
+<strong>add()</strong>.</p>
+</dd>
+<dt><strong>=</strong></dt>
+<dd>
+<p>Perform calculation. The TI-specific action procedure is
+<strong>equal()</strong>.</p>
+</dd>
+<dt><strong>STO</strong></dt>
+<dd>
+<p>Copies the number in the display to the memory location. The
+corresponding action procedure is <strong>store()</strong>.</p>
+</dd>
+<dt><strong>RCL</strong></dt>
+<dd>
+<p>Copies the number from the memory location to the display. The
+corresponding action procedure is <strong>recall()</strong>.</p>
+</dd>
+<dt><strong>SUM</strong></dt>
+<dd>
+<p>Adds the number in the display to the number in the memory location.
+The corresponding action procedure is <strong>sum()</strong>.</p>
+</dd>
+<dt><strong>EXC</strong></dt>
+<dd>
+<p>Swaps the number in the display with the number in the memory
+location. The corresponding action procedure for the TI calculator is
+<strong>exchange()</strong>.</p>
+</dd>
+<dt><strong>+/-</strong></dt>
+<dd>
+<p>Negate; change sign. The corresponding action procedure is
+<strong>negate()</strong>.</p>
+</dd>
+<dt><strong>.</strong></dt>
+<dd>
+<p>Decimal point. The action procedure is
+<strong>decimal()</strong>.</p>
+</dd>
+</dl>
+<p><em>Calculator Key Usage (RPN mode):</em> The number keys, CHS
+(change sign), +, -, *, /, and ENTR keys all do exactly what you would
+expect them to do. Many of the remaining keys are the same as in TI
+mode. The differences are detailed below. The action procedure for the
+ENTR key is <strong>enter()</strong>.</p>
+<dl>
+<dt><strong>&lt;-</strong></dt>
+<dd>
+<p>This is a backspace key that can be used if you make a mistake while
+entering a number. It will erase digits from the display. (See BUGS).
+Inverse backspace will clear the X register. The corresponding action
+procedure is <strong>back()</strong>.</p>
+</dd>
+<dt><strong>ON</strong></dt>
+<dd>
+<p>Clears the display, the state, and the memory. Pressing it with the
+third pointer button turns off the calculator, in that it exits the
+program. To clear state, the action procedure is <strong>off</strong>;
+to quit, <strong>quit()</strong>.</p>
+</dd>
+<dt><strong>INV</strong></dt>
+<dd>
+<p>Inverts the meaning of the function keys. This would be the
+<em>f</em> key on an HP calculator, but <em>xcalc</em> does not display
+multiple legends on each key. See the individual function keys for
+details.</p>
+</dd>
+<dt><strong>10^x</strong></dt>
+<dd>
+<p>Raises "10.0" to the number in the top of the stack. When inverted,
+it calculates the log (base 10) of the number in the display. The
+corresponding action procedure is <strong>tenpower()</strong>.</p>
+</dd>
+<dt><strong>e^x</strong></dt>
+<dd>
+<p>Raises "e" to the number in the top of the stack. When inverted, it
+calculates the log (base e) of the number in the display. The action
+procedure is <strong>epower()</strong>.</p>
+</dd>
+<dt><strong>STO</strong></dt>
+<dd>
+<p>Copies the number in the top of the stack to a memory location. There
+are 10 memory locations. The desired memory is specified by following
+this key with a digit key.</p>
+</dd>
+<dt><strong>RCL</strong></dt>
+<dd>
+<p>Pushes the number from the specified memory location onto the
+stack.</p>
+</dd>
+<dt><strong>SUM</strong></dt>
+<dd>
+<p>Adds the number on top of the stack to the number in the specified
+memory location.</p>
+</dd>
+<dt><strong>x:y</strong></dt>
+<dd>
+<p>Exchanges the numbers in the top two stack positions, the X and Y
+registers. The corresponding action procedure is
+<strong>XexchangeY()</strong>.</p>
+</dd>
+<dt><strong>R v</strong></dt>
+<dd>
+<p>Rolls the stack downward. When inverted, it rolls the stack upward.
+The corresponding action procedure is <strong>roll()</strong>.</p>
+</dd>
+<dt><em>blank</em></dt>
+<dd>
+<p>These keys were used for programming functions on the HP-10C. Their
+functionality has not been duplicated in <em>xcalc</em>.</p>
+</dd>
+</dl>
+<p>Finally, there are two additional action procedures:
+<strong>bell()</strong>, which rings the bell; and
+<strong>selection()</strong>, which performs a cut on the entire number
+in the calculator's ``liquid crystal'' display.</p>
+<h1>ACCELERATORS</h1>
+<p>Accelerators are shortcuts for entering commands. <em>xcalc</em>
+provides some sample keyboard accelerators; also users can customize
+accelerators. The numeric keypad accelerators provided by <em>xcalc</em>
+should be intuitively correct. The accelerators defined by
+<em>xcalc</em> on the main keyboard are given below:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">TI Key</th>
+<th style="text-align: left;">HP Key</th>
+<th style="text-align: left;">Keyboard Accelerator</th>
+<th style="text-align: left;">TI Function</th>
+<th style="text-align: left;">HP Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SQRT</td>
+<td style="text-align: left;">SQRT</td>
+<td style="text-align: left;">r</td>
+<td style="text-align: left;">squareRoot()</td>
+<td style="text-align: left;">squareRoot()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;">ON</td>
+<td style="text-align: left;">space</td>
+<td style="text-align: left;">clear()</td>
+<td style="text-align: left;">clear()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;">&lt;-</td>
+<td style="text-align: left;">Delete</td>
+<td style="text-align: left;">clear()</td>
+<td style="text-align: left;">back()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;">&lt;-</td>
+<td style="text-align: left;">Backspace</td>
+<td style="text-align: left;">clear()</td>
+<td style="text-align: left;">back()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;">&lt;-</td>
+<td style="text-align: left;">Control-H</td>
+<td style="text-align: left;">clear()</td>
+<td style="text-align: left;">back()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Clear</td>
+<td style="text-align: left;">clear()</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;">ON</td>
+<td style="text-align: left;">q</td>
+<td style="text-align: left;">quit()</td>
+<td style="text-align: left;">quit()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AC</td>
+<td style="text-align: left;">ON</td>
+<td style="text-align: left;">Control-C</td>
+<td style="text-align: left;">quit()</td>
+<td style="text-align: left;">quit()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">INV</td>
+<td style="text-align: left;">i</td>
+<td style="text-align: left;">i</td>
+<td style="text-align: left;">inverse()</td>
+<td style="text-align: left;">inverse()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sin</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">sine()</td>
+<td style="text-align: left;">sine()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cos</td>
+<td style="text-align: left;">c</td>
+<td style="text-align: left;">c</td>
+<td style="text-align: left;">cosine()</td>
+<td style="text-align: left;">cosine()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tan</td>
+<td style="text-align: left;">t</td>
+<td style="text-align: left;">t</td>
+<td style="text-align: left;">tangent()</td>
+<td style="text-align: left;">tangent()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DRG</td>
+<td style="text-align: left;">DRG</td>
+<td style="text-align: left;">d</td>
+<td style="text-align: left;">degree()</td>
+<td style="text-align: left;">degree()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">e</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">e</td>
+<td style="text-align: left;">e()</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ln</td>
+<td style="text-align: left;">ln</td>
+<td style="text-align: left;">l</td>
+<td style="text-align: left;">naturalLog()</td>
+<td style="text-align: left;">naturalLog()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y^x</td>
+<td style="text-align: left;">y^x</td>
+<td style="text-align: left;">^</td>
+<td style="text-align: left;">power()</td>
+<td style="text-align: left;">power()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PI</td>
+<td style="text-align: left;">PI</td>
+<td style="text-align: left;">p</td>
+<td style="text-align: left;">pi()</td>
+<td style="text-align: left;">pi()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">x!</td>
+<td style="text-align: left;">x!</td>
+<td style="text-align: left;">!</td>
+<td style="text-align: left;">factorial()</td>
+<td style="text-align: left;">factorial()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(</td>
+<td style="text-align: left;">leftParen()</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">)</td>
+<td style="text-align: left;">rightParen()</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">/</td>
+<td style="text-align: left;">/</td>
+<td style="text-align: left;">/</td>
+<td style="text-align: left;">divide()</td>
+<td style="text-align: left;">divide()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">*</td>
+<td style="text-align: left;">*</td>
+<td style="text-align: left;">*</td>
+<td style="text-align: left;">multiply()</td>
+<td style="text-align: left;">multiply()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">subtract()</td>
+<td style="text-align: left;">subtract()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">+</td>
+<td style="text-align: left;">add()</td>
+<td style="text-align: left;">add()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">=</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">=</td>
+<td style="text-align: left;">equal()</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0..9</td>
+<td style="text-align: left;">0..9</td>
+<td style="text-align: left;">0..9</td>
+<td style="text-align: left;">digit()</td>
+<td style="text-align: left;">digit()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">.</td>
+<td style="text-align: left;">.</td>
+<td style="text-align: left;">decimal()</td>
+<td style="text-align: left;">decimal()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">+/-</td>
+<td style="text-align: left;">CHS</td>
+<td style="text-align: left;">n</td>
+<td style="text-align: left;">negate()</td>
+<td style="text-align: left;">negate()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">x:y</td>
+<td style="text-align: left;">x</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">XexchangeY()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">ENTR</td>
+<td style="text-align: left;">Return</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">enter()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">ENTR</td>
+<td style="text-align: left;">Linefeed</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">enter()</td>
+</tr>
+</tbody>
+</table>
+<h1>CUSTOMIZATION</h1>
+<p>The application class name is XCalc.</p>
+<p><em>xcalc</em> has an enormous application defaults file which
+specifies the position, label, and function of each key on the
+calculator. It also gives translations to serve as keyboard
+accelerators. Because these resources are not specified in the source
+code, you can create a customized calculator by writing a private
+application defaults file, using the Athena Command and Form widget
+resources to specify the size and position of buttons, the label for
+each button, and the function of each button.</p>
+<p>The foreground and background colors of each calculator key can be
+individually specified. For the TI calculator, a classical color
+resource specification might be:</p>
+<p><br />
+XCalc.ti.Command.background: gray50<br />
+XCalc.ti.Command.foreground: white</p>
+<p>For each of buttons 20, 25, 30, 35, and 40, specify:<br />
+XCalc.ti.button20.background: black<br />
+XCalc.ti.button20.foreground: white</p>
+<p>For each of buttons 22, 23, 24, 27, 28, 29, 32, 33, 34, 37, 38, and
+39:<br />
+XCalc.ti.button22.background: white<br />
+XCalc.ti.button22.foreground: black</p>
+<h1>WIDGET HIERARCHY</h1>
+<p>In order to specify resources, it is useful to know the hierarchy of
+the widgets which compose <em>xcalc</em>. In the notation below,
+indentation indicates hierarchical structure. The widget class name is
+given first, followed by the widget instance name.</p>
+<pre><code>XCalc xcalc
+        Form  ti  or  hp    (the name depends on the mode)
+                Form  bevel
+                        Form  screen
+                                Label  M
+                                Toggle  LCD
+                                Label  INV
+                                Label  DEG
+                                Label  RAD
+                                Label  GRAD
+                                Label  P
+                Command  button1
+                Command  button2
+                Command  button3
+and so on, ...
+                Command  button38
+                Command  button39
+                Command  button40</code></pre>
+<h1>APPLICATION RESOURCES</h1>
+<dl>
+<dt><strong>rpn</strong> (Class <strong>Rpn</strong>)</dt>
+<dd>
+<p>Specifies that the rpn mode should be used. The default is TI
+mode.</p>
+</dd>
+<dt><strong>stipple</strong> (Class <strong>Stipple</strong>)</dt>
+<dd>
+<p>Indicates that the background should be stippled. The default is
+``on'' for monochrome displays, and ``off'' for color displays.</p>
+</dd>
+<dt><strong>cursor</strong> (Class <strong>Cursor</strong>)</dt>
+<dd>
+<p>The name of the symbol used to represent the pointer. The default is
+``hand2''.</p>
+</dd>
+</dl>
+<h1>COLORS</h1>
+<p>If you would like xcalc to use its ti colors, include the following
+in the #ifdef COLOR section of the file you read with xrdb:</p>
+<p>*customization: -color</p>
+<p><br />
+This will cause xcalc to pick up the colors in the app-defaults color
+customization file: <em>/etc/X11/app-defaults/XCalc-color</em>.</p>
+<h1>SEE ALSO</h1>
+<p>X(7), xrdb(1), the Athena Widget Set</p>
+<h1>BUGS</h1>
+<p>HP mode is not completely debugged. In particular, the stack is not
+handled properly after errors.</p>
+<h1>AUTHORS</h1>
+<p>John Bradley, University of Pennsylvania<br />
+Mark Rosenstein, MIT Project Athena<br />
+Donna Converse, MIT X Consortium</p>

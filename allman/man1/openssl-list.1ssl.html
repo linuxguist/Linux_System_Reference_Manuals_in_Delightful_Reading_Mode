@@ -1,0 +1,220 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-list - list algorithms and features</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl list</strong> [<strong>-help</strong>]
+[<strong>-verbose</strong>] [<strong>-select</strong> <em>name</em>]
+[<strong>-1</strong>] [<strong>-commands</strong>]
+[<strong>-standard-commands</strong>]
+[<strong>-digest-algorithms</strong>]
+[<strong>-digest-commands</strong>] [<strong>-kdf-algorithms</strong>]
+[<strong>-mac-algorithms</strong>] [<strong>-random-instances</strong>]
+[<strong>-random-generators</strong>]
+[<strong>-cipher-algorithms</strong>]
+[<strong>-cipher-commands</strong>] [<strong>-encoders</strong>]
+[<strong>-decoders</strong>] [<strong>-key-managers</strong>]
+[<strong>-key-exchange-algorithms</strong>]
+[<strong>-kem-algorithms</strong>]
+[<strong>-signature-algorithms</strong>]
+[<strong>-asymcipher-algorithms</strong>]
+[<strong>-public-key-algorithms</strong>]
+[<strong>-public-key-methods</strong>] [<strong>-store-loaders</strong>]
+[<strong>-providers</strong>] [<strong>-engines</strong>]
+[<strong>-disabled</strong>] [<strong>-objects</strong>]
+[<strong>-options</strong> <em>command</em>] [<strong>-provider</strong>
+<em>name</em>] [<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command is used to generate list of algorithms or disabled
+features.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Display a usage message.</p>
+</dd>
+<dt>-verbose</dt>
+<dd>
+<p>Displays extra information. The options below where verbosity applies
+say a bit more about what that means.</p>
+</dd>
+<dt>-select name</dt>
+<dd>
+<p>Only list algorithms that match this name.</p>
+</dd>
+<dt>-1</dt>
+<dd>
+<p>List the commands, digest-commands, or cipher-commands in a single
+column. If used, this option must be given first.</p>
+</dd>
+<dt>-commands</dt>
+<dd>
+<p>Display a list of standard commands.</p>
+</dd>
+<dt>-standard-commands</dt>
+<dd>
+<p>List of standard commands.</p>
+</dd>
+<dt>-digest-commands</dt>
+<dd>
+<p>This option is deprecated. Use <strong>digest-algorithms</strong>
+instead. Display a list of message digest commands, which are typically
+used as input to the <strong>openssl-dgst</strong> (1) or
+<strong>openssl-speed</strong> (1) commands.</p>
+</dd>
+<dt>-cipher-commands</dt>
+<dd>
+<p>This option is deprecated. Use <strong>cipher-algorithms</strong>
+instead. Display a list of cipher commands, which are typically used as
+input to the <strong>openssl-enc</strong> (1) or
+<strong>openssl-speed</strong> (1) commands.</p>
+</dd>
+<dt>-cipher-algorithms, -digest-algorithms, -kdf-algorithms,
+-mac-algorithms,</dt>
+<dd>
+<p>Display a list of symmetric cipher, digest, kdf and mac algorithms.
+See Display of algorithm names for a description of how names are
+displayed. In verbose mode, the algorithms provided by a provider will
+get additional information on what parameters each implementation
+supports.</p>
+</dd>
+<dt>-random-instances</dt>
+<dd>
+<p>List the primary, public and private random number generator
+details.</p>
+</dd>
+<dt>-random-generators</dt>
+<dd>
+<p>Display a list of random number generators. See Display of algorithm
+names for a description of how names are displayed.</p>
+</dd>
+<dt>-encoders</dt>
+<dd>
+<p>Display a list of encoders. See Display of algorithm names for a
+description of how names are displayed. In verbose mode, the algorithms
+provided by a provider will get additional information on what
+parameters each implementation supports.</p>
+</dd>
+<dt>-decoders</dt>
+<dd>
+<p>Display a list of decoders. See Display of algorithm names for a
+description of how names are displayed. In verbose mode, the algorithms
+provided by a provider will get additional information on what
+parameters each implementation supports.</p>
+</dd>
+<dt>-public-key-algorithms</dt>
+<dd>
+<p>Display a list of public key algorithms, with each algorithm as a
+block of multiple lines, all but the first are indented. The options
+<strong>key-exchange-algorithms</strong>,
+<strong>kem-algorithms</strong>, <strong>signature-algorithms</strong>,
+and <strong>asymcipher-algorithms</strong> will display similar
+info.</p>
+</dd>
+<dt>-public-key-methods</dt>
+<dd>
+<p>Display a list of public key methods.</p>
+</dd>
+<dt>-key-managers</dt>
+<dd>
+<p>Display a list of key managers.</p>
+</dd>
+<dt>-key-exchange-algorithms</dt>
+<dd>
+<p>Display a list of key exchange algorithms.</p>
+</dd>
+<dt>-kem-algorithms</dt>
+<dd>
+<p>Display a list of key encapsulation algorithms.</p>
+</dd>
+<dt>-signature-algorithms</dt>
+<dd>
+<p>Display a list of signature algorithms.</p>
+</dd>
+<dt>-asymcipher-algorithms</dt>
+<dd>
+<p>Display a list of asymmetric cipher algorithms.</p>
+</dd>
+<dt>-store-loaders</dt>
+<dd>
+<p>Display a list of store loaders.</p>
+</dd>
+<dt>-providers</dt>
+<dd>
+<p>Display a list of all loaded providers with their names, version and
+status. In verbose mode, the full version and all provider parameters
+will additionally be displayed.</p>
+</dd>
+<dt>-engines</dt>
+<dd>
+<p>This option is deprecated. Display a list of loaded engines.</p>
+</dd>
+<dt>-disabled</dt>
+<dd>
+<p>Display a list of disabled features, those that were compiled out of
+the installation.</p>
+</dd>
+<dt>-objects</dt>
+<dd>
+<p>Display a list of built in objects, i.e. OIDs with names. They're
+listed in the format described in ASN1 Object Configuration Module in
+<strong>config</strong> (5).</p>
+</dd>
+<dt>-options command</dt>
+<dd>
+<p>Output a two-column list of the options accepted by the specified
+<em>command</em>. The first is the option name, and the second is a
+one-character indication of what type of parameter it takes, if any.
+This is an internal option, used for checking that the documentation is
+complete.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<h2>Display of algorithm names</h2>
+<p>Algorithm names may be displayed in one of two manners:</p>
+<dl>
+<dt>Legacy implementations</dt>
+<dd>
+<p>Legacy implementations will simply display the main name of the
+algorithm on a line of its own, or in the form <code>&lt;foo </code>
+bar&gt;&gt; to show that <code>foo</code> is an alias for the main name,
+<code>bar</code></p>
+</dd>
+<dt>Provided implementations</dt>
+<dd>
+<p>Implementations from a provider are displayed like this if the
+implementation is labeled with a single name: foo @ bar or like this if
+it's labeled with multiple names: { foo1, foo2 } @bar In both cases,
+<code>bar</code> is the name of the provider.</p>
+</dd>
+</dl>
+<h1>HISTORY</h1>
+<p>The <strong>-engines</strong>, <strong>-digest-commands</strong>, and
+<strong>-cipher-commands</strong> options were deprecated in OpenSSL
+3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2016-2022 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

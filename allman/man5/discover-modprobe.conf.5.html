@@ -1,0 +1,46 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>discover-modprobe.conf — configuration file for
+discover-modprobe(5)</p>
+<h1>Description</h1>
+<p><strong>discover-modprobe.conf</strong> is the configuration file for
+<strong>discover-modprobe</strong>, which is responsible for retrieving
+and loading kernel modules.</p>
+<blockquote>
+<p><strong>Warning:</strong></p>
+<p>This file is a shell script, and as such is subject to a string
+variable assignment syntax. No space is allowed between the variable
+name, the equal (=) sign, and the value(s) assigned. If multiple values
+are to be assigned, the list must be space-delimited with surrounding
+quotes.</p>
+</blockquote>
+<p>Two directives can be used in this file: <strong>types and skip. Both
+can be</strong> defined multiple times.</p>
+<dl>
+<dt>types</dt>
+<dd>
+<p>This describes the classes of hardware that should be scanned and
+queried. </p>
+</dd>
+<dt>skip</dt>
+<dd>
+<p>These modules should never be loaded. See the
+``<em>Files</em><strong>'' section for details on the mechanism
+for</strong> generating these entries automatically. </p>
+</dd>
+</dl>
+<h1>Files</h1>
+<dl>
+<dt>/var/lib/discover/crash</dt>
+<dd>
+<p>A crash file written and erased each time
+<strong>discover-modprobe</strong> attempts to load a module. If the
+file lingers, the computer is assumed to have crashed while loading that
+module, and the module name is added to
+<strong>discover-modprobe.conf</strong> as a module to skip in the
+future. </p>
+</dd>
+</dl>
+<h1>See Also</h1>
+<p>discover-modprobe(8), modprobe(8), discover(1)</p>

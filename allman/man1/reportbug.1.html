@@ -1,0 +1,701 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>reportbug - reports a bug to a debbugs server</p>
+<h1>SYNOPSIS</h1>
+<p><strong>reportbug</strong> <em>[options] &lt;package | pseudo-package
+| absolute-pathname&gt;</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>reportbug</strong> is primarily designed to report bugs in
+the Debian distribution; by default, it creates an email to the Debian
+bug tracking system at <em>submit@bugs.debian.org</em> with information
+about the bug you've found, and makes a carbon copy of the report for
+you as well.</p>
+<p>Using the <strong>--bts</strong> option, you can also report bugs to
+other servers that use the Debian bug tracking system,
+<strong>debbugs</strong>.</p>
+<p>You may specify either a package name or a filename; if you use a
+filename, it must either be an absolute filename (so beginning with a
+<strong>/</strong>) or if you want <strong>reportbug</strong> to search
+the system for a filename, see the <strong>--filename</strong> and
+<strong>--path</strong> options below. If installed, also
+<strong>dlocate</strong> is used to identify the filename location and
+thus the package containing it.</p>
+<p>You can also specify a <strong>pseudo-package</strong>; these are
+used in the Debian bug tracking system to track issues that are not
+related to one specific package. Run <strong>reportbug</strong> without
+any arguments, then enter <strong>other</strong> at the package prompt,
+to see a list of the most commonly-used
+<strong>pseudo-packages</strong>.</p>
+<h1>OPTIONS</h1>
+<p>The program follows the usual GNU command line syntax, with long
+options starting with two dashes (`<strong>--</strong>'). A summary of
+options are included below.</p>
+<dl>
+<dt><strong>-h, --help</strong></dt>
+<dd>
+<p>Show summary of options.</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Show the version of <strong>reportbug</strong> and exit.</p>
+</dd>
+<dt><strong>-A FILENAME, --attach=FILENAME</strong></dt>
+<dd>
+<p>Attach a file to the bug report; both text and binary files are
+acceptable; this option can be specified multiple times to attach
+several files. This routine will create a MIME attachment with the file
+included; in some cases (usually text files), it is probably better to
+use <strong>-i/--include</strong> option. (Please note that Debian's bug
+tracking system has limited support for MIME attachments.)</p>
+<p>This option supports also globbing (i.e. names with wildcards, like
+file.*) but remember to include them between single quotes (the previous
+example becomes: 'file.*') else the shell would expand it before calling
+reportbug leading to an error.</p>
+<p>Be aware that when using an external MUA to send the message (such as
+mutt), the attachment feature is not reliable and no file might be
+attached at all: the MUA feature to attach files should be used instead
+(so from within the MUA).</p>
+</dd>
+<dt><strong>--archive</strong></dt>
+<dd>
+<p>Also show archived bugs when browsing bugs.</p>
+</dd>
+<dt><strong>-b, --no-query-bts</strong></dt>
+<dd>
+<p>Don't check the Debian bug tracking system to see if this problem has
+already been reported; useful for offline use or if you're
+<strong>really</strong> sure it's a bug.</p>
+</dd>
+<dt><strong>--query-bts</strong></dt>
+<dd>
+<p>Check the Debian bug tracking system to see if this problem has
+already been reported (default).</p>
+</dd>
+<dt><strong>-B SYSTEM, --bts=SYSTEM</strong></dt>
+<dd>
+<p>Instead of the Debian bug server (or the bug server specified in
+<strong>/etc/reportbug.conf</strong>), use the server specified by
+<strong>SYSTEM</strong>. Use --bts=help to obtain the list of valid
+values. Note that if your <strong>$HOME/.reportbugrc</strong> or
+<strong>/etc/reportbug.conf</strong> include an smtphost setting that is
+specific to your default bug server and not a generic smarthost, you may
+need to override this using --smtphost=&lt;host&gt; to be able to report
+a bug directly to <strong>SYSTEM</strong>.</p>
+</dd>
+<dt><strong>--body=BODY</strong></dt>
+<dd>
+<p>Use the specified <em>BODY</em> string as the body of the message.
+The body text will be wrapped at 70 columns, and the normal
+<strong>reportbug</strong> headers and footers will be added as
+appropriate. The editor prompt and any "special" prompting will be
+bypassed.</p>
+</dd>
+<dt><strong>--body-file=BODYFILE, --bodyfile=BODYFILE</strong></dt>
+<dd>
+<p>The contents of the (assumed to be) text file <em>BODYFILE</em> will
+be used as the message body. This file is assumed to be properly
+formatted (i.e. reasonable line lengths, etc.). The usual headers and
+footers will be added, and the editor step and "special" prompts will be
+skipped. (<em>BODYFILE</em> may also be a named pipe; using a device
+special file may lead to unusual results.)</p>
+</dd>
+<dt><strong>-c, --no-config-files</strong></dt>
+<dd>
+<p>Omit configuration files from the bug report without asking. By
+default, you are asked if you want to include them; in some cases, doing
+so may cause sensitive information to be sent via email.</p>
+</dd>
+<dt><strong>-C CLASS, --class=CLASS</strong></dt>
+<dd>
+<p>Specify report class for GNATS BTSes.</p>
+</dd>
+<dt><strong>--configure</strong></dt>
+<dd>
+<p>Rerun the <strong>reportbug</strong> first time configuration
+routine, and write a new <strong>$HOME/.reportbugrc</strong> file. This
+will erase any pre-existing settings in the file; however, a backup will
+be written as <strong>$HOME/.reportbugrc~</strong>. Reportbug will exit
+after rewriting its configuration file, hence this option cannot
+usefully be combined with many other options.</p>
+</dd>
+<dt><strong>--check-available</strong></dt>
+<dd>
+<p>Check for newer releases of the package at
+<strong>packages.debian.org</strong> (default). In
+<strong>advanced</strong> and <strong>expert</strong> mode, check
+<strong>http://ftp-master.debian.org/new.html</strong> too.</p>
+</dd>
+<dt><strong>--no-check-available</strong></dt>
+<dd>
+<p>Do not check for newer releases of the package at
+<strong>packages.debian.org</strong>.</p>
+</dd>
+<dt><strong>--debconf</strong></dt>
+<dd>
+<p>Include debconf settings in your report.</p>
+</dd>
+<dt><strong>--no-debconf</strong></dt>
+<dd>
+<p>Do not include debconf settings from your report.</p>
+</dd>
+<dt><strong>-d, --debug</strong></dt>
+<dd>
+<p>Don't send a real bug report to Debian; send it to yourself instead.
+This is primarily used for testing by the maintainer.</p>
+</dd>
+<dt><strong>--test</strong></dt>
+<dd>
+<p>Operate in test mode (maintainer use only).</p>
+</dd>
+<dt><strong>--draftpath=DRAFTPATH</strong></dt>
+<dd>
+<p>Save the draft (for example, when exiting and saving the report
+without reporting it) into <em>DRAFTPATH</em> directory (default
+/tmp).</p>
+</dd>
+<dt><strong>-e EDITOR, --editor=EDITOR</strong></dt>
+<dd>
+<p>Specify the editor to use, overriding any <strong>EDITOR</strong> or
+<strong>VISUAL</strong> environment variable setting.</p>
+</dd>
+<dt><strong>--email=ADDRESS</strong></dt>
+<dd>
+<p>Set the email address your report should appear to be sent from (i.e.
+the address that appears in the <strong>From</strong> header). This
+should be the actual Internet email address on its own (i.e. without a
+real name or comment part, like <strong>foo@example.com</strong>). This
+setting will override the <strong>EMAIL</strong> and
+<strong>DEBEMAIL</strong> environment variables, but not
+<strong>REPORTBUGEMAIL</strong>.</p>
+</dd>
+<dt><strong>--envelope-from</strong></dt>
+<dd>
+<p>Specify the Envelope From mail header (also known as Return-path); by
+default it's the From address but it can be selected a different one in
+case the MTA doesn't canonicalize local users to public addresses. This
+can be set to the empty string if the MTA does not allow setting the
+Envelope From.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--mbox-reader-cmd=MBOX_READER_CMD</strong></dt>
+<dd>
+<p>Specify a command to open the bug reports mbox file. You can use
+<strong>%s</strong> to substitute the mbox file to be used, and
+<strong>%%</strong> to insert a literal percent sign. If no
+<strong>%s</strong> is specified, the mbox file name is supplied at the
+end of the argument list.</p>
+</dd>
+<dt><strong>-f FILENAME, --filename=FILENAME</strong></dt>
+<dd>
+<p>Report a bug in the package containing <em>FILENAME</em> so you don't
+have to figure out what package the file belongs to. The path will be
+searched for an exact path for <em>FILENAME</em> before attempting to
+broaden the search to all files. If <strong>dlocate</strong> is
+installed, <em>FILENAME</em> is actually a regular expression.</p>
+</dd>
+<dt><strong>--from-buildd=BUILDD_FORMAT</strong></dt>
+<dd>
+<p>This options is a shortcut for buildd admins to report bugs from
+buildd log; the option expects a value in the format of
+<em>$source_$version</em> where <em>$source</em> is the source package
+the bug will be reported against and <em>$version</em> is its
+version.</p>
+</dd>
+<dt><strong>--path</strong></dt>
+<dd>
+<p>If the <strong>-f/--filename</strong> option is also specified, only
+search the path for the specified <em>FILENAME</em>. Specifying an
+absolute path with the <strong>-f/--filename</strong> option (i.e. one
+beginning with a <strong>/</strong>) overrides this behavior.</p>
+</dd>
+<dt><strong>-g, --gnupg, --gpg</strong></dt>
+<dd>
+<p>Attach a digital signature to the bug report using
+<strong>GnuPG</strong> (the GNU Privacy Guard). (This argument will be
+ignored if you are using an MUA to edit and send your report.)</p>
+</dd>
+<dt><strong>-G, --gnus</strong></dt>
+<dd>
+<p>Use the Gnus mail and news reader to send your report, rather than
+using the editor.</p>
+</dd>
+<dt><strong>-H HEADER, --header=HEADER</strong></dt>
+<dd>
+<p>Add a custom RFC2822 header to your email. Do not use this option if
+you want to submit the report using your MUA, because custom headers
+cannot be passed from reportbug to the MUA reliably. To send a carbon
+copy of the report to another recipient using <em>X-Debbugs-CC</em>,
+please see the <strong>--list-cc</strong> option.</p>
+</dd>
+<dt><strong>-i FILE, --include=FILE</strong></dt>
+<dd>
+<p>Include the specified <em>FILE</em> as part of the body of the
+message to be edited. Can be used multiple times to add multiple files;
+text-only please! From a suggestion by Michael Alan Dorman in the
+<strong>bug</strong> mailing list. (See also the
+<strong>-A/--attach</strong> option.)</p>
+</dd>
+<dt><strong>-I, --no-check-installed</strong></dt>
+<dd>
+<p>Do not check whether the package is installed before filing a report.
+This is generally only useful when filing a report on a package you know
+is not installed on your system.</p>
+</dd>
+<dt><strong>--check-installed</strong></dt>
+<dd>
+<p>Check if the specified package is installed when filing reports.
+(This is the default behavior of <strong>reportbug</strong>.)</p>
+</dd>
+<dt><strong>-j JUSTIFICATION,
+--justification=JUSTIFICATION</strong></dt>
+<dd>
+<p>Bugs in Debian that have <strong>serious</strong>,
+<strong>grave</strong>, or <strong>critical</strong> severities must
+meet certain criteria to be classified as such. This option allows you
+to specify the justification for a release-critical bug, instead of
+being prompted for it.</p>
+</dd>
+<dt><strong>-k, --kudos</strong></dt>
+<dd>
+<p>Send appreciative email to the recorded maintainer address, rather
+than filing a bug report. (You can also send kudos to
+<em>packagename@packages.debian.org</em>, for packages in the Debian
+archive; however, this option uses the Maintainer address from the
+control file, so it works with other package sources too.)</p>
+</dd>
+<dt><strong>-K KEYID, --keyid=KEYID</strong></dt>
+<dd>
+<p>Private key to use for PGP/GnuPG signatures. If not specified, the
+first key in the secret keyring that matches your email address will be
+used.</p>
+</dd>
+<dt><strong>--latest-first</strong></dt>
+<dd>
+<p>Display the bug reports list sorted and with the latest reports at
+the top.</p>
+</dd>
+<dt><strong>--license</strong></dt>
+<dd>
+<p>Show <strong>reportbug</strong>'s copyright and license information
+on standard output.</p>
+</dd>
+<dt><strong>--list-cc=ADDRESS</strong></dt>
+<dd>
+<p>Send a carbon copy of the report to the specified list after a report
+number is assigned; this is the equivalent to the option <em>-P
+'X-Debbugs-CC: ADDRESS'</em>. This option will only work as intended
+with <strong>debbugs</strong> systems.</p>
+</dd>
+<dt><strong>--list-cc-me</strong></dt>
+<dd>
+<p>Send a carbon copy of the report to your automatically detected email
+address after a report number is assigned. This sets an
+<em>X-Debbugs-CC</em> pseudo-header specifying that address. This option
+will only work as intended with <strong>debbugs</strong> systems. See
+the documentation for the <em>--email</em> option and the
+<em>ENVIRONMENT</em> section for information on how reportbug detects
+your email address.</p>
+</dd>
+<dt><strong>-m, --maintonly</strong></dt>
+<dd>
+<p>Only send the bug to the package maintainer; the bug tracking system
+will not send a copy to the bug report distribution lists.</p>
+</dd>
+<dt><strong>--max-attachment-size=MAX_ATTACHMENT_SIZE</strong></dt>
+<dd>
+<p>Specify the maximum size any attachment file can have (this also
+include the file for --body-file option). If an attachment file is too
+big, there could be problems in delivering the email (and also to
+compose it), so we set a limit to attachment size. By default this is 10
+megabytes.</p>
+</dd>
+<dt><strong>--mirror=MIRRORS</strong></dt>
+<dd>
+<p>Add a BTS mirror.</p>
+</dd>
+<dt><strong>--mode=MODE</strong></dt>
+<dd>
+<p>Set the operating mode for <strong>reportbug</strong>.
+<strong>reportbug</strong> currently has four operating modes:
+<strong>novice</strong> (the default), <strong>standard</strong>,
+<strong>advanced</strong>, and <strong>expert</strong>.</p>
+<p><strong>novice</strong> mode is designed to minimize prompting about
+things that "ordinary users" would be unlikely to know or care about,
+shifting the triage burden onto the maintainer. Checking for new
+versions is only done for the stable distribution in this mode. It is
+currently the default mode.</p>
+<p><strong>standard</strong> mode includes a relatively large number of
+prompts and tries to encourage users to not file frivolous or duplicate
+bug reports.</p>
+<p><strong>advanced</strong> mode is like <strong>standard</strong>
+mode, but may include shortcuts suitable for more advanced users of
+Debian, without being as close to the metal (and potential flamage) as
+<strong>expert</strong> mode. (Currently, the only differences from
+<strong>standard</strong> mode are that it assumes familiarity with the
+"new" queue; it allows the reporting of bugs on "dependency" packages;
+and it does not prompt where to insert the report text in the
+editor.)</p>
+<p><strong>expert</strong> mode is designed to minimize prompts that are
+designed to discourage frivolous or unnecessary bug reports, "severity
+inflation," and the like. In <strong>expert</strong> mode,
+<strong>reportbug</strong> assumes the user is thoroughly familiar with
+Debian policies. In practice, this means that reporters are no longer
+required to justify setting a high severity on a bug report, and certain
+automated cleanups of the message are bypassed. Individuals who do not
+regularly contribute to the Debian project are <em>highly</em>
+discouraged from using expert mode, as it can lead to flamage from
+maintainers when used improperly.</p>
+</dd>
+<dt><strong>-M, --mutt</strong></dt>
+<dd>
+<p>Instead of spawning an editor to revise the bug report, use the
+<strong>mutt</strong> mail reader to edit and send it.</p>
+</dd>
+<dt><strong>--mta=MTA</strong></dt>
+<dd>
+<p>Specify an alternate <em>MTA</em>, instead of
+<strong>/usr/sbin/sendmail</strong> (the default). Any
+<strong>smtphost</strong> setting will override this one.</p>
+</dd>
+<dt><strong>--mua=MUA</strong></dt>
+<dd>
+<p>Instead of spawning an editor to revise the bug report, use the
+specified <em>MUA</em> (mail user agent) to edit and send it.
+<strong>--mutt</strong> and <strong>--nmh</strong> options are
+processed.</p>
+</dd>
+<dt><strong>-n, --mh, --nmh</strong></dt>
+<dd>
+<p>Instead of spawning an editor to revise the bug report, use the
+<strong>comp</strong> command (part of the <strong>nmh</strong> and
+<strong>mh</strong> mail systems) to edit and send it.</p>
+</dd>
+<dt><strong>-N BUGNUMBER, --bugnumber BUGNUMBER</strong></dt>
+<dd>
+<p>Run <strong>reportbug</strong> against the specified bug report,
+useful when following-up a bug and its number is already known.</p>
+</dd>
+<dt><strong>--no-bug-script</strong></dt>
+<dd>
+<p>Do not execute the bug script (if present); this option can be useful
+together with --template to suppress every interactive actions, since
+some bug scripts can ask questions.</p>
+</dd>
+<dt><strong>--no-cc-menu</strong></dt>
+<dd>
+<p>Don't display the menu to enter additional addresses (CC).</p>
+</dd>
+<dt><strong>--no-tags-menu</strong></dt>
+<dd>
+<p>Don't display the menu to enter additional tags.</p>
+</dd>
+<dt><strong>-o FILE, --output=FILE</strong></dt>
+<dd>
+<p>Instead of sending an email, redirect it to the specified
+filename.</p>
+<p>The output file is a full dump of the email message, so it contains
+both headers and mail body. If you want to use it as a template to
+create a new bug report, see the --resume-saved option.</p>
+</dd>
+<dt><strong>-O, --offline</strong></dt>
+<dd>
+<p>Disable all external queries. Currently has the same effect as
+<strong>--no-check-available --no-query-bts</strong>.</p>
+</dd>
+<dt><strong>-p, --print</strong></dt>
+<dd>
+<p>Instead of sending an email, print the bug report to standard output,
+so you can redirect it to a file or pipe it to another program.</p>
+<p>This option only outputs a template for a bug report (but,
+differently from <strong>--template</strong> it's more interactive); you
+will need to fill in the long description.</p>
+</dd>
+<dt><strong>--paranoid</strong></dt>
+<dd>
+<p>Show the contents of the message before it is sent, including all
+headers. Automatically disabled if in template mode.</p>
+</dd>
+<dt><strong>--no-paranoid</strong></dt>
+<dd>
+<p>Don't show the full contents of the message before it is sent
+(default).</p>
+</dd>
+<dt><strong>--pgp</strong></dt>
+<dd>
+<p>Attach a digital signature to the bug report using
+<strong>PGP</strong> (Pretty Good Privacy). Please note, however, that
+the Debian project is phasing out the use of <strong>PGP</strong> in
+favor of <strong>GnuPG</strong>. (This argument will be ignored if using
+an MUA to edit and send your report.)</p>
+</dd>
+<dt><strong>--proxy=PROXY, --http_proxy=PROXY</strong></dt>
+<dd>
+<p>Specify the WWW proxy server to use to handle the query of the bug
+tracking system. You should only need this parameter if you are behind a
+firewall. The <em>PROXY</em> argument should be formatted as a valid
+HTTP URL, including (if necessary) a port number; for example,
+<strong>http://192.168.1.1:3128/</strong>.</p>
+</dd>
+<dt><strong>-P PSEUDO-HEADER,
+--pseudo-header=PSEUDO-HEADER</strong></dt>
+<dd>
+<p>Add a custom pseudo-header to your report; for example, to add the
+<em>mytag</em> usertag for the user <em>humberto@example.com</em> to the
+bug, you could use <em>-P 'User: humberto@example.com' -P
+'Usertags:</em> mytag'.</p>
+</dd>
+<dt><strong>-q, --quiet</strong></dt>
+<dd>
+<p>Suppress diagnostic messages to standard error.</p>
+</dd>
+<dt><strong>-Q, --query-only</strong></dt>
+<dd>
+<p>Do not submit a bug report; just query the BTS. Option ignored if you
+specify <strong>--no-bts-query</strong>.</p>
+</dd>
+<dt><strong>--query-source</strong></dt>
+<dd>
+<p>Query on all binary packages built by the same source, not just the
+binary package specified.</p>
+</dd>
+<dt><strong>--no-query-source</strong></dt>
+<dd>
+<p>Only query on the binary package specified on the command line.</p>
+</dd>
+<dt><strong>--realname=NAME</strong></dt>
+<dd>
+<p>Set the real name (human-readable name) to use for your report.</p>
+</dd>
+<dt><strong>--report-quiet</strong></dt>
+<dd>
+<p>Register the bug in the bug tracking system, but don't send a report
+to the package maintainer or anyone else. Don't do this unless you're
+the maintainer of the package in question, or you really know what you
+are doing.</p>
+</dd>
+<dt><strong>--reply-to=ADDRESS, --replyto=ADDRESS</strong></dt>
+<dd>
+<p>Set the <strong>Reply-To</strong> address header in your report.</p>
+</dd>
+<dt><strong>-r TEMPFILE, --resume-saved=TEMPFILE</strong></dt>
+<dd>
+<p>Use this to resume an unsent report previously saved by reportbug.
+Note that attachments stored in <em>TEMPFILE</em> are ignored; if you
+want to attach any files you need to do that again.</p>
+</dd>
+<dt><strong>-s SUBJECT, --subject=SUBJECT</strong></dt>
+<dd>
+<p>Set the subject of the bug report (i.e. a brief explanation of the
+problem, less than 60 characters). If you do not specify this switch,
+you will be prompted for a subject.</p>
+</dd>
+<dt><strong>--security-team</strong></dt>
+<dd>
+<p>If the 'security' tag is set, this option will explicitly specify to
+send the report only to the Debian Security Team, as this is an
+undisclosed vulnerability.</p>
+</dd>
+<dt><strong>--no-security-team</strong></dt>
+<dd>
+<p>If the 'security' tag is set, this option will explicitly specify to
+not send the report only to the Debian Security Team, as this is not an
+undisclosed vulnerability.</p>
+</dd>
+<dt><strong>-S SEVERITY, --severity=SEVERITY</strong></dt>
+<dd>
+<p>Specify a severity level, from <strong>critical</strong>,
+<strong>grave</strong>, <strong>serious</strong>,
+<strong>important</strong>, <strong>normal</strong>,
+<strong>minor</strong>, and <strong>wishlist</strong>.</p>
+</dd>
+<dt><strong>--smtphost=HOST[:PORT]</strong></dt>
+<dd>
+<p>Use the mail transport agent (MTA) at <strong>HOST</strong> to send
+your report, instead of your local <strong>/usr/sbin/sendmail</strong>
+program. This should generally be your ISP's outgoing mail server; you
+can also use 'localhost' if you have a working mail server running on
+your machine. If the <strong>PORT</strong> is omitted, the standard port
+for SMTP, port 25, is used.</p>
+</dd>
+<dt><strong>--timeout=SECONDS</strong></dt>
+<dd>
+<p>Specify the network timeout, the number of seconds to wait for a
+resource to respond. If nothing is specified, a default timeout of 1
+minute is selected.</p>
+<p>In case of a network error, there are chances it's due to a too low
+timeout: try passing the --timeout option with a higher value than
+default.</p>
+</dd>
+<dt><strong>--tls</strong></dt>
+<dd>
+<p>If using SMTP, use Transport Layer Security (TLS) encryption to
+secure the connection to the mail server. Some SMTP servers may require
+this option. Note that this option is ignored if you connect to your
+SMTP server via port 465, which already implies using SSL/TLS.</p>
+</dd>
+<dt><strong>--smtpuser=USERNAME</strong></dt>
+<dd>
+<p>If using SMTP, use the specified <em>USERNAME</em> for
+authentication.</p>
+</dd>
+<dt><strong>--smtppasswd=PASSWORD</strong></dt>
+<dd>
+<p>If using SMTP, use the specified <em>PASSWORD</em> for
+authentication. If the password isn't specified on the command line or
+in the configuration file, a prompt will be displayed asking for it.</p>
+<p>Use of this option is insecure on multiuser systems. Instead, you
+should set this option in <strong>$HOME/.reportbugrc</strong> and ensure
+it is only readable by your user (e.g. with <strong>chmod 600</strong>
+$HOME/.reportbugrc).</p>
+</dd>
+<dt><strong>--src, --source</strong></dt>
+<dd>
+<p>Specify to report the bug against the source package, and not the
+binary package (default behaviour). In order for this option to work,
+you have to populate the relevant 'deb-src' lines in
+/etc/apt/sources.list so that apt cache will know about source packages
+too.</p>
+<p>You can also specify the package name with a 'src:' prefix instead of
+using this option if you already know the name of the source
+package.</p>
+</dd>
+<dt><strong>-t TYPE, --type=TYPE</strong></dt>
+<dd>
+<p>Specify the type of report to be submitted; currently accepts either
+<strong>gnats</strong> or <strong>debbugs</strong>.</p>
+</dd>
+<dt><strong>-T TAG, --tag=TAG</strong></dt>
+<dd>
+<p>Specify a tag to be filed on this report, for example
+<strong>--tag=patch</strong>. Multiple tags can be specified using
+multiple <strong>-T/--tag</strong> arguments.</p>
+<p>Alternatively, you can specify the 'tag' <strong>none</strong> to
+bypass the tags prompt without specifying any tags; this will also
+ignore any tags specified on the command line.</p>
+</dd>
+<dt><strong>--template</strong></dt>
+<dd>
+<p>Output a template report to standard output. Differently from
+<strong>-p/--print</strong>, it tries to be not interactive, and
+presents a template without user's input. You may need to combine it
+with --no-bug-script if you want to avoid all user interaction.</p>
+</dd>
+<dt><strong>-u INTERFACE, --interface=INTERFACE,
+--ui=INTERFACE</strong></dt>
+<dd>
+<p>Specify the user interface to use. Valid options are
+<strong>text</strong>, <strong>urwid</strong>, and <strong>gtk</strong>;
+default is taken from the <strong>reportbug</strong> configuration
+files.</p>
+</dd>
+<dt><strong>-v, --verify</strong></dt>
+<dd>
+<p>Verify the integrity of the package (if installed) using
+<strong>debsums</strong> before reporting.</p>
+</dd>
+<dt><strong>--no-verify</strong></dt>
+<dd>
+<p>Do not verify the integrity of the package with
+<strong>debsums</strong>.</p>
+</dd>
+<dt><strong>-V VERSION, --package-version=VERSION</strong></dt>
+<dd>
+<p>Specify the version of the package the problem was found in. This is
+probably most useful if you are reporting a bug in a package that is not
+installable or installed on a different system.</p>
+</dd>
+<dt><strong>-x, --no-cc</strong></dt>
+<dd>
+<p>Don't send a blind carbon copy (BCC) of the bug report to the
+submitter (i.e. yourself).</p>
+</dd>
+<dt><strong>-z, --no-compress</strong></dt>
+<dd>
+<p>Don't compress configuration files by removing comments and blank
+lines.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<dl>
+<dt><strong>reportbug lynx-ssl</strong></dt>
+<dd>
+<p>Report a bug in the lynx-ssl package.</p>
+</dd>
+<dt><strong>reportbug --path --filename=ls</strong></dt>
+<dd>
+<p>Report a bug in the installed package that includes a program in your
+path called <strong>ls</strong>.</p>
+</dd>
+</dl>
+<h1>CONFIGURATION FILES</h1>
+<p>From version 0.22 on, <strong>reportbug</strong> has supported a
+simple run control file syntax. Commands are read from
+<strong>/etc/reportbug.conf</strong> and
+<strong>$HOME/.reportbugrc</strong> with commands in the latter
+overriding those in the former.</p>
+<p>Commands are not case sensitive, and currently take 0 or 1 argument;
+arguments containing whitespace must be enclosed in quotes.</p>
+<p>Any line starting with <strong>#</strong> is taken to be a comment
+and will be ignored.</p>
+<p>Generally, options corresponding to the long options for
+<strong>reportbug</strong> are supported, without leading
+<strong>--</strong> sequences. See <strong>reportbug.conf(5)</strong>
+for all acceptable options and detailed information.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>VISUAL</strong></dt>
+<dd>
+<p>Editor to use for editing your bug report.</p>
+</dd>
+<dt><strong>EDITOR</strong></dt>
+<dd>
+<p>Editor to use for editing the bug report (overridden by
+<strong>VISUAL</strong>).</p>
+</dd>
+<dt><strong>REPORTBUGEMAIL, DEBEMAIL, EMAIL</strong></dt>
+<dd>
+<p>Email address to use as your from address (in this order). If no
+environment variable exists, the default is taken from your user name
+and <strong>/etc/mailname</strong>.</p>
+</dd>
+<dt><strong>DEBFULLNAME, DEBNAME, NAME</strong></dt>
+<dd>
+<p>Real name to use; default is taken from
+<strong>/etc/passwd</strong>.</p>
+</dd>
+<dt><strong>REPLYTO</strong></dt>
+<dd>
+<p>Address for <strong>Reply-To</strong> header in outgoing mail.</p>
+</dd>
+<dt><strong>MAILCC</strong></dt>
+<dd>
+<p>Use the specified CC address on your email. Note you can also use the
+<strong>-H</strong> option for this (and for Bcc's too).</p>
+</dd>
+<dt><strong>MAILBCC</strong></dt>
+<dd>
+<p>Use the specified BCC address, instead of your email address. (CC and
+BCC based on suggestions from Herbert Thielen in the
+<strong>bug</strong> wishlist).</p>
+</dd>
+<dt><strong>http_proxy</strong></dt>
+<dd>
+<p>Provides the address of a proxy server to handle the BTS query. This
+should be a valid <strong>http</strong> URL for a proxy server,
+including any required port number (simply specifying a hostname, or
+omitting a port other than 80, WILL NOT WORK).</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p><strong>reportbug</strong> should probably be compatible with other
+bug tracking systems, like <strong>bugzilla</strong> (used by the GNOME
+and Mozilla projects) and <strong>jitterbug</strong> (used by Samba,
+AbiSource and FreeCiv) but it isn't.</p>
+<h1>SEE ALSO</h1>
+<p>reportbug.conf(5), <em>http://www.debian.org/Bugs/Developer#tags</em>
+for available tags, querybts(1)</p>
+<h1>AUTHOR</h1>
+<p>Chris Lawrence &lt;lawrencc@debian.org&gt;, Sandro Tosi
+&lt;morph@debian.org&gt;.</p>

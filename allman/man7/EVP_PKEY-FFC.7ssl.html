@@ -1,0 +1,225 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_PKEY-FFC - EVP_PKEY DSA and DH/DHX shared FFC parameters.</p>
+<h1>DESCRIPTION</h1>
+<p>Finite field cryptography (FFC) is a method of implementing discrete
+logarithm cryptography using finite field mathematics. DSA is an example
+of FFC and Diffie-Hellman key establishment algorithms specified in
+SP800-56A can also be implemented as FFC.</p>
+<p>The <strong>DSA</strong>, <strong>DH</strong> and
+<strong>DHX</strong> keytypes are implemented in OpenSSL's default and
+FIPS providers. The implementations support the basic DSA, DH and DHX
+keys, containing the public and private keys <em>pub</em> and
+<em>priv</em> as well as the three main domain parameters <em>p</em>,
+<em>q</em> and <em>g</em>.</p>
+<p>For <strong>DSA</strong> (and <strong>DH</strong> that is not a named
+group) the FIPS186-4 standard specifies that the values used for FFC
+parameter generation are also required for parameter validation. This
+means that optional FFC domain parameter values for <em>seed</em>,
+<em>pcounter</em> and <em>gindex</em> may need to be stored for
+validation purposes. For <strong>DH</strong> the <em>seed</em> and
+<em>pcounter</em> can be stored in ASN1 data (but the <em>gindex</em> is
+not). For <strong>DSA</strong> however, these fields are not stored in
+the ASN1 data so they need to be stored externally if validation is
+required.</p>
+<p>The <strong>DH</strong> key type uses PKCS#3 format which saves p and
+g, but not the 'q' value. The <strong>DHX</strong> key type uses X9.42
+format which saves the value of 'q' and this must be used for
+FIPS186-4.</p>
+<h2>FFC parameters</h2>
+<p>In addition to the common parameters that all keytypes should support
+(see Common parameters in <strong>provider-keymgmt</strong> (7)), the
+<strong>DSA</strong>, <strong>DH</strong> and <strong>DHX</strong>
+keytype implementations support the following.</p>
+<dl>
+<dt>"pub" (OSSL_PKEY_PARAM_PUB_KEY) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>The public key value.</p>
+</dd>
+<dt>"priv" (OSSL_PKEY_PARAM_PRIV_KEY) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>The private key value.</p>
+</dd>
+</dl>
+<h2>FFC DSA, DH and DHX domain parameters</h2>
+<dl>
+<dt>"p" (OSSL_PKEY_PARAM_FFC_P) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>A DSA or Diffie-Hellman prime p value.</p>
+</dd>
+<dt>"g" (OSSL_PKEY_PARAM_FFC_G) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>A DSA or Diffie-Hellman generator g value.</p>
+</dd>
+</dl>
+<h2>FFC DSA and DHX domain parameters</h2>
+<dl>
+<dt>"q" (OSSL_PKEY_PARAM_FFC_Q) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>A DSA or Diffie-Hellman prime q value.</p>
+</dd>
+<dt>"seed" (OSSL_PKEY_PARAM_FFC_SEED) &lt;octet string&gt;</dt>
+<dd>
+<p>An optional domain parameter <em>seed</em> value used during
+generation and validation of <em>p</em>, <em>q</em> and canonical
+<em>g</em>. For validation this needs to set the <em>seed</em> that was
+produced during generation.</p>
+</dd>
+<dt>"gindex" (OSSL_PKEY_PARAM_FFC_GINDEX) &lt;integer&gt;</dt>
+<dd>
+<p>Sets the index to use for canonical generation and verification of
+the generator <em>g</em>. Set this to a positive value from 0..FF to use
+this mode. This <em>gindex</em> can then be reused during key validation
+to verify the value of <em>g</em>. If this value is not set or is -1
+then unverifiable generation of the generator <em>g</em> will be
+used.</p>
+</dd>
+<dt>"pcounter" (OSSL_PKEY_PARAM_FFC_PCOUNTER) &lt;integer&gt;</dt>
+<dd>
+<p>An optional domain parameter <em>counter</em> value that is output
+during generation of <em>p</em>. This value must be saved if domain
+parameter validation is required.</p>
+</dd>
+<dt>"hindex" (OSSL_PKEY_PARAM_FFC_H) &lt;integer&gt;</dt>
+<dd>
+<p>For unverifiable generation of the generator <em>g</em> this value is
+output during generation of <em>g</em>. Its value is the first integer
+larger than one that satisfies g = h^j mod p (where g != 1 and j is the
+cofactor).</p>
+</dd>
+<dt>"j" (OSSL_PKEY_PARAM_FFC_COFACTOR) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>An optional informational cofactor parameter that should equal to (p
+- 1) / q.</p>
+</dd>
+<dt>"validate-pq" (OSSL_PKEY_PARAM_FFC_VALIDATE_PQ) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"validate-g" (OSSL_PKEY_PARAM_FFC_VALIDATE_G) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These boolean values are used during FIPS186-4 or FIPS186-2 key
+validation checks (See <strong>EVP_PKEY_param_check</strong> (3)) to
+select validation options. By default <em>validate-pq</em> and
+<em>validate-g</em> are both set to 1 to check that p,q and g are valid.
+Either of these may be set to 0 to skip a test, which is mainly useful
+for testing purposes.</p>
+<dl>
+<dt>"validate-legacy" (OSSL_PKEY_PARAM_FFC_VALIDATE_LEGACY) &lt;unsigned
+integer&gt;</dt>
+<dd>
+<p>This boolean value is used during key validation checks (See
+<strong>EVP_PKEY_param_check</strong> (3)) to select the validation
+type. The default value of 0 selects FIPS186-4 validation. Setting this
+value to 1 selects FIPS186-2 validation.</p>
+</dd>
+</dl>
+<h2>FFC key generation parameters</h2>
+<p>The following key generation types are available for DSA and DHX
+algorithms:</p>
+<dl>
+<dt>"type" (OSSL_PKEY_PARAM_FFC_TYPE) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>Sets the type of parameter generation. The shared valid values
+are:</p>
+<dl>
+<dt>"fips186_4"</dt>
+<dd>
+<p>The current standard.</p>
+</dd>
+<dt>"fips186_2"</dt>
+<dd>
+<p>The old standard that should only be used for legacy purposes.</p>
+</dd>
+<dt>"default"</dt>
+<dd>
+<p>This can choose one of fips186_4 or fips186_2 depending on other
+parameters set for parameter generation.</p>
+</dd>
+</dl>
+</dd>
+<dt>"pbits" (OSSL_PKEY_PARAM_FFC_PBITS) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>Sets the size (in bits) of the prime 'p'.</p>
+</dd>
+<dt>"qbits" (OSSL_PKEY_PARAM_FFC_QBITS) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>Sets the size (in bits) of the prime 'q'. For fips186_4 this can be
+either 224 or 256. For fips186_2 this has a size of 160.</p>
+</dd>
+<dt>"digest" (OSSL_PKEY_PARAM_FFC_DIGEST) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>Sets the Digest algorithm to be used as part of the Key Generation
+Function associated with the given Key Generation <em>ctx</em>. This
+must also be set for key validation.</p>
+</dd>
+<dt>"properties" (OSSL_PKEY_PARAM_FFC_DIGEST_PROPS) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>Sets properties to be used upon look up of the implementation for the
+selected Digest algorithm for the Key Generation Function associated
+with the given key generation <em>ctx</em>. This may also be set for key
+validation.</p>
+</dd>
+<dt>"seed" (OSSL_PKEY_PARAM_FFC_SEED) &lt;octet string&gt;</dt>
+<dd>
+<p>For fips186_4 or fips186_2 generation this sets the <em>seed</em>
+data to use instead of generating a random seed internally. This should
+be used for testing purposes only. This will either produce fixed values
+for the generated parameters OR it will fail if the seed did not
+generate valid primes.</p>
+</dd>
+<dt>"gindex" (OSSL_PKEY_PARAM_FFC_GINDEX) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"pcounter" (OSSL_PKEY_PARAM_FFC_PCOUNTER) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"hindex" (OSSL_PKEY_PARAM_FFC_H) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These types are described above.</p>
+<h1>CONFORMING TO</h1>
+<p>The following sections of SP800-56Ar3:</p>
+<ol start="5" type="1">
+<li></li>
+</ol>
+<p>The following sections of FIPS186-4:</p>
+<ol type="A">
+<li></li>
+</ol>
+<ol type="A">
+<li></li>
+<li></li>
+</ol>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY-DSA</strong> (7), <strong>EVP_PKEY-DH</strong> (7),
+<strong>EVP_SIGNATURE-DSA</strong> (7),
+<strong>EVP_KEYEXCH-DH</strong> (7) <strong>EVP_KEYMGMT</strong> (3),
+<strong>EVP_PKEY</strong> (3), <strong>provider-keymgmt</strong> (7),
+<strong>OSSL_PROVIDER-default</strong> (7),
+<strong>OSSL_PROVIDER-FIPS</strong> (7),</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2022 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

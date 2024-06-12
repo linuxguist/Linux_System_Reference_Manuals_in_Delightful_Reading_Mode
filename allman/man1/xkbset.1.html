@@ -1,0 +1,105 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xkbset - user preference utility for XKB extensions for X</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xkbset</strong> h | <em>options</em> | exp
+<em>expire-options</em> | q [exp] | w [exp]</p>
+<p>where <em>options</em> are any or all of:</p>
+<p>[-]{bell | b}</p>
+<p>[-]{repeatkeys <em>per-key_repeat&gt; | r
+&lt;per_key_repeat</em>}</p>
+<p>perkeyrepeat <em>per-key_repeat</em></p>
+<p>[-]{repeatkeys | r} [rate <em>repeat-delay&gt;
+[&lt;repeat_interval</em>]]</p>
+<p>[-]{mousekeys | m} [<em>mk-dflt_btn</em>]</p>
+<p>[-]{mousekeysaccel | ma} [<em>mk-delay&gt; &lt;mk_interval&gt;
+&lt;mk_time_to_max</em> <em>mk-max_speed&gt; &lt;mk_curve</em>]</p>
+<p>[-]{accessx | a}</p>
+<p>[-]{sticky | st} [[-]twokey | [-]latchlock]...</p>
+<p>[-]{slowkeys | sl} [<em>slow-keys_delay</em>]</p>
+<p>[-]{bouncekeys | bo} [<em>debounce-delay</em>]</p>
+<p>[-]{feedback | f} [[-]dumbbell | [-]led | [-]feature | [-]slowwarn |
+[-]slowpress | [-]slowaccept | [-]slowreject | [-]slowrelease |
+[-]bouncereject | [-]stickybeep]...</p>
+<p>[-]{overlay1 | ov1}</p>
+<p>[-]{overlay2 | ov2}</p>
+<p>groupswrap {redirect | clamp | wrap} [<em>groups-wrap</em>]</p>
+<p>[-]ignoregrouplock</p>
+<p>nullify [[-]shift | [-]lock | [-]control | [-]mod1 | [-]mod2 |
+[-]mod3 | [-]mod4 | [-]mod5]...</p>
+<p>ignorelock [[-]shift | [-]lock | [-]control | [-]mod1 | [-]mod2 |
+[-]mod3 | [-]mod4 | [-]mod5]...</p>
+<p>and where <em>expire-options</em> are any or all of:</p>
+<p><em>ax-timeout</em></p>
+<p>[-|=]{bell | b}</p>
+<p>[-|=]{repeatkeys | r}</p>
+<p>[-|=]{mousekeys | m}</p>
+<p>[-|=]{mousekeysaccel | ma}</p>
+<p>[-|=]{accessx | a}</p>
+<p>[-|=]{sticky | st} [[-|=]twokey | [-|=]latchlock]...</p>
+<p>[-|=]{slowkeys | sl}</p>
+<p>[-|=]{bouncekeys | bo}</p>
+<p>[-|=]{feedback | f} [[-|=]dumbbell | [-|=]led | [-|=]feature |
+[-|=]slowwarn | [-|=]slowpress | [-|=]slowaccept | [-|=]slowreject |
+[-|=]slowrelease | [-|=]bouncereject | [-|=]stickybeep]...</p>
+<p>[-|=]{overlay1 | ov1}</p>
+<p>[-|=]{overlay2 | ov2}</p>
+<p>[-|=]ignoregrouplock</p>
+<h1>DESCRIPTION</h1>
+<p>This program can be used to set various options available in the XKB
+extensions. This includes such things as <strong>mousekeys</strong>
+where one can use the numeric pad keys to move the mouse;
+<strong>stickykeys</strong> where modifiers like control and shift will
+lock until the next key press (good for one finger typing);
+<strong>slowkeys</strong> where the keys will not work unless they are
+pressed for a certain amount of time; and <strong>bouncekeys</strong> in
+which if a key is pressed more than once rapidly, only one key press
+will be registered.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>b</strong></dt>
+<dd>
+<p>The <strong>b</strong> option controls whether the bell is switched
+on or off.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>h</strong></dt>
+<dd>
+<p>The <strong>h</strong> option (or no options) will type a rather
+helpful usage message - definitely more informative than this unfinished
+man page.</p>
+</dd>
+<dt><strong>perkeyrepeat <em>hex-mask</em></strong></dt>
+<dd>
+<p>With this option, <em>hex-mask</em> is a sequence of 64 hex digits,
+representing 32 bytes. These bytes represent which keys will autorepeat,
+and which will not. The 8n+kth key will autorepeat if the kth bit of the
+nth byte is set. See also the <strong>r</strong> or the
+<strong>repeatkey</strong> option.</p>
+</dd>
+<dt><strong>repeatkeys|r [<em>key-code</em> | <strong>rate</strong>
+<em>delay</em> [<em>interval</em>] ]</strong></dt>
+<dd>
+<p>The <strong>r</strong> or <strong>repeatkey</strong> option can be
+used to control the autorepeat feature. By itself, it can switch the
+autorepeat on or off. Followed by a single number, it can be used to
+switch autorepeat on or off for that particular keycode (see also the
+<strong>perkeyrepeat</strong> option). Followed by
+<strong>rate</strong>, it can be used to set the time in milliseconds
+after the key is pressed before autorepeat will start, and optionally
+the time in milliseconds between the key repeats.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>In some earlier versions of X, some of the features do not work
+properly. For example, mousekeys acceleration. Also, the
+<strong>perkeyrepeat</strong> option (or <strong>repeatkey</strong>
+followed by a key code) did not work. These are due to bugs in the XKB
+extensions. These bugs are fixed in more recent versions of X.</p>
+<p>Also the man page is woefully incomplete.</p>
+<h1>SEE ALSO</h1>
+<p>xset(1)</p>
+<h1>AUTHOR</h1>
+<p>Stephen Montgomery-Smith, University of Missouri</p>

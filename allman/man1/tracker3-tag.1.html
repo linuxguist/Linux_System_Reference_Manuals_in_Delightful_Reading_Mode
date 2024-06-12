@@ -1,0 +1,78 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-tag - Add, remove and list tags.</p>
+<h1>SYNOPSIS</h1>
+<pre><code>tracker3 tag FILE1 [FILE2 ...] [-l &lt;limit&gt;] [-o &lt;offset&gt;] [-r]
+tracker3 tag -t [[TAG1] [TAG2] ...] [-s] [-r]
+tracker3 tag -a &lt;TAG&gt; [-e &lt;description&gt;]
+tracker3 tag -d &lt;TAG&gt;</code></pre>
+<h1>DESCRIPTION</h1>
+<p>List tags for local files or by the tag labels themselves if -t is
+used.</p>
+<p>It’s also possible to manage tags with the -a and and -d options.</p>
+<p>The <em>FILE</em> argument can be either a local path or a URI. It
+also does not have to be an absolute path.</p>
+<h1>OPTIONS</h1>
+<p><strong>-t, --list</strong></p>
+<blockquote>
+<p>List all tags. Results include the number of files associated with
+that tag and the tag’s unique identifier. You can show the files
+associated with each tag by using --show-files.</p>
+</blockquote>
+<p>The <em>TAG</em> arguments are optional. If no <em>TAG</em> argument
+is specified, all tags are listed. If one or more <em>TAG</em>s are
+given, either matching tags are listed (OR condition). For example, this
+will match any tags named either <em>foo</em>, <em>bar</em> or
+<em>baz</em>:</p>
+<blockquote>
+<pre><code>$ tracker3-tag -t foo bar baz</code></pre>
+</blockquote>
+<p><strong>-s, --show-files</strong></p>
+<blockquote>
+<p>Show the files associated with each tag. This option is ONLY
+available WITH the <strong>--list</strong> option.</p>
+</blockquote>
+<p><strong>-a, --add=TAG</strong></p>
+<blockquote>
+<p>Add a tag with the name <em>TAG</em>. If no <em>FILE</em> arguments
+are specified, the tag is simply created (if it didn’talready exist) and
+no files are associated with it. Multiple <em>FILE</em> arguments can be
+specified.</p>
+</blockquote>
+<p><strong>-d, --delete=TAG</strong></p>
+<blockquote>
+<p>Delete a tag with the name <em>TAG</em>. If no <em>FILE</em>
+arguments are specified, the tag is deleted for ALL files. If
+<em>FILE</em> arguments are specified, only those files have the
+<em>TAG</em> deleted.</p>
+</blockquote>
+<p><strong>-e, --description=STRING</strong></p>
+<blockquote>
+<p>This option ONLY applies when using <strong>--add</strong> and
+provides a description to go with the tag label according to
+<em>STRING</em>.</p>
+</blockquote>
+<p><strong>-l, --limit=N</strong></p>
+<blockquote>
+<p>Limit search to N results. The default is 512.</p>
+</blockquote>
+<p><strong>-o, --offset=N</strong></p>
+<blockquote>
+<p>Offset the search results by N. For example, start at item number 10
+in the results. The default is 0.</p>
+</blockquote>
+<p><strong>-r, --and-operator</strong></p>
+<blockquote>
+<p>Use AND operator for search terms instead of OR (the default). For
+example:</p>
+</blockquote>
+<blockquote>
+<pre><code>$ tracker3-tag -s -t sliff sloff</code></pre>
+</blockquote>
+<p>Should show files in the database that have both the <em>sliff</em>
+and <em>sloff</em> tags.</p>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-sparql</strong>(1),
+<strong>tracker3-search</strong>(1),
+<strong>tracker3-info</strong>(1).</p>

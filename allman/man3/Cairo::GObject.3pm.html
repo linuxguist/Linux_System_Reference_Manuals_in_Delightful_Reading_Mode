@@ -1,0 +1,27 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Cairo::GObject - Integrate Cairo into the Glib type system</p>
+<h1>SYNOPSIS</h1>
+<p>use Cairo::GObject; # Cairo and Glib are now loaded and the Cairo
+types are registered with # Glibs type machinery. This allows you to
+correctly use Cairo types # in signals and properties.</p>
+<h1>ABSTRACT</h1>
+<p>Cairo::GObject registers Cairo's types (<code>Cairo::Context</code>,
+<code>Cairo::Surface</code>, etc.) with Glib's type systems so that they
+can be used normally in signals and properties. If you have encountered
+an error akin to this:</p>
+<p>GType CairoContext (15497280) is not registered with gperl</p>
+<p>-- then you need to use Cairo::GObject.</p>
+<h1>AUTHORS</h1>
+<dl>
+<dt>Torsten Schoenfeld &lt;kaffeetisch at gmx dot de&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2011 by the cairo perl team</p>

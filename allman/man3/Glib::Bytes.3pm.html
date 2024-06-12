@@ -1,0 +1,41 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::Bytes - Wrappers for bytes objects in GLib</p>
+<h1>HIERARCHY</h1>
+<p>Glib::Boxed +----Glib::Bytes</p>
+<h1>DESCRIPTION</h1>
+<p>In addition to the low-level API documented below, Glib also provides
+stringification overloading so that you can treat any
+<code>Glib::Bytes</code> object as a normal Perl string.</p>
+<h1>METHODS</h1>
+<h2>bytes = Glib::Bytes-&gt;<strong>new</strong> ($data)</h2>
+<ul>
+<li><p><code>$data</code> (scalar)</p></li>
+</ul>
+<p>Since: glib 2.32</p>
+<h2>integer = $bytes1-&gt;<strong>compare</strong> ($bytes2)</h2>
+<ul>
+<li><p><code>$bytes2</code> (Glib::Bytes)</p></li>
+</ul>
+<p>Since: glib 2.32</p>
+<h2>scalar = $bytes-&gt;<strong>get_data</strong></h2>
+<p>Since: glib 2.32</p>
+<h2>boolean = $bytes1-&gt;<strong>equal</strong> ($bytes2)</h2>
+<ul>
+<li><p><code>$bytes2</code> (Glib::Bytes)</p></li>
+</ul>
+<p>Since: glib 2.32</p>
+<h2>integer = $bytes-&gt;<strong>hash</strong></h2>
+<p>Since: glib 2.32</p>
+<h2>unsigned = $bytes-&gt;<strong>get_size</strong></h2>
+<p>Since: glib 2.32</p>
+<h1>SEE ALSO</h1>
+<p>Glib, Glib::Boxed</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

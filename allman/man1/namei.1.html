@@ -1,0 +1,79 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>namei - follow a pathname until a terminal point is found</p>
+<h1>SYNOPSIS</h1>
+<p><strong>namei</strong> [options] <em>pathname</em>...</p>
+<h1>DESCRIPTION</h1>
+<p><strong>namei</strong> interprets its arguments as pathnames to any
+type of Unix file (symlinks, files, directories, and so forth).
+<strong>namei</strong> then follows each pathname until an endpoint is
+found (a file, a directory, a device node, etc). If it finds a symbolic
+link, it shows the link, and starts following it, indenting the output
+to show the context.</p>
+<p>This program is useful for finding "too many levels of symbolic
+links" problems.</p>
+<p>For each line of output, <strong>namei</strong> uses the following
+characters to identify the file type found:</p>
+<blockquote>
+<pre><code>   f: = the pathname currently being resolved
+    d = directory
+    l = symbolic link (both the link and its contents are output)
+    s = socket
+    b = block device
+    c = character device
+    p = FIFO (named pipe)
+    - = regular file
+    ? = an error of some kind</code></pre>
+</blockquote>
+<p><strong>namei</strong> prints an informative message when the maximum
+number of symbolic links this system can have has been exceeded.</p>
+<h1>OPTIONS</h1>
+<p><strong>-l</strong>, <strong>--long</strong></p>
+<blockquote>
+<p>Use the long listing format (same as <strong>-m -o -v</strong>).</p>
+</blockquote>
+<p><strong>-m</strong>, <strong>--modes</strong></p>
+<blockquote>
+<p>Show the mode bits of each file type in the style of
+<strong>ls</strong>(1), for example 'rwxr-xr-x'.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--nosymlinks</strong></p>
+<blockquote>
+<p>Don’t follow symlinks.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--owners</strong></p>
+<blockquote>
+<p>Show owner and group name of each file.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--vertical</strong></p>
+<blockquote>
+<p>Vertically align the modes and owners.</p>
+</blockquote>
+<p><strong>-x</strong>, <strong>--mountpoints</strong></p>
+<blockquote>
+<p>Show mountpoint directories with a 'D' rather than a 'd'.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>BUGS</h1>
+<p>To be discovered.</p>
+<h1>AUTHORS</h1>
+<p>The original <strong>namei</strong> program was written by</p>
+<p>The program was rewritten by Karel Zak</p>
+<h1>SEE ALSO</h1>
+<p><strong>ls</strong>(1), <strong>stat</strong>(1),
+<strong>symlink</strong>(7)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>namei</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

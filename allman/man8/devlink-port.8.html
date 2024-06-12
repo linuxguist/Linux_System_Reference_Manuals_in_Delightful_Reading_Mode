@@ -1,0 +1,271 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>devlink-port - devlink port configuration</p>
+<h1>SYNOPSIS</h1>
+<p><strong>devlink</strong> [ <em>OPTIONS</em> ] <strong>port</strong> {
+<em>COMMAND</em> | <strong>help</strong> }</p>
+<p><em>OPTIONS</em> := { <strong>-V</strong>[<em>ersion</em>] |
+<strong>-n</strong>[<em>no-nice-names</em>] }</p>
+<p><strong>devlink port set </strong> <em>DEV/PORT_INDEX</em> [
+<strong>type</strong> { <strong>eth</strong> | <strong>ib</strong> |
+<strong>auto</strong> } ]</p>
+<p><strong>devlink port split </strong> <em>DEV/PORT_INDEX</em>
+<strong>count</strong> <em>COUNT</em></p>
+<p><strong>devlink port unsplit </strong> <em>DEV/PORT_INDEX</em></p>
+<p><strong>devlink port show</strong> [ <em>DEV/PORT_INDEX</em> ]</p>
+<p><strong>devlink port health</strong> { <em>show</em> |
+<em>recover</em> | <em>diagnose</em> | <em>dump</em> | <em>set</em>
+}</p>
+<p><strong>devlink port add</strong> { <em>DEV | DEV/PORT_INDEX</em> } [
+<strong>flavour</strong> <em>FLAVOUR</em> ] [ <strong>pfnum</strong>
+<em>PFNUMBER</em> ] [ <strong>sfnum</strong> <em>SFNUMBER</em> ] [
+<strong>controller</strong> <em>CNUM</em> ]<br />
+</p>
+<p><strong>devlink port del</strong> <em>DEV/PORT_INDEX</em></p>
+<p><strong>devlink port function set </strong> <em>DEV/PORT_INDEX</em> [
+<strong>hw_addr </strong> ADDR ] [ <strong>state</strong> {
+<strong>active</strong> | <strong>inactive</strong> } ]</p>
+<p><strong>devlink port function rate </strong> { <em>show</em> |
+<em>set</em> | <em>add</em> | <em>del</em> | <em>help</em> }</p>
+<p><strong>devlink dev param set</strong> <em>DEV/PORT_INDEX</em>
+<strong>name</strong> <em>PARAMETER</em> <strong>value</strong>
+<em>VALUE</em> <strong>cmode</strong> { <strong>runtime</strong> |
+<strong>driverinit</strong> | <strong>permanent</strong> }</p>
+<p><strong>devlink dev param show</strong> [ <em>DEV/PORT_INDEX</em>
+<strong>name</strong> <em>PARAMETER</em> ]</p>
+<p><strong>devlink port help</strong></p>
+<h1>DESCRIPTION</h1>
+<h2>devlink port set - change devlink port attributes</h2>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port to operate
+on.</p>
+<p>Format is:</p>
+<p>BUS_NAME/BUS_ADDRESS/PORT_INDEX</p>
+<dl>
+<dt><strong>type</strong> { <strong>eth</strong> | <strong>ib</strong> |
+<strong>auto</strong> } </dt>
+<dd>
+<p>set port type</p>
+<p><em>eth</em> - Ethernet</p>
+<p><em>ib</em> - Infiniband</p>
+<p><em>auto</em> - autoselect</p>
+</dd>
+</dl>
+<h2>devlink port split - split devlink port into more</h2>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port to operate
+on.</p>
+<dl>
+<dt><strong>count</strong><em> COUNT</em></dt>
+<dd>
+<p>number of ports to split to.</p>
+</dd>
+</dl>
+<h2>devlink port unsplit - unsplit previously split devlink port</h2>
+<p>Could be performed on any split port of the same split group.</p>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port to operate
+on.</p>
+<h2>devlink port show - display devlink port attributes</h2>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port to show. If this
+argument is omitted all ports are listed.</p>
+<h2>devlink port health - devlink health reporting and recovery</h2>
+<p>Is an alias for <strong>devlink-health</strong>(8).</p>
+<h2>devlink port add - add a devlink port</h2>
+<p><em>DEV</em> - specifies the devlink device to operate on. or</p>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port index to use for
+the requested new port. This is optional. When omitted, driver allocates
+unique port index.</p>
+<dl>
+<dt><strong>flavour</strong> { <strong>pcipf</strong> |
+<strong>pcisf</strong> } </dt>
+<dd>
+<p>set port flavour</p>
+<p><em>pcipf</em> - PCI PF port</p>
+<p><em>pcisf</em> - PCI SF port</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>pfnum</strong><em> PFNUMBER </em></dt>
+<dd>
+<p>Specifies PCI pfnumber to use on which a SF device to create</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>sfnum</strong><em> SFNUMBER </em></dt>
+<dd>
+<p>Specifies sfnumber to assign to the device of the SF. This field is
+optional for those devices which supports auto assignment of the SF
+number.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>controller</strong><em> CNUM </em></dt>
+<dd>
+<p>Specifies controller number for which the SF port is created. This
+field is optional. It is used only when SF port is created for the
+external controller.</p>
+</dd>
+</dl>
+<h2>devlink port function set - Set the port function attribute(s).</h2>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port to operate
+on.</p>
+<dl>
+<dt><strong>hw_addr</strong><em> ADDR</em></dt>
+<dd>
+<p>Hardware address of the function to set. This is a Ethernet MAC
+address when port type is Ethernet.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>state</strong> { <strong>active</strong> |
+<strong>inactive</strong> } </dt>
+<dd>
+<p>New state of the function to change to.</p>
+<p><em>active</em> - Once configuration of the function is done,
+activate the function.</p>
+<p><em>inactive</em> - To inactivate the function and its device(s), set
+to inactive.</p>
+</dd>
+</dl>
+<h2>devlink port del - delete a devlink port</h2>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port to delete.</p>
+<h2>devlink port param set - set new value to devlink port configuration
+parameter</h2>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port to operate
+on.</p>
+<dl>
+<dt><strong>name</strong><em> PARAMETER</em></dt>
+<dd>
+<p>Specify parameter name to set.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>value</strong><em> VALUE</em></dt>
+<dd>
+<p>New value to set.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>cmode</strong> { <strong>runtime</strong> |
+<strong>driverinit</strong> | <strong>permanent</strong> } </dt>
+<dd>
+<p>Configuration mode in which the new value is set.</p>
+<p><em>runtime</em> - Set new value while driver is running. This
+configuration mode doesn't require any reset to apply the new value.</p>
+<p><em>driverinit</em> - Set new value which will be applied during
+driver initialization. This configuration mode requires restart driver
+by devlink reload command to apply the new value.</p>
+<p><em>permanent</em> - New value is written to device's non-volatile
+memory. This configuration mode requires hard reset to apply the new
+value.</p>
+</dd>
+</dl>
+<h2>devlink port param show - display devlink port supported
+configuration parameters attributes</h2>
+<p><em>DEV/PORT_INDEX</em> - specifies the devlink port to operate
+on.</p>
+<p><strong>name</strong> <em>PARAMETER</em> Specify parameter name to
+show. If this argument, as well as port index, are omitted - all
+parameters supported by devlink device ports are listed.</p>
+<h2>devlink port function rate - manage devlink rate objects</h2>
+<p>Is an alias for <strong>devlink-rate</strong>(8).</p>
+<h1>EXAMPLES</h1>
+<p>devlink port show</p>
+<blockquote>
+<p>Shows the state of all devlink ports on the system.</p>
+</blockquote>
+<p>devlink port show pci/0000:01:00.0/1</p>
+<blockquote>
+<p>Shows the state of specified devlink port.</p>
+</blockquote>
+<p>devlink port set pci/0000:01:00.0/1 type eth</p>
+<blockquote>
+<p>Set type of specified devlink port to Ethernet.</p>
+</blockquote>
+<p>devlink port split pci/0000:01:00.0/1 count 4</p>
+<blockquote>
+<p>Split the specified devlink port into four ports.</p>
+</blockquote>
+<p>devlink port unsplit pci/0000:01:00.0/1</p>
+<blockquote>
+<p>Unplit the specified previously split devlink port.</p>
+</blockquote>
+<p>devlink port health show</p>
+<blockquote>
+<p>Shows status and configuration of all supported reporters registered
+on all devlink ports.</p>
+</blockquote>
+<p>devlink port health show pci/0000:01:00.0/1 reporter tx</p>
+<blockquote>
+<p>Shows status and configuration of tx reporter registered on
+pci/0000:01:00.0/1 devlink port.</p>
+</blockquote>
+<p>devlink port add pci/0000:06:00.0 flavour pcisf pfnum 0 sfnum 88</p>
+<blockquote>
+<p>Add a devlink port of flavour PCI SF on PCI PF having number 0 with
+SF number 88. To make use of the function an example sequence is to add
+a port, configure the function attribute and activate the function. Once
+function usage is completed, inactivate the function and finally delete
+the port. When there is desire to reuse the port without deletion, it
+can be reconfigured and activated again when function is in inactive
+state and function's operational state is detached.</p>
+</blockquote>
+<p>devlink port del pci/0000:06:00.0/1</p>
+<blockquote>
+<p>Delete previously created devlink port. It is recommended to first
+deactivate the function if the function supports state management.</p>
+</blockquote>
+<p>devlink port function set pci/0000:01:00.0/1 hw_addr
+00:00:00:11:22:33</p>
+<blockquote>
+<p>Configure hardware address of the PCI function represented by devlink
+port. If the port supports change in function state, hardware address
+must be configured before activating the function.</p>
+</blockquote>
+<p>devlink port function set pci/0000:01:00.0/1 state active</p>
+<blockquote>
+<p>Activate the function. This will initiate the function enumeration
+and driver loading.</p>
+</blockquote>
+<p>devlink port function set pci/0000:01:00.0/1 state inactive</p>
+<blockquote>
+<p>Deactivate the function. This will initiate the function teardown
+which results in driver unload and device removal.</p>
+</blockquote>
+<p>devlink port function set pci/0000:01:00.0/1 hw_addr
+00:00:00:11:22:33 state active</p>
+<blockquote>
+<p>Configure hardware address and also active the function. When a
+function is activated together with other configuration in a single
+command, all the configuration is applied first before changing the
+state to active.</p>
+</blockquote>
+<p>devlink dev param show</p>
+<blockquote>
+<p>Shows (dumps) all the port parameters across all the devices
+registered in the devlink.</p>
+</blockquote>
+<p>devlink dev param set pci/0000:01:00.0/1 name internal_error_reset
+value true cmode runtime</p>
+<blockquote>
+<p>Sets the parameter internal_error_reset of specified devlink port
+(#1) to true.</p>
+</blockquote>
+<p>devlink port add pci/0000:06:00.0 flavour pcisf pfnum 0 sfnum 88
+controller 1</p>
+<blockquote>
+<p>Add a devlink port of flavour PCI SF on controller 1 which has PCI PF
+of number 0 with SF number 88. To make use of the function an example
+sequence is to add a port, configure the function attribute and activate
+the function. Once the function usage is completed, deactivate the
+function and finally delete the port. When there is desire to reuse the
+port without deletion, it can be reconfigured and activated again when
+function is in inactive state and function's operational state is
+detached.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>devlink</strong>(8), <strong>devlink-dev</strong>(8),
+<strong>devlink-sb</strong>(8), <strong>devlink-monitor</strong>(8),
+<strong>devlink-health</strong>(8),<br />
+</p>
+<h1>AUTHOR</h1>
+<p>Jiri Pirko &lt;jiri@mellanox.com&gt;</p>

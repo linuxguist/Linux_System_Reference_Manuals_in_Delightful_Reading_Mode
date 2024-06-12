@@ -1,0 +1,183 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dcb-app - show / manipulate application priority table of the DCB
+(Data Center Bridging) subsystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dcb</strong> [ <em>OPTIONS</em> ] <strong>app</strong> {
+<em>COMMAND</em> | <em>help</em> }</p>
+<p><strong>dcb app { show | flush } dev</strong> DEV [
+<strong>default-prio</strong> ] [ <strong>ethtype-prio</strong> ] [
+<strong>stream-port-prio</strong> ] [ <strong>dgram-port-prio</strong> ]
+[ <strong>port-prio</strong> ] [ <strong>dscp-prio</strong> ]</p>
+<p><strong>dcb ets { add | del | replace } dev</strong> DEV [
+<strong>default-prio</strong> <strong><em>PRIO-LIST</em></strong> ] [
+<strong>ethtype-prio</strong> <strong><em>ET-MAP</em></strong> ] [
+<strong>stream-port-prio</strong> <strong><em>PORT-MAP</em></strong> ] [
+<strong>dgram-port-prio</strong> <strong><em>PORT-MAP</em></strong> ] [
+<strong>port-prio</strong> <strong><em>PORT-MAP</em></strong> ] [
+<strong>dscp-prio</strong> <strong><em>DSCP-MAP</em></strong> ]</p>
+<p><em>PRIO-LIST</em> := [ <em>PRIO-LIST</em> ] <em>PRIO</em></p>
+<p><em>ET-MAP</em> := [ <em>ET-MAP</em> ] <em>ET-MAPPING</em></p>
+<p><em>ET-MAPPING</em> := <em>ET<strong>:</strong><em>PRIO</em></em></p>
+<p><em>PORT-MAP</em> := [ <em>PORT-MAP</em> ] <em>PORT-MAPPING</em></p>
+<p><em>PORT-MAPPING</em> :=
+<em>PORT<strong>:</strong><em>PRIO</em></em></p>
+<p><em>DSCP-MAP</em> := [ <em>DSCP-MAP</em> ] <em>DSCP-MAPPING</em></p>
+<p><em>DSCP-MAPPING</em> := { <em>DSCP</em> |
+<em><strong>all</strong></em>
+}<em><strong>:</strong><em>PRIO</em></em></p>
+<p><em>ET</em> := { <em><strong>0x600</strong></em> ..
+<em><strong>0xffff</strong></em> }</p>
+<p><em>PORT</em> := { <em><strong>1</strong></em> ..
+<em><strong>65535</strong></em> }</p>
+<p><em>DSCP</em> := { <em><strong>0</strong></em> ..
+<em><strong>63</strong></em> }</p>
+<p><em>PRIO</em> := { <em><strong>0</strong></em> ..
+<em><strong>7</strong></em> }</p>
+<h1>DESCRIPTION</h1>
+<p><strong>dcb app</strong> is used to configure APP table, or
+application priority table in the DCB (Data Center Bridging) subsystem.
+The APP table is used to assign priority to traffic based on value in
+one of several headers: EtherType, L4 destination port, or DSCP. It also
+allows configuration of port-default priority that is chosen if no other
+prioritization rule applies.</p>
+<p>DCB APP entries are 3-tuples of selector, protocol ID, and priority.
+Selector is an enumeration that picks one of the prioritization
+namespaces. Currently it mostly corresponds to configurable parameters
+described below. Protocol ID is a value in the selector namespace. E.g.
+for EtherType selector, protocol IDs are the individual EtherTypes, for
+DSCP they are individual code points. The priority is the priority that
+should be assigned to traffic that matches the selector and protocol
+ID.</p>
+<p>The APP table is a set of DCB APP entries. The only requirement is
+that duplicate entries are not added. Notably, it is valid to have
+conflicting priority assignment for the same selector and protocol ID.
+For example, the set of two APP entries (DSCP, 10, 1) and (DSCP, 10, 2),
+where packets with DSCP of 10 should get priority of both 1 and 2, form
+a well-defined APP table. The <strong>dcb app</strong> tool allows
+low-level management of the app table by adding and deleting individual
+APP 3-tuples through <strong>add</strong> and <strong>del</strong>
+commands. On the other other hand, the command <strong>replace</strong>
+does what one would typically want in this situation--first adds the new
+configuration, and then removes the obsolete one, so that only one
+prioritization is in effect for a given selector and protocol ID.</p>
+<h1>COMMANDS</h1>
+<dl>
+<dt><strong>show</strong></dt>
+<dd>
+<p>Display all entries with a given selector. When no selector is given,
+shows all APP table entries categorized per selector.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>flush</strong></dt>
+<dd>
+<p>Remove all entries with a given selector. When no selector is given,
+removes all APP table entries.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>add</strong><br />
+<strong>del</strong></dt>
+<dd>
+<p>Add and, respectively, remove individual APP 3-tuples to and from the
+DCB APP table.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>replace</strong></dt>
+<dd>
+<p>Take the list of entries mentioned as parameter, and add those that
+are not present in the APP table yet. Then remove those entries, whose
+selector and protocol ID have been mentioned as parameter, but not with
+the exact same priority. This has the effect of, for the given selector
+and protocol ID, causing that the table only contains the priority (or
+priorities) given as parameter.</p>
+</dd>
+</dl>
+<h1>PARAMETERS</h1>
+<p>The following table shows parameters in a way that they would be used
+with <strong>add</strong>, <strong>del</strong> and
+<strong>replace</strong> commands. For <strong>show</strong> and
+<strong>flush</strong>, the parameter name is to be used as a simple
+keyword without further arguments.</p>
+<dl>
+<dt><strong>default-prio <em>PRIO-LIST</em></strong></dt>
+<dd>
+<p>The priority to be used for traffic the priority of which is
+otherwise unspecified. The argument is a list of individual priorities.
+Note that <strong>default-prio</strong> rules are configured as triplets
+(<strong>EtherType</strong>, <strong>0</strong>, <em>PRIO</em>).
+<strong>dcb app</strong> translates these rules to the symbolic name
+<strong>default-prio</strong> and back.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>ethtype-prio <em>ET-MAP</em></strong></dt>
+<dd>
+<p><em>ET-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are EtherType values. Values
+are priorities to be assigned to traffic with the matching
+EtherType.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>stream-port-prio <em>PORT-MAP</em></strong><br />
+<strong>dgram-port-prio <em>PORT-MAP</em></strong><br />
+<strong>port-prio <em>PORT-MAP</em></strong></dt>
+<dd>
+<p><em>PORT-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are L4 destination port
+numbers that match on, respectively, TCP and SCTP traffic, UDP and DCCP
+traffic, and either of those. Values are priorities that should be
+assigned to matching traffic.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>dscp-prio <em>DSCP-MAP</em></strong></dt>
+<dd>
+<p><em>DSCP-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are DSCP points, values are
+priorities assigned to traffic with matching DSCP. DSCP points can be
+written either directly as numeric values, or using symbolic names
+specified in <strong>/etc/iproute2/rt_dsfield</strong> (however note
+that that file specifies full 8-bit dsfield values, whereas <strong>dcb
+app</strong> will only use the higher six bits). <strong>dcb app
+show</strong> will similarly format DSCP values as symbolic names if
+possible. The command line option <strong>-N</strong> turns the show
+translation off.</p>
+</dd>
+</dl>
+<h1>EXAMPLE &amp; USAGE</h1>
+<p>Prioritize traffic with DSCP 0 to priority 0, 24 to 3 and 48 to
+6:</p>
+<p># dcb app add dev eth0 dscp-prio 0:0 24:3 48:6</p>
+<p>Add another rule to configure DSCP 24 to priority 2 and show the
+result:</p>
+<p># dcb app add dev eth0 dscp-prio 24:2<br />
+# dcb app show dev eth0 dscp-prio<br />
+dscp-prio 0:0 CS3:2 CS3:3 CS6:6<br />
+# dcb -N app show dev eth0 dscp-prio<br />
+dscp-prio 0:0 24:2 24:3 48:6</p>
+<p>Reconfigure the table so that the only rule for DSCP 24 is for
+assignment of priority 4:</p>
+<p># dcb app replace dev eth0 dscp-prio 24:4<br />
+# dcb app show dev eth0 dscp-prio<br />
+dscp-prio 0:0 24:4 48:6</p>
+<p>Flush all DSCP rules:</p>
+<p># dcb app flush dev eth0 dscp-prio<br />
+# dcb app show dev eth0 dscp-prio<br />
+(nothing)</p>
+<h1>EXIT STATUS</h1>
+<p>Exit status is 0 if command was successful or a positive integer upon
+failure.</p>
+<h1>SEE ALSO</h1>
+<p><strong>dcb</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>Report any bugs to the Network Developers mailing list
+<strong>&lt;netdev@vger.kernel.org&gt;</strong> where the development
+and maintenance is primarily done. You do not have to be subscribed to
+the list to send a message there.</p>
+<h1>AUTHOR</h1>
+<p>Petr Machata &lt;me@pmachata.org&gt;</p>

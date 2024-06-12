@@ -1,0 +1,64 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>biosdecode - BIOS information decoder</p>
+<h1>SYNOPSIS</h1>
+<p><strong>biosdecode</strong> [<em>OPTIONS</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>biosdecode</strong> parses the BIOS memory and prints
+information about all structures (or entry points) it knows of.
+Currently known entry point types are:</p>
+<ul>
+<li><p>SMBIOS (System Management BIOS)<br />
+Use <strong>dmidecode</strong> for a more detailed output.</p></li>
+<li><p>DMI (Desktop Management Interface, a legacy version of
+SMBIOS)<br />
+Use <strong>dmidecode</strong> for a more detailed output.</p></li>
+<li><p>SYSID</p></li>
+<li><p>PNP (Plug and Play)</p></li>
+<li><p>ACPI (Advanced Configuration and Power Interface)</p></li>
+<li><p>BIOS32 (BIOS32 Service Directory)</p></li>
+<li><p>PIR (PCI IRQ Routing)</p></li>
+<li><p>OS (BIOS32 Extension, Compaq-specific)<br />
+See <strong>ownership</strong> for a Compaq ownership tag retrieval
+tool.</p></li>
+<li><p>SNY (Sony-specific, not decoded)</p></li>
+<li><p>VPD (Vital Product Data, IBM-specific)<br />
+Use <strong>vpddecode</strong> for a more detailed output.</p></li>
+<li><p>FJKEYINF (Application Panel, Fujitsu-specific)</p></li>
+</ul>
+<p><strong>biosdecode</strong> started its life as a part of
+<strong>dmidecode</strong> but as more entry point types were added, it
+was moved to a different program.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-d</strong>, <strong>--dev-mem <em>FILE</em></strong></dt>
+<dd>
+<p>Read memory from device <em>FILE</em> (default:
+<em>/dev/mem</em>)</p>
+</dd>
+<dt><strong> </strong> <strong>--pir <strong>full</strong></strong></dt>
+<dd>
+<p>Decode the details of the PCI IRQ routing table. Only
+<strong>full</strong> mode is supported.</p>
+</dd>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Display usage information and exit</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Display the version and exit</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<p><em>/dev/mem</em></p>
+<h1>BUGS</h1>
+<p>Most of the time, <strong>biosdecode</strong> prints too much
+information (you don't really care about addresses) or not enough
+(because it doesn't follow pointers and has no lookup tables).</p>
+<h1>AUTHORS</h1>
+<p>Alan Cox, Jean Delvare</p>
+<h1>SEE ALSO</h1>
+<p><strong>dmidecode</strong>(8), <strong>mem</strong>(4),
+<strong>ownership</strong>(8), <strong>vpddecode</strong>(8)</p>

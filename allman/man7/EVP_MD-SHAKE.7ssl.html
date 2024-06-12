@@ -1,0 +1,70 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_MD-SHAKE, EVP_MD-KECCAK-KMAC - The SHAKE / KECCAK family EVP_MD
+implementations</p>
+<h1>DESCRIPTION</h1>
+<p>Support for computing SHAKE or KECCAK-KMAC digests through the
+<strong>EVP_MD</strong> API.</p>
+<p>KECCAK-KMAC is a special digest that's used by the KMAC EVP_MAC
+implementation (see <strong>EVP_MAC-KMAC</strong> (7)).</p>
+<h2>Identities</h2>
+<p>This implementation is available in the FIPS provider as well as the
+default provider, and includes the following varieties:</p>
+<dl>
+<dt>KECCAK-KMAC-128</dt>
+<dd>
+<p>Known names are KECCAK-KMAC-128 and KECCAK-KMAC128 This is used by
+<strong>EVP_MAC-KMAC128</strong> (7)</p>
+</dd>
+<dt>KECCAK-KMAC-256</dt>
+<dd>
+<p>Known names are KECCAK-KMAC-256 and KECCAK-KMAC256 This is used by
+<strong>EVP_MAC-KMAC256</strong> (7)</p>
+</dd>
+<dt>SHAKE-128</dt>
+<dd>
+<p>Known names are SHAKE-128 and SHAKE128</p>
+</dd>
+<dt>SHAKE-256</dt>
+<dd>
+<p>Known names are SHAKE-256 and SHAKE256</p>
+</dd>
+</dl>
+<h2>Gettable Parameters</h2>
+<p>This implementation supports the common gettable parameters described
+in <strong>EVP_MD-common</strong> (7).</p>
+<h2>Settable Context Parameters</h2>
+<p>These implementations support the following
+<strong>OSSL_PARAM</strong> (3) entries, settable for an
+<strong>EVP_MD_CTX</strong> with
+<strong>EVP_MD_CTX_set_params</strong> (3):</p>
+<dl>
+<dt>"xoflen" (OSSL_DIGEST_PARAM_XOFLEN) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>Sets the digest length for extendable output functions. The length of
+the xoflen parameter should not exceed that of a
+<strong>size_t</strong>. For backwards compatibility reasons the default
+xoflen length for SHAKE-128 is 16 (bytes) which results in a security
+strength of only 64 bits. To ensure the maximum security strength of 128
+bits, the xoflen should be set to at least 32. For backwards
+compatibility reasons the default xoflen length for SHAKE-256 is 32
+(bytes) which results in a security strength of only 128 bits. To ensure
+the maximum security strength of 256 bits, the xoflen should be set to
+at least 64.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_MD_CTX_set_params</strong> (3),
+<strong>provider-digest</strong> (7),
+<strong>OSSL_PROVIDER-default</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2022 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

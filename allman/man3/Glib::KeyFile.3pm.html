@@ -1,0 +1,388 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::KeyFile - Parser for .ini-like files</p>
+<h1>SYNOPSIS</h1>
+<p>use Glib; $data .= $_ while (&lt;DATA&gt;); $f =
+Glib::KeyFile-&gt;new; $f-&gt;load_from_data($data); if
+($f-&gt;has_group(Main) &amp;&amp; $f-&gt;has_key(Main, someotherkey)) {
+$val = $f-&gt;get_integer(Main, someotherkey); print $val . "\n"; } 0;
+_ _DATA_ _ # a comment [MainSection] somekey=somevalue someotherkey=42
+someboolkey=true listkey=1;1;2;3;5;8;13;21 localekey=Good Morning
+localekey[it]=Buon giorno localekey[es]=Buenas dias
+localekey[fr]=Bonjour</p>
+<h1>DESCRIPTION</h1>
+<p><strong>Glib::KeyFile</strong> lets you parse, edit or create files
+containing groups of key-value pairs, which we call key files for lack
+of a better name. Several freedesktop.org specifications use key files
+now, e.g the Desktop Entry Specification and the Icon Theme
+Specification.</p>
+<p>The syntax of key files is described in detail in the Desktop Entry
+Specification, here is a quick summary: Key files consists of groups of
+key-value pairs, interspersed with comments.</p>
+<h1>METHODS</h1>
+<h2>keyfile = Glib::KeyFile-&gt;<strong>new</strong></h2>
+<h2>boolean = $key_file-&gt;<strong>get_boolean</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves a boolean value from <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>list = $key_file-&gt;<strong>get_boolean_list</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves a list of booleans from <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>set_boolean_list</strong> ($group_name, $key,
+...)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p>... (list) list of booleans</p></li>
+</ul>
+<p>Sets a list of booleans in <code>$key</code> inside
+<code>$group_name</code>. If <code>$key</code> cannot be found then it
+is created. If <code>$group_name</code> cannot be found then it is
+created.</p>
+<h2>$key_file-&gt;<strong>set_boolean</strong> ($group_name, $key,
+$value)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$value</code> (boolean)</p></li>
+</ul>
+<p>Sets a boolean value to <code>$key</code> inside
+<code>$group_name</code>. If <code>$key</code> is not found, it is
+created.</p>
+<h2>string = $key_file-&gt;<strong>get_comment</strong>
+($group_name=undef, $key=undef)</h2>
+<ul>
+<li><p><code>$group_name</code> (string or undef)</p></li>
+<li><p><code>$key</code> (string or undef)</p></li>
+</ul>
+<p>Retreives a comment above <code>$key</code> from
+<code>$group_name</code>. If <code>$key</code> is undef then
+<code>$comment</code> will be read from above <code>$group_name</code>.
+If both <code>$key</code> and <code>$group_name</code> are undef, then
+<code>$comment</code> will be read from above the first group in the
+file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>set_comment</strong> ($group_name, $key,
+$comment)</h2>
+<ul>
+<li><p><code>$group_name</code> (string or undef)</p></li>
+<li><p><code>$key</code> (string or undef)</p></li>
+<li><p><code>$comment</code> (string)</p></li>
+</ul>
+<p>Places a comment above <code>$key</code> from
+<code>$group_name</code>. If <code>$key</code> is undef then
+<code>$comment</code> will be written above <code>$group_name</code>. If
+both <code>$key</code> and <code>$group_name</code> are undef, then
+<code>$comment</code> will be written above the first group in the
+file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>double = $key_file-&gt;<strong>get_double</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves a double value from <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<p>Since: glib 2.12</p>
+<h2>list = $key_file-&gt;<strong>get_double_list</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves a list of doubles from <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<p>Since: glib 2.12</p>
+<h2>$key_file-&gt;<strong>set_double_list</strong> ($group_name, $key,
+...)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p>... (list) list of doubles</p></li>
+</ul>
+<p>Sets a list of doubles in <code>$key</code> inside
+<code>$group_name</code>. If <code>$key</code> cannot be found then it
+is created. If <code>$group_name</code> cannot be found then it is
+created.</p>
+<p>Since: glib 2.12</p>
+<h2>$key_file-&gt;<strong>set_double</strong> ($group_name, $key,
+$value)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$value</code> (double)</p></li>
+</ul>
+<p>Sets a double value to <code>$key</code> inside
+<code>$group_name</code>. If <code>$key</code> is not found, it is
+created.</p>
+<p>Since: glib 2.12</p>
+<h2>list = $key_file-&gt;<strong>get_groups</strong></h2>
+<p>Returns the list of groups inside the key_file.</p>
+<h2>boolean = $key_file-&gt;<strong>has_group</strong>
+($group_name)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+</ul>
+<p>Checks whether <code>$group_name</code> is present in
+<code>$key_file</code>.</p>
+<h2>boolean = $key_file-&gt;<strong>has_key</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Checks whether <code>$group_name</code> has <code>$key</code> in
+it.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>integer = $key_file-&gt;<strong>get_integer</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves an integer value from <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>list = $key_file-&gt;<strong>get_integer_list</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves a list of integers from <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>set_integer_list</strong> ($group_name, $key,
+...)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p>... (list) list of integers</p></li>
+</ul>
+<p>Sets a list of doubles in <code>$key</code> inside
+<code>$group_name</code>. If <code>$key</code> cannot be found then it
+is created. If <code>$group_name</code> cannot be found then it is
+created.</p>
+<h2>$key_file-&gt;<strong>set_integer</strong> ($group_name, $key,
+$value)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$value</code> (integer)</p></li>
+</ul>
+<p>Sets an integer value to <code>$key</code> inside
+<code>$group_name</code>. If <code>$key</code> is not found, it is
+created.</p>
+<h2>list = $key_file-&gt;<strong>get_keys</strong> ($group_name)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+</ul>
+<p>Returns the list of keys inside a group of the key file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>set_list_separator</strong> ($separator)</h2>
+<ul>
+<li><p><code>$separator</code> (string)</p></li>
+</ul>
+<p>Sets the list separator character.</p>
+<h2>boolean = $key_file-&gt;<strong>load_from_data</strong> ($buf,
+$flags)</h2>
+<ul>
+<li><p><code>$buf</code> (scalar)</p></li>
+<li><p><code>$flags</code> (Glib::KeyFileFlags)</p></li>
+</ul>
+<p>Parses a string containing a key file structure.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>boolean = $key_file-&gt;<strong>load_from_data_dirs</strong> ($file,
+$flags)</h2>
+<h2>(boolean, scalar) =
+$key_file-&gt;<strong>load_from_data_dirs</strong> ($file, $flags)</h2>
+<ul>
+<li><p><code>$file</code> (string)</p></li>
+<li><p><code>$flags</code> (Glib::KeyFileFlags)</p></li>
+</ul>
+<p>Parses a key file, searching for it inside the data directories. In
+scalar context, it returns a boolean value (true on success, false
+otherwise); in array context, it returns a boolean value and the full
+path of the file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>boolean = $key_file-&gt;<strong>load_from_dirs</strong> ($file,
+$flags, @search_dirs)</h2>
+<h2>(boolean, scalar) = $key_file-&gt;<strong>load_from_dirs</strong>
+($file, $flags, @search_dirs)</h2>
+<ul>
+<li><p><code>$file</code> (string)</p></li>
+<li><p><code>$flags</code> (Glib::KeyFileFlags)</p></li>
+<li><p>... (list)</p></li>
+</ul>
+<p>Parses a key file, searching for it inside the specified directories.
+In scalar context, it returns a boolean value (true on success, false
+otherwise); in array context, it returns a boolean value and the full
+path of the file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<p>Since: glib 2.14</p>
+<h2>boolean = $key_file-&gt;<strong>load_from_file</strong> ($file,
+$flags)</h2>
+<ul>
+<li><p><code>$file</code> (string)</p></li>
+<li><p><code>$flags</code> (Glib::KeyFileFlags)</p></li>
+</ul>
+<p>Parses a key file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>string = $key_file-&gt;<strong>get_locale_string</strong>
+($group_name, $key, $locale=undef)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$locale</code> (string or undef)</p></li>
+</ul>
+<p>Returns the value associated with <code>$key</code> under
+<code>$group_name</code> translated in the given <code>$locale</code> if
+available. If <code>$locale</code> is undef then the current locale is
+assumed.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>list = $key_file-&gt;<strong>get_locale_string_list</strong>
+($group_name, $key, $locale)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$locale</code> (string)</p></li>
+</ul>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>set_locale_string_list</strong> ($group_name,
+$key, $locale, ...)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$locale</code> (string)</p></li>
+<li><p>... (list)</p></li>
+</ul>
+<p>Associates a list of string values for <code>$key</code> and
+<code>$locale</code> under <code>$group_name</code>. If the translation
+for <code>$key</code> cannot be found then it is created.</p>
+<h2>$key_file-&gt;<strong>set_locale_string</strong> ($group_name, $key,
+$locale, $string)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$locale</code> (string)</p></li>
+<li><p><code>$string</code> (string)</p></li>
+</ul>
+<h2>$key_file-&gt;<strong>remove_comment</strong> ($group_name=undef,
+$key=undef)</h2>
+<ul>
+<li><p><code>$group_name</code> (string or undef)</p></li>
+<li><p><code>$key</code> (string or undef)</p></li>
+</ul>
+<p>Removes a comment from a group in a key file. If <code>$key</code> is
+undef, the comment will be removed from above <code>$group_name</code>.
+If both <code>$key</code> and <code>$group_name</code> are undef, the
+comment will be removed from the top of the key file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>remove_group</strong> ($group_name)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+</ul>
+<p>Removes a group from a key file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>remove_key</strong> ($group_name, $key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Removes a key from <code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>string = $key_file-&gt;<strong>get_start_group</strong></h2>
+<p>Returns the first group inside a key file.</p>
+<h2>string = $key_file-&gt;<strong>get_string</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves a string value from <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>list = $key_file-&gt;<strong>get_string_list</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves a list of strings from <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>set_string_list</strong> ($group_name, $key,
+...)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p>... (list) list of strings</p></li>
+</ul>
+<p>Sets a list of strings in <code>$key</code> inside
+<code>$group_name</code>. The strings will be escaped if contain special
+characters. If <code>$key</code> cannot be found then it is created. If
+<code>$group_name</code> cannot be found then it is created.</p>
+<h2>$key_file-&gt;<strong>set_string</strong> ($group_name, $key,
+$value)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$value</code> (string)</p></li>
+</ul>
+<p>Sets a string value to <code>$key</code> inside
+<code>$group_name</code>. The string will be escaped if it contains
+special characters. If <code>$key</code> is not found, it is
+created.</p>
+<h2>string = $key_file-&gt;<strong>to_data</strong></h2>
+<p>Returns the key file as a string.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>string = $key_file-&gt;<strong>get_value</strong> ($group_name,
+$key)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Retrieves the literal value of <code>$key</code> inside
+<code>$group_name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$key_file-&gt;<strong>set_value</strong> ($group_name, $key,
+$value)</h2>
+<ul>
+<li><p><code>$group_name</code> (string)</p></li>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$value</code> (string)</p></li>
+</ul>
+<p>Sets the literal value of <code>$key</code> inside
+<code>$group_name</code>. If <code>$key</code> cannot be found, it is
+created. If <code>$group_name</code> cannot be found, it is created.</p>
+<h1>ENUMS AND FLAGS</h1>
+<h2>flags Glib::KeyFileFlags</h2>
+<ul>
+<li><p>'none' / 'G_KEY_FILE_NONE'</p></li>
+<li><p>'keep-comments' / 'G_KEY_FILE_KEEP_COMMENTS'</p></li>
+<li><p>'keep-translations' / 'G_KEY_FILE_KEEP_TRANSLATIONS'</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Glib</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

@@ -1,0 +1,78 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker-miner-fs-3 - Used to crawl the file system to mine data.</p>
+<h1>SYNOPSIS</h1>
+<p><strong>tracker-miner-fs-3</strong> [<em>OPTION</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>tracker-miner-fs-3</strong> is not supposed to be run by the
+user since it is started by its .desktop file when the user logs in. It
+can also be started manually of course for debugging purposes. You can
+not run more than one instance of this at the same time.</p>
+<p><strong>tracker-miner-fs-3</strong> mines information about
+applications and files only.</p>
+<h1>OPTIONS</h1>
+<p><strong>-?, --help</strong></p>
+<blockquote>
+<p>Show summary of options.</p>
+</blockquote>
+<p><strong>-V, --version</strong></p>
+<blockquote>
+<p>Returns the version of this binary.</p>
+</blockquote>
+<p><strong>-s, --initial-sleep=SECONDS</strong></p>
+<blockquote>
+<p>Sets the initial sleep time before crawling the file system is
+started. If the <strong>--no-daemon</strong> option is used, this option
+is ignored.</p>
+</blockquote>
+<p><strong>-n, --no-daemon</strong></p>
+<blockquote>
+<p>Tells the miner to exit once all indexing has finished and the
+database is up to date. This is not the default mode of operation for
+the miner, usually it stays around acting like a daemon to monitor file
+updates which may occur over time. This option renders the
+<strong>--initial-sleep</strong> option moot.</p>
+</blockquote>
+<p><strong>-e, --eligible=FILE</strong></p>
+<blockquote>
+<p>Checks if <strong>FILE</strong> is eligible for being mined based on
+the current configuration rules. In addition to this, it will check if
+<strong>FILE</strong> would be monitored for changes. This works with
+non-existing <strong>FILE</strong> arguments as well as existing
+<strong>FILE</strong> arguments.</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p><strong>G_MESSAGES_DEBUG</strong></p>
+<blockquote>
+<p>Controls verbose log output from GLib-based code. Use
+G_MESSAGES_DEBUG=Tracker to see only Tracker-related logs, or
+G_MESSAGES_DEBUG=all to see everything.</p>
+</blockquote>
+<p><strong>TRACKER_DEBUG</strong></p>
+<blockquote>
+<p>Enables more specialized debug output. Pass a comma-separated list of
+one or more keywords:</p>
+<p>config</p>
+<blockquote>
+<p>miner configuration</p>
+</blockquote>
+<p>miner-fs-events</p>
+<blockquote>
+<p>internal processing of tracker-miner-fs</p>
+</blockquote>
+<p>monitors</p>
+<blockquote>
+<p>change events from filesystem monitors</p>
+</blockquote>
+<p>statistics</p>
+<blockquote>
+<p>show statistics about how many files were processed</p>
+</blockquote>
+<p>status</p>
+<blockquote>
+<p>log the status messages that are published over D-Bus</p>
+</blockquote>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-info</strong>(1).</p>

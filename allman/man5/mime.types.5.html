@@ -1,0 +1,126 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mime.types - mime type description file for cups</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>mime.types</strong> file defines the recognized file
+types.</p>
+<p>Additional file types are specified in files with the extension
+<em>.types</em> in the CUPS configuration directory.</p>
+<p>Each line in the <strong>mime.types</strong> file is a comment,
+blank, or rule line. Comment lines start with the # character. Rule
+lines start with the MIME media type and are optionally followed by a
+series of file recognition rules:</p>
+<pre><code>
+    mime/type [ rule ... rule ]
+</code></pre>
+<p>Rules can be extended over multiple lines using the backslash
+character (\):</p>
+<pre><code>
+    mime/type [ really-really-really-long-rule ... \
+      rule ]
+</code></pre>
+<p>MIME media types specified by the <em>mime/type</em> field are
+case-insensitive and are sorted in ascending alphanumeric order for the
+purposes of matching. See the "TYPE MATCHING AND PRIORITY" section for
+more information.</p>
+<p>The rules may be grouped using parenthesis, joined using "+" for a
+logical AND, joined using "," or whitespace for a logical OR, and
+negated using "!".</p>
+<h2>RULES</h2>
+<p>Rules take two forms - a filename extension by itself and functions
+with test values inside parenthesis. The following functions are
+available:</p>
+<dl>
+<dt><strong>match("</strong><em>pattern</em><strong>")</strong></dt>
+<dd>
+<p>True if the filename matches the given shell wildcard
+<em>pattern</em>.</p>
+</dd>
+<dt><strong>ascii(</strong><em>offset</em><strong>,</strong><em>length</em><strong>)</strong></dt>
+<dd>
+<p>True if the <em>length</em> bytes starting at <em>offset</em> are
+valid printable ASCII (CR, NL, TAB, BS, 32-126).</p>
+</dd>
+<dt><strong>printable(</strong><em>offset</em><strong>,</strong><em>length</em><strong>)</strong></dt>
+<dd>
+<p>True if the <em>length</em> bytes starting at <em>offset</em> are
+printable 8-bit chars (CR, NL, TAB, BS, 32-126, 128-254).</p>
+</dd>
+<dt><strong>priority(</strong><em>number</em><strong>)</strong></dt>
+<dd>
+<p>Specifies the relative priority of this MIME media type. The default
+priority is 100. Larger values have higher priority while smaller values
+have lower priority.</p>
+</dd>
+<dt><strong>string(</strong><em>offset</em><strong>,"</strong><em>string</em><strong>")</strong></dt>
+<dd>
+<p>True if the bytes starting at <em>offset</em> are identical to
+<em>string</em>.</p>
+</dd>
+<dt><strong>istring(</strong><em>offset</em><strong>,"</strong><em>string</em><strong>")</strong></dt>
+<dd>
+<p>True if the bytes starting at <em>offset</em> match <em>string</em>
+without respect to case.</p>
+</dd>
+<dt><strong>char(</strong><em>offset</em><strong>,</strong><em>value</em><strong>)</strong></dt>
+<dd>
+<p>True if the byte at <em>offset</em> is identical to
+<em>value</em>.</p>
+</dd>
+<dt><strong>short(</strong><em>offset</em><strong>,</strong><em>value</em><strong>)</strong></dt>
+<dd>
+<p>True if the 16-bit big-endian integer at <em>offset</em> is identical
+to <em>value</em>.</p>
+</dd>
+<dt><strong>int(</strong><em>offset</em><strong>,</strong><em>value</em><strong>)</strong></dt>
+<dd>
+<p>True if the 32-bit big-endian integer at <em>offset</em> is identical
+to <em>value</em>.</p>
+</dd>
+<dt><strong>locale("</strong><em>string</em><strong>")</strong></dt>
+<dd>
+<p>True if current locale matches <em>string</em>.</p>
+</dd>
+<dt><strong>contains(</strong><em>offset</em><strong>,</strong><em>range</em><strong>,"</strong><em>string</em><strong>")</strong></dt>
+<dd>
+<p>True if the bytes starting at <em>offset</em> for <em>range</em>
+bytes contains <em>string</em>.</p>
+</dd>
+</dl>
+<h2>STRING CONSTANTS</h2>
+<p>String constants can be specified inside quotes ("") for strings
+containing whitespace and angle brackets (&lt;&gt;) for hexadecimal
+strings.</p>
+<h2>TYPE MATCHING AND PRIORITY</h2>
+<p>When CUPS needs to determine the MIME media type of a given file, it
+checks every MIME media type defined in the <em>.types</em> files. When
+two or more types match a given file, the type chosen will depend on the
+type name and priority, with higher-priority types being used over
+lower-priority ones. If the types have the same priority, the type names
+are sorted alphanumerically in ascending order and the first type is
+chosen.</p>
+<p>For example, if two types "text/bar" and "text/foo" are defined as
+matching the extension "doc", normally the type "text/bar" will be
+chosen since its name is alphanumerically smaller than "text/foo".
+However, if "text/foo" also defines a higher priority than "text/bar",
+"text/foo" will be chosen instead.</p>
+<h1>FILES</h1>
+<p><em>/etc/cups</em> - Typical CUPS configuration directory.</p>
+<h1>EXAMPLES</h1>
+<p>Define two MIME media types for raster data, with one being a subset
+with higher priority:</p>
+<pre><code>
+    application/vnd.cups-raster  string(0,&quot;RaSt&quot;) string(0,&quot;tSaR&quot;) \
+                                  string(0,&quot;RaS2&quot;) string(0,&quot;2SaR&quot;) \
+                                  string(0,&quot;RaS3&quot;) string(0,&quot;3SaR&quot;)
+
+    image/pwg-raster              string(0,&quot;RaS2&quot;) + \
+                                  string(4,PwgRaster&lt;00&gt;) priority(150)</code></pre>
+<h1>SEE ALSO</h1>
+<p><strong>cups-files.conf</strong>(5), <strong>cupsd.conf</strong>(5),
+<strong>cupsd</strong>(8), <strong>cupsfilter</strong>(8),
+<strong>mime.convs</strong>(5), CUPS Online Help
+(http://localhost:631/help)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2021-2022 by OpenPrinting.</p>

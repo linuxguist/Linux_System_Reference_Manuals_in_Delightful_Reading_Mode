@@ -1,0 +1,32 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>wpa_passphrase - Generate a WPA PSK from an ASCII passphrase for a
+SSID</p>
+<h1>SYNOPSIS</h1>
+<p><strong>wpa_passphrase</strong> [ <em>ssid</em> ] [
+<em>passphrase</em> ]</p>
+<h1>OVERVIEW</h1>
+<p><strong>wpa_passphrase</strong> pre-computes PSK entries for network
+configuration blocks of a <em>wpa_supplicant.conf</em> file. An ASCII
+passphrase and SSID are used to generate a 256-bit PSK.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>ssid</strong></dt>
+<dd>
+<p>The SSID whose passphrase should be derived.</p>
+</dd>
+<dt><strong>passphrase</strong></dt>
+<dd>
+<p>The passphrase to use. If not included on the command line,
+passphrase will be read from standard input.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>wpa_supplicant.conf</strong>(5)
+<strong>wpa_supplicant</strong>(8)</p>
+<h1>LEGAL</h1>
+<p>wpa_supplicant is copyright (c) 2003-2022, Jouni Malinen
+&lt;j@w1.fi&gt; and contributors. All Rights Reserved.</p>
+<p>This program is licensed under the BSD license (the one with
+advertisement clause removed).</p>

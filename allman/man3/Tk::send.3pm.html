@@ -1,0 +1,90 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::send - Execute a command in a different application</p>
+<h1>SYNOPSIS</h1>
+<p>    <em><code>$result</code></em> =
+<em><code>$widget</code></em>-&gt;<strong>send</strong>(?<em>options</em>,?<em>app</em>=&gt;<em>cmd</em>?<em>arg
+arg ...</em>?)</p>
+<h1>DESCRIPTION</h1>
+<p>This method arranges for <em>cmd</em> (and <em>arg</em>s) to be
+'sent' to the application named by <em>app</em>. It returns the result
+or an error (hence above should probably be 'wrapped' in
+<strong>eval{}</strong> and $@ tested). <em>App</em> may be the name of
+any application whose main window is on the display containing the
+sender's main window; it need not be within the same process. If no
+<em>arg</em> arguments are present, then the string to be sent is
+contained entirely within the <em>cmd</em> argument. If one or more
+<em>arg</em>s are present, they are concatenated separated by white
+space to form the string to be sent.</p>
+<p>If the initial arguments of the call begin with ``-'' they are
+treated as options. The following options are currently defined:</p>
+<dl>
+<dt>-async</dt>
+<dd>
+<p>Requests asynchronous invocation. In this case the
+<strong>send</strong> command will complete immediately without waiting
+for <em>cmd</em> to complete in the target application; no result will
+be available and errors in the sent command will be ignored. If the
+target application is in the same process as the sending application
+then the <strong>-async</strong> option is ignored.</p>
+</dd>
+<dt>--</dt>
+<dd>
+<p>Serves no purpose except to terminate the list of options. This
+option is needed only if <em>app</em> could contain a leading ``-''
+character.</p>
+</dd>
+</dl>
+<h1>APPLICATION NAMES</h1>
+<p>The name of an application is set initially from the name of the
+program or script that created the application. You can query and change
+the name of an application with the <strong>appname</strong> method.</p>
+<h1>WHAT IS A SEND</h1>
+<p>The <strong>send</strong> mechanism was designed to allow Tcl/Tk
+applications to send Tcl Scripts to each other. This does not map very
+well onto perl/Tk. Perl/Tk sends a string to <em>app</em>, what happens
+as a result of this depends on the receiving application. If the other
+application is a Tcl/Tk4.* application it will be treated as a Tcl
+Script. If the other application is perl/Tk application (including sends
+to self) then the string is passed as an argument to a method call of
+the following form:</p>
+<p><em><code>$mainwindow</code></em>-&gt;<strong>Receive(</strong><em>string</em>);</p>
+<p>There is a default (AutoLoaded) <strong>Tk::Receive</strong> which
+returns an error to the sending application. A particular application
+may define its own <strong>Receive</strong> method in any class in
+<strong>MainWindow</strong>'s inheritance tree to do whatever it sees
+fit. For example it could <strong>eval</strong> the string, possibly in
+a <strong>Safe</strong> compartment.</p>
+<p>If a Tcl/Tk application sends anything to a perl/Tk application then
+the perl/Tk application would have to attempt to interpret the incoming
+string as a Tcl Script. Simple cases are should not be too hard to
+emulate (split on white space and treat first element as command and
+other elements as arguments).</p>
+<h1>SECURITY</h1>
+<p>The <strong>send</strong> command is potentially a serious security
+loophole, since any application that can connect to your X server can
+send scripts to your applications. Hence the default behaviour outlined
+above. (With the availability of <strong>Safe</strong> it may make sense
+to relax default behaviour a little.)</p>
+<p>Unmonitored <strong>eval</strong>'ing of these incoming scripts can
+cause perl to read and write files and invoke subprocesses under your
+name. Host-based access control such as that provided by
+<strong>xhost</strong> is particularly insecure, since it allows anyone
+with an account on particular hosts to connect to your server, and if
+disabled it allows anyone anywhere to connect to your server. In order
+to provide at least a small amount of security, core Tk checks the
+access control being used by the server and rejects incoming sends
+unless (a) <strong>xhost</strong>-style access control is enabled (i.e.
+only certain hosts can establish connections) and (b) the list of
+enabled hosts is empty. This means that applications cannot connect to
+your server unless they use some other form of authorization such as
+that provide by <strong>xauth</strong>.</p>
+<h1>SEE ALSO</h1>
+<p>eval in perlfunc, Safe, system's administrator/corporate security
+guidelines etc.</p>
+<h1>KEYWORDS</h1>
+<p>application, name, remote execution, security, send</p>

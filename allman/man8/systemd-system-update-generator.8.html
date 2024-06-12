@@ -1,0 +1,16 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-system-update-generator - Generator for redirecting boot to
+offline update mode</p>
+<h1>SYNOPSIS</h1>
+<p>/lib/systemd/system-generators/systemd-system-update-generator</p>
+<h1>DESCRIPTION</h1>
+<p>systemd-system-update-generator is a generator that automatically
+redirects the boot process to system-update.target, if /system-update
+exists. This is required to implement the logic explained in the
+<strong>systemd.offline-updates</strong>(7).</p>
+<p>systemd-system-update-generator implements
+<strong>systemd.generator</strong>(7).</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>systemd.special</strong>(7)</p>

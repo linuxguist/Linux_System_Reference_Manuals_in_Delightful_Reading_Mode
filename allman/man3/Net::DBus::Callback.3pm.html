@@ -1,0 +1,61 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Callback - a callback for receiving reactor events</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::DBus::Callback; # Assume we have a terminal object and its
+got a method # to be invoked every time there is input on its terminal.
+# # To create a callback to invoke this method one might use my $cb =
+Net::DBus::Callback-&gt;new(object =&gt; $terminal, method =&gt;
+"handle_stdio"); # Whatever is monitoring the stdio channel, would then
+# invoke the callback, perhaps passing in a parameter with # some
+interesting data, such as number of bytes available
+$cb-&gt;invoke($nbytes) #... which results in a call to #
+$terminal-&gt;handle_stdio($nbytes)</p>
+<h1>DESCRIPTION</h1>
+<p>This module provides a simple container for storing details about a
+callback to be invoked at a later date. It is used when registering to
+receive events from the Net::DBus::Reactor class. NB use of this module
+in application code is no longer necessary and it remains purely for
+backwards compatibility. Instead you can simply pass a subroutine code
+reference in any place where a callback is desired.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $cb = Net::DBus::Callback-&gt;new(method =&gt; $name, [args =&gt;
+\@args])</dt>
+<dd>
+<p>Creates a new callback object, for invoking a plain old function. The
+<code>method</code> parameter should be the fully qualified function
+name to invoke, including the package name. The optional
+<code>args</code> parameter is an array reference of parameters to be
+pass to the callback, in addition to those passed into the
+<code>invoke</code> method.</p>
+</dd>
+<dt>my $cb = Net::DBus::Callback-&gt;new(object =&gt; $object, method
+=&gt; $name, [args =&gt; \@args])</dt>
+<dd>
+<p>Creates a new callback object, for invoking a method on an object.
+The <code>method</code> parameter should be the name of the method to
+invoke, while the <code>object</code> parameter should be a blessed
+object on which the method will be invoked. The optional
+<code>args</code> parameter is an array reference of parameters to be
+pass to the callback, in addition to those passed into the
+<code>invoke</code> method.</p>
+</dd>
+<dt>$cb-&gt;invoke(@args)</dt>
+<dd>
+<p>Invokes the callback. The argument list passed to the callback is a
+combination of the arguments supplied in the callback constructor,
+followed by the arguments supplied in the <code>invoke</code>
+method.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2004-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::Reactor</p>

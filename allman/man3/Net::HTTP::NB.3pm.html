@@ -1,0 +1,35 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::HTTP::NB - Non-blocking HTTP client</p>
+<h1>VERSION</h1>
+<p>version 6.22</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::HTTP::NB; my $s = Net::HTTP::NB-&gt;new(Host =&gt;
+"www.perl.com") || die $@; $s-&gt;write_request(GET =&gt; "/"); use
+IO::Select; my $sel = IO::Select-&gt;new($s); READ_HEADER: { die "Header
+timeout" unless $sel-&gt;can_read(10); my($code, $mess, %h) =
+$s-&gt;read_response_headers; redo READ_HEADER unless $code; } while (1)
+{ die "Body timeout" unless $sel-&gt;can_read(10); my $buf; my $n =
+$s-&gt;read_entity_body($buf, 1024); last unless $n; print $buf; }</p>
+<h1>DESCRIPTION</h1>
+<p>Same interface as <code>Net::HTTP</code> but it will never try
+multiple reads when the <strong>read_response_headers()</strong> or
+<strong>read_entity_body()</strong> methods are invoked. This make it
+possible to multiplex multiple Net::HTTP::NB using select without risk
+blocking.</p>
+<p>If <strong>read_response_headers()</strong> did not see enough data
+to complete the headers an empty list is returned.</p>
+<p>If <strong>read_entity_body()</strong> did not see new entity data in
+its read the value -1 is returned.</p>
+<h1>SEE ALSO</h1>
+<p>Net::HTTP</p>
+<h1>AUTHOR</h1>
+<p>Gisle Aas &lt;gisle@activestate.com&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2001 by Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

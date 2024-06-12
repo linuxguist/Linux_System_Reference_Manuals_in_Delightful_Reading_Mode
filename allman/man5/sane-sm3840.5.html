@@ -1,0 +1,97 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sane-sm3840 - SANE backend for Microtek scanners with SCAN08 USB
+chip</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>sane-sm3840</strong> library implements a SANE (Scanner
+Access Now Easy) backend that provides access to some Microtek scanners
+with the SCAN08 USB chip.</p>
+<p>There exist backends for Microtek scanners with SCSI command set.
+Refer to <strong>sane-microtek</strong>(5) and
+<strong>sane-microtek2</strong>(5) for details.</p>
+<p>There also exists a Microtek 3600 series driver, see
+<strong>sane-sm3600</strong>(5) for details.</p>
+<p>At present, the following scanners are known positively to work with
+this backend:</p>
+<blockquote>
+<pre><code>Vendor     Product ID:     Remark:
+--------   --------------  -----------
+Microtek   ScanMaker 3840  All modes OK
+Microtek   ScanMaker 4800  All modes OK</code></pre>
+</blockquote>
+<p>If you own a Microtek scanner with the SCAN08 chip other than the
+ones listed above, it may or may not work with SANE. Feel free to
+contact the backend author (<em>earle@ziplabel.com</em>) to report
+results with scanners not on the list.</p>
+<h1>FRONTEND OPTIONS</h1>
+<p>The following options are supported by the
+<strong>sane-sm3840</strong> driver:</p>
+<dl>
+<dt><strong>--mode color|gray|lineart|halftone</strong></dt>
+<dd>
+<p>Color or grayscale mode.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--resolution 150|300|600|1200</strong></dt>
+<dd>
+<p>Pixels per inch for scans.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--depth 8|16</strong></dt>
+<dd>
+<p>Note that the least significant bits of 16bpp mode may be noise.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--brightness 1..4096</strong></dt>
+<dd>
+<p>Higher numbers increase brightness of returned image.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--contrast 0.1..9.9</strong></dt>
+<dd>
+<p>Larger numbers decrease contrast of returned image.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--lamp-timeout 1..15</strong></dt>
+<dd>
+<p>Time in minutes until the lamp is turned off after a scan.</p>
+</dd>
+</dl>
+<h1>CONFIGURATION</h1>
+<p>This backend does not support a configuration file right now.</p>
+<h1>FILES</h1>
+<dl>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-sm3840.a</em></dt>
+<dd>
+<p>The static library implementing this backend.</p>
+</dd>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-sm3840.so</em></dt>
+<dd>
+<p>The shared library implementing this backend (present on systems that
+support dynamic loading).</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>SANE_DEBUG_SM3840</strong></dt>
+<dd>
+<p>If the library was compiled with debug support enabled, this
+environment variable controls the debug level for this backend. E.g., a
+value of 128 requests all debug output to be printed. Smaller levels
+reduce verbosity. To see error messages on stderr set
+<strong>SANE_DEBUG_SM3840</strong> to 1.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>sane</strong>(7), <strong>sane-microtek</strong>(5),
+<strong>sane-microtek2</strong>(5),
+<strong>sane-sm3600</strong>(5)<br />
+<em>http://www.ziplabel.com/sm3840</em></p>
+<h1>AUTHOR</h1>
+<p>Earle F. Philhower III &lt;<em>earle@ziplabel.com</em>&gt;</p>

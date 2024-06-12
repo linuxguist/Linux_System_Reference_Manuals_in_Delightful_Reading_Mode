@@ -1,0 +1,54 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::tixWm - Tix's addition to the standard TK wm command.</p>
+<h1>SYNOPSIS</h1>
+<p>    <em><code>$widget</code></em>-&gt;<strong>wmCapture</strong></p>
+<p>    <em><code>$widget</code></em>-&gt;<strong>wmRelease</strong></p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>wmCapture</strong> and the <strong>wmRelease</strong>
+methods change the toplevel attribute of Tk widgets.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>$widget-&gt;wmCapture</dt>
+<dd>
+<p>Converts the toplevel window specified by
+<em><code>$widget</code></em> into a non-toplevel widget. Normally this
+command is called to convert a Toplevel widget into a Frame widget. The
+newly-converted frame widget is un-mapped from the screen. To make it
+appear inside its parent, you must call a geometry manager (e.g. grid or
+pack) explicitly.</p>
+</dd>
+<dt>$widget-&gt;wmRelease</dt>
+<dd>
+<p>Makes the non-toplevel window specified by
+<em><code>$widget</code></em> into a toplevel widget. Normally this
+command is called to convert a Frame widget into a Toplevel widget, but
+it can also be used on any non-toplevel widget (e.g, label). The
+newly-converted toplevel window is in a <strong>withdrawn</strong>
+state. To make it appear on the screen, you must call
+<strong>deiconify</strong> after calling <strong>wmRelease</strong>. Any
+data associated with <em><code>$widget</code></em> via
+<strong>wm</strong> methods (icon, protocol, command etc.) are released,
+and must be re-established if window is later re-captured.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p><strong>wmCapture</strong> does not exist in the Win32 window manager
+code.</p>
+<p>How these methods interact with perl/Tk's class hierarchy is not yet
+clear. In particular a <strong>wmRelease</strong>d window will not
+automatically ``<em>inherit</em>'' the <strong>Tk::Wm</strong> methods,
+however a <strong>wmCapture</strong>d window still will. (A
+<strong>release</strong>d <strong>Label</strong> might make a good
+candidate for an <strong>Icon</strong>.)</p>
+<h1>AUTHORS</h1>
+<p>Ioi Kim Lam - ioi@graphics.cis.upenn.edu wrote original Tix version.
+Updated for tk8.0, Win32 and perl by Nick Ing-Simmons.</p>
+<h1>SEE ALSO</h1>
+<p>Tk::Wm Tk::Mwm Tk::Frame Tk::Toplevel</p>
+<h1>KEYWORDS</h1>
+<p>window manager, wm, TIX</p>

@@ -1,0 +1,248 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Labelframe - Create and manipulate Labelframe widgets</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$labelframe</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>Labelframe</strong>(?<em>options</em>?);</p>
+<p>-borderwidth -highlightbackground -pady -cursor -highlightcolor
+-relief -font -highlightthickness -takefocus -foreground -padx -text</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Option: -background</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: background</dt>
+<dd>
+
+</dd>
+<dt>Class: Background</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This option is the same as the standard <strong>background</strong>
+option except that its value may also be specified as an empty string.
+In this case, the widget will display no background or border, and no
+colors will be consumed from its colormap for its background and
+border.</p>
+<dl>
+<dt>Option: -class</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: class</dt>
+<dd>
+
+</dd>
+<dt>Class: Class</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a class for the window. This class will be used when
+querying the option database for the window's other options, and it will
+also be used later for other purposes such as bindings. The
+<strong>class</strong> option may not be changed with the
+<strong>configure</strong> method.</p>
+<dl>
+<dt>Option: -colormap</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: colormap</dt>
+<dd>
+
+</dd>
+<dt>Class: Colormap</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a colormap to use for the window. The value may be either
+<strong>new</strong>, in which case a new colormap is created for the
+window and its children, or the name of another window (which must be on
+the same screen and have the same visual as <code>$widget</code>), in
+which case the new window will use the colormap from the specified
+window. If the <strong>colormap</strong> option is not specified, the
+new window uses the same colormap as its parent. This option may not be
+changed with the <strong>configure</strong> method.</p>
+<dl>
+<dt>Option: -container</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: container</dt>
+<dd>
+
+</dd>
+<dt>Class: Container</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The value must be a boolean. If true, it means that this window will
+be used as a container in which some other application will be embedded
+(for example, a Tk toplevel can be embedded using the
+<strong>-use</strong> option). The window will support the appropriate
+window manager protocols for things like geometry requests. The window
+should not have any children of its own in this application. This option
+may not be changed with the <strong>configure</strong> method.</p>
+<dl>
+<dt>Option: -height</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: height</dt>
+<dd>
+
+</dd>
+<dt>Class: Height</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired height for the window in any of the forms
+acceptable to <strong>Tk_GetPixels</strong>. If this option is less than
+or equal to zero then the window will not request any size at all.</p>
+<dl>
+<dt>Option: -labelanchor</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: labelAnchor</dt>
+<dd>
+
+</dd>
+<dt>Class: LabelAnchor</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies where to place the label. A label is only displayed if the
+<strong>-text</strong> option is not the empty string. Valid values for
+this option are (listing them clockwise) <strong>nw</strong>,
+<strong>n</strong>, <strong>ne</strong>, <strong>en</strong>,
+<strong>e</strong>, <strong>es</strong>, <strong>se</strong>,
+<strong>s</strong>,<strong>sw</strong>, <strong>ws</strong>,
+<strong>w</strong> and <strong>wn</strong>. The default value is
+<strong>nw</strong>.</p>
+<dl>
+<dt>Option: -labelwidget</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: labelWidget</dt>
+<dd>
+
+</dd>
+<dt>Class: LabelWidget</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a widget to use as label. This overrides any
+<strong>-text</strong> option. The widget must exist before being used
+as <strong>-labelwidget</strong> and if it is not a descendant of this
+window, it will be raised above it in the stacking order.</p>
+<dl>
+<dt>Option: -visual</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: visual</dt>
+<dd>
+
+</dd>
+<dt>Class: Visual</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies visual information for the new window in any of the forms
+accepted by <strong>Tk_GetVisual</strong>. If this option is not
+specified, the new window will use the same visual as its parent. The
+<strong>visual</strong> option may not be modified with the
+<strong>configure</strong> method.</p>
+<dl>
+<dt>Option: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired width for the window in any of the forms
+acceptable to <strong>Tk_GetPixels</strong>. If this option is less than
+or equal to zero then the window will not request any size at all.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Labelframe</strong> method creates a new window (given by
+the <code>$labelframe</code> argument) and makes it into a Labelframe
+widget. Additional options, described above, may be specified on the
+command line or in the option database to configure aspects of the
+Labelframe such as its background color and relief.</p>
+<p>A Labelframe is a simple widget. Its primary purpose is to act as a
+spacer or container for complex window layouts. It has the features of a
+<strong>Frame</strong> plus the ability to display a label.</p>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>Labelframe</strong> method may be used to invoke various
+operations on the widget. It has the following general form:</p>
+<p>$widget-&gt;method(?arg arg ...?);</p>
+<p>The following methods are possible for Labelframe widgets:</p>
+<dl>
+<dt>$widget-&gt;cget(option);</dt>
+<dd>
+<p>Returns the current value of the configuration option given by
+<em>option</em>. <em>Option</em> may have any of the values accepted by
+the <strong>Labelframe</strong> command.</p>
+</dd>
+<dt>$widget-&gt;configure(?option?, ?value, option, value, ...?);</dt>
+<dd>
+<p>Query or modify the configuration options of the widget. If no
+<em>option</em> is specified, returns a list describing all of the
+available options for <code>$widget</code> (see Tk::configure for
+information on the format of this list). If <em>option</em> is specified
+with no <em>value</em>, then the command returns a list describing the
+one named option (this list will be identical to the corresponding
+sublist of the value returned if no <em>option</em> is specified). If
+one or more <em>option-value</em> pairs are specified, then the command
+modifies the given widget option(s) to have the given value(s); in this
+case the command returns an empty string. <em>Option</em> may have any
+of the values accepted by the <strong>Labelframe</strong> command.</p>
+</dd>
+</dl>
+<h1>BINDINGS</h1>
+<p>When a new Labelframe is created, it has no default event bindings:
+Labelframes are not intended to be interactive.</p>
+<h1>SEE ALSO</h1>
+<p>Tk::Frame, Tk::Label</p>
+<h1>KEYWORDS</h1>
+<p>Labelframe, widget</p>

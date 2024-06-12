@@ -1,0 +1,75 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Reindex - change the base index of Text-like widgets</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::ReindexedText; $t1=$w-&gt;ReindexedText(-linestart =&gt; 2);
+use Tk::ReindexedROText; $t2=$w-&gt;ReindexedROText(-linestart =&gt;
+0);</p>
+<h1>DESCRIPTION</h1>
+<p>Creates a new widget class based on <strong>Text</strong>-like
+widgets that can redefine the line number base (normally
+<strong>Text</strong> widgets start line numbers at 1), or possibly
+other manipulations on indexes.</p>
+<h1>STANDARD OPTIONS</h1>
+<p>The newly-defined widget takes all the same options as the base
+widget, which defaults to <strong>Text</strong>.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Name: lineStart</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: LineStart</dt>
+<dd>
+
+</dd>
+<dt>Switch: -linestart</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Sets the line number of the first line in the <strong>Text</strong>
+widget. The default <strong>-toindexcmd</strong> and
+<strong>-fromindexcmd</strong> use this configuration option. -item
+Name: <strong>toIndexCmd</strong> <strong>fromIndexCmd</strong> -item
+Class: <strong>ToIndexCmd</strong> <strong>FromIndexCmd</strong> -item
+Switch: <strong>-toindexcmd</strong> <strong>-fromindexcmd</strong>
+These two options specify callbacks that are called with a list of
+indexes and are responsible for translating them to/from indexes that
+the base <strong>Text</strong> widget can understand. The callback is
+passed the widget followed by a list of indexes, and should return a
+list of translated indexes. <strong>-toindexcmd</strong> should
+translate from 'user' indexes to 'native'
+<strong>Text</strong>-compatible indexes, and
+<strong>-fromindexcmd</strong> should translate from 'native' indexes to
+'user' indexes. The default callbacks simply add/subtract the offset
+given by the <strong>-linestart</strong> option for all indexes in
+'line.character' format. It would probably be prudent to make these
+functions inverses of each other.</p>
+<h1>CLASS METHODS</h1>
+<dl>
+<dt>import</dt>
+<dd>
+<p>To make new Reindex widgets, this function should be called via
+<strong>use</strong> with the name of the Text-like base class that you
+are extending with Reindex capability. 'use base(Tk::Reindex
+Tk::nameofbasewidget)' should also be specified for that widget.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>I've used the word indexes instead of indices throughout the
+documentation.</p>
+<p>All the built-in perl code for widget bindings &amp; methods will use
+the new 'user' indexes. Which means all this index manipulation might
+might break code that is trying to parse/manipulate indexes. Or even
+assume that '1.0' is the beginning index.
+<strong>Tk::Text::Contents</strong> comes to mind.</p>
+<h1>AUTHOR</h1>
+<p>Andrew Allen &lt;ada@fc.hp.com&gt;</p>
+<p>This code may be distributed under the same conditions as Perl.</p>

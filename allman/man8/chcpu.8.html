@@ -1,0 +1,103 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>chcpu - configure CPUs</p>
+<h1>SYNOPSIS</h1>
+<p><strong>chcpu</strong>
+<strong>-c</strong>|<strong>-d</strong>|<strong>-e</strong>|<strong>-g</strong>
+<em>cpu-list</em></p>
+<p><strong>chcpu</strong> <strong>-p</strong> <em>mode</em></p>
+<p><strong>chcpu</strong>
+<strong>-r</strong>|<strong>-h</strong>|<strong>-V</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>chcpu</strong> can modify the state of CPUs. It can enable or
+disable CPUs, scan for new CPUs, change the CPU dispatching
+<em>mode</em> of the underlying hypervisor, and request CPUs from the
+hypervisor (configure) or return CPUs to the hypervisor
+(deconfigure).</p>
+<p>Some options have a <em>cpu-list</em> argument. Use this argument to
+specify a comma-separated list of CPUs. The list can contain individual
+CPU addresses or ranges of addresses. For example,
+<strong>0,5,7,9-11</strong> makes the command applicable to the CPUs
+with the addresses 0, 5, 7, 9, 10, and 11.</p>
+<h1>OPTIONS</h1>
+<p><strong>-c</strong>, <strong>--configure</strong>
+<em>cpu-list</em></p>
+<blockquote>
+<p>Configure the specified CPUs. Configuring a CPU means that the
+hypervisor takes a CPU from the CPU pool and assigns it to the virtual
+hardware on which your kernel runs.</p>
+</blockquote>
+<p><strong>-d</strong>, <strong>--disable</strong> <em>cpu-list</em></p>
+<blockquote>
+<p>Disable the specified CPUs. Disabling a CPU means that the kernel
+sets it offline.</p>
+</blockquote>
+<p><strong>-e</strong>, <strong>--enable</strong> <em>cpu-list</em></p>
+<blockquote>
+<p>Enable the specified CPUs. Enabling a CPU means that the kernel sets
+it online. A CPU must be configured, see <strong>-c</strong>, before it
+can be enabled.</p>
+</blockquote>
+<p><strong>-g</strong>, <strong>--deconfigure</strong>
+<em>cpu-list</em></p>
+<blockquote>
+<p>Deconfigure the specified CPUs. Deconfiguring a CPU means that the
+hypervisor removes the CPU from the virtual hardware on which the Linux
+instance runs and returns it to the CPU pool. A CPU must be offline, see
+<strong>-d</strong>, before it can be deconfigured.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--dispatch</strong> <em>mode</em></p>
+<blockquote>
+<p>Set the CPU dispatching <em>mode</em> (polarization). This option has
+an effect only if your hardware architecture and hypervisor support CPU
+polarization. Available <em>modes</em> are:</p>
+<p><strong>horizontal</strong></p>
+<blockquote>
+<p>The workload is spread across all available CPUs.</p>
+</blockquote>
+<p><strong>vertical</strong></p>
+<blockquote>
+<p>The workload is concentrated on few CPUs.</p>
+</blockquote>
+</blockquote>
+<p><strong>-r</strong>, <strong>--rescan</strong></p>
+<blockquote>
+<p>Trigger a rescan of CPUs. After a rescan, the Linux kernel recognizes
+the new CPUs. Use this option on systems that do not automatically
+detect newly attached CPUs.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>chcpu</strong> has the following exit status values:</p>
+<p><strong>0</strong></p>
+<blockquote>
+<p>success</p>
+</blockquote>
+<p><strong>1</strong></p>
+<blockquote>
+<p>failure</p>
+</blockquote>
+<p><strong>64</strong></p>
+<blockquote>
+<p>partial success</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>COPYRIGHT</h1>
+<p>Copyright IBM Corp. 2011</p>
+<h1>SEE ALSO</h1>
+<p><strong>lscpu</strong>(1)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>chcpu</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

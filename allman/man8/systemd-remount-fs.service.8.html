@@ -1,0 +1,42 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-remount-fs.service, systemd-remount-fs - Remount root and
+kernel file systems</p>
+<h1>SYNOPSIS</h1>
+<p>systemd-remount-fs.service</p>
+<p>/lib/systemd/systemd-remount-fs</p>
+<h1>DESCRIPTION</h1>
+<p>systemd-remount-fs.service is an early boot service that applies
+mount options listed in <strong>fstab</strong>(5), or gathered from the
+partition table (when <strong>systemd-gpt-auto-generator</strong>(8) is
+active) to the root file system, the /usr/ file system, and the kernel
+API file systems. This is required so that the mount options of these
+file systems — which are pre-mounted by the kernel, the initrd,
+container environments or system manager code — are updated to those
+configured in /etc/fstab and the other sources. This service ignores
+normal file systems and only changes the root file system (i.e. /),
+/usr/, and the virtual kernel API file systems such as /proc/, /sys/ or
+/dev/. This service executes no operation if no configuration is found
+(/etc/fstab does not exist or lists no entries for the mentioned file
+systems, or the partition table does not contain relevant entries).</p>
+<p>For a longer discussion of kernel API file systems see <strong>API
+File Systems</strong>[1].</p>
+<p>Note: systemd-remount-fs.service is usually pulled in by
+<strong>systemd-fstab-generator</strong>(8), hence it is also affected
+by the kernel command line option <em>fstab=</em>, which may be used to
+disable the generator. It may also pulled in by
+<strong>systemd-gpt-auto-generator</strong>(8), which is affected by
+<em>systemd.gpt_auto</em> and other options.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>fstab</strong>(5),
+<strong>mount</strong>(8), <strong>systemd-fstab-generator</strong>(8),
+<strong>systemd-gpt-auto-generator</strong>(8)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>API File Systems</p>
+<p>https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems</p>
+</dd>
+</dl>

@@ -1,0 +1,78 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-version - print OpenSSL version information</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl version</strong> [<strong>-help</strong>]
+[<strong>-a</strong>] [<strong>-v</strong>] [<strong>-b</strong>]
+[<strong>-o</strong>] [<strong>-f</strong>] [<strong>-p</strong>]
+[<strong>-d</strong>] [<strong>-e</strong>] [<strong>-m</strong>]
+[<strong>-r</strong>] [<strong>-c</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command is used to print out version information about
+OpenSSL.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-a</dt>
+<dd>
+<p>All information, this is the same as setting all the other flags.</p>
+</dd>
+<dt>-v</dt>
+<dd>
+<p>The current OpenSSL version.</p>
+</dd>
+<dt>-b</dt>
+<dd>
+<p>The date the current version of OpenSSL was built.</p>
+</dd>
+<dt>-o</dt>
+<dd>
+<p>Option information: various options set when the library was
+built.</p>
+</dd>
+<dt>-f</dt>
+<dd>
+<p>Compilation flags.</p>
+</dd>
+<dt>-p</dt>
+<dd>
+<p>Platform setting.</p>
+</dd>
+<dt>-d</dt>
+<dd>
+<p>OPENSSLDIR setting.</p>
+</dd>
+<dt>-e</dt>
+<dd>
+<p>ENGINESDIR settings.</p>
+</dd>
+<dt>-m</dt>
+<dd>
+<p>MODULESDIR settings.</p>
+</dd>
+<dt>-r</dt>
+<dd>
+<p>The random number generator source settings.</p>
+</dd>
+<dt>-c</dt>
+<dd>
+<p>The OpenSSL CPU settings info.</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>The output of <code>openssl version -a</code> would typically be used
+when sending in a bug report.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2020 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

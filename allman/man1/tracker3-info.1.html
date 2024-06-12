@@ -1,0 +1,57 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-info - Retrieve all information available for a certain
+file.</p>
+<h1>SYNOPSIS</h1>
+<p><strong>tracker3 info</strong> [<em>options</em>...]
+&lt;<em>file1</em>&gt; [[<em>file2</em>] ...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>tracker3 info</strong> asks for all the known metadata
+available for the given <em>file</em>.</p>
+<p>Multiple <em>file</em> arguments can be provided to retrieve
+information about multiple files.</p>
+<p>The <em>file</em> argument can be either a local path or a URI. It
+also does not have to be an absolute path.</p>
+<h1>OPTIONS</h1>
+<p><strong>-f, --full-namespaces</strong></p>
+<blockquote>
+<p>By default, all keys and values reported about any given
+<em>file</em> are returned in shortened form, for example,
+<em>nie:title</em> is shown instead of
+<em>http://tracker.api.gnome.org/ontology/v3/nie#title</em>. This makes
+things much easier to see generally and the output is less cluttered.
+This option reverses that so FULL namespaces are shown instead.</p>
+</blockquote>
+<p><strong>-c, --plain-text-content</strong></p>
+<blockquote>
+<p>If the resource being displayed has nie:PlainTextContent (i.e.
+information about the content of the resource, which could be the
+contents of a file on the disk), then this option displays that in the
+output.</p>
+</blockquote>
+<p><strong>-i, --resource-is-iri</strong></p>
+<blockquote>
+<p>In most cases, the <em>file</em> argument supplied points to a URL or
+PATH which is queried for according to the resource associated with it
+by <em>nie:url</em>. However, in cases where the <em>file</em> specified
+turns out to be the actual URN itself, this argument is required to tell
+"tracker3 info" not to do the extra step of looking up the URN related
+by <em>nie:url</em>.</p>
+</blockquote>
+<p>For example, consider that you store URNs by the actual URL itself
+and use the unique nie:url in another resource (which is quite
+reasonable when using containers and multi-resource conditions), you
+would need this argument to tell "tracker3 info" that the <em>file</em>
+supplied is actually a URN not URL.</p>
+<p><strong>-t, --turtle</strong></p>
+<blockquote>
+<p>Output results as Turtle RDF. If -f is enabled, full URIs are shown
+for subjects, predicates and objects; otherwise, shortened URIs are
+used, and all the prefixes Tracker knows about are printed at the top of
+the output.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-sparql</strong>(1).</p>
+<p><strong>http://nepomuk.semanticdesktop.org/</strong>
+<strong>http://www.w3.org/TR/rdf-sparql-query/</strong></p>

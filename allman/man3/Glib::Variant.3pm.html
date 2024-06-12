@@ -1,0 +1,237 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::Variant - strongly typed value datatype</p>
+<h1>SYNOPSIS</h1>
+<p>my $v = Glib::Variant-&gt;new (as, [GTK+, Perl]); my $aref =
+$v-&gt;get (as);</p>
+<h1>DESCRIPTION</h1>
+<p>There are two sets of APIs for creating and dealing with
+<code>Glib::Variant</code>s: the low-level API described below under
+METHODS, and the convenience API described in this section.</p>
+<h2>CONVENIENCE API</h2>
+<dl>
+<dt>variant = Glib::Variant-&gt;new ($format_string, $value)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>(variant1, ...) = Glib::Variant-&gt;new ($format_string, $value1,
+...)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Constructs a variant from <code>$format_string</code> and
+<code>$value</code>. Also supports constructing multiple variants when
+the format string is a concatenation of multiple types.</p>
+<dl>
+<dt>value = $variant-&gt;get ($format_string)</dt>
+<dd>
+<p>Deconstructs <code>$variant</code> according to
+<code>$format_string</code>.</p>
+</dd>
+</dl>
+<p>The following symbols are currently supported in format strings:</p>
+<p>+------------------------------+---------------------------------+ |
+Symbol | Meaning |
++------------------------------+---------------------------------+ | b,
+y, n, q, i, u, x, t, h, d | Boolean, byte and numeric types | | s, o, g
+| String types | | v | Variant types | | a | Arrays | | m | Maybe types
+| | () | Tuples | | {} | Dictionary entries |
++------------------------------+---------------------------------+</p>
+<p>Note that if a format string specifies an array, a tuple or a
+dictionary entry (a, () or {}), then array references are expected by
+<code>new</code> and produced by <code>get</code>. For arrays of
+dictionary entries (a{}), hash references are also supported by
+<code>new</code> and handled as you would expect.</p>
+<p>For a complete specification, see the documentation at</p>
+<dl>
+<dt>&lt;https://developer.gnome.org/glib/stable/glib-GVariantType.html&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>&lt;https://developer.gnome.org/glib/stable/glib-GVariant.html&gt;</dt>
+<dd>
+
+</dd>
+<dt>&lt;https://developer.gnome.org/glib/stable/gvariant-format-strings.html&gt;</dt>
+<dd>
+
+</dd>
+<dt>&lt;https://developer.gnome.org/glib/stable/gvariant-text.html&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<h1>HIERARCHY</h1>
+<p>Glib::Variant</p>
+<h1>METHODS</h1>
+<h2>variant = Glib::Variant-&gt;<strong>new_array</strong> ($child_type,
+$children)</h2>
+<ul>
+<li><p><code>$child_type</code> (Glib::VariantType)</p></li>
+<li><p><code>$children</code> (scalar)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_boolean</strong>
+($value)</h2>
+<ul>
+<li><p><code>$value</code> (boolean)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_byte</strong> ($value)</h2>
+<ul>
+<li><p><code>$value</code> (Glib::UChar)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_bytestring</strong>
+($string)</h2>
+<ul>
+<li><p><code>$string</code> (byte string)</p></li>
+</ul>
+<p>Since: glib 2.26</p>
+<h2>variant = Glib::Variant-&gt;<strong>new_dict_entry</strong> ($key,
+$value)</h2>
+<ul>
+<li><p><code>$key</code> (Glib::Variant)</p></li>
+<li><p><code>$value</code> (Glib::Variant)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_double</strong>
+($value)</h2>
+<ul>
+<li><p><code>$value</code> (double)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_handle</strong>
+($value)</h2>
+<ul>
+<li><p><code>$value</code> (integer)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_int16</strong> ($value)</h2>
+<ul>
+<li><p><code>$value</code> (integer)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_int32</strong> ($value)</h2>
+<ul>
+<li><p><code>$value</code> (integer)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_int64</strong> ($value)</h2>
+<ul>
+<li><p><code>$value</code> (64 bit integer)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_maybe</strong> ($child_type,
+$child)</h2>
+<ul>
+<li><p><code>$child_type</code> (Glib::VariantType)</p></li>
+<li><p><code>$child</code> (Glib::Variant)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_object_path</strong>
+($object_path)</h2>
+<ul>
+<li><p><code>$object_path</code> (string)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_signature</strong>
+($signature)</h2>
+<ul>
+<li><p><code>$signature</code> (string)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_string</strong>
+($string)</h2>
+<ul>
+<li><p><code>$string</code> (string)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_tuple</strong>
+($children)</h2>
+<ul>
+<li><p><code>$children</code> (scalar)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_uint16</strong>
+($value)</h2>
+<ul>
+<li><p><code>$value</code> (unsigned)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_uint32</strong>
+($value)</h2>
+<ul>
+<li><p><code>$value</code> (unsigned)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_uint64</strong>
+($value)</h2>
+<ul>
+<li><p><code>$value</code> (64 bit unsigned)</p></li>
+</ul>
+<h2>variant = Glib::Variant-&gt;<strong>new_variant</strong>
+($value)</h2>
+<ul>
+<li><p><code>$value</code> (Glib::Variant)</p></li>
+</ul>
+<h2>boolean = $value-&gt;<strong>get_boolean</strong></h2>
+<h2>uchar = $value-&gt;<strong>get_byte</strong></h2>
+<h2>string = $value-&gt;<strong>get_bytestring</strong></h2>
+<p>Since: glib 2.26</p>
+<h2>variant = $value-&gt;<strong>byteswap</strong></h2>
+<h2>variant = $value-&gt;<strong>get_child_value</strong> ($index_)</h2>
+<ul>
+<li><p><code>$index_</code> (unsigned)</p></li>
+</ul>
+<h2>string = $value-&gt;<strong>classify</strong></h2>
+<h2>integer = $one-&gt;<strong>compare</strong> ($two)</h2>
+<ul>
+<li><p><code>$two</code> (Glib::Variant)</p></li>
+</ul>
+<p>Since: glib 2.26</p>
+<h2>double = $value-&gt;<strong>get_double</strong></h2>
+<h2>boolean = $one-&gt;<strong>equal</strong> ($two)</h2>
+<ul>
+<li><p><code>$two</code> (Glib::Variant)</p></li>
+</ul>
+<h2>integer = $value-&gt;<strong>get_handle</strong></h2>
+<h2>integer = $value-&gt;<strong>hash</strong></h2>
+<h2>integer = $value-&gt;<strong>get_int16</strong></h2>
+<h2>integer = $value-&gt;<strong>get_int32</strong></h2>
+<h2>64 bit integer = $value-&gt;<strong>get_int64</strong></h2>
+<h2>boolean = $value-&gt;<strong>is_container</strong></h2>
+<h2>boolean = $value-&gt;<strong>is_normal_form</strong></h2>
+<h2>boolean = $string-&gt;<strong>is_object_path</strong></h2>
+<h2>boolean = $value-&gt;<strong>is_of_type</strong> ($type)</h2>
+<ul>
+<li><p><code>$type</code> (Glib::VariantType)</p></li>
+</ul>
+<h2>boolean = $string-&gt;<strong>is_signature</strong></h2>
+<h2>variant = $dictionary-&gt;<strong>lookup_value</strong> ($key,
+$expected_type)</h2>
+<ul>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$expected_type</code> (Glib::VariantType)</p></li>
+</ul>
+<p>Since: glib 2.28</p>
+<h2>variant = $value-&gt;<strong>get_maybe</strong></h2>
+<h2>unsigned = $value-&gt;<strong>n_children</strong></h2>
+<h2>variant = $value-&gt;<strong>get_normal_form</strong></h2>
+<h2>variant = Glib::Variant::parse ($type, $text)</h2>
+<ul>
+<li><p><code>$type</code> (Glib::VariantType)</p></li>
+<li><p><code>$text</code> (string)</p></li>
+</ul>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>string = $value-&gt;<strong>print</strong> ($type_annotate)</h2>
+<ul>
+<li><p><code>$type_annotate</code> (boolean)</p></li>
+</ul>
+<h2>unsigned = $value-&gt;<strong>get_size</strong></h2>
+<h2>string = $value-&gt;<strong>get_string</strong></h2>
+<h2>varianttype = $value-&gt;<strong>get_type</strong></h2>
+<h2>string = $value-&gt;<strong>get_type_string</strong></h2>
+<h2>unsigned = $value-&gt;<strong>get_uint16</strong></h2>
+<h2>unsigned = $value-&gt;<strong>get_uint32</strong></h2>
+<h2>64 bit unsigned = $value-&gt;<strong>get_uint64</strong></h2>
+<h2>variant = $value-&gt;<strong>get_variant</strong></h2>
+<h1>SEE ALSO</h1>
+<p>Glib, Glib::VariantType, Glib::VariantDict</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

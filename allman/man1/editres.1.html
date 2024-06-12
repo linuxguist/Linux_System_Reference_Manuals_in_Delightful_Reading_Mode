@@ -1,0 +1,549 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>editres - a dynamic resource editor for X Toolkit applications</p>
+<h1>SYNTAX</h1>
+<p><strong>editres</strong> [ <em>-toolkitoption</em> . . . ]</p>
+<h1>OPTIONS</h1>
+<p><em>Editres</em> accepts all of the standard X Toolkit command line
+options (see <em>X(7)</em>). The order of the command line options is
+not important.</p>
+<h1>DESCRIPTION</h1>
+<p>Editres is a tool that allows users and application developers to
+view the full widget hierarchy of any X Toolkit application that speaks
+the Editres protocol. In addition, editres will help the user construct
+resource specifications, allow the user to apply the resource to the
+application and view the results dynamically. Once the user is happy
+with a resource specification editres will append the resource string to
+the user's X Resources file.</p>
+<h1>USING EDITRES</h1>
+<p><em>Editres</em> provides a window consisting of the following four
+areas:</p>
+<dl>
+<dt>Menu Bar</dt>
+<dd>
+<p>A set of popup menus that allow you full access to editres's
+features.</p>
+</dd>
+<dt>Panner</dt>
+<dd>
+<p>The panner allows a more intuitive way to scroll the application tree
+display.</p>
+</dd>
+<dt>Message Area</dt>
+<dd>
+<p>Displays information to the user about the action that editres
+expects of her.</p>
+</dd>
+<dt>Application Widget Tree</dt>
+<dd>
+<p>This area will be used to display the selected application's widget
+tree.</p>
+</dd>
+</dl>
+<p>To begin an editres session select the <strong>Get Widget
+Tree</strong> menu item from the command menu. This will change the
+pointer cursor to cross hair. You should now select the application you
+wish look at by clicking on any of its windows. If this application
+understands the editres protocol then editres will display the
+application's widget tree in its tree window. If the application does
+not understand the editres protocol editres will inform you of this fact
+in the message area after a few seconds delay.</p>
+<p>Once you have a widget tree you may now select any of the other menu
+options. The effect of each of these is described below.</p>
+<h1>COMMANDS</h1>
+<dl>
+<dt>Get Widget Tree</dt>
+<dd>
+<p>Allows the user to click on any application that speaks the editres
+protocol and receive its widget tree.</p>
+</dd>
+<dt>Refresh Current Widget Tree</dt>
+<dd>
+<p>Editres only knows about the widgets that exist at the present time.
+Many applications create and destroy widgets on the fly. Selecting this
+menu item will cause editres to ask the application to resend its widget
+tree, thus updating its information to the new state of the
+application.</p>
+<p>For example, xman only creates the widgets for its <em>topbox</em>
+when it starts up. None of the widgets for the manual page window are
+created until the user actually clicks on the <em>Manual Page</em>
+button. If you retrieved xman's widget tree before the the manual page
+is active, you may wish to refresh the widget tree after the manual page
+has been displayed. This will allow you to also edit the manual page's
+resources.</p>
+</dd>
+<dt>Dump Widget Tree to a File</dt>
+<dd>
+<p>For documenting applications it is often useful to be able to dump
+the entire application widget tree to an ASCII file. This file can then
+be included in the manual page. When this menu item is selected a popup
+dialog is activated. Type the name of the file in this dialog, and
+either select <em>okay</em>, or type a carriage-return. Editres will now
+dump the widget tree to this file. To cancel the file dialog, select the
+<em>cancel</em> button.</p>
+</dd>
+<dt>Show Resource Box</dt>
+<dd>
+<p>This command will popup a resource box for the current application.
+This resource box (described in detail below) will allow the user to see
+exactly which resources can be set for the widget that is currently
+selected in the widget tree display. Only one widget may be currently
+selected; if greater or fewer are selected editres will refuse to pop up
+the resource box and put an error message in the <strong>Message
+Area</strong>.</p>
+</dd>
+<dt>Set Resource</dt>
+<dd>
+<p>This command will popup a simple dialog box for setting an arbitrary
+resource on all selected widgets. You must type in the resource name, as
+well as the value. You can use the Tab key to switch between the
+resource name field the resource value field.</p>
+</dd>
+<dt>Quit</dt>
+<dd>
+<p>Exits editres.</p>
+</dd>
+</dl>
+<h1>TREE COMMANDS</h1>
+<p>The <strong>Tree</strong> menu contains several commands that allow
+operations to be performed on the widget tree.</p>
+<dl>
+<dt>Select Widget in Client</dt>
+<dd>
+<p>This menu item allows you to select any widget in the application;
+editres will then highlight the corresponding element the widget tree
+display. Once this menu item is selected the pointer cursor will again
+turn to a crosshair, and you must click any pointer button in the widget
+you wish to have displayed. Since some widgets are fully obscured by
+their children, it is not possible to get to every widget this way, but
+this mechanism does give very useful feedback between the elements in
+the widget tree and those in the actual application.</p>
+</dd>
+<dt>Select All</dt>
+<dd>
+
+</dd>
+<dt>Unselect All</dt>
+<dd>
+
+</dd>
+<dt>Invert All</dt>
+<dd>
+<p>These functions allow the user to select, unselect, or invert all
+widgets in the widget tree.</p>
+</dd>
+<dt>Select Children</dt>
+<dd>
+
+</dd>
+<dt>Select Parents</dt>
+<dd>
+<p>These functions select the immediate parent or children of each of
+the currently selected widgets.</p>
+</dd>
+<dt>Select Descendants</dt>
+<dd>
+
+</dd>
+<dt>Select Ancestors</dt>
+<dd>
+<p>These functions select all parents or children of each of the
+currently selected widgets. This is a recursive search.</p>
+</dd>
+<dt>Show Widget Names</dt>
+<dd>
+
+</dd>
+<dt>Show Class Names</dt>
+<dd>
+
+</dd>
+<dt>Show Widget IDs</dt>
+<dd>
+
+</dd>
+<dt>Show Widget Windows</dt>
+<dd>
+<p>When the tree widget is initially displayed the labels of each widget
+in the tree correspond to the widget names. These functions will cause
+the label of <strong>all</strong> widgets in the tree to be changed to
+show the class name, IDs, or window associated with each widget in the
+application. The widget IDs, and windows are shown as hex numbers.</p>
+</dd>
+</dl>
+<p>In addition there are keyboard accelerators for each of the Tree
+operations. If the input focus is over an individual widget in the tree,
+then that operation will only effect that widget. If the input focus is
+in the Tree background it will have exactly the same effect as the
+corresponding menu item.</p>
+<p>The translation entries shown may be applied to any widget in the
+application. If that widget is a child of the Tree widget, then it will
+only affect that widget, otherwise it will have the same effect as the
+commands in the tree menu.</p>
+<dl>
+<dt>Flash Active Widgets</dt>
+<dd>
+<p>This command is the inverse of the <strong>Select Widget in
+Client</strong> command, it will show the user each widget that is
+currently selected in the widget tree, by flashing the corresponding
+widget in the application <em>numFlashes</em> (three by default) times
+in the <em>flashColor</em>.</p>
+</dd>
+</dl>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Option</th>
+<th style="text-align: left;">Translation Entry</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">space</td>
+<td style="text-align: left;">Unselect</td>
+<td style="text-align: left;">Select(nothing)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">w</td>
+<td style="text-align: left;">Select</td>
+<td style="text-align: left;">Select(widget)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">Select</td>
+<td style="text-align: left;">Select(all)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">i</td>
+<td style="text-align: left;">Invert</td>
+<td style="text-align: left;">Select(invert)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">c</td>
+<td style="text-align: left;">Select Children</td>
+<td style="text-align: left;">Select(children)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">d</td>
+<td style="text-align: left;">Select Descendants</td>
+<td style="text-align: left;">Select(descendants)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">p</td>
+<td style="text-align: left;">Select Parent</td>
+<td style="text-align: left;">Select(parent)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">a</td>
+<td style="text-align: left;">Select Ancestors</td>
+<td style="text-align: left;">Select(ancestors)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">Show Widget Names</td>
+<td style="text-align: left;">Relabel(name)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">Show Class Names</td>
+<td style="text-align: left;">Relabel(class)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">Show Widget IDs</td>
+<td style="text-align: left;">Relabel(id)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">Show Widget Windows</td>
+<td style="text-align: left;">Relabel(window)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T</td>
+<td style="text-align: left;">Toggle Widget/Class Name</td>
+<td style="text-align: left;">Relabel(toggle)</td>
+</tr>
+</tbody>
+</table>
+<p>Clicking button 1 on a widget adds it to the set of selected widgets.
+Clicking button 2 on a widget deselects all other widgets and then
+selects just that widget. Clicking button 3 on a widget toggles its
+label between the widget's instance name the widget's class name.</p>
+<h1>USING THE RESOURCE BOX</h1>
+<p>The resource box contains five different areas. Each of the areas, as
+they appear on the screen, from top to bottom will be discussed.</p>
+<dl>
+<dt>The Resource Line</dt>
+<dd>
+<p>This area at the top of the resource box shows the current resource
+name exactly as it would appear if you were to save it to a file or
+apply it.</p>
+</dd>
+<dt>The Widget Names and Classes</dt>
+<dd>
+<p>This area allows you to select exactly which widgets this resource
+will apply to. The area contains four lines, the first contains the name
+of the selected widget and all its ancestors, and the more restrictive
+dot (<strong>.</strong>) separator. The second line contains less
+specific the Class names of each widget, and well as the less
+restrictive star (<strong>*</strong>) separator. The third line contains
+a set of special buttons called <strong>Any Widget</strong> which will
+generalize this level to match any widget. The last line contains a set
+of special buttons called <strong>Any</strong> Widget Chain which will
+turn the single level into something that matches zero or more
+levels.</p>
+</dd>
+</dl>
+<p>The initial state of this area is the most restrictive, using the
+resource names and the dot separator. By selecting the other buttons in
+this area you can ease the restrictions to allow more and more widgets
+to match the specification. The extreme case is to select all the
+<strong>Any Widget Chain</strong> buttons, which will match every widget
+in the application. As you select different buttons the tree display
+will update to show you exactly which widgets will be effected by the
+current resource specification.</p>
+<dl>
+<dt>Normal and Constraint Resources</dt>
+<dd>
+<p>The next area allows you to select the name of the normal or
+constraint resources you wish to set. Some widgets may not have
+constraint resources, so that area will not appear.</p>
+</dd>
+<dt>Resource Value</dt>
+<dd>
+<p>This next area allows you to enter the resource value. This value
+should be entered exactly as you would type a line into your resource
+file. Thus it should contain no unescaped new-lines. There are a few
+special character sequences for this file:</p>
+</dd>
+</dl>
+<p>\n - This will be replaced with a newline.</p>
+<p>\### - Where # is any octal digit. This will be replaced with a
+single byte that contains this sequence interpreted as an octal number.
+For example, a value containing a NULL byte can be stored by specifying
+\000.</p>
+<p>\&lt;new-line&gt; - This will compress to nothing.</p>
+<p>\\ - This will compress to a single backslash.</p>
+<dl>
+<dt>Command Area</dt>
+<dd>
+<p>This area contains several command buttons, described in this
+section.</p>
+</dd>
+<dt>Set Save File</dt>
+<dd>
+<p>This button allows the user to modify file that the resources will be
+saved to. This button will bring up a dialog box that will ask you for a
+filename; once the filename has been entered, either hit carriage-return
+or click on the <em>okay</em> button. To pop down the dialog box without
+changing the save file, click the <em>cancel</em> button.</p>
+</dd>
+<dt>Save</dt>
+<dd>
+<p>This button will append the <strong>resource line</strong> described
+above to the end of the current save file. If no save file has been set
+the <strong>Set</strong> Save File dialog box will be popped up to
+prompt the user for a filename.</p>
+</dd>
+<dt>Apply</dt>
+<dd>
+<p>This button attempts to perform a XtSetValues call on all widgets
+that match the <strong>resource line</strong> described above. The value
+specified is applied directly to all matching widgets. This behavior is
+an attempt to give a dynamic feel to the resource editor. Since this
+feature allows users to put an application in states it may not be
+willing to handle, a hook has been provided to allow specific
+applications to block these SetValues requests (see <strong>Blocking
+Editres Requests</strong> below).</p>
+</dd>
+</dl>
+<p>Unfortunately due to design constraints imposed on the widgets by the
+X Toolkit and the Resource Manager, trying to coerce an inherently
+static system into dynamic behavior can cause strange results. There is
+no guarantee that the results of an apply will be the same as what will
+happen when you save the value and restart the application. This
+functionality is provided to try to give you a rough feel for what your
+changes will accomplish, and the results obtained should be considered
+suspect at best. Having said that, this is one of the neatest features
+of editres, and I strongly suggest that you play with it, and see what
+it can do.</p>
+<dl>
+<dt>Save and Apply</dt>
+<dd>
+<p>This button combines the Save and Apply actions described above into
+one button.</p>
+</dd>
+<dt>Popdown Resource Box</dt>
+<dd>
+<p>This button will remove the resource box from the display.</p>
+</dd>
+</dl>
+<h1>BLOCKING EDITRES REQUESTS</h1>
+<p>The editres protocol has been built into the Athena Widget set. This
+allows all applications that are linked against Xaw to be able to speak
+to the resource editor. While this provides great flexibility, and is a
+useful tool, it can quite easily be abused. It is therefore possible for
+any Xaw application to specify a value for the
+<strong>editresBlock</strong> resource described below, to keep editres
+from divulging information about its internals, or to disable the
+<strong>SetValues</strong> part of the protocol.</p>
+<dl>
+<dt><strong>editresBlock (<strong>Class</strong>
+EditresBlock)</strong></dt>
+<dd>
+<p>Specifies which type of blocking this application wishes to impose on
+the editres protocol.</p>
+</dd>
+</dl>
+<p>The accepted values are:</p>
+<dl>
+<dt>all</dt>
+<dd>
+<p>Block all requests.</p>
+</dd>
+<dt>setValues</dt>
+<dd>
+<p>Block all SetValues requests. As this is the only editres request
+that actually modifies the application, this is in effect stating that
+the application is read-only.</p>
+</dd>
+<dt>none</dt>
+<dd>
+<p>Allow all editres requests.</p>
+</dd>
+</dl>
+<p>Remember that these resources are set on any Xaw application,
+<strong>not</strong> editres<strong>. They allow individual applications
+to keep all or some</strong> of the requests editres makes from ever
+succeeding. Of course, editres is also an Xaw application, so it may
+also be viewed and modified by editres (rather recursive, I know), these
+commands can be blocked by setting the <strong>editresBlock resource on
+editres itself.</strong></p>
+<h1>RESOURCES</h1>
+<p>For <em>editres</em> <strong>the available application resources
+are:</strong></p>
+<dl>
+<dt><strong>numFlashes (<em>Class</em> NumFlashes)</strong></dt>
+<dd>
+<p>Specifies the number of times the widgets in the application will be
+flashed when the <strong>Show Active Widgets command in
+invoked.</strong></p>
+</dd>
+<dt><strong>flashTime (<strong>Class</strong> FlashTime)</strong></dt>
+<dd>
+<p>Amount of time between the flashes described above.</p>
+</dd>
+<dt><strong>flashColor (<strong>Class</strong> flashColor)</strong></dt>
+<dd>
+<p>Specifies the color used to flash application widgets. A bright color
+should be used that will immediately draw your attention to the area
+being flashed, such as red or yellow.</p>
+</dd>
+<dt><strong>saveResourcesFile (<strong>Class</strong>
+SaveResourcesFile)</strong></dt>
+<dd>
+<p>This is the file the resource line will be append to when the
+<strong>Save</strong> button activated in the resource box.</p>
+</dd>
+</dl>
+<h1>WIDGETS</h1>
+<p>In order to specify resources, it is useful to know the hierarchy of
+the widgets which compose <em>editres</em><strong>. In the notation
+below,</strong> indentation indicates hierarchical structure. The widget
+class name is given first, followed by the widget instance name.</p>
+<pre><code>Editres  editres
+	Paned  paned
+		Box  box
+			MenuButton  commands
+				SimpleMenu  menu
+					SmeBSB  sendTree
+					SmeBSB  refreshTree
+					SmeBSB  dumpTreeToFile
+					SmeLine  line
+					SmeBSB  getResourceList
+					SmeLine  line
+					SmeBSB  quit
+			MenuButton  treeCommands
+				SimpleMenu  menu
+					SmeBSB  showClientWidget
+					SmeBSB  selectAll
+					SmeBSB  unselectAll
+					SmeBSB  invertAll
+					SmeLine  line
+					SmeBSB  selectChildren
+					SmeBSB  selectParent
+					SmeBSB  selectDescendants
+					SmeBSB  selectAncestors
+					SmeLine  line
+					SmeBSB  showWidgetNames
+					SmeBSB  showClassNames
+					SmeBSB  showWidgetIDs
+					SmeBSB  showWidgetWindows
+					SmeLine  line
+					SmeBSB  flashActiveWidgets
+		Paned  hPane
+			Panner  panner
+			Label  userMessage
+			Grip  grip
+		Porthole  porthole
+			Tree  tree
+				Toggle  &lt;name of widget in application&gt;
+					.
+					.
+					.
+					TransientShell  resourceBox
+						Paned  pane
+							Label  resourceLabel
+							Form  namesAndClasses
+								Toggle  dot
+								Toggle  star
+								Toggle  any
+								Toggle  name
+								Toggle  class
+								     .
+								     .
+								     .
+							Label  namesLabel
+							List  namesList
+							Label  constraintLabel
+							List  constraintList
+							Form  valueForm
+								Label  valueLabel
+								Text  valueText
+							Box  commandBox
+								Command  setFile
+								Command  save
+								Command  apply
+								Command  saveAndApply
+								Command  cancel
+							Grip  grip
+		Grip  grip</code></pre>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p>to get the default host and display number.</p>
+</dd>
+<dt><strong>XENVIRONMENT</strong></dt>
+<dd>
+<p>to get the name of a resource file that overrides the global
+resources stored in the RESOURCE_MANAGER property.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/X11/app-defaults/Editres</em></dt>
+<dd>
+<p>specifies required resources</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>X(7), xrdb(1), Athena Widget Set</p>
+<h1>RESTRICTIONS</h1>
+<p>This is a prototype, there are lots of nifty features I would love to
+add, but I hope this will give you some ideas about what a resource
+editor can do.</p>
+<h1>AUTHOR</h1>
+<p>Chris D. Peterson, formerly MIT X Consortium</p>

@@ -1,0 +1,136 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>File::BaseDir - Use the Freedesktop.org base directory
+specification</p>
+<h1>VERSION</h1>
+<p>version 0.09</p>
+<h1>SYNOPSIS</h1>
+<p>use File::BaseDir qw/xdg_data_files/; for (
+xdg_data_files(mime/globs) ) { # do something }</p>
+<h1>DESCRIPTION</h1>
+<p>This module can be used to find directories and files as specified by
+the Freedesktop.org Base Directory Specification. This specifications
+gives a mechanism to locate directories for configuration, application
+data and cache data. It is suggested that desktop applications for e.g.
+the GNOME, KDE or Xfce platforms follow this layout. However, the same
+layout can just as well be used for non-GUI applications.</p>
+<p>This module forked from File::MimeInfo.</p>
+<p>This module follows version 0.6 of BaseDir specification.</p>
+<h1>CONSTRUCTOR</h1>
+<h2>new</h2>
+<p>my $bd = File::BaseDir-&gt;new;</p>
+<p>Simple constructor to allow calling functions as object oriented
+methods.</p>
+<h1>FUNCTIONS</h1>
+<p>None of these are exported by default, but all functions can be
+exported by request. Also the groups <code>:lookup</code> and
+<code>:vars</code> are defined. The <code>:vars</code> group contains
+all the routines with a <code>xdg_</code> prefix. The
+<code>:lookup</code> group contains the routines to locate files and
+directories.</p>
+<h2>data_home</h2>
+<p>my $path = data_home(@path); my $path = $bd-&gt;data_home(@path);</p>
+<p>Takes a list of file path elements and returns a new path by
+appending them to the data home directory. The new path does not need to
+exist. Use this when writing user specific application data.</p>
+<p>Example:</p>
+<p># data_home is: /home/USER/.local/share $path =
+$bd-&gt;data_home(Foo, Bar, Baz); # returns:
+/home/USER/.local/share/Foo/Bar/Baz</p>
+<h2>data_dirs</h2>
+<p># :lookup my $dir = data_dirs(@path); my $dir =
+$bd-&gt;data_dirs(@path); my @dirs = data_dirs(@path); my @dirs =
+$bd-&gt;data_dirs(@path);</p>
+<p>Looks for directories specified by <code>@path</code> in the data
+home and other data directories. Returns (possibly empty) list of
+readable directories. In scalar context only the first directory found
+is returned. Use this to lookup application data.</p>
+<h2>data_files</h2>
+<p># :lookup my $file = data_files(@path); my $file =
+$bd-&gt;data_files(@path); my @files = data_files(@path); my @files =
+$bd-&gt;data_files(@path);</p>
+<p>Looks for files specified by <code>@path</code> in the data home and
+other data directories. Only returns files that are readable. In scalar
+context only the first file found is returned. Use this to lookup
+application data.</p>
+<h2>config_home</h2>
+<p># :lookup my $dir = config_home(@path); my $dir =
+$bd-&gt;config_home(@path);</p>
+<p>Takes a list of path elements and appends them to the config home
+directory returning a new path. The new path does not need to exist. Use
+this when writing user specific configuration.</p>
+<h2>config_dirs</h2>
+<p># :lookup my $dir = config_dirs(@path); my $dir =
+$bd-&gt;config_dirs(@path); my @dirs = config_dirs(@path); my @dirs =
+$bd-&gt;config_dirs(@path);</p>
+<p>Looks for directories specified by <code>@path</code> in the config
+home and other config directories. Returns (possibly empty) list of
+readable directories. In scalar context only the first directory found
+is returned. Use this to lookup configuration.</p>
+<h2>config_files</h2>
+<p># :lookup my $file = config_files(@path); my $file =
+$bd-&gt;config_files(@path); my @files = config_files(@path); my @files
+= $bd-&gt;config_files(@path);</p>
+<p>Looks for files specified by <code>@path</code> in the config home
+and other config directories. Returns a (possibly empty) list of files
+that are readable. In scalar context only the first file found is
+returned. Use this to lookup configuration.</p>
+<h2>cache_home</h2>
+<p># :lookup my $dir = cache_home(@path); my $dir =
+$bd-&gt;cache_home(@path);</p>
+<p>Takes a list of path elements and appends them to the cache home
+directory returning a new path. The new path does not need to exist.</p>
+<h2>xdg_data_home</h2>
+<p># :var my $dir = xdg_data_home; my $dir = $bd-&gt;xdg_data_home;</p>
+<p>Returns either <code>$ENV{XDG_DATA_HOME}</code> or it's default
+value. Default is <em><code>$HOME</code>/.local/share</em>.</p>
+<h2>xdg_data_dirs</h2>
+<p># :var my @dirs = xdg_data_dirs; my @dirs =
+$bd-&gt;xdg_data_dirs;</p>
+<p>Returns either <code>$ENV{XDG_DATA_DIRS}</code> or it's default value
+as list. Default is <em>/usr/local/share</em>, <em>/usr/share</em>.</p>
+<h2>xdg_config_home</h2>
+<p># :var my $dir = xdg_config_home; my $dir =
+$bd-&gt;xdg_config_home;</p>
+<p>Returns either <code>$ENV{XDG_CONFIG_HOME}</code> or it's default
+value. Default is <em><code>$HOME</code>/.config</em>.</p>
+<h2>xdg_config_dirs</h2>
+<p># :var my @dirs = xdg_config_dirs; my @dirs =
+$bd-&gt;xdg_config_dirs;</p>
+<p>Returns either <code>$ENV{XDG_CONFIG_DIRS}</code> or it's default
+value as list. Default is <em>/etc/xdg</em>.</p>
+<h2>xdg_cache_home</h2>
+<p># :var my $dir = xdg_cache_home; my $dir =
+$bd-&gt;xdg_cache_home;</p>
+<p>Returns either <code>$ENV{XDG_CACHE_HOME}</code> or it's default
+value. Default is <em><code>$HOME</code>/.cache</em>.</p>
+<h1>NON-UNIX PLATFORMS</h1>
+<p>The use of File::Spec ensures that all paths are returned in their
+native formats regardless of platform. On Windows this module will use
+the native environment variables, rather than the default on UNIX (which
+is traditionally <code>$HOME</code>).</p>
+<p>Please note that the specification is targeting Unix platforms only
+and will only have limited relevance on other platforms. Any platform
+dependent behavior in this module should be considered an extension of
+the spec.</p>
+<h1>BACKWARDS COMPATIBILITY</h1>
+<p>The methods <code>xdg_data_files()</code> and
+<code>xdg_config_files()</code> are exported for backwards compatibility
+with version 0.02. They are identical to <code>data_files()</code> and
+<code>config_files()</code> respectively but without the
+<code>wantarray</code> behavior.</p>
+<h1>AUTHORS</h1>
+<ul>
+<li><p>Jaap Karssenberg || Pardus [Larus]
+&lt;pardus@cpan.org&gt;</p></li>
+<li><p>Graham Ollis &lt;plicease@cpan.org&gt;</p></li>
+</ul>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2003-2021 by Jaap Karssenberg ||
+Pardus [Larus] &lt;pardus@cpan.org&gt;.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

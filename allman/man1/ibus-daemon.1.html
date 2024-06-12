@@ -1,0 +1,77 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>ibus-daemon</strong> - daemon program for ibus</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ibus-daemon</strong> [<em>OPTION</em>]...</p>
+<h1>DESCRIPTION</h1>
+<p>IBus is an Intelligent Input Bus. It is a new input framework for
+Linux OS. It provides full featured and user friendly input method user
+interface. It also may help developers to develop input method
+easily.</p>
+<p><strong>ibus-daemon</strong> is a daemon program for ibus and it is
+also a start up program for users to activate ibus daemon, engines and
+panel.</p>
+<h2>Help Options:</h2>
+<dl>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Show help options</p>
+</dd>
+</dl>
+<h2>Application Options:</h2>
+<dl>
+<dt><strong>-d</strong>, <strong>--daemonize</strong></dt>
+<dd>
+<p>run ibus as background process.</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--single</strong></dt>
+<dd>
+<p>do not execute panel and config module.</p>
+</dd>
+<dt><strong>-x</strong>, <strong>--xim</strong></dt>
+<dd>
+<p>execute ibus XIM server.</p>
+</dd>
+<dt><strong>-n</strong>, <strong>--desktop</strong>=<em>name</em></dt>
+<dd>
+<p>specify the name of desktop session. [default=gnome]</p>
+</dd>
+<dt><strong>-p</strong>, <strong>--panel</strong>=<em>cmdline</em></dt>
+<dd>
+<p>specify the cmdline of panel program.</p>
+</dd>
+<dt><strong>-c</strong>, <strong>--config</strong>=<em>cmdline</em></dt>
+<dd>
+<p>specify the cmdline of config program.</p>
+</dd>
+<dt><strong>-a</strong>,
+<strong>--address</strong>=<em>address</em></dt>
+<dd>
+<p>specify the address of ibus daemon.</p>
+</dd>
+<dt><strong>-r</strong>, <strong>--replace</strong></dt>
+<dd>
+<p>if there is an old ibus-daemon is running, it will be replaced.</p>
+</dd>
+<dt><strong>-t</strong>, <strong>--cache</strong>=<em>mode</em> [default
+is auto]</dt>
+<dd>
+<p>force to re-scan components, and re-create registry cache. auto,
+refresh, none is available.</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--timeout</strong>=<em>timeout</em>
+[default is 2000]</dt>
+<dd>
+<p>dbus reply timeout in milliseconds.</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>verbose.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>If you find a bug, please report it at
+https://github.com/ibus/ibus/issues</p>
+<h1>SEE ALSO</h1>
+<p><strong>ibus</strong>(1)</p>

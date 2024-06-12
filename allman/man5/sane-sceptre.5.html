@@ -1,0 +1,170 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sane-sceptre - SANE backend for SCEPTRE scanners</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>sane-sceptre</strong> library implements a SANE (Scanner
+Access Now Easy) backend that provides access to Sceptre flatbed
+scanners. This backend should be considered
+<strong>beta-quality</strong> software! Please report any strange
+behavior to the maintainer of the backend or to the SANE mailing
+list.</p>
+<p>At present, only one scanner is known to work with this backend:</p>
+<blockquote>
+<pre><code>Model                        Connection Type
+---------------------------  -------------------
+Sceptre VividScan S1200      SCSI</code></pre>
+</blockquote>
+<p>The make of this scanner is KINPO, so other scanners from that
+manufacturer may also work (eg. the S600).</p>
+<h1>OPTIONS</h1>
+<p>The options the backend supports can either be selected through
+command line options to programs like <strong>scanimage</strong>(1) or
+through GUI elements in <strong>xscanimage</strong>(1) or
+<strong>xsane</strong>(1).</p>
+<p>Valid command line options and their syntax can be listed by
+using</p>
+<blockquote>
+<p>scanimage --help -d sceptre</p>
+</blockquote>
+<dl>
+<dt><strong>Scan Mode</strong></dt>
+<dd>
+<dl>
+<dt><strong>--mode Lineart|Halftone|Gray|Color</strong></dt>
+<dd>
+<p>Selects the basic mode of operation of the scanner. The
+<em>Lineart</em> and <em>Halftone</em> mode are black and white only (1
+bit). <em>Gray</em> will produce 256 levels of gray (8 bits).
+<em>Color</em> will produce a 24 bits color image. The scanner supports
+30 bits internally but it only exports 24.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt><strong>--resolution 50..1200</strong></dt>
+<dd>
+<p>Selects the resolution for a scan. The scanner can do several
+resolutions between 50 and 1200.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--halftone-pattern 1|2|3|4</strong></dt>
+<dd>
+<p>Selects the pattern mode that is used in <em>Halftone</em> mode.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--gamma-correction Default|User Defined|High Density
+Printing|Low density printing|High contrast printing</strong></dt>
+<dd>
+<p>controls the scanner internal gamma correction.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--custom-gamma</strong></dt>
+<dd>
+<p>Allows the user to specify a gamma table (see the next 3 parameters).
+<em>Color</em> mode only.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--red-gamma-table</strong></dt>
+<dd>
+<p>Can be used to download a user defined gamma table for the red
+channel. The table must be 256 bytes long. <em>Color</em> mode only.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--green-gamma-table</strong></dt>
+<dd>
+<p>Can be used to download a user defined gamma table for the green
+channel. The table must be 256 bytes long. <em>Color</em> mode only.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--blue-gamma-table</strong></dt>
+<dd>
+<p>Can be used to download a user defined gamma table for the blue
+channel. The table must be 256 bytes long. <em>Color</em> mode only.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--threshold 0..255</strong></dt>
+<dd>
+<p>Sets the threshold for black and white pixels in <em>Lineart</em>
+mode. Possible values are from 0 (darker) to 255 (lighter).</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--preview</strong></dt>
+<dd>
+<p>Requests a preview scan. The resolution used for that scan is 30 dpi
+and the scan area is the maximum allowed. The scan mode is user
+selected. The default is "no".</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>The geometry options</strong></dt>
+<dd>
+<dl>
+<dt><strong>-l -t -x -y</strong></dt>
+<dd>
+<p>control the scan area: <strong>-l</strong> sets the top left x
+coordinate, <strong>-t</strong> the top left y coordinate,
+<strong>-x</strong> selects the width and <strong>-y</strong> the height
+of the scan area. All parameters are specified in millimeters by
+default.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h1>CONFIGURATION FILE</h1>
+<p>The configuration file <em>/etc/sane.d/sceptre.conf</em> supports
+only one item: the device name to use (eg <em>/dev/scanner</em>).</p>
+<h1>FILES</h1>
+<dl>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-sceptre.a</em></dt>
+<dd>
+<p>The static library implementing this backend.</p>
+</dd>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-sceptre.so</em></dt>
+<dd>
+<p>The shared library implementing this backend (present on systems that
+support dynamic loading).</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>SANE_DEBUG_SCEPTRE</strong></dt>
+<dd>
+<p>If the library was compiled with debug support enabled, this
+environment variable controls the debug level for this backend. E.g., a
+value of 128 requests all debug output to be printed. Smaller levels
+reduce verbosity.</p>
+</dd>
+</dl>
+<h1>LIMITATIONS</h1>
+<dl>
+<dt><strong>Resolutions</strong></dt>
+<dd>
+<p>The windows TWAIN driver can be set to any resolution between 50 to
+1200 (excluding software interpolation). This backend cannot. Only a
+handful of resolution are available, although they should be numerous
+enough.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>None known.</p>
+<h1>SEE ALSO</h1>
+<p><strong>sane-scsi</strong>(5), <strong>scanimage</strong>(1),
+<strong>xscanimage</strong>(1), <strong>xsane</strong>(1),
+<strong>sane</strong>(7)</p>
+<h1>AUTHOR</h1>
+<dl>
+<dt>The package is actively maintained by Frank Zago.</dt>
+<dd>
+<p><em>http://www.zago.net/sane/#sceptre</em></p>
+</dd>
+</dl>

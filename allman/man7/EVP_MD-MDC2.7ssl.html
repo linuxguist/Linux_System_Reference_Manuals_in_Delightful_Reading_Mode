@@ -1,0 +1,41 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_MD-MDC2 - The MDC2 EVP_MD implementation</p>
+<h1>DESCRIPTION</h1>
+<p>Support for computing MDC2 digests through the
+<strong>EVP_MD</strong> API.</p>
+<h2>Identity</h2>
+<p>This implementation is only available with the legacy provider, and
+is identified with the name MDC2.</p>
+<h2>Gettable Parameters</h2>
+<p>This implementation supports the common gettable parameters described
+in <strong>EVP_MD-common</strong> (7).</p>
+<h2>Settable Context Parameters</h2>
+<p>This implementation supports the following
+<strong>OSSL_PARAM</strong> (3) entries, settable for an
+<strong>EVP_MD_CTX</strong> with
+<strong>EVP_MD_CTX_set_params</strong> (3):</p>
+<dl>
+<dt>"pad-type" (OSSL_DIGEST_PARAM_PAD_TYPE) &lt;unsigned
+integer&gt;</dt>
+<dd>
+<p>Sets the padding type to be used. Normally the final MDC2 block is
+padded with zeros. If the pad type is set to 2 then the final block is
+padded with 0x80 followed by zeros.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_MD_CTX_set_params</strong> (3),
+<strong>provider-digest</strong> (7),
+<strong>OSSL_PROVIDER-legacy</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

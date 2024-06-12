@@ -1,0 +1,34 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>zgrep - search possibly compressed files for a regular expression</p>
+<h1>SYNOPSIS</h1>
+<p><strong>zgrep</strong> [ grep_options ] <strong>[ -e ]</strong><em>
+pattern</em> <em>filename</em>. . .</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>zgrep</strong> command invokes <strong>grep</strong> on
+compressed or gzipped files. All options specified are passed directly
+to <strong>grep</strong>. If no file is specified, then the standard
+input is decompressed if necessary and fed to grep. Otherwise the given
+files are uncompressed if necessary and fed to
+<strong>grep</strong>.</p>
+<p>If the GREP environment variable is set, <strong>zgrep</strong> uses
+it as the <strong>grep</strong> program to be invoked.</p>
+<h1>EXIT STATUS</h1>
+<p>Exit status is 0 for a match, 1 for no matches, and 2 if trouble.</p>
+<h1>BUGS</h1>
+<p>The following <strong>grep</strong> options are not supported:
+<strong>--dereference-recursive</strong> (<strong>-R</strong>),
+<strong>--directories</strong> (<strong>-d</strong>),
+<strong>--exclude</strong>, <strong>--exclude-from</strong>,
+<strong>--exclude-dir</strong>, <strong>--include</strong>,
+<strong>--null</strong> (<strong>-Z</strong>),
+<strong>--null-data</strong> (<strong>-z</strong>), and
+<strong>--recursive</strong> (<strong>-r</strong>).</p>
+<h1>AUTHOR</h1>
+<p>Charles Levert (charles@comm.polymtl.ca)</p>
+<h1>SEE ALSO</h1>
+<p><strong>grep</strong>(1), <strong>gzexe</strong>(1),
+<strong>gzip</strong>(1), <strong>zdiff</strong>(1),
+<strong>zforce</strong>(1), <strong>zmore</strong>(1),
+<strong>znew</strong>(1)</p>

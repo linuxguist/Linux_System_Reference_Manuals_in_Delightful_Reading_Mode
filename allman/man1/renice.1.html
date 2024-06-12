@@ -1,0 +1,81 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>renice - alter priority of running processes</p>
+<h1>SYNOPSIS</h1>
+<p><strong>renice</strong> [<strong>-n</strong>] <em>priority</em>
+[<strong>-g</strong>|<strong>-p</strong>|<strong>-u</strong>]
+<em>identifier</em>...</p>
+<h1>DESCRIPTION</h1>
+<p><strong>renice</strong> alters the scheduling priority of one or more
+running processes. The first argument is the <em>priority</em> value to
+be used. The other arguments are interpreted as process IDs (by
+default), process group IDs, user IDs, or user names.
+<strong>renice</strong>'ing a process group causes all processes in the
+process group to have their scheduling priority altered.
+<strong>renice</strong>'ing a user causes all processes owned by the
+user to have their scheduling priority altered.</p>
+<h1>OPTIONS</h1>
+<p><strong>-n</strong>, <strong>--priority</strong>
+<em>priority</em></p>
+<blockquote>
+<p>Specify the scheduling <em>priority</em> to be used for the process,
+process group, or user. Use of the option <strong>-n</strong> or
+<strong>--priority</strong> is optional, but when used it must be the
+first argument.</p>
+</blockquote>
+<p><strong>-g</strong>, <strong>--pgrp</strong></p>
+<blockquote>
+<p>Interpret the succeeding arguments as process group IDs.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--pid</strong></p>
+<blockquote>
+<p>Interpret the succeeding arguments as process IDs (the default).</p>
+</blockquote>
+<p><strong>-u</strong>, <strong>--user</strong></p>
+<blockquote>
+<p>Interpret the succeeding arguments as usernames or UIDs.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>FILES</h1>
+<p><em>/etc/passwd</em></p>
+<blockquote>
+<p>to map user names to user IDs</p>
+</blockquote>
+<h1>NOTES</h1>
+<p>Users other than the superuser may only alter the priority of
+processes they own. Furthermore, an unprivileged user can only
+<em>increase</em> the "nice value" (i.e., choose a lower priority) and
+such changes are irreversible unless (since Linux 2.6.12) the user has a
+suitable "nice" resource limit (see <strong>ulimit</strong>(1p) and
+<strong>getrlimit</strong>(2)).</p>
+<p>The superuser may alter the priority of any process and set the
+priority to any value in the range -20 to 19. Useful priorities are: 19
+(the affected processes will run only when nothing else in the system
+wants to), 0 (the "base" scheduling priority), anything negative (to
+make things go very fast).</p>
+<h1>HISTORY</h1>
+<p>The <strong>renice</strong> command appeared in 4.0BSD.</p>
+<h1>EXAMPLES</h1>
+<p>The following command would change the priority of the processes with
+PIDs 987 and 32, plus all processes owned by the users daemon and
+root:</p>
+<p><strong>renice +1 987 -u daemon root -p 32</strong></p>
+<h1>SEE ALSO</h1>
+<p><strong>nice</strong>(1), <strong>chrt</strong>(1),
+<strong>getpriority</strong>(2), <strong>setpriority</strong>(2),
+<strong>credentials</strong>(7), <strong>sched</strong>(7)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>renice</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

@@ -1,0 +1,262 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>terminal-colors.d - configure output colorization for various
+utilities</p>
+<h1>SYNOPSIS</h1>
+<p>/etc/terminal-colors.d/<em>[[name][@term].][type]</em></p>
+<h1>DESCRIPTION</h1>
+<p>Files in this directory determine the default behavior for utilities
+when coloring output.</p>
+<p>The <em>name</em> is a utility name. The name is optional and when
+none is specified then the file is used for all unspecified
+utilities.</p>
+<p>The <em>term</em> is a terminal identifier (the <strong>TERM</strong>
+environment variable). The terminal identifier is optional and when none
+is specified then the file is used for all unspecified terminals.</p>
+<p>The <em>type</em> is a file type. Supported file types are:</p>
+<p><strong>disable</strong></p>
+<blockquote>
+<p>Turns off output colorization for all compatible utilities.</p>
+</blockquote>
+<p><strong>enable</strong></p>
+<blockquote>
+<p>Turns on output colorization; any matching <strong>disable</strong>
+files are ignored.</p>
+</blockquote>
+<p><strong>scheme</strong></p>
+<blockquote>
+<p>Specifies colors used for output. The file format may be specific to
+the utility, the default format is described below.</p>
+</blockquote>
+<p>If there are more files that match for a utility, then the file with
+the more specific filename wins. For example, the filename
+"@xterm.scheme" has less priority than "dmesg@xterm.scheme". The lowest
+priority are those files without a utility name and terminal identifier
+(e.g., "disable").</p>
+<p>The user-specific <em>$XDG_CONFIG_HOME/terminal-colors.d</em> or
+<em>$HOME/.config/terminal-colors.d</em> overrides the global
+setting.</p>
+<h1>DEFAULT SCHEME FILES FORMAT</h1>
+<p>The following statement is recognized:</p>
+<blockquote>
+<p><strong>name color-sequence</strong><br />
+</p>
+</blockquote>
+<p>The <strong>name</strong> is a logical name of color sequence (for
+example "error"). The names are specific to the utilities. For more
+details always see the <strong>COLORS</strong> section in the man page
+for the utility.</p>
+<p>The <strong>color-sequence</strong> is a color name, ASCII color
+sequences or escape sequences.</p>
+<h2>Color names</h2>
+<p>black, blink, blue, bold, brown, cyan, darkgray, gray, green,
+halfbright, lightblue, lightcyan, lightgray, lightgreen, lightmagenta,
+lightred, magenta, red, reset, reverse, and yellow.</p>
+<h2>ANSI color sequences</h2>
+<p>The color sequences are composed of sequences of numbers separated by
+semicolons. The most common codes are:</p>
+<blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">to restore default color</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">for brighter colors</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">for underlined text</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">for flashing text</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">30</td>
+<td style="text-align: left;">for black foreground</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">31</td>
+<td style="text-align: left;">for red foreground</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">for green foreground</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">33</td>
+<td style="text-align: left;">for yellow (or brown) foreground</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">for blue foreground</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">for purple foreground</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">36</td>
+<td style="text-align: left;">for cyan foreground</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">for white (or gray) foreground</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">40</td>
+<td style="text-align: left;">for black background</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">41</td>
+<td style="text-align: left;">for red background</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">for green background</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">43</td>
+<td style="text-align: left;">for yellow (or brown) background</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">44</td>
+<td style="text-align: left;">for blue background</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">45</td>
+<td style="text-align: left;">for purple background</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">46</td>
+<td style="text-align: left;">for cyan background</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">47</td>
+<td style="text-align: left;">for white (or gray) background</td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+</blockquote>
+<h2>Escape sequences</h2>
+<p>To specify control or blank characters in the color sequences,
+C-style \-escaped notation can be used:</p>
+<blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>\a</strong></td>
+<td style="text-align: left;">Bell (ASCII 7)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>\b</strong></td>
+<td style="text-align: left;">Backspace (ASCII 8)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>\e</strong></td>
+<td style="text-align: left;">Escape (ASCII 27)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>\f</strong></td>
+<td style="text-align: left;">Form feed (ASCII 12)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>\n</strong></td>
+<td style="text-align: left;">Newline (ASCII 10)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>\r</strong></td>
+<td style="text-align: left;">Carriage Return (ASCII 13)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>\t</strong></td>
+<td style="text-align: left;">Tab (ASCII 9)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>\v</strong></td>
+<td style="text-align: left;">Vertical Tab (ASCII 11)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>\?</strong></td>
+<td style="text-align: left;">Delete (ASCII 127)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>\_</strong></td>
+<td style="text-align: left;">Space</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>\\</strong></td>
+<td style="text-align: left;">Backslash (\)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>\^</strong></td>
+<td style="text-align: left;">Caret (^)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>\#</strong></td>
+<td style="text-align: left;">Hash mark (#)</td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+</blockquote>
+<p>Please note that escapes are necessary to enter a space, backslash,
+caret, or any control character anywhere in the string, as well as a
+hash mark as the first character.</p>
+<p>For example, to use a red background for alert messages in the output
+of <strong>dmesg</strong>(1), use:</p>
+<blockquote>
+<p><strong>echo 'alert 37;41' &gt;&gt;
+/etc/terminal-colors.d/dmesg.scheme</strong><br />
+</p>
+</blockquote>
+<h2>Comments</h2>
+<p>Lines where the first non-blank character is a # (hash) are ignored.
+Any other use of the hash character is not interpreted as introducing a
+comment.</p>
+<h1>ENVIRONMENT</h1>
+<p><strong>TERMINAL_COLORS_DEBUG</strong>=all</p>
+<blockquote>
+<p>enables debug output.</p>
+</blockquote>
+<h1>FILES</h1>
+<p><em>$XDG_CONFIG_HOME/terminal-colors.d</em></p>
+<p><em>$HOME/.config/terminal-colors.d</em></p>
+<p><em>/etc/terminal-colors.d</em></p>
+<h1>EXAMPLE</h1>
+<p>Disable colors for all compatible utilities:</p>
+<blockquote>
+<p><strong>touch /etc/terminal-colors.d/disable</strong><br />
+</p>
+</blockquote>
+<p>Disable colors for all compatible utils on a vt100 terminal:</p>
+<blockquote>
+<p><strong>touch /etc/terminal-colors.d/@vt100.disable</strong><br />
+</p>
+</blockquote>
+<p>Disable colors for all compatible utils except
+<strong>dmesg</strong>(1):</p>
+<blockquote>
+<p><strong>touch /etc/terminal-colors.d/disable</strong></p>
+<p><strong>touch /etc/terminal-colors.d/dmesg.enable</strong><br />
+</p>
+</blockquote>
+<h1>COMPATIBILITY</h1>
+<p>The <strong>terminal-colors.d</strong> functionality is currently
+supported by all util-linux utilities which provides colorized output.
+For more details always see the <strong>COLORS</strong> section in the
+man page for the utility.</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p><strong>terminal-colors.d</strong> is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

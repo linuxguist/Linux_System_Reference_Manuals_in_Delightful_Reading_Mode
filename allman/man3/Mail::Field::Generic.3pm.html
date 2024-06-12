@@ -1,0 +1,117 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Mail::Field::Generic - implementation for inspecific fields</p>
+<h1>INHERITANCE</h1>
+<p>Mail::Field::Generic is a Mail::Field</p>
+<h1>SYNOPSIS</h1>
+<p>use Mail::Field; my $field = Mail::Field-&gt;new(Subject, some
+subject text); my $field = Mail::Field-&gt;new(subject =&gt; some
+subject text);</p>
+<h1>DESCRIPTION</h1>
+<p>A generic implementation for header fields without own
+implementation. This is fine for fields like <code>Subject</code>,
+<code>X-Mailer</code>, etc., where the field holds only a string of no
+particular importance/format.</p>
+<p>Extends DESCRIPTION in Mail::Field.</p>
+<h1>METHODS</h1>
+<p>Extends METHODS in Mail::Field.</p>
+<h2>Constructors</h2>
+<p>Extends Constructors in Mail::Field.</p>
+<dl>
+<dt>Mail::Field::Generic-&gt;combine($fields)</dt>
+<dd>
+<p>Inherited, see Constructors in Mail::Field</p>
+</dd>
+<dt>Mail::Field::Generic-&gt;extract( $tag, $head [, $index ] )</dt>
+<dd>
+<p>Inherited, see Constructors in Mail::Field</p>
+</dd>
+<dt>Mail::Field::Generic-&gt;new( $tag [, STRING | %options] )</dt>
+<dd>
+<p>Inherited, see Constructors in Mail::Field</p>
+</dd>
+</dl>
+<h2>"Fake" constructors</h2>
+<p>Extends "Fake constructors" in Mail::Field.</p>
+<dl>
+<dt>$obj-&gt;create(%options)</dt>
+<dd>
+<p> -Option--Default Text </p>
+<dl>
+<dt>Text =&gt; STRING</dt>
+<dd>
+
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>$obj-&gt;parse( [STRING] )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Set the new text, which is empty when no STRING is provided.</p>
+<h2>Accessors</h2>
+<p>Extends Accessors in Mail::Field.</p>
+<dl>
+<dt>$obj-&gt;set(%options)</dt>
+<dd>
+<p>Inherited, see Accessors in Mail::Field</p>
+</dd>
+<dt>$obj-&gt;stringify()</dt>
+<dd>
+<p>Inherited, see Accessors in Mail::Field</p>
+</dd>
+<dt>$obj-&gt;tag()</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Mail::Field::Generic-&gt;tag()</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Inherited, see Accessors in Mail::Field</p>
+<h2>Smart accessors</h2>
+<p>Extends Smart accessors in Mail::Field.</p>
+<dl>
+<dt>$obj-&gt;text( [STRING] )</dt>
+<dd>
+<p>Inherited, see Smart accessors in Mail::Field</p>
+</dd>
+</dl>
+<h1>DETAILS</h1>
+<p>Extends DETAILS in Mail::Field.</p>
+<h1>DIAGNOSTICS</h1>
+<dl>
+<dt>Error: Undefined subroutine &lt;method&gt; called</dt>
+<dd>
+<p>Mail::Field objects use autoloading to compile new functionality.
+Apparently, the method called is not implemented for the specific class
+of the field object.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>This module is part of the MailTools distribution,
+<em>http://perl.overmeer.net/mailtools/</em>.</p>
+<h1>AUTHORS</h1>
+<p>The MailTools bundle was developed by Graham Barr. Later, Mark
+Overmeer took over maintenance without commitment to further
+development.</p>
+<p>Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;. Mail::Field::AddrList
+by Peter Orbaek &lt;poe@cit.dk&gt;. Mail::Mailer and Mail::Send by Tim
+Bunce &lt;Tim.Bunce@ig.co.uk&gt;. For other contributors see
+ChangeLog.</p>
+<h1>LICENSE</h1>
+<p>Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and
+2001-2017 Mark Overmeer &lt;perl@overmeer.net&gt;.</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself. See
+<em>http://www.perl.com/perl/misc/Artistic.html</em></p>

@@ -1,0 +1,468 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>ipp-usb</strong> - Daemon for IPP over USB printer
+support</p>
+<h1>DESCRIPTION</h1>
+<p><strong>ipp-usb</strong> daemon enables driver-less printing and
+scanning on USB-only AirPrint-compatible printers and MFPs.</p>
+<p>It works by connecting to the device by USB using IPP-over-USB
+protocol, and exposing the device to the network, including DNS-SD
+(ZeroConf) advertising.</p>
+<p>IPP printing, eSCL scanning and web console are fully supported.</p>
+<h1>SYNOPSIS</h1>
+<h2>Usage:</h2>
+<p><strong>ipp-usb mode [options]</strong></p>
+<h2>Modes are:</h2>
+<dl>
+<dt><strong>standalone</strong></dt>
+<dd>
+<p>run forever, automatically discover IPP-over-USB devices and serve
+them all</p>
+</dd>
+<dt><strong>udev</strong></dt>
+<dd>
+<p>like standalone, but exit when last IPP-over-USB device is
+disconnected</p>
+</dd>
+<dt><strong>debug</strong></dt>
+<dd>
+<p>logs duplicated on console, -bg option is ignored</p>
+</dd>
+<dt><strong>check</strong></dt>
+<dd>
+<p>check configuration and exit. It also prints a list of all connected
+devices</p>
+</dd>
+<dt><strong>status</strong></dt>
+<dd>
+<p>print status of the running <strong>ipp-usb</strong> daemon,
+including information of all connected devices</p>
+</dd>
+</dl>
+<h2>Options are</h2>
+<dl>
+<dt><strong>-bg</strong></dt>
+<dd>
+<p>run in background (ignored in debug mode)</p>
+</dd>
+</dl>
+<h1>NETWORKING</h1>
+<p>Essentially, <strong>ipp-usb</strong> makes printer or scanner
+accessible from the network, converting network-side HTTP operations to
+the USB operations.</p>
+<p>By default, <strong>ipp-usb</strong> exposes device only to the
+loopback interface, using the <strong>localhost</strong> address (both
+<strong>127.0.0.1</strong> and <strong>::1</strong>, for IPv4 and IPv6,
+respectively). TCP ports are allocated automatically, and allocation is
+persisted in the association with the particular device, so the next
+time the device is plugged on, it will get the same port. The default
+port range for TCP ports allocation is <strong>60000-65535</strong>.</p>
+<p>This default behavior can be changed, using configuration file. See
+<strong>CONFIGURATION</strong> section below for details.</p>
+<p>If you decide to publish your device to the real network, the
+following things should be taken into consideration:</p>
+<ol type="1">
+<li><p>Your <strong>private</strong> device will become
+<strong>public</strong> and it will become accessible by other computers
+from the network</p></li>
+<li><p>Firewall rules needs to be updated appropriately. The
+<strong>ipp-usb</strong> daemon will not do it automatically by
+itself</p></li>
+<li><p>IPP over USB specification explicitly require that the
+<strong>Host</strong> field in the HTTP request is set to
+<strong>localhost</strong> or <strong>localhost:port</strong>. If device
+is accessed from the real network, <strong>Host</strong> header will
+reflect the real network address. Most of devices allow it, but some are
+more restrictive and will not work in this configuration.</p></li>
+</ol>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<h1>DNS-SD (AVAHI INTEGRATION)</h1>
+<p>IPP over USB is intended to be used with the automatic device
+discovery, and for this purpose <strong>ipp-usb</strong> advertises all
+devices it handles, using DNS-SD protocol. On Linux, DNS-SD is handled
+with a help of Avahi daemon.</p>
+<p>DNS-SD advertising can be disabled via configuration file. Also, if
+Avahi is not installed or not running, <strong>ipp-usb</strong> will
+still work correctly, although DNS-SD advertising will not work.</p>
+<p>For every device the following services will be advertised:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Instance</td>
+<td style="text-align: left;">Type</td>
+<td style="text-align: left;">Subtypes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Device name</td>
+<td style="text-align: left;">_ipp._tcp</td>
+<td style="text-align: left;">_universal._sub._ipp._tcp</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Device name</td>
+<td style="text-align: left;">_printer._tcp</td>
+<td style="text-align: left;"> </td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Device name</td>
+<td style="text-align: left;">_uscan._tcp</td>
+<td style="text-align: left;"> </td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Device name</td>
+<td style="text-align: left;">_http._tcp</td>
+<td style="text-align: left;"> </td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BBPP</td>
+<td style="text-align: left;">_ipp-usb._tcp</td>
+<td style="text-align: left;"> </td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<dl>
+<dt>○</dt>
+<dd>
+<p><strong>Device name</strong> is the name under which device appears
+in the list of available devices, for example, in the printing dialog
+(it is DNS-SD device name, in another words), and for most of devices
+will match the device's model name. It is appended with the <strong>"
+(USB)"</strong> suffix, so if device is connected via network and via
+USB simultaneously, these two connections can be easily distinguished.
+If there are two devices with the same name connected simultaneously,
+the suffix becomes <strong>" (USB NNN)"</strong>, with NNN number unique
+for each device, for disambiguation. In another words, the single
+<strong>"Kyocera ECOSYS M2040dn"</strong> device will be listed as
+<strong>"Kyocera ECOSYS M2040dn (USB)"</strong>, and two such a devices
+will be listed as <strong>"Kyocera ECOSYS M2040dn (USB 1)"</strong> and
+<strong>"Kyocera ECOSYS M2040dn (USB 2)"</strong></p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>_ipp._tcp</strong> and <strong>_printer._tcp</strong> are
+only advertises for printer devices and MFPs</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>_uscan._tcp</strong> is only advertised for scanner devices
+and MFPs</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p>for the <strong>_ipp._tcp</strong> service, the
+<strong>_universal._sub._ipp._tcp</strong> subtype is also advertised
+for iOS compatibility</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>_printer._tcp</strong> is advertised with TCP port set to 0.
+Other services are advertised with the actual port number</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>_http._tcp</strong> is device web-console. It is always
+advertises in assumption it is always exist</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>BBPP</strong>, used for the <strong>_ipp-usb._tcp</strong>
+service, is the USB bus (BB) and port (PP) numbers in hex. The purpose
+of this advertising is to help CUPS and other possible "clients" to
+guess which devices are handled by the <strong>ipp-usb</strong> service,
+to avoid possible conflicts with the legacy USB drivers.</p>
+</dd>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<h1>CONFIGURATION</h1>
+<p><strong>ipp-usb</strong> searched for its configuration file in two
+places:</p>
+<ol type="1">
+<li><p><strong>/etc/ipp-usb/ipp-usb.conf</strong></p></li>
+<li><p><strong>ipp-usb.conf</strong> in the directory where executable
+file is located</p></li>
+</ol>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<p>Configuration file syntax is very similar to .INI files syntax. It
+consist of named sections, and each section contains a set of named
+variables. Comments are started from # or ; characters and continues
+until end of line:</p>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<pre><code># This is a comment
+[section 1]
+variable 1 = value 1  ; and another comment
+variable 2 = value 2</code></pre>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Network parameters</h2>
+<p>Network parameters are all in the <strong>[network]</strong>
+section:</p>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<pre><code>[network]
+  # TCP ports for HTTP will be automatically allocated in the
+  # following range
+  http-min-port = 60000
+  http-max-port = 65535
+
+  # Enable or disable DNS-SD advertisement
+  dns-sd = enable      # enable | disable
+
+  # Network interface to use. Set to `all` if you want to expose you
+  # printer to the local network. This way you can share your printer
+  # with other computers in the network, as well as with iOS and
+  # Android devices.
+  interface = loopback # all | loopback
+
+  # Enable or disable IPv6
+  ipv6 = enable        # enable | disable</code></pre>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Logging configuration</h2>
+<p>Logging parameters are all in the <strong>[logging]</strong>
+section:</p>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<pre><code>[logging]
+  # device-log  - what logs are generated per device
+  # main-log    - what common logs are generated
+  # console-log - what of generated logs goes to console
+  #
+  # parameter contains a comma-separated list of
+  # the following keywords:
+  #   error     - error messages
+  #   info      - informative messages
+  #   debug     - debug messages
+  #   trace-ipp, trace-escl, trace-http - very detailed
+  #               per-protocol traces
+  #   trace-usb - hex dump of all USB traffic
+  #   all       - all logs
+  #   trace-all - alias to all
+  #
+  # Note, trace-* implies debug, debug implies info, info implies
+  # error
+  device-log    = all
+  main-log      = debug
+  console-log   = debug
+
+  # Log rotation parameters:
+  #   log-file-size    - max log file before rotation. Use suffix
+  #                      M for megabytes or K for kilobytes
+  #   log-backup-files - how many backup files to preserve during
+  #                      rotation
+  #
+  max-file-size    = 256K
+  max-backup-files = 5
+
+  # Enable or disable ANSI colors on console
+  console-color = enable # enable | disable</code></pre>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Quirks</h2>
+<p>Some devices, due to their firmware bugs, require special handling,
+called device-specific <strong>quirks</strong>. <strong>ipp-usb</strong>
+loads quirks from the <strong>/usr/share/ipp-usb/quirks/*.conf</strong>
+files and from the <strong>/etc/ipp-usb/quirks/*.conf</strong> files.
+The <strong>/etc/ipp-usb/quirks</strong> directory is for system quirks
+overrides or admin changes. These files have .INI-file syntax with the
+content that looks like this:</p>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<pre><code>[HP LaserJet MFP M28-M31]
+  http-connection = keep-alive
+
+[HP OfficeJet Pro 8730]
+  http-connection = close
+
+[HP Inc. HP Laser MFP 135a]
+  blacklist = true
+
+# Default configuration
+[*]
+  http-connection = &quot;&quot;</code></pre>
+<dl>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<p>For each discovered device, its model name is matched against
+sections of the quirks files. Section names may contain glob-style
+wildcards: <strong>*</strong> that matches any sequence of characters
+and <strong>?</strong> , that matches any single character. To match one
+of these characters (<strong>*</strong> and <strong>?</strong>)
+literally, use backslash as escape.</p>
+<p>Note, the simplest way to guess the exact model name for the
+particular device is to use <strong>ipp-usb check</strong> command,
+which prints a list of all connected devices.</p>
+<p>All matching sections from all quirks files are taken in
+consideration, and applied in priority order. Priority is computed using
+the following algorithm:</p>
+<dl>
+<dt>○</dt>
+<dd>
+<p>When matching model name against section name, amount of non-wildcard
+matched characters is counted, and the longer match wins</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p>Otherwise, section loaded first wins. Files are loaded in
+alphabetical order, sections read sequentially</p>
+</dd>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<p>If some parameter exist in multiple sections, used its value from the
+most priority section</p>
+<p>The following parameters are defined:</p>
+<dl>
+<dt>○</dt>
+<dd>
+<p><strong>blacklist = true | false</strong><br />
+If <strong>true</strong>, the matching device is ignored by the
+<strong>ipp-usb</strong></p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>http-XXX = YYY</strong><br />
+Set XXX header of the HTTP requests forwarded to device to YYY. If YYY
+is empty string, XXX header is removed</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>usb-max-interfaces = N</strong><br />
+Don't use more that N USB interfaces, even if more is available</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>disable-fax = true | false</strong><br />
+If <strong>true</strong>, the matching device's fax capability is
+ignored</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>init-reset = none | soft | hard</strong><br />
+How to reset device during initialization. Default is
+<strong>none</strong></p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>init-delay = NNN</strong><br />
+Delay, in milliseconds, between device is opened and, optionally, reset,
+and the first request is sent to device</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>request-delay</strong> = NNN<br />
+Delay, in milliseconds, between subsequent requests</p>
+</dd>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<p>If you found out about your device that it needs a quirk to work
+properly or it does not work with <strong>ipp-usb</strong> at all,
+although it provides IPP-over-USB interface, please report the issue at
+https://github.com/OpenPrinting/ipp-usb. It will let us to update our
+collection of quirks, so helping other owners of such a device.</p>
+<h1>FILES</h1>
+<dl>
+<dt>○</dt>
+<dd>
+<p><strong>/etc/ipp-usb/ipp-usb.conf</strong>: the daemon configuration
+file</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>/var/log/ipp-usb/main.log</strong>: the main log file</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>/var/log/ipp-usb/&lt;DEVICE&gt;.log</strong>: per-device log
+files</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>/var/ipp-usb/dev/&lt;DEVICE&gt;.state</strong>: device state
+(HTTP port allocation, DNS-SD name)</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>/var/ipp-usb/lock/ipp-usb.lock</strong>: lock file, that
+helps to prevent multiple copies of daemon to run simultaneously</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>/var/ipp-usb/ctrl</strong>: <strong>ipp-usb</strong> control
+socket. Currently only used to obtain the per-device status (printed by
+<strong>ipp-usb status</strong>), but its functionality may be extended
+in a future</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>/usr/share/ipp-usb/quirks/*.conf</strong>: device-specific
+quirks (see above)</p>
+</dd>
+<dt>○</dt>
+<dd>
+<p><strong>/etc/ipp-usb/quirks/*.conf</strong>: device-specific quirks
+defined by sysadmin (see above)</p>
+</dd>
+<dt></dt>
+<dd>
+
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) by Alexander Pevzner (pzz@apevzner.com,
+pzz@pzz.msk.ru)<br />
+All rights reserved.</p>
+<p>This program is licensed under 2-Clause BSD license. See LICENSE file
+for details.</p>
+<h1>SEE ALSO</h1>
+<p><strong>cups(1)</strong></p>

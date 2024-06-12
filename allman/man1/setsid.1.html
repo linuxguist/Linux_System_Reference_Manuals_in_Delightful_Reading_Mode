@@ -1,0 +1,46 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>setsid - run a program in a new session</p>
+<h1>SYNOPSIS</h1>
+<p><strong>setsid</strong> [options] <em>program</em>
+[<em>arguments</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>setsid</strong> runs a program in a new session. The command
+calls <strong>fork</strong>(2) if already a process group leader.
+Otherwise, it executes a program in the current process. This default
+behavior is possible to override by the <strong>--fork</strong>
+option.</p>
+<h1>OPTIONS</h1>
+<p><strong>-c</strong>, <strong>--ctty</strong></p>
+<blockquote>
+<p>Set the controlling terminal to the current one.</p>
+</blockquote>
+<p><strong>-f</strong>, <strong>--fork</strong></p>
+<blockquote>
+<p>Always create a new process.</p>
+</blockquote>
+<p><strong>-w</strong>, <strong>--wait</strong></p>
+<blockquote>
+<p>Wait for the execution of the program to end, and return the exit
+status of this program as the exit status of
+<strong>setsid</strong>.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Display version information and exit.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>setsid</strong>(2)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>setsid</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

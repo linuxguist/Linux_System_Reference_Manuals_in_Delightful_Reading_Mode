@@ -1,0 +1,207 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>provider-keyexch - The keyexch library &lt;-&gt; provider
+functions</p>
+<h1>SYNOPSIS</h1>
+<p>#include &lt;openssl/core_dispatch.h&gt; #include
+&lt;openssl/core_names.h&gt; /* * None of these are actual functions,
+but are displayed like this for * the function signatures for functions
+that are offered as function * pointers in OSSL_DISPATCH arrays. */ /*
+Context management */ void *OSSL_FUNC_keyexch_newctx(void *provctx);
+void OSSL_FUNC_keyexch_freectx(void *ctx); void
+*OSSL_FUNC_keyexch_dupctx(void *ctx); /* Shared secret derivation */ int
+OSSL_FUNC_keyexch_init(void *ctx, void *provkey, const OSSL_PARAM
+params[]); int OSSL_FUNC_keyexch_set_peer(void *ctx, void *provkey); int
+OSSL_FUNC_keyexch_derive(void *ctx, unsigned char *secret, size_t
+*secretlen, size_t outlen); /* Key Exchange parameters */ int
+OSSL_FUNC_keyexch_set_ctx_params(void *ctx, const OSSL_PARAM params[]);
+const OSSL_PARAM *OSSL_FUNC_keyexch_settable_ctx_params(void *ctx, void
+*provctx); int OSSL_FUNC_keyexch_get_ctx_params(void *ctx, OSSL_PARAM
+params[]); const OSSL_PARAM *OSSL_FUNC_keyexch_gettable_ctx_params(void
+*ctx, void *provctx);</p>
+<h1>DESCRIPTION</h1>
+<p>This documentation is primarily aimed at provider authors. See
+<strong>provider</strong> (7) for further information.</p>
+<p>The key exchange (OSSL_OP_KEYEXCH) operation enables providers to
+implement key exchange algorithms and make them available to
+applications via <strong>EVP_PKEY_derive</strong> (3) and other related
+functions).</p>
+<p>All functions mentioned here are passed as function pointers between
+<em>libcrypto</em> and the provider in
+<strong>OSSL_DISPATCH</strong> (3) arrays via
+<strong>OSSL_ALGORITHM</strong> (3) arrays that are returned by the
+provider's <strong>provider_query_operation()</strong> function (see
+Provider Functions in <strong>provider-base</strong> (7)).</p>
+<p>All these functions have a corresponding function type definition
+named <strong>OSSL_FUNC_{name}_fn</strong>, and a helper function to
+retrieve the function pointer from an <strong>OSSL_DISPATCH</strong> (3)
+element named <strong>OSSL_FUNC_{name}</strong>. For example, the
+function <strong>OSSL_FUNC_keyexch_newctx()</strong> has these:</p>
+<p>typedef void *(OSSL_FUNC_keyexch_newctx_fn)(void *provctx); static
+ossl_inline OSSL_FUNC_keyexch_newctx_fn OSSL_FUNC_keyexch_newctx(const
+OSSL_DISPATCH *opf);</p>
+<p><strong>OSSL_DISPATCH</strong> (3) arrays are indexed by numbers that
+are provided as macros in <strong>openssl-core_dispatch.h</strong> (7),
+as follows:</p>
+<p>OSSL_FUNC_keyexch_newctx OSSL_FUNC_KEYEXCH_NEWCTX
+OSSL_FUNC_keyexch_freectx OSSL_FUNC_KEYEXCH_FREECTX
+OSSL_FUNC_keyexch_dupctx OSSL_FUNC_KEYEXCH_DUPCTX OSSL_FUNC_keyexch_init
+OSSL_FUNC_KEYEXCH_INIT OSSL_FUNC_keyexch_set_peer
+OSSL_FUNC_KEYEXCH_SET_PEER OSSL_FUNC_keyexch_derive
+OSSL_FUNC_KEYEXCH_DERIVE OSSL_FUNC_keyexch_set_ctx_params
+OSSL_FUNC_KEYEXCH_SET_CTX_PARAMS OSSL_FUNC_keyexch_settable_ctx_params
+OSSL_FUNC_KEYEXCH_SETTABLE_CTX_PARAMS OSSL_FUNC_keyexch_get_ctx_params
+OSSL_FUNC_KEYEXCH_GET_CTX_PARAMS OSSL_FUNC_keyexch_gettable_ctx_params
+OSSL_FUNC_KEYEXCH_GETTABLE_CTX_PARAMS</p>
+<p>A key exchange algorithm implementation may not implement all of
+these functions. In order to be a consistent set of functions a provider
+must implement OSSL_FUNC_keyexch_newctx, OSSL_FUNC_keyexch_freectx,
+OSSL_FUNC_keyexch_init and OSSL_FUNC_keyexch_derive. All other functions
+are optional.</p>
+<p>A key exchange algorithm must also implement some mechanism for
+generating, loading or importing keys via the key management
+(OSSL_OP_KEYMGMT) operation. See <strong>provider-keymgmt</strong> (7)
+for further details.</p>
+<h2>Context Management Functions</h2>
+<p><strong>OSSL_FUNC_keyexch_newctx()</strong> should create and return
+a pointer to a provider side structure for holding context information
+during a key exchange operation. A pointer to this context will be
+passed back in a number of the other key exchange operation function
+calls. The parameter <em>provctx</em> is the provider context generated
+during provider initialisation (see <strong>provider</strong> (7)).</p>
+<p><strong>OSSL_FUNC_keyexch_freectx()</strong> is passed a pointer to
+the provider side key exchange context in the <em>ctx</em> parameter.
+This function should free any resources associated with that
+context.</p>
+<p><strong>OSSL_FUNC_keyexch_dupctx()</strong> should duplicate the
+provider side key exchange context in the <em>ctx</em> parameter and
+return the duplicate copy.</p>
+<h2>Shared Secret Derivation Functions</h2>
+<p><strong>OSSL_FUNC_keyexch_init()</strong> initialises a key exchange
+operation given a provider side key exchange context in the <em>ctx</em>
+parameter, and a pointer to a provider key object in the
+<em>provkey</em> parameter. The <em>params</em>, if not NULL, should be
+set on the context in a manner similar to using
+<strong>OSSL_FUNC_keyexch_set_params()</strong>. The key object should
+have been previously generated, loaded or imported into the provider
+using the key management (OSSL_OP_KEYMGMT) operation (see
+<strong>provider-keymgmt</strong> (7)&gt;.</p>
+<p><strong>OSSL_FUNC_keyexch_set_peer()</strong> is called to supply the
+peer's public key (in the <em>provkey</em> parameter) to be used when
+deriving the shared secret. It is also passed a previously initialised
+key exchange context in the <em>ctx</em> parameter. The key object
+should have been previously generated, loaded or imported into the
+provider using the key management (OSSL_OP_KEYMGMT) operation (see
+<strong>provider-keymgmt</strong> (7)&gt;.</p>
+<p><strong>OSSL_FUNC_keyexch_derive()</strong> performs the actual key
+exchange itself by deriving a shared secret. A previously initialised
+key exchange context is passed in the <em>ctx</em> parameter. The
+derived secret should be written to the location <em>secret</em> which
+should not exceed <em>outlen</em> bytes. The length of the shared secret
+should be written to <em>*secretlen</em>. If <em>secret</em> is NULL
+then the maximum length of the shared secret should be written to
+<em>*secretlen</em>.</p>
+<h2>Key Exchange Parameters Functions</h2>
+<p><strong>OSSL_FUNC_keyexch_set_ctx_params()</strong> sets key exchange
+parameters associated with the given provider side key exchange context
+<em>ctx</em> to <em>params</em>, see Common Key Exchange parameters. Any
+parameter settings are additional to any that were previously set.
+Passing NULL for <em>params</em> should return true.</p>
+<p><strong>OSSL_FUNC_keyexch_get_ctx_params()</strong> gets key exchange
+parameters associated with the given provider side key exchange context
+<em>ctx</em> into <em>params</em>, see Common Key Exchange parameters.
+Passing NULL for <em>params</em> should return true.</p>
+<p><strong>OSSL_FUNC_keyexch_settable_ctx_params()</strong> yields a
+constant <strong>OSSL_PARAM</strong> (3) array that describes the
+settable parameters, i.e. parameters that can be used with
+<strong>OP_signature_set_ctx_params()</strong>. If
+<strong>OSSL_FUNC_keyexch_settable_ctx_params()</strong> is present,
+<strong>OSSL_FUNC_keyexch_set_ctx_params()</strong> must also be
+present, and vice versa. Similarly,
+<strong>OSSL_FUNC_keyexch_gettable_ctx_params()</strong> yields a
+constant <strong>OSSL_PARAM</strong> (3) array that describes the
+gettable parameters, i.e. parameters that can be handled by
+<strong>OP_signature_get_ctx_params()</strong>. If
+<strong>OSSL_FUNC_keyexch_gettable_ctx_params()</strong> is present,
+<strong>OSSL_FUNC_keyexch_get_ctx_params()</strong> must also be
+present, and vice versa.</p>
+<p>Notice that not all settable parameters are also gettable, and vice
+versa.</p>
+<h2>Common Key Exchange parameters</h2>
+<p>See <strong>OSSL_PARAM</strong> (3) for further details on the
+parameters structure used by the
+<strong>OSSL_FUNC_keyexch_set_ctx_params()</strong> and
+<strong>OSSL_FUNC_keyexch_get_ctx_params()</strong> functions.</p>
+<p>Common parameters currently recognised by built-in key exchange
+algorithms are as follows.</p>
+<dl>
+<dt>"kdf-type" (OSSL_EXCHANGE_PARAM_KDF_TYPE) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>Sets or gets the Key Derivation Function type to apply within the
+associated key exchange ctx.</p>
+</dd>
+<dt>"kdf-digest" (OSSL_EXCHANGE_PARAM_KDF_DIGEST) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>Sets or gets the Digest algorithm to be used as part of the Key
+Derivation Function associated with the given key exchange ctx.</p>
+</dd>
+<dt>"kdf-digest-props" (OSSL_EXCHANGE_PARAM_KDF_DIGEST_PROPS) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>Sets properties to be used upon look up of the implementation for the
+selected Digest algorithm for the Key Derivation Function associated
+with the given key exchange ctx.</p>
+</dd>
+<dt>"kdf-outlen" (OSSL_EXCHANGE_PARAM_KDF_OUTLEN) &lt;unsigned
+integer&gt;</dt>
+<dd>
+<p>Sets or gets the desired size for the output of the chosen Key
+Derivation Function associated with the given key exchange ctx. The
+length of the kdf-outlen parameter should not exceed that of a
+<strong>size_t</strong>.</p>
+</dd>
+<dt>"kdf-ukm" (OSSL_EXCHANGE_PARAM_KDF_UKM) &lt;octet string&gt;</dt>
+<dd>
+<p>Sets the User Key Material to be used as part of the selected Key
+Derivation Function associated with the given key exchange ctx.</p>
+</dd>
+<dt>"kdf-ukm" (OSSL_EXCHANGE_PARAM_KDF_UKM) &lt;octet string
+ptr&gt;</dt>
+<dd>
+<p>Gets a pointer to the User Key Material to be used as part of the
+selected Key Derivation Function associated with the given key exchange
+ctx. Providers usually do not need to support this gettable parameter as
+its sole purpose is to support functionality of the deprecated
+<strong>EVP_PKEY_CTX_get0_ecdh_kdf_ukm()</strong> and
+<strong>EVP_PKEY_CTX_get0_dh_kdf_ukm()</strong> functions.</p>
+</dd>
+</dl>
+<h1>RETURN VALUES</h1>
+<p><strong>OSSL_FUNC_keyexch_newctx()</strong> and
+<strong>OSSL_FUNC_keyexch_dupctx()</strong> should return the newly
+created provider side key exchange context, or NULL on failure.</p>
+<p><strong>OSSL_FUNC_keyexch_init()</strong>,
+<strong>OSSL_FUNC_keyexch_set_peer()</strong>,
+<strong>OSSL_FUNC_keyexch_derive()</strong>,
+<strong>OSSL_FUNC_keyexch_set_params()</strong>, and
+<strong>OSSL_FUNC_keyexch_get_params()</strong> should return 1 for
+success or 0 on error.</p>
+<p><strong>OSSL_FUNC_keyexch_settable_ctx_params()</strong> and
+<strong>OSSL_FUNC_keyexch_gettable_ctx_params()</strong> should always
+return a constant <strong>OSSL_PARAM</strong> (3) array.</p>
+<h1>SEE ALSO</h1>
+<p><strong>provider</strong> (7)</p>
+<h1>HISTORY</h1>
+<p>The provider KEYEXCH interface was introduced in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2019-2022 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

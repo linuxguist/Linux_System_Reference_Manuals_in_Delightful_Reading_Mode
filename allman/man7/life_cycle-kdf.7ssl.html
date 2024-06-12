@@ -1,0 +1,61 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>life_cycle-kdf - The KDF algorithm life-cycle</p>
+<h1>DESCRIPTION</h1>
+<p>All key derivation functions (KDFs) and pseudo random functions
+(PRFs) go through a number of stages in their life-cycle:</p>
+<dl>
+<dt>start</dt>
+<dd>
+<p>This state represents the KDF/PRF before it has been allocated. It is
+the starting state for any life-cycle transitions.</p>
+</dd>
+<dt>newed</dt>
+<dd>
+<p>This state represents the KDF/PRF after it has been allocated.</p>
+</dd>
+<dt>deriving</dt>
+<dd>
+<p>This state represents the KDF/PRF when it is set up and capable of
+generating output.</p>
+</dd>
+<dt>freed</dt>
+<dd>
+<p>This state is entered when the KDF/PRF is freed. It is the terminal
+state for all life-cycle transitions.</p>
+</dd>
+</dl>
+<h2>State Transition Diagram</h2>
+<p>The usual life-cycle of a KDF/PRF is illustrated:
++-------------------+ | start | +-------------------+ | |
+EVP_KDF_CTX_new v +-------------------+ | newed | &lt;+
++-------------------+ | | | | EVP_KDF_derive | v | EVP_KDF_CTX_reset
+EVP_KDF_derive +-------------------+ | + - - - - - - - - | | | ' |
+deriving | | + - - - - - - - -&gt; | | -+ +-------------------+ | |
+EVP_KDF_CTX_free v +-------------------+ | freed |
++-------------------+</p>
+<h2>Formal State Transitions</h2>
+<p>This section defines all of the legal state transitions. This is the
+canonical list. Function Call ------------- Current State -------------
+start newed deriving freed EVP_KDF_CTX_new newed EVP_KDF_derive deriving
+deriving EVP_KDF_CTX_free freed freed freed EVP_KDF_CTX_reset newed
+newed EVP_KDF_CTX_get_params newed deriving EVP_KDF_CTX_set_params newed
+deriving EVP_KDF_CTX_gettable_params newed deriving
+EVP_KDF_CTX_settable_params newed deriving</p>
+<h1>NOTES</h1>
+<p>At some point the EVP layer will begin enforcing the transitions
+described herein.</p>
+<h1>SEE ALSO</h1>
+<p><strong>provider-kdf</strong> (7), <strong>EVP_KDF</strong> (3).</p>
+<h1>HISTORY</h1>
+<p>The provider KDF interface was introduced in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2021 The OpenSSL Project Authors. All Rights Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

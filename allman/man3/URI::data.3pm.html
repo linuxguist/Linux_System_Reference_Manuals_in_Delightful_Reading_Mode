@@ -1,0 +1,46 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>URI::data - URI that contains immediate data</p>
+<h1>SYNOPSIS</h1>
+<p>use URI; $u = URI-&gt;new("data:"); $u-&gt;media_type("image/gif");
+$u-&gt;data(scalar(`cat camel.gif`)); print "$u\n"; open(XV, "|xv -")
+and print XV $u-&gt;data;</p>
+<h1>DESCRIPTION</h1>
+<p>The <code>URI::data</code> class supports <code>URI</code> objects
+belonging to the <em>data</em> URI scheme. The <em>data</em> URI scheme
+is specified in RFC 2397. It allows inclusion of small data items as
+immediate data, as if it had been included externally. Examples:</p>
+<p>data:,Perl%20is%20good
+data:image/gif;base64,R0lGODdhIAAgAIAAAAAAAPj8+CwAAAAAI
+AAgAAAClYyPqcu9AJyCjtIKc5w5xP14xgeO2tlY3nWcajmZZdeJcG
+Kxrmimms1KMTa1Wg8UROx4MNUq1HrycMjHT9b6xKxaFLM6VRKzI+p
+KS9XtXpcbdun6uWVxJXA8pNPkdkkxhxc21LZHFOgD2KMoQXa2KMWI
+JtnE2KizVUkYJVZZ1nczBxXlFopZBtoJ2diXGdNUymmJdFMAADs=</p>
+<p><code>URI</code> objects belonging to the data scheme support the
+common methods (described in URI) and the following two scheme-specific
+methods:</p>
+<dl>
+<dt>$uri-&gt;media_type( [$new_media_type] )</dt>
+<dd>
+<p>Can be used to get or set the media type specified in the URI. If no
+media type is specified, then the default
+<code>"text/plain;charset=US-ASCII"</code> is returned.</p>
+</dd>
+<dt>$uri-&gt;data( [$new_data] )</dt>
+<dd>
+<p>Can be used to get or set the data contained in the URI. The data is
+passed unescaped (in binary form). The decision about whether to base64
+encode the data in the URI is taken automatically, based on the encoding
+that produces the shorter URI string.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>URI</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1995-1998 Gisle Aas.</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

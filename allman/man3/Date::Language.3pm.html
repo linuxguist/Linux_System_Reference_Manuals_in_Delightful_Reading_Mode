@@ -1,0 +1,45 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Date::Language - Language specific date formating and parsing</p>
+<h1>SYNOPSIS</h1>
+<p>use Date::Language; my $lang = Date::Language-&gt;new(German);
+$lang-&gt;time2str("%a %b %e %T %Y\n", time);</p>
+<h1>DESCRIPTION</h1>
+<p>Date::Language provides objects to parse and format dates for
+specific languages. Available languages are</p>
+<p>Afar French Russian_cp1251 Amharic Gedeo Russian_koi8r Austrian
+German Sidama Brazilian Greek Somali Chinese Hungarian Spanish
+Chinese_GB Icelandic Swedish Czech Italian Tigrinya Danish Norwegian
+TigrinyaEritrean Dutch Oromo TigrinyaEthiopian English Romanian Turkish
+Finnish Russian Bulgarian Occitan</p>
+<h1>METHODS</h1>
+<dl>
+<dt>time2str</dt>
+<dd>
+<p>See time2str in Date::Format</p>
+</dd>
+<dt>strftime</dt>
+<dd>
+<p>See strftime in Date::Format</p>
+</dd>
+<dt>ctime</dt>
+<dd>
+<p>See ctime in Date::Format</p>
+</dd>
+<dt>asctime</dt>
+<dd>
+<p>See asctime in Date::Format</p>
+</dd>
+<dt>str2time</dt>
+<dd>
+<p>See str2time in Date::Parse</p>
+</dd>
+<dt>strptime</dt>
+<dd>
+<p>See strptime in Date::Parse</p>
+</dd>
+</dl>

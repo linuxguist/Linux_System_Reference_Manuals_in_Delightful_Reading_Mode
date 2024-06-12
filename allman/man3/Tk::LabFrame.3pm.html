@@ -1,0 +1,81 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::LabFrame - labeled frame.</p>
+<h1>SYNOPSIS</h1>
+<p>    <strong>use Tk::LabFrame;</strong></p>
+<p>    <em><code>$f</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>LabFrame</strong>(?<strong>-label</strong>=&gt;<em>text</em>,
+<strong>-labelside</strong>=&gt;<em>where</em>, ...?);</p>
+<h1>DESCRIPTION</h1>
+<p><strong>LabFrame</strong> is exactly like <strong>Frame</strong> and
+additionally allows one to add a label to the frame.</p>
+<h1>WIDGET-OPTIONS</h1>
+<p><strong>LabFrame</strong> supports the same options as the Frame
+widget.</p>
+<p>Additional options of <strong>LabFrame</strong> are:</p>
+<dl>
+<dt>-font =&gt; font</dt>
+<dd>
+<p>Specifies the label's font</p>
+</dd>
+<dt>-foreground =&gt; color</dt>
+<dd>
+<p>Specifies the label's foreground color</p>
+</dd>
+<dt>-label =&gt; text</dt>
+<dd>
+<p>The text of the label to be placed with the Frame.</p>
+</dd>
+<dt>-labelside =&gt; where</dt>
+<dd>
+<p><em>Where</em> can be one of <strong>left</strong>,
+<strong>right</strong>, <strong>top</strong>, <strong>bottom</strong> or
+<strong>acrosstop</strong>. The first four work as might be expected and
+place the label to the left, right, above or below the frame
+respectively. The <strong>acrosstop</strong> creates a grooved frame
+around the central frame and puts the label near the northwest corner
+such that it appears to overwrite the groove.</p>
+</dd>
+<dt>-labelvariable =&gt; scalar_ref</dt>
+<dd>
+<p>Specifies a reference to a variable and used as an alternative to
+-label. If the value of the variable changes, then the widget will be
+updated automatically to reflect the change. Used like
+-textvariable.</p>
+</dd>
+</dl>
+<h1>ADVERTISED SUBWIDGETS</h1>
+<p>See Subwidget in Tk::mega how to use advertised widgets.</p>
+<dl>
+<dt>border</dt>
+<dd>
+<p> Frame used to display the border</p>
+</dd>
+<dt>frame</dt>
+<dd>
+<p> Frame used to create new LabFrame children.</p>
+</dd>
+<dt>label</dt>
+<dd>
+<p> Label used for displaying text</p>
+</dd>
+</dl>
+<h1>EXAMPLE</h1>
+<p>Run the following test program to see this in action:</p>
+<p>use strict; use Tk; require Tk::LabFrame; require Tk::LabEntry; my
+$test = Test this; my $mw = Tk::MainWindow-&gt;new; my $f =
+$mw-&gt;LabFrame(-label =&gt; "This is a label", -labelside =&gt;
+"acrosstop"); $f-&gt;LabEntry(-label =&gt; "Testing", -textvariable
+=&gt; \$test)-&gt;pack; $f-&gt;pack; Tk::MainLoop;</p>
+<h1>BUGS</h1>
+<p>Perhaps <strong>LabFrame</strong> should be subsumed within the
+generic pTk labeled widget mechanism.</p>
+<h1>AUTHOR</h1>
+<p><strong>Rajappa Iyer</strong> rsi@earthling.net</p>
+<p>This code is derived from LabFrame.tcl and LabWidg.tcl in the Tix4.0
+distribution by Ioi Lam. The code may be redistributed under the same
+terms as Perl.</p>

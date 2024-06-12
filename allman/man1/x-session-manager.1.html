@@ -1,0 +1,207 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gnome-session - Start the GNOME desktop environment</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gnome-session [-a|--autostart=DIR] [--session=SESSION]
+[--failsafe|-f] [--debug] [--whale]</strong></p>
+<h1>DESCRIPTION</h1>
+<p>The <em>gnome-session</em> program starts up the GNOME desktop
+environment. This command is typically executed by your login manager
+(either gdm, xdm, or from your X startup scripts). It will load either
+your saved session, or it will provide a default session for the user as
+defined by the system administrator (or the default GNOME installation
+on your system). Note that <em>gnome-session</em> is a wrapper script
+for <em>gnome-session-binary</em>.</p>
+<p>The default session is defined in <strong>gnome.session</strong>, a
+.desktop-like file that is looked for in
+<strong>$XDG_CONFIG_HOME/gnome-session/sessions</strong>,
+<strong>$XDG_CONFIG_DIRS/gnome-session/sessions</strong> and
+<strong>$XDG_DATA_DIRS/gnome-session/sessions</strong>.</p>
+<p>When saving a session, <em>gnome-session</em> saves the currently
+running applications in the
+<strong>$XDG_CONFIG_HOME/gnome-session/saved-session</strong> directory.
+Saving sessions is only supported with the legacy non-systemd startup
+method.</p>
+<p><em>gnome-session</em> is an X11R6 session manager. It can manage
+GNOME applications as well as any X11R6 SM compliant application.</p>
+<h1>OPTIONS</h1>
+<p>The following options are supported:</p>
+<dl>
+<dt><em>--autostart=DIR</em></dt>
+<dd>
+<p>The directory <strong>DIR</strong> to be searched for autostart
+.desktop files. This option can be used multiple times. When this option
+is present, then default autostart directories will not be searched.</p>
+</dd>
+<dt><em>--session=SESSION</em></dt>
+<dd>
+<p>Use the applications defined in <strong>SESSION.session</strong>. If
+not specified, <strong>gnome.session</strong> will be used.</p>
+</dd>
+<dt><em>--builtin</em></dt>
+<dd>
+<p>Use the legacy non-systemd method of managing the user session. This
+is the opposite of the <em>--systemd</em> option.</p>
+</dd>
+<dt><em>--systemd</em></dt>
+<dd>
+<p>Use the systemd method of managing the user session. This is the
+opposite of the <em>--builtin</em> option.</p>
+</dd>
+<dt><em>--failsafe</em></dt>
+<dd>
+<p>Run in fail-safe mode. User-specified applications will not be
+started.</p>
+</dd>
+<dt><em>--debug</em></dt>
+<dd>
+<p>Enable debugging code.</p>
+</dd>
+<dt><em>--whale</em></dt>
+<dd>
+<p>Show the fail whale in a dialog for debugging it.</p>
+</dd>
+</dl>
+<h1>SESSION DEFINITION</h1>
+<p>Sessions are defined in <strong>.session</strong> files, that are
+using a .desktop-like format, with the following keys in the
+<strong>GNOME Session</strong> group:</p>
+<dl>
+<dt><em>Name</em></dt>
+<dd>
+<p>Name of the session. This can be localized.</p>
+</dd>
+<dt><em>RequiredComponents</em></dt>
+<dd>
+<p>List of component identifiers (desktop files) that are required by
+the session. The required components will always run in the session.</p>
+</dd>
+</dl>
+<p>Here is an example of a session definition:</p>
+<pre><code>[GNOME Session]
+Name=GNOME
+RequiredComponents=gnome-shell;gnome-settings-daemon;</code></pre>
+<p>In <strong>systemd</strong> managed sessions the RequiredComponents
+may be provided by systemd units instead. In this case the corresponding
+<strong>.desktop</strong> file needs to contain
+<strong>X-GNOME-HiddenUnderSystemd=true</strong>. <em>gnome-session</em>
+will ignore these components and rely on <em>systemd</em> to manage them
+appropriately, see the <em>systemd</em> for more information on how this
+works.</p>
+<p>The <strong>.session</strong> files are looked for in
+<strong>$XDG_CONFIG_HOME/gnome-session/sessions</strong>,
+<strong>$XDG_CONFIG_DIRS/gnome-session/sessions</strong> and
+<strong>$XDG_DATA_DIRS/gnome-session/sessions</strong>.</p>
+<h1>systemd</h1>
+<p><em>gnome-session</em> can pass much of the session management over
+to systemd (see the <em>--systemd</em> option which may be the default
+since 3.34). In this case, startup components that have
+<strong>X-GNOME-HiddenUnderSystemd=true</strong> set in their
+<strong>.desktop</strong> file will be ignored by
+<em>gnome-session</em>. It instead relies on the fact that these
+components are managed by systemd.</p>
+<p>As of GNOME 3.34 the systemd support is new and the customizing the
+configuration is not yet easily possible. With GNOME 3.34 it may be best
+to use <em>--builtin</em> if session customizations are required. This
+is due to the way that GNOME currently defines the components that will
+be started on each session type.</p>
+<p><strong>systemd</strong> provides the two special targets
+<strong>graphical-session.target</strong> and
+<strong>graphical-session-pre.target</strong> which are fully functional
+and should be used. <em>gnome-session</em> provides the following main
+targets:</p>
+<dl>
+<dt><em>gnome-session.target</em></dt>
+<dd>
+<p>Generic unit that will be active throughout the session. Similar to
+<strong>graphical-session.target</strong>.</p>
+</dd>
+<dt><em>gnome-session-pre.target</em></dt>
+<dd>
+<p>Used for tasks that need to be done before session startup. Similar
+to <strong>graphical-session-pre.target</strong>.</p>
+</dd>
+<dt><em>gnome-session-x11@SESSION.target
+gnome-session-wayland@SESSION.target</em></dt>
+<dd>
+<p>Main unit started for X11/wayland based session.
+<strong>SESSION</strong> is set according to the session that is passed
+in <em>--session</em>.</p>
+</dd>
+<dt><em>gnome-session-x11.target gnome-session-wayland.target</em></dt>
+<dd>
+<p>Convenience units without the session embedded into the target.</p>
+</dd>
+<dt><em>gnome-session@SESSION.target</em></dt>
+<dd>
+<p>Convenience unit with just the <strong>SESSION</strong> information
+embedded.</p>
+</dd>
+<dt><em>gnome-session-x11-services.target</em></dt>
+<dd>
+<p>Special unit started when X11 services are needed. This will be used
+from GNOME 3.36 onwards. Programs will need to use the special
+<strong>GNOME_SETUP_DISPLAY</strong> environment variable instead of
+<em>DISPLAY</em>.</p>
+</dd>
+</dl>
+<p>Note that care must be taken to set appropriate
+<strong>After=</strong> rules. It is also strongly recommended to always
+do this in combination with <strong>BindsTo=</strong> or
+<strong>PartOf=</strong> on one of the core targets (e.g.
+<strong>graphical-session.target</strong>).</p>
+<p>Units are required to set
+<strong>CollectMode=inactive-or-failed</strong>. In addition, it is
+strongly recommended to set <strong>TimeoutStopSec=5</strong> so that
+logout will not be delayed indefinitely in case the process does not
+stop properly.</p>
+<h1>ENVIRONMENT</h1>
+<p><em>gnome-session</em> sets several environment variables for the use
+of its child processes:</p>
+<p><strong>SESSION_MANAGER</strong></p>
+<blockquote>
+<p>This variable is used by session-manager aware clients to contact
+gnome-session.</p>
+</blockquote>
+<p><strong>DISPLAY</strong></p>
+<blockquote>
+<p>This variable is set to the X display being used by
+<em>gnome-session</em>. Note that if the <em>--display</em> option is
+used this might be different from the setting of the environment
+variable when gnome-session is invoked.</p>
+</blockquote>
+<p>Behavior of <em>gnome-session</em> ifself can be modified via the
+following environment variable:</p>
+<p><strong>GNOME_SESSION_AUTOSTART_DIR</strong></p>
+<blockquote>
+<p>This variable specifies a list of directories to the searched for
+autostart files. This variable overrides all directories specified via
+the <em>--autostart</em> option, as well as all default autostart
+directories.</p>
+</blockquote>
+<h1>FILES</h1>
+<p><strong>$XDG_CONFIG_HOME/autostart</strong>
+<strong>$XDG_CONFIG_DIRS/autostart</strong>
+<strong>/usr/share/gnome/autostart</strong></p>
+<blockquote>
+<p>Applications defined via .desktop files in those directories will be
+started on login.</p>
+</blockquote>
+<p><strong>$XDG_CONFIG_HOME/gnome-session/sessions</strong>
+<strong>$XDG_CONFIG_DIRS/gnome-session/sessions</strong>
+<strong>$XDG_DATA_DIRS/gnome-session/sessions</strong></p>
+<blockquote>
+<p>These directories contain the <strong>.session</strong> files that
+can be used with the <em>--session</em> option.</p>
+</blockquote>
+<p><strong>$XDG_CONFIG_HOME/gnome-session/saved-session</strong></p>
+<blockquote>
+<p>This directory contains the list of applications of the saved
+session.</p>
+</blockquote>
+<h1>BUGS</h1>
+<p>If you find bugs in the <em>gnome-session</em> program, please report
+these on https://gitlab.gnome.org/GNOME/gnome-session/issues.</p>
+<h1>SEE ALSO</h1>
+<p><strong>gnome-session-quit(1)</strong></p>

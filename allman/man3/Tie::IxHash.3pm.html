@@ -1,0 +1,151 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tie::IxHash - ordered associative arrays for Perl</p>
+<h1>SYNOPSIS</h1>
+<p># simple usage use Tie::IxHash; tie HASHVARIABLE, Tie::IxHash [,
+LIST]; # OO interface with more powerful features use Tie::IxHash;
+TIEOBJECT = Tie::IxHash-&gt;new( [LIST] ); TIEOBJECT-&gt;Splice( OFFSET
+[, LENGTH [, LIST]] ); TIEOBJECT-&gt;Push( LIST ); TIEOBJECT-&gt;Pop;
+TIEOBJECT-&gt;Shift; TIEOBJECT-&gt;Unshift( LIST ); TIEOBJECT-&gt;Keys(
+[LIST] ); TIEOBJECT-&gt;Values( [LIST] ); TIEOBJECT-&gt;Indices( LIST );
+TIEOBJECT-&gt;Delete( [LIST] ); TIEOBJECT-&gt;Replace( OFFSET, VALUE,
+[KEY] ); TIEOBJECT-&gt;Reorder( LIST ); TIEOBJECT-&gt;SortByKey;
+TIEOBJECT-&gt;SortByValue; TIEOBJECT-&gt;Length;</p>
+<h1>DESCRIPTION</h1>
+<p>This Perl module implements Perl hashes that preserve the order in
+which the hash elements were added. The order is not affected when
+values corresponding to existing keys in the IxHash are changed. The
+elements can also be set to any arbitrary supplied order. The familiar
+perl array operations can also be performed on the IxHash.</p>
+<h2>Standard "TIEHASH" Interface</h2>
+<p>The standard <code>TIEHASH</code> mechanism is available. This
+interface is recommended for simple uses, since the usage is exactly the
+same as regular Perl hashes after the <code>tie</code> is declared.</p>
+<h2>Object Interface</h2>
+<p>This module also provides an extended object-oriented interface that
+can be used for more powerful operations with the IxHash. The following
+methods are available:</p>
+<dl>
+<dt>FETCH, STORE, DELETE, EXISTS</dt>
+<dd>
+<p>These standard <code>TIEHASH</code> methods mandated by Perl can be
+used directly. See the <code>tie</code> entry in
+<strong>perlfunc</strong> (1) for details.</p>
+</dd>
+<dt>Push, Pop, Shift, Unshift, Splice</dt>
+<dd>
+<p>These additional methods resembling Perl functions are available for
+operating on key-value pairs in the IxHash. The behavior is the same as
+the corresponding perl functions, except when a supplied hash key
+already exists in the hash. In that case, the existing value is updated
+but its order is not affected. To unconditionally alter the order of a
+supplied key-value pair, first <code>DELETE</code> the IxHash
+element.</p>
+</dd>
+<dt>Keys</dt>
+<dd>
+<p>Returns an array of IxHash element keys corresponding to the list of
+supplied indices. Returns an array of all the keys if called without
+arguments. Note the return value is mostly only useful when used in a
+list context (since perl will convert it to the number of elements in
+the array when used in a scalar context, and that may not be very
+useful). If a single argument is given, returns the single key
+corresponding to the index. This is usable in either scalar or list
+context.</p>
+</dd>
+<dt>Values</dt>
+<dd>
+<p>Returns an array of IxHash element values corresponding to the list
+of supplied indices. Returns an array of all the values if called
+without arguments. Note the return value is mostly only useful when used
+in a list context (since perl will convert it to the number of elements
+in the array when used in a scalar context, and that may not be very
+useful). If a single argument is given, returns the single value
+corresponding to the index. This is usable in either scalar or list
+context.</p>
+</dd>
+<dt>Indices</dt>
+<dd>
+<p>Returns an array of indices corresponding to the supplied list of
+keys. Note the return value is mostly only useful when used in a list
+context (since perl will convert it to the number of elements in the
+array when used in a scalar context, and that may not be very useful).
+If a single argument is given, returns the single index corresponding to
+the key. This is usable in either scalar or list context.</p>
+</dd>
+<dt>Delete</dt>
+<dd>
+<p>Removes elements with the supplied keys from the IxHash.</p>
+</dd>
+<dt>Replace</dt>
+<dd>
+<p>Substitutes the IxHash element at the specified index with the
+supplied value-key pair. If a key is not supplied, simply substitutes
+the value at index with the supplied value. If an element with the
+supplied key already exists, it will be removed from the IxHash
+first.</p>
+</dd>
+<dt>Reorder</dt>
+<dd>
+<p>This method can be used to manipulate the internal order of the
+IxHash elements by supplying a list of keys in the desired order. Note
+however, that any IxHash elements whose keys are not in the list will be
+removed from the IxHash.</p>
+</dd>
+<dt>Length</dt>
+<dd>
+<p>Returns the number of IxHash elements.</p>
+</dd>
+<dt>SortByKey</dt>
+<dd>
+<p>Reorders the IxHash elements by textual comparison of the keys.</p>
+</dd>
+<dt>SortByValue</dt>
+<dd>
+<p>Reorders the IxHash elements by textual comparison of the values.</p>
+</dd>
+<dt>Clear</dt>
+<dd>
+<p>Resets the IxHash to its pristine state: with no elements at all.</p>
+</dd>
+</dl>
+<h1>EXAMPLE</h1>
+<p>use Tie::IxHash; # simple interface $t = tie(%myhash, Tie::IxHash, a
+=&gt; 1, b =&gt; 2); %myhash = (first =&gt; 1, second =&gt; 2, third
+=&gt; 3); $myhash{fourth} = 4; @keys = keys %myhash; @values = values
+%myhash; print("y") if exists $myhash{third}; # OO interface $t =
+Tie::IxHash-&gt;new(first =&gt; 1, second =&gt; 2, third =&gt; 3);
+$t-&gt;Push(fourth =&gt; 4); # same as $myhash{fourth} = 4; ($k, $v) =
+$t-&gt;Pop; # $k is fourth, $v is 4 $t-&gt;Unshift(neg =&gt; -1, zeroth
+=&gt; 0); ($k, $v) = $t-&gt;Shift; # $k is neg, $v is -1 @oneandtwo =
+$t-&gt;Splice(1, 2, foo =&gt; 100, bar =&gt; 101); @keys = $t-&gt;Keys;
+@values = $t-&gt;Values; @indices = $t-&gt;Indices(foo, zeroth);
+@itemkeys = $t-&gt;Keys(@indices); @itemvals = $t-&gt;Values(@indices);
+$t-&gt;Replace(2, 0.3, other); $t-&gt;Delete(second, zeroth); $len =
+$t-&gt;Length; # number of key-value pairs $t-&gt;Reorder(reverse
+@keys); $t-&gt;SortByKey; $t-&gt;SortByValue;</p>
+<h1>BUGS</h1>
+<p>You cannot specify a negative length to <code>Splice</code>. Negative
+indexes are OK, though.</p>
+<h1>NOTE</h1>
+<p>Indexing always begins at 0 (despite the current <code>$[</code>
+setting) for all the functions.</p>
+<h1>TODO</h1>
+<p>Addition of elements with keys that already exist to the end of the
+IxHash must be controlled by a switch.</p>
+<p>Provide <code>TIEARRAY</code> interface when it stabilizes in
+Perl.</p>
+<p>Rewrite using XSUBs for efficiency.</p>
+<h1>AUTHOR</h1>
+<p>Gurusamy Sarathy gsar@umich.edu</p>
+<p>Copyright (c) 1995 Gurusamy Sarathy. All rights reserved. This
+program is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.</p>
+<h1>VERSION</h1>
+<p>Version 1.23</p>
+<h1>SEE ALSO</h1>
+<p><strong>perl</strong> (1)</p>

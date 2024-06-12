@@ -1,0 +1,47 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>avahi-autoipd.action - avahi-autoipd action script</p>
+<h1>SYNOPSIS</h1>
+<p><strong>/etc/avahi/avahi-autoipd.action</strong></p>
+<h1>DESCRIPTION</h1>
+<p><em>avahi-autoipd.action</em> is the action script that is called
+whenever an IP address has been acquired by avahi-autoipd or when it
+detected an IP address conflict. The script should add or remove the
+specified address from the specified network interface.</p>
+<h1>PARAMETERS</h1>
+<dl>
+<dt><strong>argv[1]</strong> An event string: one of BIND, CONFLICT,
+UNBIND or STOP. If BIND is passed an IP address has been successfully
+acquired and the script shall add it to the network interface. If
+CONFLICT is passed avahi-autopid detected a IP address on the local
+network, the action script should remove the configured IP address. If
+UNBIND is passed the IP address should be removed from the interface,
+too, because a routable address has been configured to the interface by
+some other program. If STOP is passed the avahi-autoipd is being
+shutdown and the action script should remove the IP address. In short:
+on BIND the address should be added to the interface, on CONFLICT,
+UNBIND or STOP it should be removed. </dt>
+<dd>
+<dl>
+<dt><strong>argv[2]</strong> The network interface name.</dt>
+<dd>
+<dl>
+<dt><strong>argv[3]</strong> An IP address from the IPv4LL range.</dt>
+<dd>
+<h1>AUTHORS</h1>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>The Avahi Developers &lt;avahi (at) lists (dot) freedesktop (dot)
+org&gt;; Avahi is available from <strong>http://avahi.org/</strong></p>
+<h1>SEE ALSO</h1>
+<p><strong>avahi-autoipd(8)</strong>,
+<strong>dhclient-script(8)</strong>, <strong>ip(8)</strong>,
+<strong>ifconfig(8)</strong></p>
+<h1>COMMENTS</h1>
+<p>This man page was written using <strong>xml2man(1)</strong> by Oliver
+Kurth.</p>

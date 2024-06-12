@@ -1,0 +1,189 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lslogins - display information about known users in the system</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lslogins</strong> [options]
+[<strong>-s</strong>|<strong>-u</strong>[=<em>UID</em>]]
+[<strong>-g</strong> <em>groups</em>] [<strong>-l</strong>
+<em>logins</em>] [<em>username</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Examine the wtmp and btmp logs, <em>/etc/shadow</em> (if necessary)
+and <em>/passwd</em> and output the desired data.</p>
+<p>The optional argument <em>username</em> forces
+<strong>lslogins</strong> to print all available details about the
+specified user only. In this case the output format is different than in
+case of <strong>-l</strong> or <strong>-g</strong> and unknown is
+<em>username</em> reported as an error.</p>
+<p>The default action is to list info about all the users in the
+system.</p>
+<h1>OPTIONS</h1>
+<p>Mandatory arguments to long options are mandatory for short options
+too.</p>
+<p><strong>-a</strong>, <strong>--acc-expiration</strong></p>
+<blockquote>
+<p>Display data about the date of last password change and the account
+expiration date (see <strong>shadow</strong>(5) for more info).
+(Requires root privileges.)</p>
+</blockquote>
+<p><strong>--btmp-file</strong> <em>path</em></p>
+<blockquote>
+<p>Alternate path for btmp.</p>
+</blockquote>
+<p><strong>-c</strong>, <strong>--colon-separate</strong></p>
+<blockquote>
+<p>Separate info about each user with a colon instead of a newline.</p>
+</blockquote>
+<p><strong>-e</strong>, <strong>--export</strong></p>
+<blockquote>
+<p>Output data in the format of NAME=VALUE. See also option
+<strong>--shell</strong>.</p>
+</blockquote>
+<p><strong>-f</strong>, <strong>--failed</strong></p>
+<blockquote>
+<p>Display data about the users' last failed login attempts.</p>
+</blockquote>
+<p><strong>-G</strong>, <strong>--supp-groups</strong></p>
+<blockquote>
+<p>Show information about supplementary groups.</p>
+</blockquote>
+<p><strong>-g</strong>, <strong>--groups</strong>=<em>groups</em></p>
+<blockquote>
+<p>Only show data of users belonging to <em>groups</em>. More than one
+group may be specified; the list has to be comma-separated. Unknown
+group names are ignored.</p>
+<p>Note that the relation between user and group may be invisible for
+the primary group if the user is not explicitly specified as group
+member (e.g., in <em>/etc/group</em>). If the command
+<strong>lslogins</strong> scans for groups then it uses the groups
+database only, and the user database with primary GID is not used at
+all.</p>
+</blockquote>
+<p><strong>-L</strong>, <strong>--last</strong></p>
+<blockquote>
+<p>Display data containing information about the users' last login
+sessions.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--logins</strong>=<em>logins</em></p>
+<blockquote>
+<p>Only show data of users with a login specified in <em>logins</em>
+(user names or user IDs). More than one login may be specified; the list
+has to be comma-separated. Unknown login names are ignored.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--newline</strong></p>
+<blockquote>
+<p>Display each piece of information on a separate line.</p>
+</blockquote>
+<p><strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print a header line.</p>
+</blockquote>
+<p><strong>--notruncate</strong></p>
+<blockquote>
+<p>Don’t truncate output.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Specify which output columns to print. The default list of columns
+may be extended if <em>list</em> is specified in the format
+<em>+list</em>.</p>
+</blockquote>
+<p><strong>--output-all</strong></p>
+<blockquote>
+<p>Output all available columns. <strong>--help</strong> to get a list
+of all supported columns.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--pwd</strong></p>
+<blockquote>
+<p>Display information related to login by password (see also
+<strong>-afL</strong>).</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--raw</strong></p>
+<blockquote>
+<p>Raw output (no columnation).</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--system-accs</strong></p>
+<blockquote>
+<p>Show system accounts. These are by default all accounts with a UID
+between 101 and 999 (inclusive), with the exception of either nobody or
+nfsnobody (UID 65534). This hardcoded default may be overwritten by
+parameters <strong>SYS_UID_MIN</strong> and <strong>SYS_UID_MAX</strong>
+in the file <em>/etc/login.defs</em>.</p>
+</blockquote>
+<p><strong>--time-format</strong> <em>type</em></p>
+<blockquote>
+<p>Display dates in short, full or iso format. The default is short,
+this time format is designed to be space efficient and human
+readable.</p>
+</blockquote>
+<p><strong>-u</strong>, <strong>--user-accs</strong></p>
+<blockquote>
+<p>Show user accounts. These are by default all accounts with UID above
+1000 (inclusive), with the exception of either nobody or nfsnobody (UID
+65534). This hardcoded default maybe overwritten by parameters UID_MIN
+and UID_MAX in the file <em>/etc/login.defs</em>.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<p><strong>--wtmp-file</strong> <em>path</em></p>
+<blockquote>
+<p>Alternate path for wtmp.</p>
+</blockquote>
+<p><strong>--lastlog</strong> <em>path</em></p>
+<blockquote>
+<p>Alternate path for <strong>lastlog</strong>(8).</p>
+</blockquote>
+<p><strong>y-</strong>, <strong>--shell</strong></p>
+<blockquote>
+<p>The column name will be modified to contain only characters allowed
+for shell variable identifiers. This is usable, for example, with
+<strong>--export</strong>. Note that this feature has been automatically
+enabled for <strong>--export</strong> in version 2.37, but due to
+compatibility issues, now it’s necessary to request this behavior by
+<strong>--shell</strong>.</p>
+</blockquote>
+<p><strong>-Z</strong>, <strong>--context</strong></p>
+<blockquote>
+<p>Display the users' security context.</p>
+</blockquote>
+<p><strong>-z</strong>, <strong>--print0</strong></p>
+<blockquote>
+<p>Delimit user entries with a nul character, instead of a newline.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p>0</p>
+<blockquote>
+<p>if OK,</p>
+</blockquote>
+<p>1</p>
+<blockquote>
+<p>if incorrect arguments specified,</p>
+</blockquote>
+<p>2</p>
+<blockquote>
+<p>if a serious error occurs (e.g., a corrupt log).</p>
+</blockquote>
+<h1>NOTES</h1>
+<p>The default UID thresholds are read from
+<em>/etc/login.defs</em>.</p>
+<h1>HISTORY</h1>
+<p>The <strong>lslogins</strong> utility is inspired by the
+<strong>logins</strong> utility, which first appeared in FreeBSD
+4.10.</p>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>group</strong>(5), <strong>passwd</strong>(5),
+<strong>shadow</strong>(5), <strong>utmp</strong>(5)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>lslogins</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

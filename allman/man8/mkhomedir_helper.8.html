@@ -1,0 +1,24 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkhomedir_helper - Helper binary that creates home directories</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkhomedir_helper</strong> {<em>user</em>} [<em>umask</em> [
+<em>path-to-skel</em> [ <em>home_mode</em> ] ]]</p>
+<h1>DESCRIPTION</h1>
+<p><em>mkhomedir_helper</em> is a helper program for the
+<em>pam_mkhomedir</em> module that creates home directories and
+populates them with contents of the specified skel directory.</p>
+<p>The default value of <em>umask</em> is 0022 and the default value of
+<em>path-to-skel</em> is <em>/etc/skel</em>. The default value of
+<em>home_mode</em> is computed from the value of <em>umask</em>.</p>
+<p>The helper is separated from the module to not require direct access
+from login SELinux domains to the contents of user home directories. The
+SELinux domain transition happens when the module is executing the
+<em>mkhomedir_helper</em>.</p>
+<p>The helper never touches home directories if they already exist.</p>
+<h1>SEE ALSO</h1>
+<p><strong>pam_mkhomedir</strong>(8)</p>
+<h1>AUTHOR</h1>
+<p>Written by Tomas Mraz based on the code originally in
+<em>pam_mkhomedir</em> module.</p>

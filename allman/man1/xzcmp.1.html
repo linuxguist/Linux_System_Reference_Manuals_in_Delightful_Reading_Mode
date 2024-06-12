@@ -1,0 +1,38 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xzcmp, xzdiff, lzcmp, lzdiff - compare compressed files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xzcmp</strong> [<em>cmp_options</em>] <em>file1</em>
+[<em>file2</em>]<br />
+<strong>xzdiff</strong> [<em>diff_options</em>] <em>file1</em>
+[<em>file2</em>]<br />
+<strong>lzcmp</strong> [<em>cmp_options</em>] <em>file1</em>
+[<em>file2</em>]<br />
+<strong>lzdiff</strong> [<em>diff_options</em>] <em>file1</em>
+[<em>file2</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>xzcmp</strong> and <strong>xzdiff</strong> invoke
+<strong>cmp</strong>(1) or <strong>diff</strong>(1) on files compressed
+with <strong>xz</strong>(1), <strong>lzma</strong>(1),
+<strong>gzip</strong>(1), <strong>bzip2</strong>(1),
+<strong>lzop</strong>(1), or <strong>zstd</strong>(1). All options
+specified are passed directly to <strong>cmp</strong>(1) or
+<strong>diff</strong>(1). If only one file is specified, then the files
+compared are <em>file1</em> (which must have a suffix of a supported
+compression format) and <em>file1</em> from which the compression format
+suffix has been stripped. If two files are specified, then they are
+uncompressed if necessary and fed to <strong>cmp</strong>(1) or
+<strong>diff</strong>(1). The exit status from <strong>cmp</strong>(1)
+or <strong>diff</strong>(1) is preserved unless a decompression error
+occurs; then exit status is 2.</p>
+<p>The names <strong>lzcmp</strong> and <strong>lzdiff</strong> are
+provided for backward compatibility with LZMA Utils.</p>
+<h1>SEE ALSO</h1>
+<p><strong>cmp</strong>(1), <strong>diff</strong>(1),
+<strong>xz</strong>(1), <strong>gzip</strong>(1),
+<strong>bzip2</strong>(1), <strong>lzop</strong>(1),
+<strong>zstd</strong>(1), <strong>zdiff</strong>(1)</p>
+<h1>BUGS</h1>
+<p>Messages from the <strong>cmp</strong>(1) or <strong>diff</strong>(1)
+programs refer to temporary filenames instead of those specified.</p>

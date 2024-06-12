@@ -1,0 +1,125 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xload - system load average display for X</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xload</strong> [-<em>toolkitoption</em> ...] [-scale
+<em>integer</em>] [-update <em>seconds</em>]<br />
+[-hl <em>color</em>] [-highlight <em>color</em>] [-remote
+<em>host</em>]<br />
+[-jumpscroll <em>pixels</em>] [-label <em>string</em>] [-nolabel]
+[-lights]</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>xload</em> program displays a periodically updating histogram
+of the system load average.</p>
+<h1>OPTIONS</h1>
+<p><em>Xload</em> accepts all of the standard X Toolkit command line
+options (see <strong>X</strong>(7)). The order of the options is
+unimportant. xload also accepts the following additional options:</p>
+<dl>
+<dt><strong>-hl</strong> <em>color</em> or <strong>-highlight</strong>
+<em>color</em></dt>
+<dd>
+<p>This option specifies the color of the scale lines.</p>
+</dd>
+<dt><strong>-jumpscroll <em>pixels</em></strong></dt>
+<dd>
+<p>The number of pixels to shift the graph to the left when the graph
+reaches the right edge of the window. The default value is 1/2 the width
+of the current window. Smooth scrolling can be achieved by setting it to
+1.</p>
+</dd>
+<dt><strong>-label <em>string</em></strong></dt>
+<dd>
+<p>The string to put into the label above the load average.</p>
+</dd>
+<dt><strong>-nolabel</strong></dt>
+<dd>
+<p>If this command line option is specified then no label will be
+displayed above the load graph.</p>
+</dd>
+<dt><strong>-lights</strong></dt>
+<dd>
+<p>When specified, this option causes <em>xload</em> to display the
+current load average by using the keyboard leds; for a load average of
+<em>n</em>, xload lights the first <em>n</em> keyboard leds. This option
+turns off the usual screen display.</p>
+</dd>
+<dt><strong>-scale <em>integer</em></strong></dt>
+<dd>
+<p>This option specifies the minimum number of tick marks in the
+histogram, where one division represents one load average point. If the
+load goes above this number, <em>xload</em> will create more divisions,
+but it will never use fewer than this number. The default is 1.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-update <em>seconds</em></strong></dt>
+<dd>
+<p>This option specifies the interval in seconds at which <em>xload</em>
+updates its display. The minimum amount of time allowed between updates
+is 1 second. The default is 10.</p>
+</dd>
+<dt><strong>-remote <em>host</em></strong></dt>
+<dd>
+<p>This option tells <em>xload</em> to display the load of <em>host</em>
+instead of <em>localhost</em>. <em>Xload</em> gets the information from
+the <em>rwhod</em> database and consequently requires <em>rwhod</em> to
+be executing both on <em>localhost</em> and <em>host</em>.</p>
+</dd>
+</dl>
+<h1>RESOURCES</h1>
+<p>In addition to the resources available to each of the widgets used by
+<em>xload</em> there is one resource defined by the application
+itself.</p>
+<dl>
+<dt><strong>showLabel (<em>class</em>
+<em>Boolean</em><strong>)</strong></strong></dt>
+<dd>
+<p>If False then no label will be displayed.</p>
+</dd>
+</dl>
+<h1>WIDGETS</h1>
+<p>In order to specify resources, it is useful to know the hierarchy of
+the widgets which compose <em>xload</em>. In the notation below,
+indentation indicates hierarchical structure. The widget class name is
+given first, followed by the widget instance name.</p>
+<pre><code>XLoad  xload
+        Paned  paned
+                Label  label
+                StripChart  load</code></pre>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p>to get the default host and display number.</p>
+</dd>
+<dt><strong>XENVIRONMENT</strong></dt>
+<dd>
+<p>to get the name of a resource file that overrides the global
+resources stored in the RESOURCE_MANAGER property.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/X11/app-defaults/XLoad</em></dt>
+<dd>
+<p>specifies required resources</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>X</strong>(7), <strong>xrdb</strong>(1),
+<strong>mem</strong>(4), Athena StripChart Widget.</p>
+<h1>BUGS</h1>
+<p>On older platforms, this program may require the ability to open and
+read the special system file <em>/dev/kmem</em>. Sites that do not allow
+general access to this file may need to make <em>xload</em> belong to
+the same group as <em>/dev/kmem</em> and turn on the <em>set group
+id</em> permission flag.</p>
+<p>Reading the load average is inherently non-portable. Therefore, the
+routine used to read it (get_load.c) must be ported to each new
+operating system.</p>
+<h1>AUTHORS</h1>
+<p>K. Shane Hartman (MIT-LCS) and Stuart A. Malone (MIT-LCS);<br />
+with features added by Jim Gettys (MIT-Athena), Bob Scheifler (MIT-LCS),
+Tony Della Fera (MIT-Athena), and Chris Peterson (MIT-LCS).</p>

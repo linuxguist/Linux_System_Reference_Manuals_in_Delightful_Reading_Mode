@@ -1,0 +1,41 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xdpyinfo - display information utility for X</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xdpyinfo</strong> [-display <em>displayname</em>]
+[-queryExtensions] [-ext <em>extension-name</em>] [-version]</p>
+<h1>DESCRIPTION</h1>
+<p><em>Xdpyinfo</em> is a utility for displaying information about an X
+server. It is used to examine the capabilities of a server, the
+predefined values for various parameters used in communicating between
+clients and the server, and the different types of screens and visuals
+that are available.</p>
+<p>By default, numeric information (opcode, base event, base error)
+about protocol extensions is not displayed. This information can be
+obtained with the <strong>-queryExtensions</strong> option. Use of this
+option on servers that dynamically load extensions will likely cause all
+possible extensions to be loaded, which can be slow and can consume
+significant server resources.</p>
+<p>Detailed information about a particular extension is displayed with
+the <strong>-ext</strong> <em>extensionName</em> option. If
+<em>extensionName</em> is <strong>all</strong>, information about all
+extensions supported by both <em>xdpyinfo</em> and the server is
+displayed.</p>
+<p>If <strong>-version</strong> is specified, xdpyinfo prints its
+version and exits, without contacting the X server.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p>To get the default host, display number, and screen.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><em>X</em>(7), <em>xprop</em>(1), <em>xrdb</em>(1),
+<em>xwininfo</em>(1), <em>xrandr</em>(1), <em>xdriinfo</em>(1),
+<em>xvinfo</em>(1), <em>glxinfo</em>(1)</p>
+<h1>AUTHOR</h1>
+<p>Jim Fulton, MIT X Consortium<br />
+Support for the XFree86-VidModeExtension, XFree86-DGA, XFree86-Misc, and
+XKB extensions added by Joe Moss</p>

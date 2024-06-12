@@ -1,0 +1,126 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>zramctl - set up and control zram devices</p>
+<h1>SYNOPSIS</h1>
+<p>Get info:</p>
+<blockquote>
+<p><strong>zramctl</strong> [options]</p>
+</blockquote>
+<p>Reset zram:</p>
+<blockquote>
+<p><strong>zramctl</strong> <strong>-r</strong> <em>zramdev</em>...</p>
+</blockquote>
+<p>Print name of first unused zram device:</p>
+<blockquote>
+<p><strong>zramctl</strong> <strong>-f</strong></p>
+</blockquote>
+<p>Set up a zram device:</p>
+<blockquote>
+<p><strong>zramctl</strong> [<strong>-f</strong> | <em>zramdev</em>]
+[<strong>-s</strong> <em>size</em>] [<strong>-t</strong>
+<em>number</em>] [<strong>-a</strong> <em>algorithm</em>]</p>
+</blockquote>
+<h1>DESCRIPTION</h1>
+<p><strong>zramctl</strong> is used to quickly set up zram device
+parameters, to reset zram devices, and to query the status of used zram
+devices.</p>
+<p>If no option is given, all non-zero size zram devices are shown.</p>
+<p>Note that <em>zramdev</em> node specified on command line has to
+already exist. The command <strong>zramctl</strong> creates a new
+<em>/dev/zram&lt;N&gt;</em> nodes only when <strong>--find</strong>
+option specified. It’s possible (and common) that after system boot
+<em>/dev/zram&lt;N&gt;</em> nodes are not created yet.</p>
+<h1>OPTIONS</h1>
+<p><strong>-a</strong>, <strong>--algorithm
+lzo</strong>|<strong>lz4</strong>|<strong>lz4hc</strong>|<strong>deflate</strong>|<strong>842</strong>|<strong>zstd</strong></p>
+<blockquote>
+<p>Set the compression algorithm to be used for compressing data in the
+zram device.</p>
+</blockquote>
+<p><strong>-f</strong>, <strong>--find</strong></p>
+<blockquote>
+<p>Find the first unused zram device. If a <strong>--size</strong>
+argument is present, then initialize the device.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print a header line in status output.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Define the status output columns to be used. If no output arrangement
+is specified, then a default set is used. Use <strong>--help</strong> to
+get a list of all supported columns.</p>
+</blockquote>
+<p><strong>--output-all</strong></p>
+<blockquote>
+<p>Output all available columns.</p>
+</blockquote>
+<p><strong>--raw</strong></p>
+<blockquote>
+<p>Use the raw format for status output.</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--reset</strong></p>
+<blockquote>
+<p>Reset the options of the specified zram device(s). Zram device
+settings can be changed only after a reset.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--size</strong> <em>size</em></p>
+<blockquote>
+<p>Create a zram device of the specified <em>size</em>. Zram devices are
+aligned to memory pages; when the requested <em>size</em> is not a
+multiple of the page size, it will be rounded up to the next multiple.
+When not otherwise specified, the unit of the <em>size</em> parameter is
+bytes.</p>
+<p>The <em>size</em> argument may be followed by the multiplicative
+suffixes KiB (=1024), MiB (=1024*1024), and so on for GiB, TiB, PiB,
+EiB, ZiB and YiB (the "iB" is optional, e.g., "K" has the same meaning
+as "KiB") or the suffixes KB (=1000), MB (=1000*1000), and so on for GB,
+TB, PB, EB, ZB and YB.</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--streams</strong> <em>number</em></p>
+<blockquote>
+<p>Set the maximum number of compression streams that can be used for
+the device. The default is use all CPUs and one stream for kernels older
+than 4.6.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>zramctl</strong> returns 0 on success, nonzero on
+failure.</p>
+<h1>FILES</h1>
+<p><em>/dev/zram[0..N]</em></p>
+<blockquote>
+<p>zram block devices</p>
+</blockquote>
+<h1>EXAMPLE</h1>
+<p>The following commands set up a zram device with a size of one
+gigabyte and use it as swap device.</p>
+<blockquote>
+<pre><code> # zramctl --find --size 1024M
+ /dev/zram0
+ # mkswap /dev/zram0
+ # swapon /dev/zram0
+ ...
+ # swapoff /dev/zram0
+ # zramctl --reset /dev/zram0</code></pre>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><em>Linux kernel documentation</em>
+&lt;http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/admin-guide/blockdev/zram.rst&gt;</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>zramctl</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

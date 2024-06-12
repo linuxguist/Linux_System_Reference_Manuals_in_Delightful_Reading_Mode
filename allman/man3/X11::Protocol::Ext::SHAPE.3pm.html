@@ -1,0 +1,41 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>X11::Protocol::Ext::SHAPE - Perl module for the X11 Protocol
+Nonrectangular Window Shape Extension</p>
+<h1>SYNOPSIS</h1>
+<p>use X11::Protocol; $x = X11::Protocol-&gt;new($ENV{DISPLAY});
+$x-&gt;init_extension(SHAPE) or die;</p>
+<h1>DESCRIPTION</h1>
+<p>This module is used by the X11::Protocol module to participate in the
+shaped window extension to the X protocol, allowing windows to be of any
+shape, not just rectangles.</p>
+<h1>SYMBOLIC CONSTANTS</h1>
+<p>This extension adds the constant types 'ShapeKind' and 'ShapeOp',
+with values as defined in the standard.</p>
+<h1>EVENTS</h1>
+<p>This extension adds the event type 'ShapeNotify', with values as
+specified in the standard. This event is selected using the
+<strong>ShapeSelectInput()</strong> request.</p>
+<h1>REQUESTS</h1>
+<p>This extension adds several requests, called as shown below:</p>
+<p>$x-&gt;ShapeQueryVersion =&gt; ($major, $minor)
+$x-&gt;ShapeRectangles($dest, $destKind, $op, $xOff, $yOff, $ordering,
+@rectangles) $x-&gt;ShapeMask($dest, $destKind, $op, $xOff, $yOff,
+$source) $x-&gt;ShapeCombine($dest, $destKind, $op, $xOff, $yOff,
+$source, $sourceKind) $x-&gt;ShapeOffset($dest, $destKind, $xOff, $yOff)
+$x-&gt;ShapeQueryExtents($dest) =&gt; ($boundingShaped, $clipShaped,
+($xBoundingShape, $yBoundingShape, $widthBoundingShape,
+$heightBoundingShape) ($xClipShape, $yClipShape, $widthClipShape,
+$heightClipShape)) $x-&gt;ShapeSelectInput($window, $enable)
+$x-&gt;ShapeInputSelected($window) =&gt; $enable
+$x-&gt;ShapeGetRectangles($window, $kind) =&gt; ($ordering, [$x, $y,
+$width, $height], ...)</p>
+<h1>AUTHOR</h1>
+<p>Stephen McCamant &lt;SMCCAM@cpan.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>perl</strong> (1), X11::Protocol, <em>Nonrectangular Window
+Shape Extension (X Consortium Standard)</em>.</p>

@@ -1,0 +1,172 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pw-top - The PipeWire process viewer</p>
+<h1>SYNOPSIS</h1>
+<pre><code>pw-top [options]</code></pre>
+<h1>DESCRIPTION</h1>
+<p>The <em>pw-top</em> program provides a dynamic real-time view of the
+pipewire node and device statistics.</p>
+<p>A hierarchical view is shown of Driver nodes and follower nodes. The
+Driver nodes are actively using a timer to schedule dataflow in the
+followers. The followers of a driver node as shown below their driver
+with a + sign in a tree-like representation.</p>
+<p>The columns presented are as follows:</p>
+<blockquote>
+<dl>
+<dt><strong>S</strong></dt>
+<dd>
+<blockquote>
+<dl>
+<dt><strong>Node status.</strong></dt>
+<dd>
+<p>E = ERROR C = CREATING S = SUSPENDED I = IDLE R = RUNNING</p>
+</dd>
+</dl>
+</blockquote>
+</dd>
+</dl>
+<dl>
+<dt><strong>ID</strong></dt>
+<dd>
+<p>The ID of the pipewire node/device, as found in <em>pw-dump</em> and
+<em>pw-cli</em></p>
+</dd>
+<dt><strong>QUANT</strong></dt>
+<dd>
+<p>The current quantum (for drivers) and the suggested quantum for
+follower nodes.</p>
+<p>The quantum by itself needs to be divided by the RATE column to
+calculate the duration of a scheduling period in fractions of a
+second.</p>
+<p>For a QUANT of 1024 and a RATE of 48000, the duration of one period
+in the graph is 1024/48000 or 21.3 milliseconds.</p>
+<p>Follower nodes can have a 0 QUANT field, which means that the node
+does not have a suggestion for the quantum and thus uses what the driver
+selected.</p>
+<p>The driver will use the lowest quantum of any of the followers. If
+none of the followers select a quantum, the default quantum in the
+pipewire configuration file will be used.</p>
+<p>The QUANT on the drivers usually translates directly into the number
+of audio samples processed per processing cycle of the graph.</p>
+<p>See also
+<em>https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/FAQ#pipewire-buffering-explained</em></p>
+</dd>
+<dt><strong>RATE</strong></dt>
+<dd>
+<p>The current rate (for drivers) and the suggested rate for follower
+nodes.</p>
+<p>This is the rate at which the <em>graph</em> processes data and needs
+to be combined with the QUANT value to derive the duration of a
+processing cycle in the graph.</p>
+<p>Some nodes can have a 0 RATE, which means that they don't have any
+rate suggestion for the graph. Nodes that suggest a rate can make the
+graph switch rates if the graph is otherwise idle and the new rate is
+allowed as a possible graph rate (see the pipewire configuration
+file).</p>
+<p>The RATE on (audio) driver nodes usually also translates directly to
+the samplerate used by the device. Although some devices might not be
+able to operate at the given samplerate, in which case resampling will
+need to be done. The negotiated samplerate with the device and stream
+can be found in the FORMAT column.</p>
+</dd>
+<dt><strong>WAIT</strong></dt>
+<dd>
+<p>The waiting time of a node is the elapsed time between when the node
+is ready to start processing and when it actually started
+processing.</p>
+<p>For Driver nodes, this is the time between when the node wakes up to
+start processing the graph and when the driver (and thus also the graph)
+completes a cycle. The WAIT time for driver is thus the elapsed time
+processing the graph.</p>
+<p>For follower nodes, it is the time spent between being woken up (when
+all dependencies of the node are satisfied) and when processing starts.
+The WAIT time for follower nodes is thus mostly caused by context
+switching.</p>
+<p>A value of --- means that the node was not signaled. A value of +++
+means that the node was signaled but not awake.</p>
+</dd>
+<dt><strong>BUSY</strong></dt>
+<dd>
+<p>The processing time is started when the node starts processing until
+it completes and wakes up the next nodes in the graph.</p>
+<p>A value of --- means that the node was not started. A value of +++
+means that the node was started but did not complete.</p>
+</dd>
+<dt><strong>W/Q</strong></dt>
+<dd>
+<p>Ratio of WAIT / QUANT.</p>
+<p>The W/Q time of the driver node is a good measure of the graph load.
+The running averages of the driver W/Q ratios are used as the DSP load
+in other (JACK) tools.</p>
+<p>Values of --- and +++ are copied from the WAIT column.</p>
+</dd>
+<dt><strong>B/Q</strong></dt>
+<dd>
+<p>Ratio of BUSY / QUANT</p>
+<p>This is a good measure of the load of a particular driver or follower
+node.</p>
+<p>Values of --- and +++ are copied from the BUSY column.</p>
+</dd>
+<dt><strong>ERR</strong></dt>
+<dd>
+<p>Total of Xruns and Errors</p>
+<p>Xruns for drivers are when the graph did not complete a cycle. This
+can be because a node in the graph also has an Xrun. It can also be
+caused when scheduling delays cause a deadline to be missed, causing a
+hardware Xrun.</p>
+<p>Xruns for followers are incremented when the node started processing
+but did not complete before the end of the graph cycle deadline.</p>
+</dd>
+<dt><strong>FORMAT</strong></dt>
+<dd>
+<p>The format used by the driver node or the stream. This is the
+hardware format negotiated with the device or stream.</p>
+<p>If the stream of driver has a different rate than the graph,
+resampling will be done.</p>
+<p>For raw audio formats, the layout is &lt;sampleformat&gt;
+&lt;channels&gt; &lt;samplerate&gt;.</p>
+<p>For IEC958 passthrough audio formats, the layout is IEC958
+&lt;codec&gt; &lt;samplerate&gt;.</p>
+<p>For DSD formats, the layout is &lt;dsd-rate&gt; &lt;channels&gt;.</p>
+<p>For Video formats, the layout is &lt;pixelformat&gt;
+&lt;width&gt;x&lt;height&gt;.</p>
+</dd>
+<dt><strong>NAME</strong></dt>
+<dd>
+<p>Name assigned to the device/node, as found in <em>pw-dump</em>
+node.name</p>
+<p>Names are prefixed by <em>+</em> when they are linked to a driver
+(entry above with no +)</p>
+</dd>
+</dl>
+</blockquote>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-h | --help</strong></dt>
+<dd>
+<p>Show help.</p>
+</dd>
+<dt><strong>-r | --remote=NAME</strong></dt>
+<dd>
+<p>The name the <em>remote</em> instance to monitor. If left
+unspecified, a connection is made to the default PipeWire instance.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Show version information.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>AUTHORS</h1>
+<p>The PipeWire Developers
+&lt;<em>https://gitlab.freedesktop.org/pipewire/pipewire/issues</em>&gt;;
+PipeWire is available from <em>https://pipewire.org</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>pipewire(1)</strong>, <strong>pw-dump(1)</strong>,
+<strong>pw-cli(1)</strong>, <strong>pw-profiler(1)</strong>,</p>

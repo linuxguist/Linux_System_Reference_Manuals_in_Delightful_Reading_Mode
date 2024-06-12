@@ -1,0 +1,556 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>nm-settings-keyfile - Description of <em>keyfile</em> settings
+plugin</p>
+<h1>DESCRIPTION</h1>
+<p>NetworkManager is based on the concept of connection profiles that
+contain network configuration (see <strong>nm-settings</strong>(5) for
+details). The profiles can be stored in various formats. NetworkManager
+uses plugins for reading and writing the data. The plugins can be
+configured in <strong>NetworkManager.conf</strong>(5).</p>
+<p>The <em>keyfile</em> plugin is the generic plugin that supports all
+the connection types and capabilities that NetworkManager has. The files
+are in a .ini-style format and located in
+/etc/NetworkManager/system-connections/,
+/usr/lib/NetworkManager/system-connections/ and
+/run/NetworkManager/system-connections/. This plugin is always enabled
+and will automatically be used to store any connections that are not
+supported by any other active plugin. For security, it will ignore files
+that are readable or writable by any user other than root since private
+keys and passphrases may be stored in plaintext inside the file.</p>
+<h1>FILE FORMAT</h1>
+<p>The <em>keyfile</em> config format is a simple .ini-style format. It
+consists of sections (groups) of key-value pairs. Each section
+corresponds to a setting name as described in the settings specification
+(<strong>nm-settings</strong>(5)). Each configuration key/value pair in
+the section is one of the properties listed in the settings
+specification. The majority of properties of the specification is
+written in the same format into the <em>keyfile</em> too. However some
+values are inconvenient for people to use. These are stored in the files
+in more readable ways. These properties are described below. An example
+could be IP addresses that are not written as integer arrays, but more
+reasonably as "1.2.3.4/12 1.2.3.254". More information of the generic
+key file format can be found at <strong>GLib key file format</strong>[1]
+(Lines beginning with a # are comments, lists are separated by character
+; etc.).</p>
+<p>Users can create or modify the <em>keyfile</em> connection files
+manually, even if that is not the recommended way of managing the
+profiles. However, if they choose to do that, they must inform
+NetworkManager about their changes (for example via <em>nmcli con
+(re)load</em>).</p>
+<p><strong>Examples of keyfile configuration</strong>.</p>
+<blockquote>
+<pre><code>A sample configuration for an ethernet network:
+[connection]
+id=Main eth0
+uuid=27afa607-ee36-43f0-b8c3-9d245cdc4bb3
+type=802-3-ethernet
+autoconnect=true
+
+[ipv4]
+method=auto
+
+[802-3-ethernet]
+mac-address=00:23:5a:47:1f:71
+            </code></pre>
+</blockquote>
+<blockquote>
+<pre><code>A sample configuration for WPA-EAP (PEAP with MSCHAPv2) and always-ask secret:
+[connection]
+id=CompanyWIFI
+uuid=cdac6154-a33b-4b15-9904-666772cfa5ee
+type=wifi
+autoconnect=false
+
+[wifi]
+ssid=CorpWLAN
+mode=infrastructure
+security=802-11-wireless-security
+
+[wifi-security]
+key-mgmt=wpa-eap
+
+[ipv4]
+method=auto
+
+[ipv6]
+method=auto
+
+[802-1x]
+eap=peap;
+identity=joe
+ca-cert=/home/joe/.cert/corp.crt
+phase1-peapver=1
+phase2-auth=mschapv2
+password-flags=2
+            </code></pre>
+</blockquote>
+<blockquote>
+<pre><code>A sample configuration for openvpn:
+[connection]
+id=RedHat-openvpn
+uuid=7f9b3356-b210-4c0e-8123-bd116c9c280f
+type=vpn
+timestamp=1385401165
+
+[vpn]
+service-type=org.freedesktop.NetworkManager.openvpn
+connection-type=password
+password-flags=3
+remote=ovpn.my-company.com
+cipher=AES-256-CBC
+reneg-seconds=0
+port=443
+username=joe
+ca=/etc/openvpn/ISCA.pem
+tls-remote=ovpn.my-company.com
+
+[ipv6]
+method=auto
+
+[ipv4]
+method=auto
+ignore-auto-dns=true
+never-default=true
+            </code></pre>
+</blockquote>
+<blockquote>
+<pre><code>A sample configuration for a bridge and a bridge port:
+[connection]                                 [connection]
+id=MainBridge                                id=br-port-1
+uuid=171ae855-a0ab-42b6-bd0c-60f5812eea9d    uuid=d6e8ae98-71f8-4b3d-9d2d-2e26048fe794
+interface-name=MainBridge                    interface-name=em1
+type=bridge                                  type=ethernet
+                                             master=MainBridge
+[bridge]                                     slave-type=bridge
+interface-name=MainBridge
+            </code></pre>
+</blockquote>
+<blockquote>
+<pre><code>A sample configuration for a VLAN:
+[connection]
+id=VLAN for building 4A
+uuid=8ce1c9e0-ce7a-4d2c-aa28-077dda09dd7e
+interface-name=VLAN-4A
+type=vlan
+
+[vlan]
+interface-name=VLAN-4A
+parent=eth0
+id=4
+            </code></pre>
+</blockquote>
+<h1>DETAILS</h1>
+<p><em>keyfile</em> plugin variables for the majority of NetworkManager
+properties have one-to-one mapping. It means a NetworkManager property
+is stored in the keyfile as a variable of the same name and in the same
+format. There are several exceptions to this rule, mainly for making
+keyfile syntax easier for humans. The exceptions handled specially by
+<em>keyfile</em> plugin are listed below. Refer to
+<strong>nm-settings</strong>(5) for all available settings and
+properties and their description.</p>
+<p><strong>Name aliases</strong>. Some of the NetworkManager setting
+names are somewhat hard to type or remember. Therefore <em>keyfile</em>
+introduces aliases that can be used instead of the names.</p>
+<blockquote>
+<p><em>setting name keyfile alias</em></p>
+</blockquote>
+<blockquote>
+<p>802-3-ethernet = ethernet</p>
+</blockquote>
+<blockquote>
+<p>802-11-wireless = wifi</p>
+</blockquote>
+<blockquote>
+<p>802-11-wireless-security = wifi-security</p>
+</blockquote>
+<p><br />
+<strong>Table 1. 802-11-wireless setting (section)</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ssid</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">string (or decimal-byte list -
+obsolete)</td>
+<td style="text-align: left;"><p>SSID of Wi-Fi network.</p>
+<p>Example: ssid=Quick Net</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mac-address</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">usual hex-digits-and-colons notation</td>
+<td style="text-align: left;">MAC address in traditional
+hex-digits-and-colons notation (e.g. 00:22:68:12:79:A2), or semicolon
+separated list of 6 bytes (obsolete) (e.g. 0;34;104;18;121;162).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cloned-mac-address</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">usual hex-digits-and-colons notation</td>
+<td style="text-align: left;">Cloned MAC address in traditional
+hex-digits-and-colons notation (e.g. 00:22:68:12:79:B2), or semicolon
+separated list of 6 bytes (obsolete) (e.g. 0;34;104;18;121;178).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mac-address-blacklist</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">list of MACs (separated with
+semicolons)</td>
+<td style="text-align: left;"><p>MAC address blacklist.</p>
+<p>Example: mac-address-blacklist=
+00:22:68:12:79:A6;00:22:68:12:79:78</p></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 2. 802-3-ethernet setting (section)</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mac-address</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">usual hex-digits-and-colons notation</td>
+<td style="text-align: left;">MAC address in traditional
+hex-digits-and-colons notation (e.g. 00:22:68:12:79:A2), or semicolon
+separated list of 6 bytes (obsolete) (e.g. 0;34;104;18;121;162)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cloned-mac-address</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">usual hex-digits-and-colons notation</td>
+<td style="text-align: left;">Cloned MAC address in traditional
+hex-digits-and-colons notation (e.g. 00:22:68:12:79:B2), or semicolon
+separated list of 6 bytes (obsolete) (e.g. 0;34;104;18;121;178).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mac-address-blacklist</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">list of MACs (separated with
+semicolons)</td>
+<td style="text-align: left;"><p>MAC address blacklist.</p>
+<p>Example: mac-address-blacklist=
+00:22:68:12:79:A6;00:22:68:12:79:78</p></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 3. bridge setting (section)</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mac-address</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">usual hex-digits-and-colons notation</td>
+<td style="text-align: left;"><p>MAC address in traditional
+hex-digits-and-colons notation, or semicolon separated list of 6 decimal
+bytes (obsolete)</p>
+<p>Example: mac-address=00:22:68:12:79:A2
+mac-address=0;34;104;18;121;162;</p></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 4. infiniband setting (section)</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mac-address</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">usual hex-digits-and-colons notation</td>
+<td style="text-align: left;"><p>MAC address in traditional
+hex-digits-and-colons notation, or or semicolon separated list of 20
+decimal bytes (obsolete)</p>
+<p>Example: mac-address=
+80:00:00:6d:fe:80:00:00:00:00:00:00:00:02:55:00:70:33:cf:01</p></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 5. ipv4 setting (section)</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dns</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">list of DNS IP addresses</td>
+<td style="text-align: left;"><p>List of DNS servers.</p>
+<p>Example: dns=1.2.3.4;8.8.8.8;8.8.4.4;</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">addresses</td>
+<td style="text-align: left;">address1, address2, ...</td>
+<td style="text-align: left;">address/plen</td>
+<td style="text-align: left;"><p>List of static IP addresses.</p>
+<p>Example: address1=192.168.100.100/24 address2=10.1.1.5/24</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gateway</td>
+<td style="text-align: left;">gateway</td>
+<td style="text-align: left;">string</td>
+<td style="text-align: left;"><p>Gateway IP addresses as a string.</p>
+<p>Example: gateway=192.168.100.1</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">routes</td>
+<td style="text-align: left;">route1, route2, ...</td>
+<td style="text-align: left;">route/plen[,gateway,metric]</td>
+<td style="text-align: left;"><p>List of IP routes.</p>
+<p>Example: route1=8.8.8.0/24,10.1.1.1,77 route2=7.7.0.0/16</p></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 6. ipv6 setting (section)</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dns</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">list of DNS IP addresses</td>
+<td style="text-align: left;"><p>List of DNS servers.</p>
+<p>Example: dns=2001:4860:4860::8888;2001:4860:4860::8844;</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">addresses</td>
+<td style="text-align: left;">address1, address2, ...</td>
+<td style="text-align: left;">address/plen</td>
+<td style="text-align: left;"><p>List of static IP addresses.</p>
+<p>Example: address1=abbe::cafe/96 address2=2001::1234</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gateway</td>
+<td style="text-align: left;">gateway</td>
+<td style="text-align: left;">string</td>
+<td style="text-align: left;"><p>Gateway IP addresses as a string.</p>
+<p>Example: gateway=abbe::1</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">routes</td>
+<td style="text-align: left;">route1, route2, ...</td>
+<td style="text-align: left;">route/plen[,gateway,metric]</td>
+<td style="text-align: left;"><p>List of IP routes.</p>
+<p>Example:
+route1=2001:4860:4860::/64,2620:52:0:2219:222:68ff:fe11:5403</p></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 7. serial setting (section)</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">parity</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">e, o, or n</td>
+<td style="text-align: left;"><p>The connection parity; even, odd, or
+none. Note that older versions of NetworkManager stored this as an
+integer: 69 (E) for even, 111 (o) for odd, or 110 (n) for none.</p>
+<p>Example: parity=n</p></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 8. vpn setting (section)</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">data</td>
+<td style="text-align: left;">separate variables named after keys of the
+dictionary</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>The keys of the data dictionary are
+used as variable names directly under [vpn] section.</p>
+<p>Example: remote=ovpn.corp.com cipher=AES-256-CBC
+username=joe</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">secrets</td>
+<td style="text-align: left;">separate variables named after keys of the
+dictionary</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><p>The keys of the secrets dictionary are
+used as variable names directly under [vpn-secrets] section.</p>
+<p>Example: password=Popocatepetl</p></td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 9. wifi-p2p setting (section)</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">peer</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">usual hex-digits-and-colons notation</td>
+<td style="text-align: left;">MAC address in traditional
+hex-digits-and-colons notation (e.g. 00:22:68:12:79:A2), or semicolon
+separated list of 6 bytes (obsolete) (e.g. 0;34;104;18;121;162).</td>
+</tr>
+</tbody>
+</table>
+<p><br />
+<strong>Table 10. wpan setting (section)</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Property</td>
+<td style="text-align: left;">Keyfile Variable</td>
+<td style="text-align: left;">Format</td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mac-address</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">usual hex-digits-and-colons notation</td>
+<td style="text-align: left;">MAC address in hex-digits-and-colons
+notation (e.g. 76:d8:9b:87:66:60:84:ee).</td>
+</tr>
+</tbody>
+</table>
+<h2>Secret flags</h2>
+<p>Each secret property in a NetworkManager setting has an associated
+<em>flags</em> property that describes how to handle that secret. In the
+<em>keyfile</em> plugin, the value of <em>-flags</em> variable is a
+decimal number (0 - 7) defined as a sum of the following values:</p>
+<blockquote>
+<p>·</p>
+<p>0 - (NM owned) - the system is responsible for providing and storing
+this secret.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>1 - (agent-owned) - a user-session secret agent is responsible for
+providing and storing this secret; when it is required, agents will be
+asked to provide it.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>2 - (not-saved) - this secret should not be saved but should be
+requested from the user each time it is required.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>4 - (not-required) - in some situations it cannot be automatically
+determined that a secret is required or not. This flag hints that the
+secret is not required and should not be requested from the user.</p>
+</blockquote>
+<h1>FILES</h1>
+<p>/etc/NetworkManager/system-connections/*</p>
+<h1>SEE ALSO</h1>
+<p><strong>nm-settings</strong>(5),
+<strong>nm-settings-ifcfg-rh</strong>(5),
+<strong>NetworkManager</strong>(8),
+<strong>NetworkManager.conf</strong>(5), <strong>nmcli</strong>(1),
+<strong>nmcli-examples</strong>(7)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>GLib key file format</p>
+<p>https://developer.gnome.org/glib/stable/glib-Key-value-file-parser.html#glib-Key-value-file-parser.description</p>
+</dd>
+</dl>

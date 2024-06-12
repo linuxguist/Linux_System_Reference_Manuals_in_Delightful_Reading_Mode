@@ -1,0 +1,242 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Toplevel - Create and manipulate Toplevel widgets</p>
+<h1>SYNOPSIS</h1>
+<p>    <em><code>$toplevel</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>Toplevel</strong>(?<em>options</em>?);</p>
+<h1>STANDARD OPTIONS</h1>
+<p><strong>-borderwidth</strong> <strong>-highlightbackground</strong>
+<strong>-highlightthickness</strong> <strong>-takefocus</strong>
+<strong>-class</strong> <strong>-highlightcolor</strong>
+<strong>-relief</strong> <strong>-cursor</strong></p>
+<p>See Tk::options for details of the standard options.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Name: background</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Background</dt>
+<dd>
+
+</dd>
+<dt>Switch: -background</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This option is the same as the standard <strong>background</strong>
+option except that its value may also be specified as an undefined
+value. In this case, the widget will display no background or border,
+and no colors will be consumed from its colormap for its background and
+border.</p>
+<dl>
+<dt>Name: colormap</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Colormap</dt>
+<dd>
+
+</dd>
+<dt>Switch: -colormap</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a colormap to use for the window. The value may be either
+<strong>new</strong>, in which case a new colormap is created for the
+window and its children, or the name of another window (which must be on
+the same screen and have the same visual as <code>$widget</code>), in
+which case the new window will use the colormap from the specified
+window. If the <strong>colormap</strong> option is not specified, the
+new window uses the default colormap of its screen. This option may not
+be changed with the <strong>configure</strong> method.</p>
+<dl>
+<dt>Name: container</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Container</dt>
+<dd>
+
+</dd>
+<dt>Switch: -container</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The value must be a boolean. If true, it means that this window will
+be used as a container in which some other application will be embedded
+(for example, a Tk toplevel can be embedded using the
+<strong>-use</strong> option). The window will support the appropriate
+window manager protocols for things like geometry requests. The window
+should not have any children of its own in this application. This option
+may not be changed with the <strong>configure</strong> method.</p>
+<dl>
+<dt>Name: height</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Height</dt>
+<dd>
+
+</dd>
+<dt>Switch: -height</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired height for the window in any of the forms
+acceptable to <strong>Tk_GetPixels</strong>. If this option is less than
+or equal to zero then the window will not request any size at all.</p>
+<dl>
+<dt>Name: menu</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Menu</dt>
+<dd>
+
+</dd>
+<dt>Switch: -menu</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a menu widget to be used as a menubar. On the Macintosh,
+the menubar will be displayed accross the top of the main monitor. On
+Microsoft Windows and all UNIX platforms, the menu will appear accross
+the toplevel window as part of the window dressing maintained by the
+window manager.</p>
+<dl>
+<dt>Name: ""</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: ""</dt>
+<dd>
+
+</dd>
+<dt>Switch: -screen</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the screen on which to place the new window. Any valid
+screen name may be used, even one associated with a different display.
+Defaults to the same screen as its parent. This option is special in
+that it may not be specified via the option database, and it may not be
+modified with the <strong>configure</strong> method.</p>
+<dl>
+<dt>Switch: -title</dt>
+<dd>
+<p>Specifies the title of the toplevel window.</p>
+</dd>
+<dt>Name: use</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Use</dt>
+<dd>
+
+</dd>
+<dt>Switch: -use</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This option is used for embedding. If the value isn't an empty
+string, it must be the the window identifier of a container window,
+specified as a hexadecimal string like the ones returned by the
+<strong>winfo id</strong> command. The toplevel widget will be created
+as a child of the given container instead of the root window for the
+screen. If the container window is in a Tk application, it must be a
+frame or toplevel widget for which the <strong>-container</strong>
+option was specified. This option may not be changed with the
+<strong>configure</strong> method.</p>
+<dl>
+<dt>Name: visual</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Visual</dt>
+<dd>
+
+</dd>
+<dt>Switch: -visual</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies visual information for the new window in any of the forms
+accepted by <strong>Tk_GetVisual</strong>. If this option is not
+specified, the new window will use the default visual for its screen.
+The <strong>visual</strong> option may not be modified with the
+<strong>configure</strong> method.</p>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+<dt>Switch: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired width for the window in any of the forms
+acceptable to <strong>Tk_GetPixels</strong>. If this option is less than
+or equal to zero then the window will not request any size at all.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Toplevel</strong> method creates a new toplevel widget
+(given by the <code>$widget</code> argument). Additional options,
+described above, may be specified on the command line or in the option
+database to configure aspects of the toplevel such as its background
+color and relief. The <strong>toplevel</strong> command returns the path
+name of the new window.</p>
+<p>A toplevel is similar to a frame except that it is created as a
+top-level window: its X parent is the root window of a screen rather
+than the logical parent from its path name. The primary purpose of a
+toplevel is to serve as a container for dialog boxes and other
+collections of widgets. The only visible features of a toplevel are its
+background color and an optional 3-D border to make the toplevel appear
+raised or sunken.</p>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>Toplevel</strong> method creates a widget object. This
+object supports the <strong>configure</strong> and <strong>cget</strong>
+methods described in Tk::options which can be used to enquire and modify
+the options described above. The widget also inherits all the methods
+provided by the generic Tk::Widget class, and the Tk::Wm class.</p>
+<h1>BINDINGS</h1>
+<p>When a new toplevel is created, it has no default event bindings:
+toplevels are not intended to be interactive.</p>
+<h1>SEE ALSO</h1>
+<p>Tk::Widget Tk::Wm</p>
+<h1>KEYWORDS</h1>
+<p>toplevel, widget</p>

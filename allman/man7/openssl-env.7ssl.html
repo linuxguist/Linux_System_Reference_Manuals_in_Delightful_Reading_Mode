@@ -1,0 +1,97 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-env - OpenSSL environment variables</p>
+<h1>DESCRIPTION</h1>
+<p>The OpenSSL libraries use environment variables to override the
+compiled-in default paths for various data. To avoid security risks, the
+environment is usually not consulted when the executable is set-user-ID
+or set-group-ID.</p>
+<dl>
+<dt>CTLOG_FILE</dt>
+<dd>
+<p>Specifies the path to a certificate transparency log list. See
+<strong>CTLOG_STORE_new</strong> (3).</p>
+</dd>
+<dt>OPENSSL</dt>
+<dd>
+<p>Specifies the path to the <strong>openssl</strong> executable. Used
+by the <strong>rehash</strong> script (see Script Configuration in
+<strong>openssl-rehash</strong> (1)) and by the <strong>CA.pl</strong>
+script (see NOTES in <strong>CA.pl</strong> (1)</p>
+</dd>
+<dt>OPENSSL_CONF, OPENSSL_CONF_INCLUDE</dt>
+<dd>
+<p>Specifies the path to a configuration file and the directory for
+included files. See <strong>config</strong> (5).</p>
+</dd>
+<dt>OPENSSL_CONFIG</dt>
+<dd>
+<p>Specifies a configuration option and filename for the
+<strong>req</strong> and <strong>ca</strong> commands invoked by the
+<strong>CA.pl</strong> script. See <strong>CA.pl</strong> (1).</p>
+</dd>
+<dt>OPENSSL_ENGINES</dt>
+<dd>
+<p>Specifies the directory from which dynamic engines are loaded. See
+<strong>openssl-engine</strong> (1).</p>
+</dd>
+<dt>OPENSSL_MALLOC_FD, OPENSSL_MALLOC_FAILURES</dt>
+<dd>
+<p>If built with debugging, this allows memory allocation to fail. See
+<strong>OPENSSL_malloc</strong> (3).</p>
+</dd>
+<dt>OPENSSL_MODULES</dt>
+<dd>
+<p>Specifies the directory from which cryptographic providers are
+loaded. Equivalently, the generic <strong>-provider-path</strong>
+command-line option may be used.</p>
+</dd>
+<dt>OPENSSL_WIN32_UTF8</dt>
+<dd>
+<p>If set, then <strong>UI_OpenSSL</strong> (3) returns UTF-8 encoded
+strings, rather than ones encoded in the current code page, and the
+<strong>openssl</strong> (1) program also transcodes the command-line
+parameters from the current code page to UTF-8. This environment
+variable is only checked on Microsoft Windows platforms.</p>
+</dd>
+<dt>RANDFILE</dt>
+<dd>
+<p>The state file for the random number generator. This should not be
+needed in normal use. See <strong>RAND_load_file</strong> (3).</p>
+</dd>
+<dt>SSL_CERT_DIR, SSL_CERT_FILE</dt>
+<dd>
+<p>Specify the default directory or file containing CA certificates. See
+<strong>SSL_CTX_load_verify_locations</strong> (3).</p>
+</dd>
+<dt>TSGET</dt>
+<dd>
+<p>Additional arguments for the <strong>tsget</strong> (1) command.</p>
+</dd>
+<dt>OPENSSL_ia32cap, OPENSSL_sparcv9cap, OPENSSL_ppccap, OPENSSL_armcap,
+OPENSSL_s390xcap</dt>
+<dd>
+<p>OpenSSL supports a number of different algorithm implementations for
+various machines and, by default, it determines which to use based on
+the processor capabilities and run time feature enquiry. These
+environment variables can be used to exert more control over this
+selection process. See <strong>OPENSSL_ia32cap</strong> (3),
+<strong>OPENSSL_s390xcap</strong> (3).</p>
+</dd>
+<dt>NO_PROXY, HTTPS_PROXY, HTTP_PROXY</dt>
+<dd>
+<p>Specify a proxy hostname. See
+<strong>OSSL_HTTP_parse_url</strong> (3).</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2019-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

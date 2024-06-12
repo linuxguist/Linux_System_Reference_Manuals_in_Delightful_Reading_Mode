@@ -1,0 +1,119 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>avahi-autoipd - IPv4LL network address configuration daemon</p>
+<h1>SYNOPSIS</h1>
+<p><strong>avahi-autoipd [</strong><em>options</em><strong>]</strong>
+<em>interface</em></p>
+<p>avahi-autoipd --kill <strong></strong> <em>interface</em></p>
+<p>avahi-autoipd --refresh <strong></strong> <em>interface</em></p>
+<p>avahi-autoipd --check <strong></strong> <em>interface</em></p>
+<h1>DESCRIPTION</h1>
+<p>avahi-autoipd implements IPv4LL, "Dynamic Configuration of IPv4
+Link-Local Addresses" (IETF RFC3927), a protocol for automatic IP
+address configuration from the link-local 169.254.0.0/16 range without
+the need for a central server. It is primarily intended to be used in
+ad-hoc networks which lack a DHCP server.</p>
+<p>IPv4LL is part of the Zeroconf stack.</p>
+<p>avahi-autoipd can be used as stand-alone address allocator or as
+plugin for a DHCP client such as ISC's dhclient, where it can be used as
+fallback solution if no DHCP server is found.</p>
+<p>To allow communication between hosts that have only an IPv4LL address
+assigned and hosts that only have a routable IP address assigned you may
+add the following routes to both network configurations:</p>
+<p><strong>route add -net 169.254.0.0 netmask 255.255.0.0 dev eth0
+metric 99</strong></p>
+<p><strong>route add default dev eth0 metric 99</strong></p>
+<p>See http://developer.apple.com/qa/qa2004/qa1357.html for more
+information.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-D | --daemonize</strong></dt>
+<dd>
+<p>Daemonize after startup. Implies <strong>--syslog</strong>.</p>
+</dd>
+<dt><strong>-k | --kill</strong></dt>
+<dd>
+<p>Kill an already running avahi-autoipd on the specified network
+interface. (Equivalent to sending a SIGTERM)</p>
+</dd>
+<dt><strong>-r | --refresh</strong></dt>
+<dd>
+<p>Tell an already running avahi-autoipd to re-announce the acquired IP
+address on the specified network interface. (Equivalent to sending a
+SIGHUP)</p>
+</dd>
+<dt><strong>-c | --check</strong></dt>
+<dd>
+<p>Return 0 as return code if avahi-autoipd is already running for the
+specified network interface.</p>
+</dd>
+<dt><strong>-s | --syslog</strong></dt>
+<dd>
+<p>Log to syslog instead of STDERR. Implied by
+<strong>--daemonize</strong>.</p>
+</dd>
+<dt><strong>--debug</strong></dt>
+<dd>
+<p>Enable verbose mode.</p>
+</dd>
+<dt><strong>--no-drop-root</strong></dt>
+<dd>
+<p>Don't drop root privileges after startup. We recommend not to use
+this option.</p>
+</dd>
+<dt><strong>--no-chroot</strong></dt>
+<dd>
+<p>Don't <strong>chroot(2)</strong> the daemon. This option is only
+available when compiled with chroot() support.</p>
+</dd>
+<dt><strong>-S | --start=</strong></dt>
+<dd>
+<p>Try to acquire the specified IP address, which must be from the
+IPv4LL range 169.254.0.0/16.</p>
+</dd>
+<dt><strong>-w | --wait</strong></dt>
+<dd>
+<p>Wait until a IP address has been successfully acquired before
+detaching. Only valid in combination with
+<strong>--daemonize</strong>.</p>
+</dd>
+<dt><strong>--force-bind</strong></dt>
+<dd>
+<p>Acquire an IPv4LL address, even if a routable address has been
+configured on the interface.</p>
+</dd>
+<dt><strong>--no-proc-title</strong></dt>
+<dd>
+<p>Don't change the process name while running. Unless this option is
+specified avahi-autoipd will reflect its current state and the IP
+address in the process title.</p>
+</dd>
+<dt><strong>-h | --help</strong></dt>
+<dd>
+<p>Show help.</p>
+</dd>
+<dt><strong>-v | --version</strong></dt>
+<dd>
+<p>Show version information.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<p><em>/etc/avahi/avahi-autoipd.action</em>: the script to run when an
+IP address as been acquired or is lost.</p>
+<h1>SIGNALS</h1>
+<p><em>SIGINT, SIGTERM</em>: avahi-autoipd will shutdown. (Same as
+<strong>--kill</strong>)</p>
+<p><em>SIGHUP</em>: avahi-autoipd will re-announce the acquired IP
+address. (Same as <strong>--refresh</strong>)</p>
+<h1>AUTHORS</h1>
+<p>The Avahi Developers &lt;avahi (at) lists (dot) freedesktop (dot)
+org&gt;; Avahi is available from <strong>http://avahi.org/</strong></p>
+<h1>SEE ALSO</h1>
+<p><strong>avahi-autoipd.action(8)</strong>,
+<strong>dhclient(8)</strong></p>
+<p>http://avahi.org/wiki/AvahiAutoipd documents how avahi-autoipd is
+best packaged and integrated into distributions.</p>
+<h1>COMMENTS</h1>
+<p>This man page was written using <strong>xml2man(1)</strong> by Oliver
+Kurth.</p>

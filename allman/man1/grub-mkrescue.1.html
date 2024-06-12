@@ -1,0 +1,145 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-mkrescue - make a GRUB rescue image</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-mkrescue</strong> [<em>OPTION</em>...] [<em>OPTION</em>]
+<em>SOURCE</em>...</p>
+<h1>DESCRIPTION</h1>
+<p>Make GRUB CD-ROM, disk, pendrive and floppy bootable image.</p>
+<dl>
+<dt><strong>--compress</strong>=<em>no</em>|xz|gz|lzo</dt>
+<dd>
+<p>compress GRUB files [optional]</p>
+</dd>
+<dt><strong>--dtb</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed a specific DTB</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>use images and modules under DIR
+[default=/usr/lib/grub/&lt;platform&gt;]</p>
+</dd>
+<dt><strong>--disable-shim-lock</strong></dt>
+<dd>
+<p>disable shim_lock verifier</p>
+</dd>
+<dt><strong>--fonts</strong>=<em>FONTS</em></dt>
+<dd>
+<p>install FONTS [default=unicode]</p>
+</dd>
+<dt><strong>--install-modules</strong>=<em>MODULES</em></dt>
+<dd>
+<p>install only MODULES and their dependencies [default=all]</p>
+</dd>
+<dt><strong>-k</strong>, <strong>--pubkey</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed FILE as public key for signature checking</p>
+</dd>
+<dt><strong>--locale-directory</strong>=<em>DIR</em> use translations
+under DIR</dt>
+<dd>
+<p>[default=/usr/share/locale]</p>
+</dd>
+<dt><strong>--locales</strong>=<em>LOCALES</em></dt>
+<dd>
+<p>install only LOCALES [default=all]</p>
+</dd>
+<dt><strong>--modules</strong>=<em>MODULES</em></dt>
+<dd>
+<p>pre-load specified modules MODULES</p>
+</dd>
+<dt><strong>--sbat</strong>=<em>FILE</em></dt>
+<dd>
+<p>SBAT metadata</p>
+</dd>
+<dt><strong>--themes</strong>=<em>THEMES</em></dt>
+<dd>
+<p>install THEMES [default=starfield]</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt><strong>--arcs-boot</strong></dt>
+<dd>
+<p>enable ARCS (big-endian mips machines, mostly SGI) boot. Disables
+HFS+, APM, sparc64 and boot as disk image for i386-pc</p>
+</dd>
+<dt><strong>--core-compress</strong>=<em>xz</em>|none|auto</dt>
+<dd>
+<p>choose the compression to use for core image</p>
+</dd>
+<dt><strong>--label-bgcolor</strong>=<em>COLOR</em></dt>
+<dd>
+<p>use COLOR for label background</p>
+</dd>
+<dt><strong>--label-color</strong>=<em>COLOR</em></dt>
+<dd>
+<p>use COLOR for label</p>
+</dd>
+<dt><strong>--label-font</strong>=<em>FILE</em></dt>
+<dd>
+<p>use FILE as font for label</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--output</strong>=<em>FILE</em></dt>
+<dd>
+<p>save output in FILE [required]</p>
+</dd>
+<dt><strong>--product-name</strong>=<em>STRING</em></dt>
+<dd>
+<p>use STRING as product name</p>
+</dd>
+<dt><strong>--product-version</strong>=<em>STRING</em></dt>
+<dd>
+<p>use STRING as product version</p>
+</dd>
+<dt><strong>--rom-directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>save ROM images in DIR [optional]</p>
+</dd>
+<dt><strong>--sparc-boot</strong></dt>
+<dd>
+<p>enable sparc boot. Disables HFS+, APM, ARCS and boot as disk image
+for i386-pc</p>
+</dd>
+<dt><strong>--xorriso</strong>=<em>FILE</em></dt>
+<dd>
+<p>use FILE as xorriso [optional]</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<p>Generates a bootable CD/USB/floppy image. Arguments other than
+options to this program are passed to xorriso, and indicate source
+files, source directories, or any of the mkisofs options listed by the
+output of `xorriso <strong>-as</strong> mkisofs
+<strong>-help</strong>'.</p>
+<p>Option <strong>--</strong> switches to native xorriso command
+mode.</p>
+<p>Mail xorriso support requests to &lt;bug-xorriso@gnu.org&gt;.</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-mkimage</strong>(1)</p>
+<p>The full documentation for <strong>grub-mkrescue</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-mkrescue</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-mkrescue</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

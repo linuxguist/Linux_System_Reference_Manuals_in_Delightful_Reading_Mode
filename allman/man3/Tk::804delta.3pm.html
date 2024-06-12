@@ -1,0 +1,80 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::804delta - what is new for perl/Tk 804</p>
+<h1>DESCRIPTION</h1>
+<p>This document describes differences between the Tk800 series and the
+Tk804 series.</p>
+<h1>Incompatible Changes</h1>
+<p>In Tk804.028, there are some additional incompatible changes:</p>
+<p>Return values of some <strong>Tk::Wm</strong> methods (e.g.
+<strong>aspect</strong>, <strong>wmGrid</strong>,
+<strong>iconposition</strong>, <strong>resizable</strong> ...) were
+changed from returning tclish lists (e.g. 1 2 3 4) to perlish lists
+(1,2,3,4).</p>
+<p><strong>Tk::Wm::wmTracing</strong> needs argument for setting on/off,
+without argument just return the current value.</p>
+<p>All Tk804 releases have the following incompatible changes:</p>
+<p>Tk804 will only work with perl 5.8.0 and above. For older perl
+versions look for Tk800.025.</p>
+<p><strong>curselection</strong> of <strong>Tk::Listbox</strong> now
+returns an array reference in scalar context. This means you have to
+write</p>
+<p>my(@selected) = $listbox-&gt;curselection</p>
+<p>or</p>
+<p>my(@selected) = @{ $listbox-&gt;curselection }</p>
+<p>now.</p>
+<p>The <strong>fontActual</strong> method now returns the pixel value
+instead of the point value for <strong>-size</strong>. Pixel values are
+expressed as negative numbers.</p>
+<p>Some enhancements from the dash patches are lost for now (i.e.
+<strong>-tile</strong>, <strong>-troughtile</strong> ...).</p>
+<p>The <strong>-state</strong> option is not available anymore for
+<strong>Tk::Text</strong> tags. Use <strong>-elide</strong> instead.</p>
+<h1>Enhancements</h1>
+<p>Tk804 is Unicode-aware.</p>
+<p>It is possible to build Tk with Xft support on X11. This is strongly
+recommened if you are planning to make use of Unicode rendering
+capabilities of Tk. It also gives anti-aliased fonts for regular text
+(if you have TrueType or Type1 fonts and they are in your fontconfig
+config file).</p>
+<p>The new method <strong>chooseDirectory</strong> is available as a
+standard directory selector.</p>
+<p><strong>Tk::PNG</strong> and <strong>Tk::JPEG</strong> are bundled
+now with the perl/Tk distribution, providing support for the image
+formats <strong>png</strong> and <strong>jpeg</strong>.</p>
+<p>Improvements to <strong>Tk::Listbox</strong>: new option
+<strong>-activestyle</strong>, new methods
+<strong>itemconfigure</strong> and <strong>itemcget</strong>, new
+virtual event <strong>&lt;&lt;ListboxSelect&gt;&gt;</strong>.</p>
+<p>More tests.</p>
+<h1>New Widgets</h1>
+<dl>
+<dt>Tk::Labelframe</dt>
+<dd>
+<p>An alternative to <strong>Tk::LabFrame</strong>.</p>
+</dd>
+<dt>Tk::Panedwindow</dt>
+<dd>
+<p>An alternative to <strong>Tk::Adjuster</strong>.</p>
+</dd>
+<dt>Tk::Spinbox</dt>
+<dd>
+<p>An alternative to the CPAN module <strong>Tk::NumEntry</strong>.</p>
+</dd>
+</dl>
+<h1>Selected Bug Fixes</h1>
+<h1>Changed Internals</h1>
+<h1>Platform Specific Problems</h1>
+<h1>Future Directions</h1>
+<h1>Reporting Bugs</h1>
+<p>If you find what you think is a bug, you might check the articles
+recently posted to the comp.lang.perl.tk newsgroup.</p>
+<p>If you believe you have an unreported bug, please send a mail to
+&lt;ptk@lists.stanford.edu&gt; and/or &lt;nick@ing-simmons.net&gt;. Be
+sure to trim your bug down to a tiny but sufficient test case.</p>
+<h1>SEE ALSO</h1>
+<p>Tk, <code>Changes</code> file in the Perl/Tk distribution.</p>

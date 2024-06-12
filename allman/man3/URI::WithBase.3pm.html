@@ -1,0 +1,47 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>URI::WithBase - URIs which remember their base</p>
+<h1>SYNOPSIS</h1>
+<p>$u1 = URI::WithBase-&gt;new($str, $base); $u2 = $u1-&gt;abs; $base =
+$u1-&gt;base; $u1-&gt;base( $new_base )</p>
+<h1>DESCRIPTION</h1>
+<p>This module provides the <code>URI::WithBase</code> class. Objects of
+this class are like <code>URI</code> objects, but can keep their base
+too. The base represents the context where this URI was found and can be
+used to absolutize or relativize the URI. All the methods described in
+URI are supported for <code>URI::WithBase</code> objects.</p>
+<p>The methods provided in addition to or modified from those of
+<code>URI</code> are:</p>
+<dl>
+<dt>$uri = URI::WithBase-&gt;new($str, [$base])</dt>
+<dd>
+<p>The constructor takes an optional base URI as the second argument. If
+provided, this argument initializes the base attribute.</p>
+</dd>
+<dt>$uri-&gt;base( [$new_base] )</dt>
+<dd>
+<p>Can be used to get or set the value of the base attribute. The return
+value, which is the old value, is a URI object or
+<code>undef</code>.</p>
+</dd>
+<dt>$uri-&gt;abs( [$base_uri] )</dt>
+<dd>
+<p>The <code>$base_uri</code> argument is now made optional as the
+object carries its base with it. A new object is returned even if
+<code>$uri</code> is already absolute (while plain URI objects simply
+return themselves in that case).</p>
+</dd>
+<dt>$uri-&gt;rel( [$base_uri] )</dt>
+<dd>
+<p>The <code>$base_uri</code> argument is now made optional as the
+object carries its base with it. A new object is always returned.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>URI</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1998-2002 Gisle Aas.</p>

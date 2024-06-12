@@ -1,0 +1,132 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::Log - A flexible logging mechanism</p>
+<h1>METHODS</h1>
+<h2>scalar = Glib::Log-&gt;<strong>set_always_fatal</strong>
+($fatal_mask)</h2>
+<ul>
+<li><p><code>$fatal_mask</code> (scalar)</p></li>
+</ul>
+<h2>Glib-&gt;<strong>critical</strong> ($domain, $message)</h2>
+<ul>
+<li><p><code>$domain</code> (string or undef)</p></li>
+<li><p><code>$message</code> (string)</p></li>
+</ul>
+<h2>Glib-&gt;<strong>debug</strong> ($domain, $message)</h2>
+<ul>
+<li><p><code>$domain</code> (string or undef)</p></li>
+<li><p><code>$message</code> (string)</p></li>
+</ul>
+<h2>Glib::Log::default_handler ($log_domain, $log_level, $message,
+...)</h2>
+<ul>
+<li><p><code>$log_domain</code> (string)</p></li>
+<li><p><code>$log_level</code> (scalar)</p></li>
+<li><p><code>$message</code> (string)</p></li>
+<li><p>... (list) possible userdata argument ignored</p></li>
+</ul>
+<p>The arguments are the same as taken by the function for set_handler
+or set_default_handler.</p>
+<h2>prev_log_func = Glib::Log-&gt;<strong>set_default_handler</strong>
+($log_func, $user_data)</h2>
+<ul>
+<li><p><code>$log_func</code> (subroutine) handler function or
+undef</p></li>
+<li><p><code>$user_data</code> (scalar)</p></li>
+</ul>
+<p>Install log_func as the default log handler. log_func is called for
+anything which doesn't otherwise have a handler (either
+Glib::Log-&gt;set_handler, or the Glib::xsapi
+gperl_handle_logs_for),</p>
+<p>&amp;$log_func ($log_domain, $log_levels, $message, $user_data)</p>
+<p>where <code>$log_domain</code> is a string, and
+<code>$log_levels</code> is a Glib::LogLevelFlags of level and flags
+being reported.</p>
+<p>If log_func is \&amp;Glib::Log::default_handler or undef then Glib's
+default handler is set.</p>
+<p>The return value from <code>set_default_handler</code> is the
+previous handler. This is \&amp;Glib::Log::default_handler for Glib's
+default, otherwise a Perl function previously installed. If the handler
+is some other non-Perl function then currently the return is undef, but
+perhaps that will change to some wrapped thing, except that without
+associated userdata there's very little which could be done with it (it
+couldn't be reinstalled later without its userdata).</p>
+<p>Since: glib 2.6</p>
+<h2>Glib-&gt;<strong>error</strong> ($domain, $message)</h2>
+<ul>
+<li><p><code>$domain</code> (string or undef)</p></li>
+<li><p><code>$message</code> (string)</p></li>
+</ul>
+<h2>scalar = Glib::Log-&gt;<strong>set_fatal_mask</strong> ($log_domain,
+$fatal_mask)</h2>
+<ul>
+<li><p><code>$log_domain</code> (string)</p></li>
+<li><p><code>$fatal_mask</code> (scalar)</p></li>
+</ul>
+<h2>integer = Glib::Log-&gt;<strong>set_handler</strong> ($log_domain,
+$log_levels, $log_func, $user_data=undef)</h2>
+<ul>
+<li><p><code>$log_domain</code> (string or undef) name of the domain to
+handle with this callback.</p></li>
+<li><p><code>$log_levels</code> (Glib::LogLevelFlags) log levels to
+handle with this callback</p></li>
+<li><p><code>$log_func</code> (subroutine) handler function</p></li>
+<li><p><code>$user_data</code> (scalar)</p></li>
+</ul>
+<p><code>$log_func</code> will be called as</p>
+<p>&amp;$log_func ($log_domain, $log_levels, $message, $user_data);</p>
+<p>where <code>$log_domain</code> is the name requested and
+<code>$log_levels</code> is a Glib::LogLevelFlags of level and flags
+being reported.</p>
+<h2>Glib-&gt;<strong>info</strong> ($domain, $message)</h2>
+<ul>
+<li><p><code>$domain</code> (string or undef)</p></li>
+<li><p><code>$message</code> (string)</p></li>
+</ul>
+<h2>Glib-&gt;<strong>log</strong> ($log_domain, $log_level,
+$message)</h2>
+<ul>
+<li><p><code>$log_domain</code> (string or undef)</p></li>
+<li><p><code>$log_level</code> (scalar)</p></li>
+<li><p><code>$message</code> (string)</p></li>
+</ul>
+<h2>Glib-&gt;<strong>message</strong> ($domain, $message)</h2>
+<ul>
+<li><p><code>$domain</code> (string or undef)</p></li>
+<li><p><code>$message</code> (string)</p></li>
+</ul>
+<h2>Glib::Log-&gt;<strong>remove_handler</strong> ($log_domain,
+$handler_id)</h2>
+<ul>
+<li><p><code>$log_domain</code> (string or undef)</p></li>
+<li><p><code>$handler_id</code> (integer) as returned by
+<code>set_handler</code></p></li>
+</ul>
+<h2>Glib-&gt;<strong>warning</strong> ($domain, $message)</h2>
+<ul>
+<li><p><code>$domain</code> (string or undef)</p></li>
+<li><p><code>$message</code> (string)</p></li>
+</ul>
+<h1>ENUMS AND FLAGS</h1>
+<h2>flags Glib::LogLevelFlags</h2>
+<ul>
+<li><p>'recursion' / 'G_LOG_FLAG_RECURSION'</p></li>
+<li><p>'fatal' / 'G_LOG_FLAG_FATAL'</p></li>
+<li><p>'error' / 'G_LOG_LEVEL_ERROR'</p></li>
+<li><p>'critical' / 'G_LOG_LEVEL_CRITICAL'</p></li>
+<li><p>'warning' / 'G_LOG_LEVEL_WARNING'</p></li>
+<li><p>'message' / 'G_LOG_LEVEL_MESSAGE'</p></li>
+<li><p>'info' / 'G_LOG_LEVEL_INFO'</p></li>
+<li><p>'debug' / 'G_LOG_LEVEL_DEBUG'</p></li>
+<li><p>'fatal-mask' / 'G_LOG_FATAL_MASK'</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Glib</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

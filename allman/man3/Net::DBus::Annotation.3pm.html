@@ -1,0 +1,58 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Annotation - annotations for changing behaviour of
+APIs</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::DBus::Annotation qw(:call); my $object =
+$service-&gt;get_object("/org/example/systemMonitor"); # Block until
+processes are listed my $processes =
+$object-&gt;list_processes("someuser"); # Just throw away list of
+processes, pretty pointless # in this example, but useful if the method
+doesnt have # a return value
+$object-&gt;list_processes(dbus_call_noreply, "someuser"); # List
+processes &amp; get on with other work until # the list is returned. my
+$asyncreply = $object-&gt;list_processes(dbus_call_async, "someuser");
+... some time later... my $processes = $asyncreply-&gt;get_data; # List
+processes, with a shorter 10 second timeout, instead of # the default 60
+seconds my $object-&gt;list_processes(dbus_call_timeout, 10 * 1000,
+"someuser");</p>
+<h1>DESCRIPTION</h1>
+<p>This module provides a number of annotations which will be useful
+when dealing with the DBus APIs. There are annotations for switching
+remote calls between sync, async and no-reply mode. More annotations may
+be added over time.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>dbus_call_sync</dt>
+<dd>
+<p>Requests that a method call be performed synchronously, waiting for
+the reply or error return to be received before continuing.</p>
+</dd>
+<dt>dbus_call_async</dt>
+<dd>
+<p>Requests that a method call be performed a-synchronously, returning a
+pending call object, which will collect the reply when it eventually
+arrives.</p>
+</dd>
+<dt>dbus_call_noreply</dt>
+<dd>
+<p>Requests that a method call be performed a-synchronously, discarding
+any possible reply or error message.</p>
+</dd>
+<dt>dbus_call_timeout</dt>
+<dd>
+<p>Indicates that the next parameter for the method call will specify
+the time to wait for a reply in milliseconds. If omitted, then the
+default timeout for the object will be used</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel Berrange &lt;dan@berrange.com&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copright (C) 2006-2011, Daniel Berrange.</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus, Net::DBus::RemoteObject</p>

@@ -1,0 +1,46 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>IO::AtomicFile - write a file which is updated atomically</p>
+<h1>SYNOPSIS</h1>
+<p>use IO::AtomicFile; ### Write a temp file, and have it install itself
+when closed: my $FH = IO::AtomicFile-&gt;open("bar.dat", "w"); print $FH
+"Hello!\n"; $FH-&gt;close || die "couldnt install atomic file: $!"; ###
+Write a temp file, but delete it before it gets installed: my $FH =
+IO::AtomicFile-&gt;open("bar.dat", "w"); print $FH "Hello!\n";
+$FH-&gt;delete; ### Write a temp file, but neither install it nor delete
+it: my $FH = IO::AtomicFile-&gt;open("bar.dat", "w"); print $FH
+"Hello!\n"; $FH-&gt;detach;</p>
+<h1>DESCRIPTION</h1>
+<p>This module is intended for people who need to update files reliably
+in the face of unexpected program termination.</p>
+<p>For example, you generally don't want to be halfway in the middle of
+writing <em>/etc/passwd</em> and have your program terminate! Even the
+act of writing a single scalar to a filehandle is <em>not</em>
+atomic.</p>
+<p>But this module gives you true atomic updates, via
+<strong>rename()</strong>. When you open a file <em>/foo/bar.dat</em>
+via this module, you are <em>actually</em> opening a temporary file
+<em>/foo/bar.dat..TMP</em>, and writing your output there. The act of
+closing this file (either explicitly via <strong>close()</strong>, or
+implicitly via the destruction of the object) will cause
+<strong>rename()</strong> to be called... therefore, from the point of
+view of the outside world, the file's contents are updated in a single
+time quantum.</p>
+<p>To ensure that problems do not go undetected, the close method done
+by the destructor will raise a fatal exception if the
+<strong>rename()</strong> fails. The explicit <strong>close()</strong>
+just returns undef.</p>
+<p>You can also decide at any point to trash the file you've been
+building.</p>
+<h1>AUTHOR</h1>
+<h2>Primary Maintainer</h2>
+<p>Dianne Skoll (<em>dfs@roaringpenguin.com</em>).</p>
+<h2>Original Author</h2>
+<p>Eryq (<em>eryq@zeegee.com</em>). President, ZeeGee Software Inc
+(<em>http://www.zeegee.com</em>).</p>
+<h1>REVISION</h1>
+<p><code>$Revision:</code> 1.2 $</p>

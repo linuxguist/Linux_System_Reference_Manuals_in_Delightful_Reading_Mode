@@ -1,0 +1,178 @@
+<pre><code></code></pre>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xfontsel - point and click selection of X11 font names</p>
+<h1>SYNTAX</h1>
+<p><strong>xfontsel</strong> [-<em>toolkitoption</em> ...]
+[<strong>-pattern</strong> <em>fontname</em><strong>]</strong>
+[<strong>-print]</strong> [<strong>-sample</strong>
+<em>text</em><strong>]</strong> [<strong>-sample16</strong>
+<em>text16</em><strong>]</strong> [<strong>-sampleUCS</strong>
+<em>textUCS</em><strong>]</strong> [<strong>-scaled]</strong></p>
+<h1>DESCRIPTION</h1>
+<p>The <em>xfontsel</em> <strong>application provides a simple way to
+display</strong> the fonts known to your X server, examine samples of
+each, and retrieve the X Logical Font Description ("XLFD") full name for
+a font.</p>
+<p>If <strong>-pattern is not specified, all fonts with XLFD
+14-part</strong> names will be selectable. To work with only a subset of
+the fonts, specify <strong>-pattern followed by a partially or
+fully</strong> qualified font name; e.g., ``-pattern *medium*'' will
+select that subset of fonts which contain the string ``medium''
+somewhere in their font name. Be careful about escaping wildcard
+characters in your shell.</p>
+<p>If <strong>-print is specified on the command line the
+selected</strong> font specifier will be written to standard output when
+the <em>quit</em> button is activated. Regardless of whether or not
+<strong>-print was</strong> specified, the font specifier may be made
+the PRIMARY (text) selection by activating the <em>select</em>
+<strong>button.</strong></p>
+<p>The <strong>-sample option specifies the sample text to be used
+to</strong> display the selected font if the font is linearly indexed,
+overriding the default.</p>
+<p>The <strong>-sample16 option specifies the sample text to be used
+to</strong> display the selected font if the font is matrix encoded,
+overriding the default.</p>
+<p>The <strong>-sampleUCS option specifies the sample text encoded in
+the UTF-8</strong> form to be used to display the selected font if the
+font has a CHARSET_REGISTRY of ISO10646, overriding the default.</p>
+<p>The <strong>-scaled option enables the ability to select scaled
+fonts</strong> at arbitrary pixel or point sizes.</p>
+<h1>INTERACTIONS</h1>
+<p>Clicking any pointer button in one of the XLFD field names will pop
+up a menu of the currently-known possibilities for that field. If
+previous choices of other fields were made, only values for fonts which
+matched the previously selected fields will be selectable; to make other
+values selectable, you must deselect some other field(s) by choosing the
+``*'' entry in that field. Unselectable values may be omitted from the
+menu entirely as a configuration option; see the
+<strong>ShowUnselectable resource, below.</strong> Whenever any change
+is made to a field value, <em>xfontsel</em> <strong>will</strong> assert
+ownership of the PRIMARY_FONT selection. Other applications (see, e.g.,
+<em>xterm</em><strong>) may then retrieve the selected font
+specification.</strong></p>
+<p>Scalable fonts come back from the server with zero for the pixel
+size, point size, and average width fields. Selecting a font name with a
+zero in these positions results in an implementation-dependent size. Any
+pixel or point size can be selected to scale the font to a particular
+size. Any average width can be selected to anamorphically scale the font
+(although you may find this challenging given the size of the average
+width menu).</p>
+<p>Clicking the left pointer button in the <em>select</em>
+<strong>widget will</strong> cause the currently selected font name to
+become the PRIMARY text selection as well as the PRIMARY_FONT selection.
+This then allows you to paste the string into other applications. The
+<strong>select button remains</strong> highlighted to remind you of this
+fact, and de-highlights when some other application takes the PRIMARY
+selection away. The <em>select</em> <strong>widget is a toggle; pressing
+it when it is highlighted</strong> will cause <em>xfontsel</em>
+<strong>to release the selection ownership and</strong> de-highlight the
+widget. Activating the <em>select</em> <strong>widget twice</strong> is
+the only way to cause <em>xfontsel</em> <strong>to release the</strong>
+PRIMARY_FONT selection.</p>
+<h1>RESOURCES</h1>
+<p>The application class is <strong>XFontSel. Most of the
+user-interface</strong> is configured in the app-defaults file; if this
+file is missing a warning message will be printed to standard output and
+the resulting window will be nearly incomprehensible.</p>
+<p>Most of the significant parts of the widget hierarchy are documented
+in <em>/etc/X11/app-defaults/XFontSel</em>,</p>
+<p>Application specific resources:</p>
+<dl>
+<dt><strong>cursor (<strong>class Cursor)</strong></strong></dt>
+<dd>
+<p>Specifies the cursor for the application window.</p>
+</dd>
+<dt><strong>pattern (<strong>class Pattern)</strong></strong></dt>
+<dd>
+<p>Specifies the font name pattern for selecting a subset of available
+fonts. Equivalent to the <strong>-pattern option.</strong> Most useful
+patterns will contain at least one field delimiter; e.g. ``*-m-*'' for
+monospaced fonts.</p>
+</dd>
+<dt><strong>pixelSizeList (<strong>class
+PixelSizeList)</strong></strong></dt>
+<dd>
+<p>Specifies a list of pixel sizes to add to the pixel size menu, so
+that scalable fonts can be selected at those pixel sizes. The default
+pixelSizeList contains 7, 30, 40, 50, and 60.</p>
+</dd>
+<dt><strong>pointSizeList (<strong>class
+PointSizeList)</strong></strong></dt>
+<dd>
+<p>Specifies a list of point sizes (in units of tenths of points) to add
+to the point size menu, so that scalable fonts can be selected at those
+point sizes. The default pointSizeList contains 250, 300, 350, and
+400.</p>
+</dd>
+<dt><strong>printOnQuit (<strong>class
+PrintOnQuit)</strong></strong></dt>
+<dd>
+<p>If <em>True</em> <strong>the currently selected font name is
+printed</strong> to standard output when the quit button is activated.
+Equivalent to the <strong>-print option.</strong></p>
+</dd>
+<dt><strong>sampleText (<strong>class Text)</strong></strong></dt>
+<dd>
+<p>The sample 1-byte text to use for linearly indexed fonts. Each glyph
+index is a single byte, with newline separating lines.</p>
+</dd>
+<dt><strong>sampleText16 (<strong>class Text16)</strong></strong></dt>
+<dd>
+<p>The sample 2-byte text to use for matrix-encoded fonts. Each glyph
+index is two bytes, with a 1-byte newline separating lines.</p>
+</dd>
+<dt><strong>scaledFonts (<strong>class
+ScaledFonts)</strong></strong></dt>
+<dd>
+<p>If <em>True</em> <strong>then selection of arbitrary pixel and point
+sizes for</strong> scalable fonts is enabled.</p>
+</dd>
+</dl>
+<p>Widget specific resources:</p>
+<dl>
+<dt><strong>showUnselectable (<em>class</em>
+<strong>ShowUnselectable)</strong></strong></dt>
+<dd>
+<p>Specifies, for each field menu, whether or not to show values that
+are not currently selectable, based upon previous field selections. If
+shown, the unselectable values are clearly identified as such and do not
+highlight when the pointer is moved down the menu. The full name of this
+resource is <strong>fieldN.menu.options.showUnselectable,</strong> class
+<strong>MenuButton.SimpleMenu.Options.ShowUnselectable;</strong> where N
+is replaced with the field number (starting with the left-most field
+numbered 0). The default is True for all but field 11 (average width of
+characters in font) and False for field 11. If you never want to see
+unselectable entries, '*menu.options.showUnselectable:False' is a
+reasonable thing to specify in a resource file.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<p>$XFILESEARCHPATH/XFontSel</p>
+<h1>SEE ALSO</h1>
+<p>xrdb(1), xfd(1)</p>
+<h1>BUGS</h1>
+<p>Sufficiently ambiguous patterns can be misinterpreted and lead to an
+initial selection string which may not correspond to what the user
+intended and which may cause the initial sample text output to fail to
+match the proffered string. Selecting any new field value will correct
+the sample output, though possibly resulting in no matching font.</p>
+<p>Should be able to return a FONT for the PRIMARY selection, not just a
+STRING.</p>
+<p>Any change in a field value will cause <em>xfontsel</em> <strong>to
+assert</strong> ownership of the PRIMARY_FONT selection. Perhaps this
+should be parameterized.</p>
+<p>When running on a slow machine, it is possible for the user to
+request a field menu before the font names have been completely parsed.
+An error message indicating a missing menu is printed to stderr but
+otherwise nothing bad (or good) happens.</p>
+<p>The average-width menu is too large to be useful.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1989, 1991, X Consortium</p>
+<p>See <em>X(7)</em> <strong>for a full statement of rights and
+permissions.</strong></p>
+<h1>AUTHOR</h1>
+<p>Ralph R. Swick, Digital Equipment Corporation/MIT Project Athena</p>
+<p>Mark Leisher &lt;mleisher@crl.nmsu.edu&gt; added the support for the
+UTF-8 sample text.</p>

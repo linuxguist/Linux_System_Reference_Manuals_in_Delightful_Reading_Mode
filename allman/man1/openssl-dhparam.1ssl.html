@@ -1,0 +1,136 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-dhparam - DH parameter manipulation and generation</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl dhparam</strong> [<strong>-help</strong>]
+[<strong>-inform</strong> <strong>DER</strong>|<strong>PEM</strong>]
+[<strong>-outform</strong> <strong>DER</strong>|<strong>PEM</strong>]
+[<strong>-in</strong> <em>filename</em>] [<strong>-out</strong>
+<em>filename</em>] [<strong>-dsaparam</strong>]
+[<strong>-check</strong>] [<strong>-noout</strong>]
+[<strong>-text</strong>] [<strong>-2</strong>] [<strong>-3</strong>]
+[<strong>-5</strong>] [<strong>-engine</strong> <em>id</em>]
+[<strong>-rand</strong> <em>files</em>] [<strong>-writerand</strong>
+<em>file</em>] [<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>] [<em>numbits</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command is used to manipulate DH parameter files.</p>
+<p>See EXAMPLES in <strong>openssl-genpkey</strong> (1) for examples on
+how to generate a key using a named safe prime group without generating
+intermediate parameters.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-inform DER|PEM, -outform DER|PEM</dt>
+<dd>
+<p>The input format and output format; the default is
+<strong>PEM</strong>. The object is compatible with the PKCS#3
+<strong>DHparameter</strong> structure. See
+<strong>openssl-format-options</strong> (1) for details.</p>
+</dd>
+<dt>-in filename</dt>
+<dd>
+<p>This specifies the input filename to read parameters from or standard
+input if this option is not specified.</p>
+</dd>
+<dt>-out filename</dt>
+<dd>
+<p>This specifies the output filename parameters to. Standard output is
+used if this option is not present. The output filename should
+<strong>not</strong> be the same as the input filename.</p>
+</dd>
+<dt>-dsaparam</dt>
+<dd>
+<p>If this option is used, DSA rather than DH parameters are read or
+created; they are converted to DH format. Otherwise, strong primes (such
+that (p-1)/2 is also prime) will be used for DH parameter generation. DH
+parameter generation with the <strong>-dsaparam</strong> option is much
+faster, and the recommended exponent length is shorter, which makes DH
+key exchange more efficient. Beware that with such DSA-style DH
+parameters, a fresh DH key should be created for each use to avoid
+small-subgroup attacks that may be possible otherwise.</p>
+</dd>
+<dt>-check</dt>
+<dd>
+<p>Performs numerous checks to see if the supplied parameters are valid
+and displays a warning if not.</p>
+</dd>
+<dt>-2, -3, -5</dt>
+<dd>
+<p>The generator to use, either 2, 3 or 5. If present then the input
+file is ignored and parameters are generated instead. If not present but
+<em>numbits</em> is present, parameters are generated with the default
+generator 2.</p>
+</dd>
+<dt>numbits</dt>
+<dd>
+<p>This option specifies that a parameter set should be generated of
+size <em>numbits</em>. It must be the last option. If this option is
+present then the input file is ignored and parameters are generated
+instead. If this option is not present but a generator
+(<strong>-2</strong>, <strong>-3</strong> or <strong>-5</strong>) is
+present, parameters are generated with a default length of 2048 bits.
+The minimum length is 512 bits. The maximum length is 10000 bits.</p>
+</dd>
+<dt>-noout</dt>
+<dd>
+<p>This option inhibits the output of the encoded version of the
+parameters.</p>
+</dd>
+<dt>-text</dt>
+<dd>
+<p>This option prints out the DH parameters in human readable form.</p>
+</dd>
+<dt>-engine id</dt>
+<dd>
+<p>See Engine Options in <strong>openssl</strong> (1). This option is
+deprecated.</p>
+</dd>
+<dt>-rand files, -writerand file</dt>
+<dd>
+<p>See Random State Options in <strong>openssl</strong> (1) for
+details.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<h1>NOTES</h1>
+<p>This command replaces the <strong>dh</strong> and
+<strong>gendh</strong> commands of previous releases.</p>
+<h1>SEE ALSO</h1>
+<p><strong>openssl</strong> (1), <strong>openssl-pkeyparam</strong> (1),
+<strong>openssl-dsaparam</strong> (1),
+<strong>openssl-genpkey</strong> (1).</p>
+<h1>HISTORY</h1>
+<p>The <strong>-engine</strong> option was deprecated in OpenSSL
+3.0.</p>
+<p>The <strong>-C</strong> option was removed in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

@@ -1,0 +1,170 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>qmi-firmware-update - Update firmware in QMI devices</p>
+<h1>DESCRIPTION</h1>
+<h2>Usage:</h2>
+<blockquote>
+<p>qmi-firmware-update [OPTION?] FILE1 FILE2... - Update firmware in QMI
+devices</p>
+</blockquote>
+<h2>Generic device selection options:</h2>
+<dl>
+<dt><strong>-s</strong>,
+<strong>--busnum-devnum</strong>=<em>[BUS</em>:]DEV</dt>
+<dd>
+<p>Select device by bus and device number (in decimal).</p>
+</dd>
+<dt><strong>-d</strong>,
+<strong>--vid-pid</strong>=<em>VID[</em>:PID]</dt>
+<dd>
+<p>Select device by device vendor and product id (in hexadecimal).</p>
+</dd>
+<dt><strong>-w</strong>, <strong>--cdc-wdm</strong>=<em>[PATH]</em></dt>
+<dd>
+<p>Select device by QMI/MBIM cdc-wdm device path (e.g.
+<em>/dev/cdc-wdm0</em>).</p>
+</dd>
+<dt><strong>-t</strong>, <strong>--tty</strong>=<em>[PATH]</em></dt>
+<dd>
+<p>Select device by serial device path (e.g. <em>/dev/ttyUSB2</em>).</p>
+</dd>
+</dl>
+<h2>Update options (normal mode):</h2>
+<dl>
+<dt><strong>-u</strong>, <strong>--update</strong></dt>
+<dd>
+<p>Launch firmware update process.</p>
+</dd>
+<dt><strong>-f</strong>,
+<strong>--firmware-version</strong>=<em>[VERSION]</em></dt>
+<dd>
+<p>Firmware version (e.g. '05.05.58.00').</p>
+</dd>
+<dt><strong>-c</strong>,
+<strong>--config-version</strong>=<em>[VERSION]</em></dt>
+<dd>
+<p>Config version (e.g. '005.025_002').</p>
+</dd>
+<dt><strong>-C</strong>,
+<strong>--carrier</strong>=<em>[CARRIER]</em></dt>
+<dd>
+<p>Carrier name (e.g. 'Generic').</p>
+</dd>
+<dt><strong>--ignore-version-errors</strong></dt>
+<dd>
+<p>Run update operation even with version string errors.</p>
+</dd>
+<dt><strong>--override-download</strong></dt>
+<dd>
+<p>Download images even if module says it already has them.</p>
+</dd>
+<dt><strong>--modem-storage-index</strong>=<em>[INDEX]</em></dt>
+<dd>
+<p>Index storage for the modem image.</p>
+</dd>
+<dt><strong>--skip-validation</strong></dt>
+<dd>
+<p>Don't wait to validate the running firmware after update.</p>
+</dd>
+</dl>
+<h2>Reset options (normal mode):</h2>
+<dl>
+<dt><strong>-b</strong>, <strong>--reset</strong></dt>
+<dd>
+<p>Reset device into download mode.</p>
+</dd>
+</dl>
+<h2>Update options (download mode):</h2>
+<dl>
+<dt><strong>-U</strong>, <strong>--update-download</strong></dt>
+<dd>
+<p>Launch firmware update process while in download (boot &amp; hold)
+mode.</p>
+</dd>
+</dl>
+<h2>Verify options:</h2>
+<dl>
+<dt><strong>-z</strong>, <strong>--verify</strong></dt>
+<dd>
+<p>Analyze and verify firmware images.</p>
+</dd>
+</dl>
+<h2>Application Options:</h2>
+<dl>
+<dt><strong>-p</strong>, <strong>--device-open-proxy</strong></dt>
+<dd>
+<p>Request to use the 'qmi-proxy' proxy.</p>
+</dd>
+<dt><strong>--device-open-qmi</strong></dt>
+<dd>
+<p>Open a cdc-wdm device explicitly in QMI mode</p>
+</dd>
+<dt><strong>--device-open-mbim</strong></dt>
+<dd>
+<p>Open a cdc-wdm device explicitly in MBIM mode</p>
+</dd>
+<dt><strong>--device-open-auto</strong></dt>
+<dd>
+<p>Open a cdc-wdm device in either QMI or MBIM mode (default)</p>
+</dd>
+<dt><strong>--ignore-mm-runtime-check</strong></dt>
+<dd>
+<p>Ignore ModemManager runtime check</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>Run action with verbose messages in standard output, including the
+debug ones.</p>
+</dd>
+<dt><strong>-S</strong>, <strong>--silent</strong></dt>
+<dd>
+<p>Run action with no messages in standard output; not even the error
+ones.</p>
+</dd>
+<dt><strong>-L</strong>,
+<strong>--verbose-log</strong>=<em>[PATH]</em></dt>
+<dd>
+<p>Write verbose messages to an output file.</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version.</p>
+</dd>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Show help.</p>
+</dd>
+<dt><strong>-H</strong>, <strong>--help-examples</strong></dt>
+<dd>
+<p>Show help examples.</p>
+</dd>
+<dt>***************************************************************************</dt>
+<dd>
+<p>Warning!</p>
+<p>***************************************************************************</p>
+<p>Use this program with caution. The authors take *no* responsibility
+if any device gets broken as a result of using this program.</p>
+<p>Please report issues to the libqmi mailing list at:</p>
+<p>libqmi-devel@lists.freedesktop.org</p>
+</dd>
+</dl>
+<p>qmi-firmware-update 1.32.2</p>
+<blockquote>
+<p>Copyright (C) 2016-2022 Aleksander Morgado Copyright (C) 2022 VMware,
+Inc. Copyright (C) 2016-2019 Bj?rn Mork Copyright (C) 2016-2018 Zodiac
+Inflight Innovations</p>
+</blockquote>
+<p>License GPLv2+: GNU GPL version 2 or later
+&lt;http://gnu.org/licenses/gpl-2.0.html&gt; This is free software: you
+are free to change and redistribute it. There is NO WARRANTY, to the
+extent permitted by law.</p>
+<h1>SEE ALSO</h1>
+<p>The full documentation for <strong>qmi-firmware-update</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>qmi-firmware-update</strong> programs are properly installed at
+your site, the command</p>
+<blockquote>
+<p><strong>info qmi-firmware-update</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

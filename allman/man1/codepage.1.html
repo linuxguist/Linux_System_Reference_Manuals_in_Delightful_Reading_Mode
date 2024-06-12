@@ -1,0 +1,47 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>codepage - extract a codepage from an MSDOS codepage file</p>
+<h1>SYNOPSIS</h1>
+<p><strong>codepage</strong> [ <em>-c</em> | <em>-l</em> | <em>-L</em> |
+<em>-a</em> | <em>nnn</em> ] <em>file.cpi</em></p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>codepage</strong> command extracts codepages from an
+MSDOS codepage file.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><em>-c</em></dt>
+<dd>
+<p>Input file is a single codepage</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-L</em></dt>
+<dd>
+<p>Print header info (you don't want to see this).</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-l</em></dt>
+<dd>
+<p>List all codepages contained in the file.</p>
+</dd>
+</dl>
+<dl>
+<dt><em>-a</em></dt>
+<dd>
+<p>Extract all codepages from the file</p>
+</dd>
+</dl>
+<dl>
+<dt><em>nnn</em></dt>
+<dd>
+<p>(3 digits): extract codepage <em>nnn</em> from the file.</p>
+</dd>
+</dl>
+<h1>EXAMPLE</h1>
+<p>To create a file 850.cp, with codepage 850 from a file ega.cpi,
+execute:</p>
+<blockquote>
+<p>codepage ega.cpi 850</p>
+</blockquote>

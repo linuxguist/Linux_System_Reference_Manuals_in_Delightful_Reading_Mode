@@ -1,0 +1,224 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>nslookup - query Internet name servers interactively</p>
+<h1>SYNOPSIS</h1>
+<p><strong>nslookup</strong> [-option] [name | -] [server]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>nslookup</strong> is a program to query Internet domain name
+servers. <strong>nslookup</strong> has two modes: interactive and
+non-interactive. Interactive mode allows the user to query name servers
+for information about various hosts and domains or to print a list of
+hosts in a domain. Non-interactive mode prints just the name and
+requested information for a host or domain.</p>
+<h1>ARGUMENTS</h1>
+<p>Interactive mode is entered in the following cases:</p>
+<blockquote>
+<ol type="a">
+<li><p>when no arguments are given (the default name server is
+used);</p></li>
+<li><p>when the first argument is a hyphen (-) and the second argument
+is the host name or Internet address of a name server.</p></li>
+</ol>
+</blockquote>
+<p>Non-interactive mode is used when the name or Internet address of the
+host to be looked up is given as the first argument. The optional second
+argument specifies the host name or address of a name server.</p>
+<p>Options can also be specified on the command line if they precede the
+arguments and are prefixed with a hyphen. For example, to change the
+default query type to host information, with an initial timeout of 10
+seconds, type:</p>
+<blockquote>
+<blockquote>
+<pre><code>nslookup -query=hinfo  -timeout=10</code></pre>
+</blockquote>
+</blockquote>
+<p>The <strong>-version</strong> option causes <strong>nslookup</strong>
+to print the version number and immediately exit.</p>
+<h1>INTERACTIVE COMMANDS</h1>
+<blockquote>
+<dl>
+<dt><strong><strong>host</strong> [server]</strong></dt>
+<dd>
+<p>This command looks up information for <em>host</em> using the current
+default server or using <strong>server</strong>, if specified. If
+<em>host</em> is an Internet address and the query type is A or PTR, the
+name of the host is returned. If <em>host</em> is a name and does not
+have a trailing period (<strong>.</strong>), the search list is used to
+qualify the name.</p>
+<p>To look up a host not in the current domain, append a period to the
+name.</p>
+</dd>
+<dt><strong><strong>server</strong> domain | <strong>lserver</strong>
+domain</strong></dt>
+<dd>
+<p>These commands change the default server to <strong>domain</strong>;
+<strong>lserver</strong> uses the initial server to look up information
+about <strong>domain</strong>, while <strong>server</strong> uses the
+current default server. If an authoritative answer cannot be found, the
+names of servers that might have the answer are returned.</p>
+</dd>
+<dt><strong><strong>root</strong></strong></dt>
+<dd>
+<p>This command is not implemented.</p>
+</dd>
+<dt><strong><strong>finger</strong></strong></dt>
+<dd>
+<p>This command is not implemented.</p>
+</dd>
+<dt><strong><strong>ls</strong></strong></dt>
+<dd>
+<p>This command is not implemented.</p>
+</dd>
+<dt><strong><strong>view</strong></strong></dt>
+<dd>
+<p>This command is not implemented.</p>
+</dd>
+<dt><strong><strong>help</strong></strong></dt>
+<dd>
+<p>This command is not implemented.</p>
+</dd>
+<dt><strong><strong>?</strong></strong></dt>
+<dd>
+<p>This command is not implemented.</p>
+</dd>
+<dt><strong><strong>exit</strong></strong></dt>
+<dd>
+<p>This command exits the program.</p>
+</dd>
+<dt><strong><strong>set</strong> keyword[=value]</strong></dt>
+<dd>
+<p>This command is used to change state information that affects the
+lookups. Valid keywords are:</p>
+<dl>
+<dt><strong><strong>all</strong></strong></dt>
+<dd>
+<p>This keyword prints the current values of the frequently used options
+to <strong>set</strong>. Information about the current default server
+and host is also printed.</p>
+</dd>
+<dt><strong><strong>class=value</strong></strong></dt>
+<dd>
+<p>This keyword changes the query class to one of:</p>
+<dl>
+<dt><strong><strong>IN</strong></strong></dt>
+<dd>
+<p>the Internet class</p>
+</dd>
+<dt><strong><strong>CH</strong></strong></dt>
+<dd>
+<p>the Chaos class</p>
+</dd>
+<dt><strong><strong>HS</strong></strong></dt>
+<dd>
+<p>the Hesiod class</p>
+</dd>
+<dt><strong><strong>ANY</strong></strong></dt>
+<dd>
+<p>wildcard</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>The class specifies the protocol group of the information. The
+default is <strong>IN</strong>; the abbreviation for this keyword is
+<strong>cl</strong>.</p>
+<dl>
+<dt><strong><strong>nodebug</strong></strong></dt>
+<dd>
+<p>This keyword turns on or off the display of the full response packet,
+and any intermediate response packets, when searching. The default for
+this keyword is <strong>nodebug</strong>; the abbreviation for this
+keyword is <strong>[no]deb</strong>.</p>
+</dd>
+<dt><strong><strong>nod2</strong></strong></dt>
+<dd>
+<p>This keyword turns debugging mode on or off. This displays more about
+what nslookup is doing. The default is <strong>nod2</strong>.</p>
+</dd>
+<dt><strong><strong>domain=name</strong></strong></dt>
+<dd>
+<p>This keyword sets the search list to <strong>name</strong>.</p>
+</dd>
+<dt><strong><strong>nosearch</strong></strong></dt>
+<dd>
+<p>If the lookup request contains at least one period, but does not end
+with a trailing period, this keyword appends the domain names in the
+domain search list to the request until an answer is received. The
+default is <strong>search</strong>.</p>
+</dd>
+<dt><strong><strong>port=value</strong></strong></dt>
+<dd>
+<p>This keyword changes the default TCP/UDP name server port to
+<strong>value</strong> from its default, port 53. The abbreviation for
+this keyword is <strong>po</strong>.</p>
+</dd>
+<dt><strong><strong>querytype=value</strong> |
+<strong>type=value</strong></strong></dt>
+<dd>
+<p>This keyword changes the type of the information query to
+<strong>value</strong>. The defaults are A and then AAAA; the
+abbreviations for these keywords are <strong>q</strong> and
+<strong>ty</strong>.</p>
+<p>Please note that it is only possible to specify one query type. Only
+the default behavior looks up both when an alternative is not
+specified.</p>
+</dd>
+<dt><strong><strong>norecurse</strong></strong></dt>
+<dd>
+<p>This keyword tells the name server to query other servers if it does
+not have the information. The default is <strong>recurse</strong>; the
+abbreviation for this keyword is <strong>[no]rec</strong>.</p>
+</dd>
+<dt><strong><strong>ndots=number</strong></strong></dt>
+<dd>
+<p>This keyword sets the number of dots (label separators) in a domain
+that disables searching. Absolute names always stop searching.</p>
+</dd>
+<dt><strong><strong>retry=number</strong></strong></dt>
+<dd>
+<p>This keyword sets the number of retries to
+<strong>number</strong>.</p>
+</dd>
+<dt><strong><strong>timeout=number</strong></strong></dt>
+<dd>
+<p>This keyword changes the initial timeout interval to wait for a reply
+to <strong>number</strong>, in seconds.</p>
+</dd>
+<dt><strong><strong>novc</strong></strong></dt>
+<dd>
+<p>This keyword indicates that a virtual circuit should always be used
+when sending requests to the server. <strong>novc</strong> is the
+default.</p>
+</dd>
+<dt><strong><strong>nofail</strong></strong></dt>
+<dd>
+<p>This keyword tries the next nameserver if a nameserver responds with
+SERVFAIL or a referral (nofail), or terminates the query (fail) on such
+a response. The default is <strong>nofail</strong>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</blockquote>
+<h1>RETURN VALUES</h1>
+<p><strong>nslookup</strong> returns with an exit status of 1 if any
+query failed, and 0 otherwise.</p>
+<h1>IDN SUPPORT</h1>
+<p>If <strong>nslookup</strong> has been built with IDN
+(internationalized domain name) support, it can accept and display
+non-ASCII domain names. <strong>nslookup</strong> appropriately converts
+character encoding of a domain name before sending a request to a DNS
+server or displaying a reply from the server. To turn off IDN support,
+define the <strong>IDN_DISABLE</strong> environment variable. IDN
+support is disabled if the variable is set when
+<strong>nslookup</strong> runs, or when the standard output is not a
+tty.</p>
+<h1>FILES</h1>
+<p><strong>/etc/resolv.conf</strong></p>
+<h1>SEE ALSO</h1>
+<p><em>dig(1)</em>, <em>host(1)</em>, <em>named(8)</em>.</p>
+<h1>AUTHOR</h1>
+<p>Internet Systems Consortium</p>
+<h1>COPYRIGHT</h1>
+<p>2023, Internet Systems Consortium</p>

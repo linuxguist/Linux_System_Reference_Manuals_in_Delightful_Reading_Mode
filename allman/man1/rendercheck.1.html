@@ -1,0 +1,62 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>rendercheck - simple tests of the X Render extension.</p>
+<h1>SYNOPSIS</h1>
+<pre><code>rendercheck [-d|--display display] [-i|--iter] [--sync] [-t|--tests test1,test2,test3,...] [-o|--ops op1,op2,op3,...]
+[-v|--verbose] [--minimalrendering]</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>rendercheck</strong> is a set of simple tests of the X Render
+extension. It is designed for authors of Render implementations in X
+Servers.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-d|--display display</strong></dt>
+<dd>
+<p>Specifies the display to test against.</p>
+</dd>
+<dt><strong>-i|--iter iterations</strong></dt>
+<dd>
+<p>Specifies the number of times to repeat each operation before
+sampling results. Some X Servers may behave differently (hardware vs
+software rendering paths) depending on the previous operations done, so
+this may be used to influence the server's choices.</p>
+</dd>
+<dt><strong>--sync</strong></dt>
+<dd>
+<p>Enables synchronous xlib operation, for debugging.</p>
+</dd>
+<dt><strong>-t|--tests test1,test2,test3...</strong></dt>
+<dd>
+<p>Enables only a specific subset of the possible tests. Test names
+include fill, dcoords, scoords, mcoords, tscoords, tmcoords, blend,
+composite, cacomposite, gradients, repeat, triangles, and bug7366. Names
+must be separated by commas and have no spaces.</p>
+</dd>
+<dt><strong>-f|--formats format1,format2,format3...</strong></dt>
+<dd>
+<p>Enables only a specific subset of the possible formats. Only formats
+listed in the server-supported format list are available. Names must be
+separated by commas and have no spaces.</p>
+</dd>
+<dt><strong>-o|--ops</strong></dt>
+<dd>
+<p>Enables only a specific subset of the Render operators.</p>
+</dd>
+<dt><strong>-v|--verbose</strong></dt>
+<dd>
+<p>Enables verbose printing of information on tests run, and successes
+and failures.</p>
+</dd>
+<dt><strong>--minimalrendering</strong></dt>
+<dd>
+<p>Disables copying of offscreen destinations to the window, which is on
+by default to provide the user with visual feedback.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>Several limitations are documented in the TODO file accompanying the
+source. Please report any further bugs you find to
+http://bugs.freedesktop.org/.</p>
+<h1>AUTHORS</h1>
+<p>Eric Anholt, with help from Keith Packard.</p>

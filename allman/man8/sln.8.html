@@ -1,0 +1,24 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sln - create symbolic links</p>
+<h1>SYNOPSIS</h1>
+<pre><code>sln source dest
+sln filelist</code></pre>
+<h1>DESCRIPTION</h1>
+<p>The <strong>sln</strong> program creates symbolic links. Unlike the
+<strong>ln</strong>(1) program, it is statically linked. This means that
+if for some reason the dynamic linker is not working,
+<strong>sln</strong> can be used to make symbolic links to dynamic
+libraries.</p>
+<p>The command line has two forms. In the first form, it creates
+<em>dest</em> as a new symbolic link to <em>source</em>.</p>
+<p>In the second form, <em>filelist</em> is a list of space-separated
+pathname pairs, and the effect is as if <strong>sln</strong> was
+executed once for each line of the file, with the two pathnames as the
+arguments.</p>
+<p>The <strong>sln</strong> program supports no command-line
+options.</p>
+<h1>SEE ALSO</h1>
+<p><strong>ln</strong>(1), <strong>ld.so</strong>(8),
+<strong>ldconfig</strong>(8)</p>

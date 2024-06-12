@@ -1,0 +1,64 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkfs.bfs - make an SCO bfs filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkfs.bfs</strong> [options] <em>device</em>
+[<em>block-count</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>mkfs.bfs</strong> creates an SCO bfs filesystem on a block
+device (usually a disk partition or a file accessed via the loop
+device).</p>
+<p>The <em>block-count</em> parameter is the desired size of the
+filesystem, in blocks. If nothing is specified, the entire partition
+will be used.</p>
+<h1>OPTIONS</h1>
+<p><strong>-N</strong>, <strong>--inodes</strong> <em>number</em></p>
+<blockquote>
+<p>Specify the desired <em>number</em> of inodes (at most 512). If
+nothing is specified, some default number in the range 48-512 is picked
+depending on the size of the partition.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--vname</strong> <em>label</em></p>
+<blockquote>
+<p>Specify the volume <em>label</em>. I have no idea if/where this is
+used.</p>
+</blockquote>
+<p><strong>-F</strong>, <strong>--fname</strong> <em>name</em></p>
+<blockquote>
+<p>Specify the filesystem <em>name</em>. I have no idea if/where this is
+used.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Explain what is being done.</p>
+</blockquote>
+<p><strong>-c</strong></p>
+<blockquote>
+<p>This option is silently ignored.</p>
+</blockquote>
+<p><strong>-l</strong></p>
+<blockquote>
+<p>This option is silently ignored.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit. Option <strong>-V</strong> only works as
+<strong>--version</strong> when it is the only option.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p>The exit status returned by <strong>mkfs.bfs</strong> is 0 when all
+went well, and 1 when something went wrong.</p>
+<h1>SEE ALSO</h1>
+<p><strong>mkfs</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>mkfs.bfs</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

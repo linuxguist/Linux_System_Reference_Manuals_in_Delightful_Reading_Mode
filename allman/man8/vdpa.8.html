@@ -1,0 +1,64 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>vdpa - vdpa management tool</p>
+<h1>SYNOPSIS</h1>
+<p><strong>vdpa</strong> [ <em>OPTIONS</em> ] {
+<em>dev</em>|<em>mgmtdev</em> } { <em>COMMAND</em> |
+<strong>help</strong> }</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-V</strong>,<strong> --Version</strong></dt>
+<dd>
+<p>Print the version of the <strong>vdpa</strong> utility and exit.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-j</strong>,<strong> --json</strong></dt>
+<dd>
+<p>Generate JSON output.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-p</strong>,<strong> --pretty</strong></dt>
+<dd>
+<p>When combined with -j generate a pretty JSON output.</p>
+</dd>
+</dl>
+<h2></h2>
+<p><em>OBJECT</em></p>
+<dl>
+<dt><strong>dev</strong></dt>
+<dd>
+<p>- vdpa device.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>mgmtdev</strong></dt>
+<dd>
+<p>- vdpa management device.</p>
+</dd>
+</dl>
+<h2></h2>
+<p><em>COMMAND</em></p>
+<p>Specifies the action to perform on the object. The set of possible
+actions depends on the object type. It is possible to
+<strong>show</strong> (or <strong>list</strong> ) objects. The
+<strong>help</strong> command is available for all objects. It prints
+out a list of available commands and argument syntax conventions.</p>
+<p>If no command is given, some default command is assumed. Usually it
+is <strong>show</strong> or, if the objects of this class cannot be
+listed, <strong>help</strong>.</p>
+<h1>EXIT STATUS</h1>
+<p>Exit status is 0 if command was successful or a positive integer upon
+failure.</p>
+<h1>SEE ALSO</h1>
+<p><strong>vdpa-dev</strong>(8), <strong>vdpa-mgmtdev</strong>(8),<br />
+</p>
+<h1>REPORTING BUGS</h1>
+<p>Report any bugs to the Network Developers mailing list
+<strong>&lt;netdev@vger.kernel.org&gt;</strong> where the development
+and maintenance is primarily done. You do not have to be subscribed to
+the list to send a message there.</p>
+<h1>AUTHOR</h1>
+<p>Parav Pandit &lt;parav@nvidia.com&gt;</p>

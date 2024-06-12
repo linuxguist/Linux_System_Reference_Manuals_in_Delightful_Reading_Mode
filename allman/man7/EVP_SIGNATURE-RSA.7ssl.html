@@ -1,0 +1,139 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_SIGNATURE-RSA - The EVP_PKEY RSA signature implementation</p>
+<h1>DESCRIPTION</h1>
+<p>Support for computing RSA signatures. See
+<strong>EVP_PKEY-RSA</strong> (7) for information related to RSA
+keys.</p>
+<h2>Signature Parameters</h2>
+<p>The following signature parameters can be set using
+<strong>EVP_PKEY_CTX_set_params()</strong>. This may be called after
+<strong>EVP_PKEY_sign_init()</strong> or
+<strong>EVP_PKEY_verify_init()</strong>, and before calling
+<strong>EVP_PKEY_sign()</strong> or
+<strong>EVP_PKEY_verify()</strong>.</p>
+<dl>
+<dt>"digest" (OSSL_SIGNATURE_PARAM_DIGEST) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"properties" (OSSL_SIGNATURE_PARAM_PROPERTIES) &lt;UTF8
+string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These common parameters are described in
+<strong>provider-signature</strong> (7).</p>
+<dl>
+<dt>"pad-mode" (OSSL_SIGNATURE_PARAM_PAD_MODE) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>The type of padding to be used. Its value can be one of the
+following:</p>
+<dl>
+<dt>"none" (OSSL_PKEY_RSA_PAD_MODE_NONE)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"pkcs1" (OSSL_PKEY_RSA_PAD_MODE_PKCSV15)</dt>
+<dd>
+
+</dd>
+<dt>"x931" (OSSL_PKEY_RSA_PAD_MODE_X931)</dt>
+<dd>
+
+</dd>
+<dt>"pss" (OSSL_PKEY_RSA_PAD_MODE_PSS)</dt>
+<dd>
+
+</dd>
+</dl>
+</dd>
+<dt>"mgf1-digest" (OSSL_SIGNATURE_PARAM_MGF1_DIGEST) &lt;UTF8
+string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The digest algorithm name to use for the maskGenAlgorithm used by pss
+mode.</p>
+<dl>
+<dt>"mgf1-properties" (OSSL_SIGNATURE_PARAM_MGF1_PROPERTIES) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>Sets the name of the property query associated with the mgf1-digest
+algorithm. NULL is used if this optional value is not set.</p>
+</dd>
+<dt>"saltlen" (OSSL_SIGNATURE_PARAM_PSS_SALTLEN) &lt;integer&gt; or
+&lt;UTF8 string&gt;</dt>
+<dd>
+<p>The pss mode minimum salt length. The value can either be an integer,
+a string value representing a number or one of the following string
+values:</p>
+<dl>
+<dt>"digest" (OSSL_PKEY_RSA_PSS_SALT_LEN_DIGEST)</dt>
+<dd>
+<p>Use the same length as the digest size.</p>
+</dd>
+<dt>"max" (OSSL_PKEY_RSA_PSS_SALT_LEN_MAX)</dt>
+<dd>
+<p>Use the maximum salt length.</p>
+</dd>
+<dt>"auto" (OSSL_PKEY_RSA_PSS_SALT_LEN_AUTO)</dt>
+<dd>
+<p>Auto detect the salt length.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>The following signature parameters can be retrieved using
+<strong>EVP_PKEY_CTX_get_params()</strong>.</p>
+<dl>
+<dt>"algorithm-id" (OSSL_SIGNATURE_PARAM_ALGORITHM_ID) &lt;octet
+string&gt;</dt>
+<dd>
+<p>This common parameter is described in
+<strong>provider-signature</strong> (7).</p>
+</dd>
+<dt>"digest" (OSSL_SIGNATURE_PARAM_DIGEST) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"pad-mode" (OSSL_SIGNATURE_PARAM_PAD_MODE) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+<dt>"mgf1-digest" (OSSL_SIGNATURE_PARAM_MGF1_DIGEST) &lt;UTF8
+string&gt;</dt>
+<dd>
+
+</dd>
+<dt>"saltlen" (OSSL_SIGNATURE_PARAM_PSS_SALTLEN) &lt;integer&gt; or
+&lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These parameters are as described above.</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY_CTX_set_params</strong> (3),
+<strong>EVP_PKEY_sign</strong> (3),
+<strong>EVP_PKEY_verify</strong> (3),
+<strong>provider-signature</strong> (7),</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2022 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

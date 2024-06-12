@@ -1,0 +1,335 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>realm - Manage enrollment in realms</p>
+<h1>SYNOPSIS</h1>
+<p><strong>realm discover</strong> [realm-name]</p>
+<p><strong>realm join</strong> [-U user] [realm-name]</p>
+<p><strong>realm leave</strong> [-U user] [realm-name]</p>
+<p><strong>realm list</strong></p>
+<p><strong>realm permit</strong> [-ax] [-R realm] {user@domain...}</p>
+<p><strong>realm deny</strong> -a [-R realm]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>realm</strong> is a command line tool that can be used to
+manage enrollment in kerberos realms, like Active Directory domains or
+IPA domains.</p>
+<p>See the various sub commands below. The following global options can
+be used:</p>
+<p><strong>-i</strong>, <strong>--install=/path</strong></p>
+<blockquote>
+<p>Run in install mode. This makes realmd chroot into the directory
+specified by an absolute path and place files in appropriate locations
+for use during an installer. No packages will be installed or services
+will be started when running in this mode.</p>
+</blockquote>
+<p><strong>--unattended</strong></p>
+<blockquote>
+<p>Run in unattended mode without prompting for input.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Display verbose diagnostics while doing running commands.</p>
+</blockquote>
+<h1>DISCOVER</h1>
+<p>Discover a realm and its capabilities.</p>
+<blockquote>
+<pre><code>$ realm discover</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>$ realm discover domain.example.com</code></pre>
+</blockquote>
+<p>After discovering a realm, its name, type and capabilities are
+displayed.</p>
+<p>If no domain is specified, then the domain assigned through DHCP is
+used as a default.</p>
+<p>The following options can be used:</p>
+<p><strong>-a</strong>, <strong>--all</strong></p>
+<blockquote>
+<p>Show all discovered realms (in various configurations).</p>
+</blockquote>
+<p><strong>--client-software=xxx</strong></p>
+<blockquote>
+<p>Only discover realms for which we can use the given client software.
+Possible values include <em>sssd</em> or <em>winbind</em>.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--name</strong></p>
+<blockquote>
+<p>Only show the names of the discovered realms.</p>
+</blockquote>
+<p><strong>--server-software=xxx</strong></p>
+<blockquote>
+<p>Only discover realms which run the given server software. Possible
+values include <em>active-directory</em> or <em>ipa</em>.</p>
+</blockquote>
+<p><strong>--membership-software=xxx</strong></p>
+<blockquote>
+<p>Only discover realms for which the given membership software can be
+used to subsequently perform enrollment. Possible values include
+<em>samba</em> or <em>adcli</em>.</p>
+</blockquote>
+<p><strong>--use-ldaps</strong></p>
+<blockquote>
+<p>See option description in the section called “JOIN”.</p>
+</blockquote>
+<h1>JOIN</h1>
+<p>Configure the local machine for use with a realm.</p>
+<blockquote>
+<pre><code>$ realm join domain.example.com</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>$ realm join --user=admin --computer-ou=OU=Special domain.example.com</code></pre>
+</blockquote>
+<p>The realm is first discovered, as we would with the
+<strong>discover</strong> command. If no domain is specified, then the
+domain assigned through DHCP is used as a default.</p>
+<p>After a successful join, the computer will be in a state where it is
+able to resolve remote user and group names from the realm. For kerberos
+realms, a computer account and host keytab is created.</p>
+<p>Joining arbitrary kerberos realms is not supported. The realm must
+have a supported mechanism for joining from a client machine, such as
+Active Directory or IPA.</p>
+<p>If the domain has been preconfigured, and unless --user is explicitly
+specified, an automatic join is attempted first.</p>
+<p>Note that the --user, --no-password, and --one-time-password options
+are mutually exclusive. At most one of them can be specified.</p>
+<p>It is generally possible to use kerberos credentials to perform a
+join operation. Use the <strong>kinit</strong> command to acquire
+credentials prior to starting the join. Do not specify the
+<strong>--user</strong> argument, the user will be selected
+automatically from the credential cache. The <strong>realm</strong>
+respects the KRB5_CCACHE environment variable, but uses the default
+kerberos credential cache if its not present. Not all types of servers
+can be joined using kerberos credentials, some (like IPA) insist on
+prompting for a password.</p>
+<p>The following options can be used:</p>
+<p><strong>--automatic-id-mapping=no</strong></p>
+<blockquote>
+<p>Do not perform UID/GID mapping for users and groups, but expect these
+identifiers to be present in the domain already.</p>
+</blockquote>
+<p><strong>--client-software=xxx</strong></p>
+<blockquote>
+<p>Only join realms for which we can use the given client software.
+Possible values include <em>sssd</em> or <em>winbind</em>. Not all
+values are supported for all realms. By default the client software is
+automatically selected.</p>
+</blockquote>
+<p><strong>--computer-ou=OU=xxx</strong></p>
+<blockquote>
+<p>The distinguished name of an organizational unit to create the
+computer account. The exact format of the distinguished name depends on
+the client software and membership software. You can usually omit the
+root DSE portion of distinguished name. This is an Active Directory
+specific option.</p>
+</blockquote>
+<p><strong>--membership-software=xxx</strong></p>
+<blockquote>
+<p>The software to use when joining to the realm. Possible values
+include <em>samba</em> or <em>adcli</em>. Not all values are supported
+for all realms. By default the membership software is automatically
+selected.</p>
+</blockquote>
+<p><strong>--computer-name=xxx</strong></p>
+<blockquote>
+<p>This option only applies to Active Directory realms. Specify this
+option to override the default name used when creating the computer
+account. The systems FQDN will still be saved in the dNSHostName
+attribute.</p>
+<p>Specify the name as a string of 15 or fewer characters that is a
+valid NetBIOS computer name.</p>
+</blockquote>
+<p><strong>--no-password</strong></p>
+<blockquote>
+<p>Perform the join automatically without a password.</p>
+</blockquote>
+<p><strong>--one-time-password=xxxx</strong></p>
+<blockquote>
+<p>Perform the join using a one time password specified on the command
+line. This is not possible with all types of realms.</p>
+</blockquote>
+<p><strong>--os-name=xxx</strong></p>
+<blockquote>
+<p>The name of the operation system of the client. When joining an AD
+domain the value is store in the matching AD attribute.</p>
+</blockquote>
+<p><strong>--os-version=xxx</strong></p>
+<blockquote>
+<p>The version of the operation system of the client. When joining an AD
+domain the value is store in the matching AD attribute.</p>
+</blockquote>
+<p><strong>--server-software=xxx</strong></p>
+<blockquote>
+<p>Only join realms for run the given server software. Possible values
+include <em>active-directory</em> or <em>ipa</em>.</p>
+</blockquote>
+<p><strong>-U</strong>, <strong>--user=xxx</strong></p>
+<blockquote>
+<p>The user name to be used to authenticate with when joining the
+machine to the realm. You will be prompted for a password.</p>
+</blockquote>
+<p><strong>--user-principal=</strong><em>host/name@REALM</em></p>
+<blockquote>
+<p>Set the <strong>userPrincipalName</strong> field of the computer
+account to this kerberos principal. If you omit the value for this
+option, then a principal will be set based on the defaults of the
+membership software.</p>
+<p>AD makes a distinction between user and service principals. Only with
+user principals you can request a Kerberos Ticket-Granting-Ticket (TGT),
+i.e. only user principals can be used with the <strong>kinit</strong>
+command. By default the user principal and the canonical principal name
+of an AD computer account is shortname$@AD.DOMAIN, where shortname is
+the NetBIOS name which is limited to 15 characters.</p>
+<p>If there are applications which are not aware of the AD default and
+are using a hard-coded default principal the
+<strong>--user-principal</strong> can be used to make AD aware of this
+principal. Please note that <strong>userPrincipalName</strong> is a
+single value LDAP attribute, i.e. only one alternative user principal
+besides the AD default user principal can be set.</p>
+</blockquote>
+<p><strong>--use-ldaps</strong></p>
+<blockquote>
+<p>Use the ldaps port when connecting to AD where possible. In general
+this option is not needed because <strong>realmd</strong> itself only
+read public information from the Active Directory domain controller
+which is available anonymously. The supported membership software
+products will use encrypted connections protected with GSS-SPNEGO/GSSAPI
+which offers a comparable level of security than ldaps. This option is
+only needed if the standard LDAP port (389/tcp) is blocked by a firewall
+and only the LDAPS port (636/tcp) is available. Given that and to lower
+the initial effort to discover a remote domain <strong>realmd</strong>
+does not require a strict certificate check. If the validation of the
+LDAP server certificate fails <strong>realmd</strong> will continue to
+setup the encrypted connection to the LDAP server.</p>
+<p>If this option is set to <em>yes</em> <strong>realmd</strong> will
+use the ldaps port when reading the rootDSE and call the
+<strong>adcli</strong> membership software with the option
+<strong>--use-ldaps</strong>. The Samba base membership currently offers
+only deprecated ways to enable ldaps. Support will be added in
+<strong>realmd</strong> when a new way is available.</p>
+</blockquote>
+<p><strong>--do-not-touch-config</strong></p>
+<blockquote>
+<p>Run the join operation but do not touch the local configuration of
+the client except adding new Kerberos keys to the keytab. The purpose of
+this option is to synchronize the keytab entries with the ones stored in
+AD or recreate the computer object in AD without changing the local
+configuration which might contain changes which would get overwritten by
+a fully leave/join cycle.</p>
+<p>If running <strong>realm join</strong> with this options does not
+help to fix issues it is recommended to call <strong>realm
+leave</strong> followed by <strong>realm join</strong> to enforce a
+fresh configuration with default settings. Since this might overwrite
+manual changes to the related configuration files it is recommend to
+save those change before running the commands.</p>
+<p>This options is only available when joining AD domains.</p>
+</blockquote>
+<h1>LEAVE</h1>
+<p>Deconfigure the local machine for use with a realm.</p>
+<blockquote>
+<pre><code>$ realm leave</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>$ realm leave domain.example.com</code></pre>
+</blockquote>
+<p>If no realm name is specified, then the first configured realm will
+be used.</p>
+<p>The following options can be used:</p>
+<p><strong>--client-software=xxx</strong></p>
+<blockquote>
+<p>Only leave the realm which is using the given client software.
+Possible values include <em>sssd</em> or <em>winbind</em>.</p>
+</blockquote>
+<p><strong>--server-software=xxx</strong></p>
+<blockquote>
+<p>Only leave the realm which is using the given server software.
+Possible values include <em>active-directory</em> or <em>ipa</em>.</p>
+</blockquote>
+<p><strong>--remove</strong></p>
+<blockquote>
+<p>Remove or disable computer account from the directory while leaving
+the realm. This will usually prompt for a pasword.</p>
+</blockquote>
+<p><strong>-U</strong>, <strong>--user</strong></p>
+<blockquote>
+<p>The user name to be used to authenticate with when leaving the realm.
+You will be prompted for a password. Implies
+<strong>--remove</strong>.</p>
+</blockquote>
+<p><strong>--use-ldaps</strong></p>
+<blockquote>
+<p>See option description in the section called “JOIN”.</p>
+</blockquote>
+<h1>LIST</h1>
+<p>List all the discovered and configured realms.</p>
+<blockquote>
+<pre><code>$ realm list</code></pre>
+</blockquote>
+<p>By default, realms that have been discovered, but not configured
+(using the <strong>join</strong> command), are not displayed. Also, by
+default, the list of realm details displayed is verbose. The options
+below can be used to change this default behavior</p>
+<p>The following options can be used:</p>
+<p><strong>--all</strong></p>
+<blockquote>
+<p>Show all discovered realms (whether or not they have been
+configured).</p>
+</blockquote>
+<p><strong>--name-only</strong></p>
+<blockquote>
+<p>Display only realm names (as opposed to verbose output).</p>
+</blockquote>
+<h1>PERMIT</h1>
+<p>Permit local login by users of the realm.</p>
+<blockquote>
+<pre><code>$ realm permit --all
+$ realm permit user@example.com
+$ realm permit DOMAIN\\User2
+$ realm permit --withdraw user@example.com</code></pre>
+</blockquote>
+<p>The current login policy and format of the user names can be seen by
+using the <strong>realm list</strong> command.</p>
+<p>The following options can be used:</p>
+<p><strong>--all, -a</strong></p>
+<blockquote>
+<p>Permit logins using realm accounts on the local machine according to
+the realm policy.This usually defaults to allowing any realm user to log
+in.</p>
+</blockquote>
+<p><strong>--groups, -g</strong></p>
+<blockquote>
+<p>Treat the specified names as groups rather than user login names.
+Permit login by users in the specified groups.</p>
+</blockquote>
+<p><strong>--realm, -R</strong></p>
+<blockquote>
+<p>Specify the of the realm to change login policy for.</p>
+</blockquote>
+<p><strong>--withdraw, -x</strong></p>
+<blockquote>
+<p>Remove a login from the list of realm accounts permitted to log into
+the machine.</p>
+</blockquote>
+<h1>DENY</h1>
+<p>Deny local login by realm accounts.</p>
+<blockquote>
+<pre><code>$ realm deny --all</code></pre>
+</blockquote>
+<p>This command prevents realm accounts from logging into the local
+machine. Use <strong>realm permit</strong> to restrict logins to
+specific accounts.</p>
+<p>The following options can be used:</p>
+<p><strong>--all, -a</strong></p>
+<blockquote>
+<p>This option should be specified</p>
+</blockquote>
+<p><strong>--realm, -R</strong></p>
+<blockquote>
+<p>Specify the name of the realm to deny users login to.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>realmd.conf</strong>(5)</p>
+<h1>AUTHOR</h1>
+<p><strong>Stef Walter</strong> &lt;stef@thewalter.net&gt;</p>
+<blockquote>
+<p>Maintainer</p>
+</blockquote>

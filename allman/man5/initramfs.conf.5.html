@@ -1,0 +1,155 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>initramfs.conf - configuration file for mkinitramfs</p>
+<h1>DESCRIPTION</h1>
+<p>The behaviour of <strong>mkinitramfs</strong> can be modified by its
+configuration file.</p>
+<p>Each line in the file can be a configuration variable, a blank line,
+or a comment. The value of an variable is assigned by an statement of
+the form: <em>name</em>=[<em>value</em>]</p>
+<p>Configuration options can be broken out into configuration snippets
+and placed in individual files in the /etc/initramfs-tools/conf.d
+directory. Files in this directory are always read
+<strong>after</strong> the main configuration file, so you can override
+the settings in the main config file without editing it directly.</p>
+<h1>GENERAL VARIABLES</h1>
+<dl>
+<dt> <strong>MODULES</strong></dt>
+<dd>
+<p>Specifies the modules for the initramfs image.</p>
+<p>Modules listed in <em>/etc/initramfs-tools/modules</em>
+<strong>and</strong> <em>/usr/share/initramfs-tools/modules.d/*</em>
+<strong>are always included in the</strong> initramfs, and are loaded
+early in the boot process.</p>
+</dd>
+</dl>
+<p><em>list</em> <strong>doesn't load any additional modules at boot
+time, other than those</strong> listed in the above files.</p>
+<p><em>most</em> <strong>adds most file system, all ata, sata, scsi and
+usb drivers.</strong></p>
+<p><em>dep</em> <strong>tries to guess which modules are necessary for
+the running box and</strong> only adds those modules.</p>
+<p><em>netboot</em> <strong>adds the base and network modules, but skips
+block devices.</strong></p>
+<p>The default setting is <em>most</em><strong>.</strong></p>
+<dl>
+<dt> <strong>BUSYBOX</strong></dt>
+<dd>
+<p>Include busybox utilities for the boot scripts. If set to 'n'
+<strong>mkinitramfs</strong> will build an initramfs without busybox.
+Beware that many boot scripts need busybox utilities.</p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>KEYMAP</strong></dt>
+<dd>
+<p>If set to 'y', the console keymap will be loaded during the initramfs
+stage. The keymap will anyway be loaded by the initscripts later, and
+the packages that might need input will normally set this variable
+automatically, so there should normally be no need to set this.</p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>COMPRESS</strong></dt>
+<dd>
+<p>Specifies the compression method used for the initramfs image.
+<strong>mkinitramfs</strong> will default to gzip if the kernel lacks
+support (CONFIG_RD) or the corresponding userspace utility is not
+present.</p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>COMPRESSLEVEL</strong></dt>
+<dd>
+<p>Specifies the compression level used for the initramfs image.
+<strong>mkinitramfs</strong> will default to 9 for lz4, 9 for zstd, and
+the builtin defaults for all others.</p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>UMASK</strong></dt>
+<dd>
+<p>Set the umask value of the generated initramfs file. Useful to not
+disclose eventual keys.</p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>BOOT</strong></dt>
+<dd>
+<p>Allows one to use an nfs drive as the root of the drive. The default
+is to boot from <em>local</em> <strong>media (hard drive, USB
+stick).</strong> Set to <em>nfs</em> <strong>for an NFS root
+share.</strong></p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>RUNSIZE</strong></dt>
+<dd>
+<p>The size of the <em>/run</em> <strong>tmpfs mount point in bytes
+(suffixes are supported)</strong> or as percentage of your physical RAM.
+This parameter is used as the value of the size mount option to tmpfs.
+See
+<strong>https://www.kernel.org/doc/Documentation/filesystems/tmpfs.txt</strong>
+for details. Can be overridden by an optional
+<strong>initramfs.runsize=</strong> bootarg. The default is 10%.</p>
+</dd>
+</dl>
+<h1>VARIABLES FOR LOCAL BOOT</h1>
+<dl>
+<dt> <strong>RESUME</strong></dt>
+<dd>
+<p>Specifies the device used for suspend-to-disk (hibernation), which
+the initramfs code should attempt to resume from. If this is not defined
+or is set to <em>auto</em><strong>,</strong>
+<strong>mkinitramfs</strong> will automatically select the largest
+available swap partition. Set it to <em>none</em> <strong>to disable
+resume from disk.</strong></p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>FSTYPE</strong></dt>
+<dd>
+<p>Specifies the filesystem type(s) to support, separated by commas. If
+this is not defined or is set to <em>auto</em><strong>, mkinitramfs
+will</strong> automatically detect the current root and <em>/usr</em>
+<strong>filesystem types.</strong></p>
+</dd>
+</dl>
+<h1>VARIABLES FOR NFS BOOT</h1>
+<dl>
+<dt> <strong>DEVICE</strong></dt>
+<dd>
+<p>Specifies the default network interface to use, like eth0. The
+<em>ip</em> <strong>or</strong> <em>BOOTIF</em> <strong>bootargs may
+override this.</strong></p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>ROOT</strong></dt>
+<dd>
+<p>Allows optional root bootarg hardcoding, when no root bootarg can be
+passed. A root bootarg overrides that special setting.</p>
+</dd>
+</dl>
+<dl>
+<dt> <strong>NFSROOT</strong></dt>
+<dd>
+<p>Defaults to <em>auto</em> <strong>in order to pick up value from DHCP
+server.</strong> Otherwise you need to specify
+<em>HOST:MOUNT</em><strong>.</strong></p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/initramfs-tools/initramfs.conf</em></dt>
+<dd>
+<h1>AUTHOR</h1>
+</dd>
+</dl>
+<p>The initramfs-tools are written by Maximilian Attems
+&lt;maks@debian.org&gt;, Jeff Bailey &lt;jbailey@raspberryginger.com&gt;
+and numerous others. Loosely based on mkinitrd.conf by Herbert Xu.</p>
+<h1>SEE ALSO</h1>
+<p><em>initramfs-tools</em>(7), <em>mkinitramfs</em>(8),
+<em>update-initramfs</em>(8).</p>

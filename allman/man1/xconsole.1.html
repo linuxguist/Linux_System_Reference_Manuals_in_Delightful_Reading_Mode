@@ -1,0 +1,88 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xconsole - monitor system console messages with X</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xconsole</strong> [-<em>toolkitoption</em> ...] [-file
+<em>file-name</em>] [-notify] [-stripNonprint] [-daemon] [-verbose]
+[-exitOnFail]</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>xconsole</em> program displays messages which are usually
+sent to /dev/console.</p>
+<h1>OPTIONS</h1>
+<p><em>Xconsole</em> accepts all of the standard X Toolkit command line
+options along with the additional options listed below:</p>
+<dl>
+<dt><strong>-file <em>file-name</em></strong></dt>
+<dd>
+<p>To monitor some other device, use this option to specify the device
+name. This does not work on regular files as they are always ready to be
+read from.</p>
+</dd>
+<dt><strong>-notify -nonotify</strong></dt>
+<dd>
+<p>When new data are received from the console and the notify option is
+set, the icon name of the application has " *" appended, so that it is
+evident even when the application is iconified. -notify is the
+default.</p>
+</dd>
+<dt><strong>-daemon</strong></dt>
+<dd>
+<p>This option causes <em>xconsole</em> to place itself in the
+background, using fork/exit.</p>
+</dd>
+<dt><strong>-verbose</strong></dt>
+<dd>
+<p>When set, this option directs <em>xconsole</em> to display an
+informative message in the first line of the text buffer.</p>
+</dd>
+<dt><strong>-exitOnFail</strong></dt>
+<dd>
+<p>When set, this option directs <em>xconsole</em> to exit when it is
+unable to redirect the console output.</p>
+</dd>
+<dt><strong>-saveLines <em>count</em></strong></dt>
+<dd>
+<p>When set, <em>xconsole</em> only preserves <em>count</em> lines of
+message history instead of growing the text buffer without bound (a
+<em>count</em> of zero - the default - is treated as placing no limit on
+the history).</p>
+</dd>
+</dl>
+<h1>X DEFAULTS</h1>
+<p>This program uses the <em>Athena Text</em> widget, look in the
+<em>Athena Widget Set</em> documentation for controlling it.</p>
+<p><em>Xconsole</em> otherwise accepts resources of the same names as
+the command-line options (without the leading dash). "file" is a string
+type, "saveLines" an integer, and the remaining options are
+booleans.</p>
+<h1>WIDGETS</h1>
+<p>In order to specify resources, it is useful to know the hierarchy of
+the widgets which compose <em>xconsole</em>. In the notation below,
+indentation indicates hierarchical structure. The widget class name is
+given first, followed by the widget instance name.</p>
+<pre><code>XConsole  xconsole
+     XConsole  text</code></pre>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p>to get the default host and display number.</p>
+</dd>
+<dt><strong>XENVIRONMENT</strong></dt>
+<dd>
+<p>to get the name of a resource file that overrides the global
+resources stored in the RESOURCE_MANAGER property.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/X11/app-defaults/XConsole</em></dt>
+<dd>
+<p>specifies required resources</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>X(7), xrdb(1), Athena Text widget</p>
+<h1>AUTHOR</h1>
+<p>Keith Packard (MIT X Consortium)</p>

@@ -1,0 +1,272 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_PKEY-EC, EVP_KEYMGMT-EC - EVP_PKEY EC keytype and algorithm
+support</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>EC</strong> keytype is implemented in OpenSSL's default
+provider.</p>
+<h2>Common EC parameters</h2>
+<p>The normal way of specifying domain parameters for an EC curve is via
+the curve name group. For curves with no curve name, explicit parameters
+can be used that specify field-type, p, a, b, generator and order.
+Explicit parameters are supported for backwards compatibility reasons,
+but they are not compliant with multiple standards (including RFC5915)
+which only allow named curves.</p>
+<p>The following KeyGen/Gettable/Import/Export types are available for
+the built-in EC algorithm:</p>
+<dl>
+<dt>"group" (OSSL_PKEY_PARAM_GROUP_NAME) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>The curve name.</p>
+</dd>
+<dt>"field-type" (OSSL_PKEY_PARAM_EC_FIELD_TYPE) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>The value should be either prime-field or characteristic-two-field,
+which correspond to prime field Fp and binary field F2^m.</p>
+</dd>
+<dt>"p" (OSSL_PKEY_PARAM_EC_P) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>For a curve over Fp <em>p</em> is the prime for the field. For a
+curve over F2^m <em>p</em> represents the irreducible polynomial - each
+bit represents a term in the polynomial. Therefore, there will either be
+three or five bits set dependent on whether the polynomial is a
+trinomial or a pentanomial.</p>
+</dd>
+<dt>"a" (OSSL_PKEY_PARAM_EC_A) &lt;unsigned integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"b" (OSSL_PKEY_PARAM_EC_B) &lt;unsigned integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"seed" (OSSL_PKEY_PARAM_EC_SEED) &lt;octet string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p><em>a</em> and <em>b</em> represents the coefficients of the curve
+For Fp: y^2 mod p = x^3 +ax + b mod p OR For F2^m: y^2 + xy = x^3 + ax^2
++ b <em>seed</em> is an optional value that is for information purposes
+only. It represents the random number seed used to generate the
+coefficient <em>b</em> from a random number.</p>
+<dl>
+<dt>"generator" (OSSL_PKEY_PARAM_EC_GENERATOR) &lt;octet string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"order" (OSSL_PKEY_PARAM_EC_ORDER) &lt;unsigned integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"cofactor" (OSSL_PKEY_PARAM_EC_COFACTOR) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The <em>generator</em> is a well defined point on the curve chosen
+for cryptographic operations. The encoding conforms with Sec. 2.3.3 of
+the SECG SEC 1 (Elliptic Curve Cryptography) standard. See
+<strong>EC_POINT_oct2point()</strong>. Integers used for point
+multiplications will be between 0 and <em>order</em> - 1.
+<em>cofactor</em> is an optional value. <em>order</em> multiplied by the
+<em>cofactor</em> gives the number of points on the curve.</p>
+<dl>
+<dt>"decoded-from-explicit"
+(OSSL_PKEY_PARAM_EC_DECODED_FROM_EXPLICIT_PARAMS) &lt;integer&gt;</dt>
+<dd>
+<p>Gets a flag indicating whether the key or parameters were decoded
+from explicit curve parameters. Set to 1 if so or 0 if a named curve was
+used.</p>
+</dd>
+<dt>"use-cofactor-flag" (OSSL_PKEY_PARAM_USE_COFACTOR_ECDH)
+&lt;integer&gt;</dt>
+<dd>
+<p>Enable Cofactor DH (ECC CDH) if this value is 1, otherwise it uses
+normal EC DH if the value is zero. The cofactor variant multiplies the
+shared secret by the EC curve's cofactor (note for some curves the
+cofactor is 1). See also <strong>EVP_KEYEXCH-ECDH</strong> (7) for the
+related <strong>OSSL_EXCHANGE_PARAM_EC_ECDH_COFACTOR_MODE</strong>
+parameter that can be set on a per-operation basis.</p>
+</dd>
+<dt>"encoding" (OSSL_PKEY_PARAM_EC_ENCODING) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>Set the format used for serializing the EC group parameters. Valid
+values are explicit or named_curve. The default value is
+named_curve.</p>
+</dd>
+<dt>"point-format" (OSSL_PKEY_PARAM_EC_POINT_CONVERSION_FORMAT) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>Sets or gets the point_conversion_form for the <em>key</em>. For a
+description of point_conversion_forms please see
+<strong>EC_POINT_new</strong> (3). Valid values are uncompressed or
+compressed. The default value is uncompressed.</p>
+</dd>
+<dt>"group-check" (OSSL_PKEY_PARAM_EC_GROUP_CHECK_TYPE) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>Sets or Gets the type of group check done when
+<strong>EVP_PKEY_param_check()</strong> is called. Valid values are
+default, named and named-nist. The named type checks that the domain
+parameters match the inbuilt curve parameters, named-nist is similar but
+also checks that the named curve is a nist curve. The default type does
+domain parameter validation for the OpenSSL default provider, but is
+equivalent to named-nist for the OpenSSL FIPS provider.</p>
+</dd>
+<dt>"include-public" (OSSL_PKEY_PARAM_EC_INCLUDE_PUBLIC)
+&lt;integer&gt;</dt>
+<dd>
+<p>Setting this value to 0 indicates that the public key should not be
+included when encoding the private key. The default value of 1 will
+include the public key.</p>
+</dd>
+<dt>"pub" (OSSL_PKEY_PARAM_PUB_KEY) &lt;octet string&gt;</dt>
+<dd>
+<p>The public key value in encoded EC point format conforming to Sec.
+2.3.3 and 2.3.4 of the SECG SEC 1 (Elliptic Curve Cryptography)
+standard. This parameter is used when importing or exporting the public
+key value with the <strong>EVP_PKEY_fromdata()</strong> and
+<strong>EVP_PKEY_todata()</strong> functions. Note, in particular, that
+the choice of point compression format used for encoding the exported
+value via <strong>EVP_PKEY_todata()</strong> depends on the underlying
+provider implementation. Before OpenSSL 3.0.8, the implementation of
+providers included with OpenSSL always opted for an encoding in
+compressed format, unconditionally. Since OpenSSL 3.0.8, the
+implementation has been changed to honor the
+<strong>OSSL_PKEY_PARAM_EC_POINT_CONVERSION_FORMAT</strong> parameter,
+if set, or to default to uncompressed format.</p>
+</dd>
+<dt>"priv" (OSSL_PKEY_PARAM_PRIV_KEY) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>The private key value.</p>
+</dd>
+<dt>"encoded-pub-key" (OSSL_PKEY_PARAM_ENCODED_PUBLIC_KEY) &lt;octet
+string&gt;</dt>
+<dd>
+<p>Used for getting and setting the encoding of an EC public key. The
+public key is expected to be a point conforming to Sec. 2.3.4 of the
+SECG SEC 1 (Elliptic Curve Cryptography) standard.</p>
+</dd>
+<dt>"qx" (OSSL_PKEY_PARAM_EC_PUB_X) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>Used for getting the EC public key X component.</p>
+</dd>
+<dt>"qy" (OSSL_PKEY_PARAM_EC_PUB_Y) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>Used for getting the EC public key Y component.</p>
+</dd>
+<dt>"default-digest" (OSSL_PKEY_PARAM_DEFAULT_DIGEST) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>Getter that returns the default digest name. (Currently returns
+SHA256 as of OpenSSL 3.0).</p>
+</dd>
+</dl>
+<p>The following Gettable types are also available for the built-in EC
+algorithm:</p>
+<dl>
+<dt>"basis-type" (OSSL_PKEY_PARAM_EC_CHAR2_TYPE) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>Supports the values tpBasis for a trinomial or ppBasis for a
+pentanomial. This field is only used for a binary field F2^m.</p>
+</dd>
+<dt>"m" (OSSL_PKEY_PARAM_EC_CHAR2_M) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"tp" (OSSL_PKEY_PARAM_EC_CHAR2_TP_BASIS) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"k1" (OSSL_PKEY_PARAM_EC_CHAR2_PP_K1) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"k2" (OSSL_PKEY_PARAM_EC_CHAR2_PP_K2) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"k3" (OSSL_PKEY_PARAM_EC_CHAR2_PP_K3) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These fields are only used for a binary field F2^m. <em>m</em> is the
+degree of the binary field. <em>tp</em> is the middle bit of a trinomial
+so its value must be in the range m &gt; tp &gt; 0. <em>k1</em>,
+<em>k2</em> and <em>k3</em> are used to get the middle bits of a
+pentanomial such that m &gt; k3 &gt; k2 &gt; k1 &gt; 0</p>
+<h2>EC key validation</h2>
+<p>For EC keys, <strong>EVP_PKEY_param_check</strong> (3) behaves in the
+following way: For the OpenSSL default provider it uses either
+<strong>EC_GROUP_check</strong> (3) or
+<strong>EC_GROUP_check_named_curve</strong> (3) depending on the flag
+EC_FLAG_CHECK_NAMED_GROUP. The OpenSSL FIPS provider uses
+<strong>EC_GROUP_check_named_curve</strong> (3) in order to conform to
+SP800-56Ar3 <em>Assurances of Domain-Parameter Validity</em>.</p>
+<p>For EC keys, <strong>EVP_PKEY_param_check_quick</strong> (3) is
+equivalent to <strong>EVP_PKEY_param_check</strong> (3).</p>
+<p>For EC keys, <strong>EVP_PKEY_public_check</strong> (3) and
+<strong>EVP_PKEY_public_check_quick</strong> (3) conform to SP800-56Ar3
+<em>ECC Full Public-Key Validation</em> and <em>ECC Partial Public-Key
+Validation</em> respectively.</p>
+<p>For EC Keys, <strong>EVP_PKEY_private_check</strong> (3) and
+<strong>EVP_PKEY_pairwise_check</strong> (3) conform to SP800-56Ar3
+<em>Private key validity</em> and <em>Owner Assurance of Pair-wise
+Consistency</em> respectively.</p>
+<h1>EXAMPLES</h1>
+<p>An <strong>EVP_PKEY</strong> context can be obtained by calling:</p>
+<p>EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_from_name(NULL, "EC",
+NULL);</p>
+<p>An <strong>EVP_PKEY</strong> ECDSA or ECDH key can be generated with
+a P-256 named group by calling:</p>
+<p>pkey = EVP_EC_gen("P-256");</p>
+<p>or like this:</p>
+<p>EVP_PKEY *key = NULL; OSSL_PARAM params[2]; EVP_PKEY_CTX *gctx =
+EVP_PKEY_CTX_new_from_name(NULL, "EC", NULL);
+EVP_PKEY_keygen_init(gctx); params[0] =
+OSSL_PARAM_construct_utf8_string(OSSL_PKEY_PARAM_GROUP_NAME, "P-256",
+0); params[1] = OSSL_PARAM_construct_end();
+EVP_PKEY_CTX_set_params(gctx, params); EVP_PKEY_generate(gctx,
+&amp;key); EVP_PKEY_print_private(bio_out, key, 0, NULL); ...
+EVP_PKEY_free(key); EVP_PKEY_CTX_free(gctx);</p>
+<p>An <strong>EVP_PKEY</strong> EC CDH (Cofactor Diffie-Hellman) key can
+be generated with a K-571 named group by calling:</p>
+<p>int use_cdh = 1; EVP_PKEY *key = NULL; OSSL_PARAM params[3];
+EVP_PKEY_CTX *gctx = EVP_PKEY_CTX_new_from_name(NULL, "EC", NULL);
+EVP_PKEY_keygen_init(gctx); params[0] =
+OSSL_PARAM_construct_utf8_string(OSSL_PKEY_PARAM_GROUP_NAME, "K-571",
+0); /* * This curve has a cofactor that is not 1 - so setting CDH mode
+changes * the behaviour. For many curves the cofactor is 1 - so setting
+this has * no effect. */ params[1] =
+OSSL_PARAM_construct_int(OSSL_PKEY_PARAM_USE_COFACTOR_ECDH,
+&amp;use_cdh); params[2] = OSSL_PARAM_construct_end();
+EVP_PKEY_CTX_set_params(gctx, params); EVP_PKEY_generate(gctx,
+&amp;key); EVP_PKEY_print_private(bio_out, key, 0, NULL); ...
+EVP_PKEY_free(key); EVP_PKEY_CTX_free(gctx);</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_EC_gen</strong> (3), <strong>EVP_KEYMGMT</strong> (3),
+<strong>EVP_PKEY</strong> (3), <strong>provider-keymgmt</strong> (7),
+<strong>EVP_SIGNATURE-ECDSA</strong> (7),
+<strong>EVP_KEYEXCH-ECDH</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

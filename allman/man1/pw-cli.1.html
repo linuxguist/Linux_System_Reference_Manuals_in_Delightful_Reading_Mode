@@ -1,0 +1,201 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pw-cli - The PipeWire Command Line Interface</p>
+<h1>SYNOPSIS</h1>
+<pre><code>pw-cli [command]</code></pre>
+<h1>DESCRIPTION</h1>
+<p>Interact with a PipeWire instance.</p>
+<p>When a command is given, <strong>pw-cli</strong> will execute the
+command and exit</p>
+<p>When no command is given, <strong>pw-cli</strong> starts an
+interactive session with the default PipeWire instance
+<em>pipewire-0</em>.</p>
+<p>Connections to other, remote instances can be made. The current
+instance name is displayed at the prompt. Some commands operate on the
+current instance and some on the local instance.</p>
+<p>Use the 'help' command to list the available commands.</p>
+<h1>GENERAL COMMANDS</h1>
+<blockquote>
+<dl>
+<dt><strong>help | h</strong></dt>
+<dd>
+<p>Show a quick help on the commands available. It also lists the
+aliases for many commands.</p>
+</dd>
+<dt><strong>quit | q</strong></dt>
+<dd>
+<p>Exit from <strong>pw-cli</strong></p>
+</dd>
+</dl>
+</blockquote>
+<h1>MODULE MANAGEMENT</h1>
+<pre><code>Modules are loaded and unloaded in the local instance, thus the pw-cli
+binary itself and can add functionality or objects to the local
+instance. It is not possible in PipeWire to load modules in another
+instance.</code></pre>
+<blockquote>
+<dl>
+<dt><strong>load-module <em>name</em>
+[<em>arguments...</em>]</strong></dt>
+<dd>
+<p>Load a module specified by its name and arguments. For most modules
+it is OK to be loaded more than once.</p>
+<p>This command returns a module variable that can be used to unload the
+module.</p>
+</dd>
+<dt><strong>unload-module <em>module-var</em></strong></dt>
+<dd>
+<p>Unload a module, specified either by its variable.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>OBJECT INTROSPECTION</h1>
+<blockquote>
+<dl>
+<dt><strong>list-objects</strong></dt>
+<dd>
+<p>List the objects of the current instance.</p>
+<p>Objects are listed with their <em>id</em>, <em>type</em> and
+<em>version</em>.</p>
+</dd>
+<dt><strong>info <em>id</em> | <em>all</em></strong></dt>
+<dd>
+<p>Get information about a specific object or <em>all</em> objects.</p>
+<p>Requesting info about an object will also notify you of changes.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>WORKING WITH REMOTES</h1>
+<blockquote>
+<dl>
+<dt><strong>connect [<em>remote-name</em>]</strong></dt>
+<dd>
+<p>Connect to a remote instance and make this the new current
+instance.</p>
+<p>If no remote name is specified, a connection is made to the default
+remote instance, usually <em>pipewire-0</em>.</p>
+<p>This command returns a remote var that can be used to disconnect or
+switch remotes.</p>
+</dd>
+<dt><strong>disconnect [<em>remote-var</em>]</strong></dt>
+<dd>
+<p>Disconnect from a <em>remote instance</em>.</p>
+<p>If no remote name is specified, the current instance is
+disconnected.</p>
+</dd>
+<dt><strong>list-remotes</strong></dt>
+<dd>
+<p>List all <em>remote instances</em>.</p>
+</dd>
+<dt><strong>switch-remote [<em>remote-var</em>]</strong></dt>
+<dd>
+<p>Make the specified <em>remote</em> the current instance.</p>
+<p>If no remote name is specified, the local instance is made
+current.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>NODE MANAGEMENT</h1>
+<blockquote>
+<dl>
+<dt><strong>create-node <em>factory-name</em>
+[<em>properties...</em>]</strong></dt>
+<dd>
+<p>Create a node from a factory in the current instance.</p>
+<p>Properties are key=value pairs separated by whitespace.</p>
+<p>This command returns a <em>node variable</em>.</p>
+</dd>
+<dt><strong>export-node <em>node-id</em>
+[<em>remote-var</em>]</strong></dt>
+<dd>
+<p>Export a node from the local instance to the specified instance. When
+no instance is specified, the node will be exported to the current
+instance.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>DEVICE MANAGEMENT</h1>
+<blockquote>
+<dl>
+<dt><strong>create-device <em>factory-name</em>
+[<em>properties...</em>]</strong></dt>
+<dd>
+<p>Create a device from a factory in the current instance.</p>
+<p>Properties are key=value pairs separated by whitespace.</p>
+<p>This command returns a <em>device variable</em>.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>LINK MANAGEMENT</h1>
+<blockquote>
+<dl>
+<dt><strong>create-link <em>node-id</em> <em>port-id</em>
+<em>node-id</em> <em>port-id</em> [<em>properties...</em>]</strong></dt>
+<dd>
+<p>Create a link between 2 nodes and ports.</p>
+<p>Port <em>ids</em> can be <em>-1</em> to automatically select an
+available port.</p>
+<p>Properties are key=value pairs separated by whitespace.</p>
+<p>This command returns a <em>link variable</em>.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>GLOBALS MANAGEMENT</h1>
+<blockquote>
+<dl>
+<dt><strong>destroy <em>object-id</em></strong></dt>
+<dd>
+<p>Destroy a global object.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>PARAMETER MANAGEMENT</h1>
+<blockquote>
+<dl>
+<dt><strong>enum-params <em>object-id</em>
+<em>param-id</em></strong></dt>
+<dd>
+<p>Enumerate params of an object.</p>
+<p><em>param-id</em> can also be given as the param short name.</p>
+</dd>
+<dt><strong>set-param <em>object-id</em> <em>param-id</em>
+<em>param-json</em></strong></dt>
+<dd>
+<p>Set param of an object.</p>
+<p><em>param-id</em> can also be given as the param short name.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>PERMISSION MANAGEMENT</h1>
+<blockquote>
+<dl>
+<dt><strong>permissions <em>client-id</em> <em>object-id</em>
+<em>permission</em></strong></dt>
+<dd>
+<p>Set permissions for a client.</p>
+<p><em>object-id</em> can be <em>-1</em> to set the default
+permissions.</p>
+</dd>
+<dt><strong>get-permissions <em>client-id</em></strong></dt>
+<dd>
+<p>Get permissions of a client.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>COMMAND MANAGEMENT</h1>
+<blockquote>
+<dl>
+<dt><strong>send-command <em>object-id</em></strong></dt>
+<dd>
+<p>Send a command to an object.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>EXAMPLES</h1>
+<h1>AUTHORS</h1>
+<p>The PipeWire Developers
+&lt;<em>https://gitlab.freedesktop.org/pipewire/pipewire/issues</em>&gt;;
+PipeWire is available from <em>https://pipewire.org</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>pipewire(1)</strong>, <strong>pw-mon(1)</strong>,</p>

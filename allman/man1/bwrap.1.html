@@ -1,0 +1,434 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>bwrap - container setup utility</p>
+<h1>SYNOPSIS</h1>
+<p><strong>bwrap</strong> [<em>OPTION</em>...] [<em>COMMAND</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>bwrap</strong> is a privileged helper for container setup.
+You are unlikely to use it directly from the commandline, although that
+is possible.</p>
+<p>It works by creating a new, completely empty, filesystem namespace
+where the root is on a tmpfs that is invisible from the host, and which
+will be automatically cleaned up when the last process exits. You can
+then use commandline options to construct the root filesystem and
+process environment for the command to run in the namespace.</p>
+<p>By default, <strong>bwrap</strong> creates a new mount namespace for
+the sandbox. Optionally it also sets up new user, ipc, pid, network and
+uts namespaces (but note the user namespace is required if bwrap is not
+installed setuid root). The application in the sandbox can be made to
+run with a different UID and GID.</p>
+<p>If needed (e.g. when using a PID namespace) <strong>bwrap</strong> is
+running a minimal pid 1 process in the sandbox that is responsible for
+reaping zombies. It also detects when the initial application process
+(pid 2) dies and reports its exit status back to the original spawner.
+The pid 1 process exits to clean up the sandbox when there are no other
+processes in the sandbox left.</p>
+<h1>OPTIONS</h1>
+<p>When options are used multiple times, the last option wins, unless
+otherwise specified.</p>
+<p>General options:</p>
+<p><strong>--help</strong></p>
+<blockquote>
+<p>Print help and exit</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Print version</p>
+</blockquote>
+<p><strong>--args</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Parse nul-separated arguments from the given file descriptor. This
+option can be used multiple times to parse options from multiple
+sources.</p>
+</blockquote>
+<p>Options related to kernel namespaces:</p>
+<p><strong>--unshare-user</strong></p>
+<blockquote>
+<p>Create a new user namespace</p>
+</blockquote>
+<p><strong>--unshare-user-try</strong></p>
+<blockquote>
+<p>Create a new user namespace if possible else skip it</p>
+</blockquote>
+<p><strong>--unshare-ipc</strong></p>
+<blockquote>
+<p>Create a new ipc namespace</p>
+</blockquote>
+<p><strong>--unshare-pid</strong></p>
+<blockquote>
+<p>Create a new pid namespace</p>
+</blockquote>
+<p><strong>--unshare-net</strong></p>
+<blockquote>
+<p>Create a new network namespace</p>
+</blockquote>
+<p><strong>--unshare-uts</strong></p>
+<blockquote>
+<p>Create a new uts namespace</p>
+</blockquote>
+<p><strong>--unshare-cgroup</strong></p>
+<blockquote>
+<p>Create a new cgroup namespace</p>
+</blockquote>
+<p><strong>--unshare-cgroup-try</strong></p>
+<blockquote>
+<p>Create a new cgroup namespace if possible else skip it</p>
+</blockquote>
+<p><strong>--unshare-all</strong></p>
+<blockquote>
+<p>Unshare all possible namespaces. Currently equivalent with:
+<strong>--unshare-user-try</strong> <strong>--unshare-ipc</strong>
+<strong>--unshare-pid</strong> <strong>--unshare-net</strong>
+<strong>--unshare-uts</strong> <strong>--unshare-cgroup-try</strong></p>
+</blockquote>
+<p><strong>--share-net</strong></p>
+<blockquote>
+<p>Retain the network namespace, overriding an earlier
+<strong>--unshare-all</strong> or <strong>--unshare-net</strong></p>
+</blockquote>
+<p><strong>--userns</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Use an existing user namespace instead of creating a new one. The
+namespace must fulfil the permission requirements for setns(), which
+generally means that it must be a descendant of the currently active
+user namespace, owned by the same user.</p>
+<p>This is incompatible with --unshare-user, and doesnt work in the
+setuid version of bubblewrap.</p>
+</blockquote>
+<p><strong>--userns2</strong> <strong>FD</strong></p>
+<blockquote>
+<p>After setting up the new namespace, switch into the specified
+namespace. For this to work the specified namespace must be a descendant
+of the user namespace used for the setup, so this is only useful in
+combination with --userns.</p>
+<p>This is useful because sometimes bubblewrap itself creates nested
+user namespaces (to work around some kernel issues) and --userns2 can be
+used to enter these.</p>
+</blockquote>
+<p><strong>--disable-userns</strong></p>
+<blockquote>
+<p>Prevent the process in the sandbox from creating further user
+namespaces, so that it cannot rearrange the filesystem namespace or do
+other more complex namespace modification. This is currently implemented
+by setting the user.max_user_namespaces sysctl to 1, and then entering a
+nested user namespace which is unable to raise that limit in the outer
+namespace. This option requires <strong>--unshare-user</strong>, and
+doesnt work in the setuid version of bubblewrap.</p>
+</blockquote>
+<p><strong>--assert-userns-disabled</strong></p>
+<blockquote>
+<p>Confirm that the process in the sandbox has been prevented from
+creating further user namespaces, but without taking any particular
+action to prevent that. For example, this can be combined with
+<strong>--userns</strong> to check that the given user namespace has
+already been set up to prevent the creation of further user
+namespaces.</p>
+</blockquote>
+<p><strong>--pidns</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Use an existing pid namespace instead of creating one. This is often
+used with --userns, because the pid namespace must be owned by the same
+user namespace that bwrap uses.</p>
+<p>Note that this can be combined with --unshare-pid, and in that case
+it means that the sandbox will be in its own pid namespace, which is a
+child of the passed in one.</p>
+</blockquote>
+<p><strong>--uid</strong> <strong>UID</strong></p>
+<blockquote>
+<p>Use a custom user id in the sandbox (requires
+<strong>--unshare-user</strong>)</p>
+</blockquote>
+<p><strong>--gid</strong> <strong>GID</strong></p>
+<blockquote>
+<p>Use a custom group id in the sandbox (requires
+<strong>--unshare-user</strong>)</p>
+</blockquote>
+<p><strong>--hostname</strong> <strong>HOSTNAME</strong></p>
+<blockquote>
+<p>Use a custom hostname in the sandbox (requires
+<strong>--unshare-uts</strong>)</p>
+</blockquote>
+<p>Options about environment setup:</p>
+<p><strong>--chdir</strong> <strong>DIR</strong></p>
+<blockquote>
+<p>Change directory to DIR</p>
+</blockquote>
+<p><strong>--setenv</strong> <strong>VAR</strong> <strong></strong>
+<strong>VALUE</strong></p>
+<blockquote>
+<p>Set an environment variable</p>
+</blockquote>
+<p><strong>--unsetenv</strong> <strong>VAR</strong></p>
+<blockquote>
+<p>Unset an environment variable</p>
+</blockquote>
+<p><strong>--clearenv</strong></p>
+<blockquote>
+<p>Unset all environment variables, except for <strong>PWD</strong> and
+any that are subsequently set by <strong>--setenv</strong></p>
+</blockquote>
+<p>Options for monitoring the sandbox from the outside:</p>
+<p><strong>--lock-file</strong> <strong>DEST</strong></p>
+<blockquote>
+<p>Take a lock on DEST while the sandbox is running. This option can be
+used multiple times to take locks on multiple files.</p>
+</blockquote>
+<p><strong>--sync-fd</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Keep this file descriptor open while the sandbox is running</p>
+</blockquote>
+<p>Filesystem related options. These are all operations that modify the
+filesystem directly, or mounts stuff in the filesystem. These are
+applied in the order they are given as arguments.</p>
+<p>Any missing parent directories that are required to create a
+specified destination are automatically created as needed. Their
+permissions are normally set to 0755 (rwxr-xr-x). However, if a
+<strong>--perms</strong> option is in effect, and it sets the
+permissions for group or other to zero, then newly-created parent
+directories will also have their corresponding permission set to zero.
+<strong>--size</strong> modifies the size of the created mount when
+preceding a <strong>--tmpfs</strong> action; <strong>--perms</strong>
+and <strong>--size</strong> can be combined.</p>
+<p><strong>--perms</strong> <strong>OCTAL</strong></p>
+<blockquote>
+<p>This option does nothing on its own, and must be followed by one of
+the options that it affects. It sets the permissions for the next
+operation to OCTAL. Subsequent operations are not affected: for example,
+--perms 0700 --tmpfs /a --tmpfs /b will mount /a with permissions 0700,
+then return to the default permissions for /b. Note that
+<strong>--perms</strong> and <strong>--size</strong> can be combined:
+--perms 0700 --size 10485760 --tmpfs /s will apply permissions as well
+as a maximum size to the created tmpfs.</p>
+</blockquote>
+<p><strong>--size</strong> <strong>BYTES</strong></p>
+<blockquote>
+<p>This option does nothing on its own, and must be followed by --tmpfs.
+It sets the size in bytes for the next tmpfs. For example, --size
+10485760 --tmpfs /tmp will create a tmpfs at /tmp of size 10MiB.
+Subsequent operations are not affected: for example, --size 10485760
+--tmpfs /a --tmpfs /b will mount /a with size 10MiB, then return to the
+default size for /b. Note that <strong>--perms</strong> and
+<strong>--size</strong> can be combined: --size 10485760 --perms 0700
+--tmpfs /s will apply permissions as well as a maximum size to the
+created tmpfs.</p>
+</blockquote>
+<p><strong>--bind</strong> <strong>SRC</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Bind mount the host path SRC on DEST</p>
+</blockquote>
+<p><strong>--bind-try</strong> <strong>SRC</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Equal to <strong>--bind</strong> but ignores non-existent SRC</p>
+</blockquote>
+<p><strong>--dev-bind</strong> <strong>SRC</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Bind mount the host path SRC on DEST, allowing device access</p>
+</blockquote>
+<p><strong>--dev-bind-try</strong> <strong>SRC</strong>
+<strong></strong> <strong>DEST</strong></p>
+<blockquote>
+<p>Equal to <strong>--dev-bind</strong> but ignores non-existent SRC</p>
+</blockquote>
+<p><strong>--ro-bind</strong> <strong>SRC</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Bind mount the host path SRC readonly on DEST</p>
+</blockquote>
+<p><strong>--ro-bind-try</strong> <strong>SRC</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Equal to <strong>--ro-bind</strong> but ignores non-existent SRC</p>
+</blockquote>
+<p><strong>--remount-ro</strong> <strong>DEST</strong></p>
+<blockquote>
+<p>Remount the path DEST as readonly. It works only on the specified
+mount point, without changing any other mount point under the specified
+path</p>
+</blockquote>
+<p><strong>--proc</strong> <strong>DEST</strong></p>
+<blockquote>
+<p>Mount procfs on DEST</p>
+</blockquote>
+<p><strong>--dev</strong> <strong>DEST</strong></p>
+<blockquote>
+<p>Mount new devtmpfs on DEST</p>
+</blockquote>
+<p><strong>--tmpfs</strong> <strong>DEST</strong></p>
+<blockquote>
+<p>Mount new tmpfs on DEST. If the previous option was
+<strong>--perms</strong>, it sets the mode of the tmpfs. Otherwise, the
+tmpfs has mode 0755. If the previous option was <strong>--size</strong>,
+it sets the size in bytes of the tmpfs. Otherwise, the tmpfs has the
+default size.</p>
+</blockquote>
+<p><strong>--mqueue</strong> <strong>DEST</strong></p>
+<blockquote>
+<p>Mount new mqueue on DEST</p>
+</blockquote>
+<p><strong>--dir</strong> <strong>DEST</strong></p>
+<blockquote>
+<p>Create a directory at DEST. If the directory already exists, its
+permissions are unmodified, ignoring <strong>--perms</strong> (use
+<strong>--chmod</strong> if the permissions of an existing directory
+need to be changed). If the directory is newly created and the previous
+option was <strong>--perms</strong>, it sets the mode of the directory.
+Otherwise, newly-created directories have mode 0755.</p>
+</blockquote>
+<p><strong>--file</strong> <strong>FD</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Copy from the file descriptor FD to DEST. If the previous option was
+<strong>--perms</strong>, it sets the mode of the new file. Otherwise,
+the file has mode 0666 (note that this is not the same as
+<strong>--bind-data</strong>).</p>
+</blockquote>
+<p><strong>--bind-data</strong> <strong>FD</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Copy from the file descriptor FD to a file which is bind-mounted on
+DEST. If the previous option was <strong>--perms</strong>, it sets the
+mode of the new file. Otherwise, the file has mode 0600 (note that this
+is not the same as <strong>--file</strong>).</p>
+</blockquote>
+<p><strong>--ro-bind-data</strong> <strong>FD</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Copy from the file descriptor FD to a file which is bind-mounted
+read-only on DEST. If the previous option was <strong>--perms</strong>,
+it sets the mode of the new file. Otherwise, the file has mode 0600
+(note that this is not the same as <strong>--file</strong>).</p>
+</blockquote>
+<p><strong>--symlink</strong> <strong>SRC</strong> <strong></strong>
+<strong>DEST</strong></p>
+<blockquote>
+<p>Create a symlink at DEST with target SRC</p>
+</blockquote>
+<p><strong>--chmod</strong> <strong>OCTAL</strong> <strong></strong>
+<strong>PATH</strong></p>
+<blockquote>
+<p>Set the permissions of PATH, which must already exist, to OCTAL.</p>
+</blockquote>
+<p>Lockdown options:</p>
+<p><strong>--seccomp</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Load and use seccomp rules from FD. The rules need to be in the form
+of a compiled cBPF program, as generated by seccomp_export_bpf. If this
+option is given more than once, only the last one is used. Use
+<strong>--add-seccomp-fd</strong> if multiple seccomp programs are
+needed.</p>
+</blockquote>
+<p><strong>--add-seccomp-fd</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Load and use seccomp rules from FD. The rules need to be in the form
+of a compiled cBPF program, as generated by seccomp_export_bpf. This
+option can be repeated, in which case all the seccomp programs will be
+loaded in the order given (note that the kernel will evaluate them in
+reverse order, so the last program on the bwrap command-line is
+evaluated first). All of them, except possibly the last, must allow use
+of the PR_SET_SECCOMP prctl. This option cannot be combined with
+<strong>--seccomp</strong>.</p>
+</blockquote>
+<p><strong>--exec-label</strong> <strong>LABEL</strong></p>
+<blockquote>
+<p>Exec Label from the sandbox. On an SELinux system you can specify the
+SELinux context for the sandbox process(s).</p>
+</blockquote>
+<p><strong>--file-label</strong> <strong>LABEL</strong></p>
+<blockquote>
+<p>File label for temporary sandbox content. On an SELinux system you
+can specify the SELinux context for the sandbox content.</p>
+</blockquote>
+<p><strong>--block-fd</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Block the sandbox on reading from FD until some data is
+available.</p>
+</blockquote>
+<p><strong>--userns-block-fd</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Do not initialize the user namespace but wait on FD until it is
+ready. This allow external processes (like newuidmap/newgidmap) to setup
+the user namespace before it is used by the sandbox process.</p>
+</blockquote>
+<p><strong>--info-fd</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Write information in JSON format about the sandbox to FD.</p>
+</blockquote>
+<p><strong>--json-status-fd</strong> <strong>FD</strong></p>
+<blockquote>
+<p>Multiple JSON documents are written to FD, one per line
+(<strong>"JSON lines" format</strong>[1]). Each line is a single JSON
+object. After <strong>bwrap</strong> has started the child process
+inside the sandbox, it writes an object with a child-pid member to the
+<strong>--json-status-fd</strong> (this duplicates the older
+<strong>--info-fd</strong>). The corresponding value is the process ID
+of the child process in the pid namespace from which
+<strong>bwrap</strong> was run. If available, the namespace IDs are also
+included in the object with the child-pid; again, this duplicates the
+older <strong>--info-fd</strong>. When the child process inside the
+sandbox exits, <strong>bwrap</strong> writes an object with an exit-code
+member, and then closes the <strong>--json-status-fd</strong>. The value
+corresponding to exit-code is the exit status of the child, in the usual
+shell encoding (n if it exited normally with status n, or 128+n if it
+was killed by signal n). Other members may be added to those objects in
+future versions of <strong>bwrap</strong>, and other JSON objects may be
+added before or after the current objects, so readers must ignore
+members and objects that they do not understand.</p>
+</blockquote>
+<p><strong>--new-session</strong></p>
+<blockquote>
+<p>Create a new terminal session for the sandbox (calls setsid()). This
+disconnects the sandbox from the controlling terminal which means the
+sandbox cant for instance inject input into the terminal.</p>
+<p>Note: In a general sandbox, if you dont use --new-session, it is
+recommended to use seccomp to disallow the TIOCSTI ioctl, otherwise the
+application can feed keyboard input to the terminal.</p>
+</blockquote>
+<p><strong>--die-with-parent</strong></p>
+<blockquote>
+<p>Ensures child process (COMMAND) dies when bwraps parent dies. Kills
+(SIGKILL) all bwrap sandbox processes in sequence from parent to child
+including COMMAND process when bwrap or bwraps parent dies. See prctl,
+PR_SET_PDEATHSIG.</p>
+</blockquote>
+<p><strong>--as-pid-1</strong></p>
+<blockquote>
+<p>Do not create a process with PID=1 in the sandbox to reap child
+processes.</p>
+</blockquote>
+<p><strong>--cap-add</strong> <strong>CAP</strong></p>
+<blockquote>
+<p>Add the specified capability when running as privileged user. It
+accepts the special value ALL to add all the permitted caps.</p>
+</blockquote>
+<p><strong>--cap-drop</strong> <strong>CAP</strong></p>
+<blockquote>
+<p>Drop the specified capability when running as privileged user. It
+accepts the special value ALL to drop all the caps. By default no caps
+are left in the sandboxed process. The <strong>--cap-add</strong> and
+<strong>--cap-drop</strong> options are processed in the order they are
+specified on the command line. Please be careful to the order they are
+specified.</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p><strong>HOME</strong></p>
+<blockquote>
+<p>Used as the cwd in the sandbox if <strong>--chdir</strong> has not
+been explicitly specified and the current cwd is not present inside the
+sandbox. The <strong>--setenv</strong> option can be used to override
+the value that is used here.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p>The <strong>bwrap</strong> command returns the exit status of the
+initial application process (pid 2 in the sandbox).</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>"JSON lines" format</p>
+<p>https://jsonlines.org/</p>
+</dd>
+</dl>

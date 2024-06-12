@@ -1,0 +1,132 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>uclampset - manipulate the utilization clamping attributes of the
+system or a process</p>
+<h1>SYNOPSIS</h1>
+<p><strong>uclampset</strong> [options] [<strong>-m</strong>
+<em>uclamp_min</em>] [<strong>-M</strong> <em>uclamp_max] _command
+argument</em></p>
+<p><strong>uclampset</strong> [options] [<strong>-m</strong>
+<em>uclamp_min</em>] [<strong>-M</strong> <em>uclamp_max</em>]
+<strong>-p</strong> <em>PID</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>uclampset</strong> sets or retrieves the utilization clamping
+attributes of an existing <em>PID</em>, or runs <em>command</em> with
+the given attributes.</p>
+<p>Utilization clamping is a new feature added in v5.3. It gives a hint
+to the scheduler about the allowed range of utilization the task should
+be operating at.</p>
+<p>The utilization of the task affects frequency selection and task
+placement. Only schedutil cpufreq governor understands handling util
+clamp hints at the time of writing. Consult your kernel docs for further
+info about other cpufreq governors support.</p>
+<p>If you’re running on asymmetric heterogeneous system like Arm’s
+big.LITTLE. Utilization clamping can help bias task placement. If the
+task is boosted such that <em>util_min</em> value is higher than the
+little cores' capacity, then the scheduler will do its best to place it
+on a big core.</p>
+<p>Similarly, if <em>util_max</em> is smaller than or equal the capacity
+of the little cores, then the scheduler can still choose to place it
+there even if the actual utilization of the task is at max.</p>
+<p>Setting a task’s <em>uclamp_min</em> to a none zero value will
+effectively boost the task as when it runs it’ll always start from this
+utilization value.</p>
+<p>By setting a task’s <em>uclamp_max</em> below 1024, this will
+effectively cap the task as when it runs it’ll never be able to go above
+this utilization value.</p>
+<p>The full utilization range is: [0:1024]. The special value -1 is used
+to reset to system’s default.</p>
+<h1>OPTIONS</h1>
+<p><strong>-m</strong></p>
+<blockquote>
+<p>Set <em>util_min</em> value.</p>
+</blockquote>
+<p><strong>-M</strong></p>
+<blockquote>
+<p>Set <em>util_max</em> value.</p>
+</blockquote>
+<p><strong>-a</strong>, <strong>--all-tasks</strong></p>
+<blockquote>
+<p>Set or retrieve the utilization clamping attributes of all the tasks
+(threads) for a given PID.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--pid</strong></p>
+<blockquote>
+<p>Operate on an existing PID and do not launch a new task.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--system</strong></p>
+<blockquote>
+<p>Set or retrieve the system-wide utilization clamping attributes.</p>
+</blockquote>
+<p><strong>-R</strong>, <strong>--reset-on-fork</strong></p>
+<blockquote>
+<p>Set <strong>SCHED_FLAG_RESET_ON_FORK</strong> flag.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Show status information.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>USAGE</h1>
+<p>The default behavior is to run a new command:</p>
+<blockquote>
+<p><strong>uclampset</strong> <em>[-m uclamp_min]</em> <em>[-M
+uclamp_max]</em> <em>command</em> [<em>arguments</em>]</p>
+</blockquote>
+<p>You can also retrieve the utilization clamping attributes of an
+existing task:</p>
+<blockquote>
+<p><strong>uclampset -p</strong> <em>PID</em></p>
+</blockquote>
+<p>Or set them:</p>
+<blockquote>
+<p><strong>uclampset -p</strong> <em>PID</em> <em>[-m uclamp_min]</em>
+<em>[-M uclamp_max]</em></p>
+</blockquote>
+<p>Or control the system-wide attributes:</p>
+<blockquote>
+<p><strong>uclampset -s</strong> <em>[-m uclamp_min]</em> <em>[-M
+uclamp_max]</em></p>
+</blockquote>
+<h1>PERMISSIONS</h1>
+<p>A user must possess <strong>CAP_SYS_NICE</strong> to change the
+scheduling attributes of a process. Any user can retrieve the scheduling
+information.</p>
+<h1>NOTES</h1>
+<p>The system wide utilization clamp attributes are there to control the
+<em>allowed</em> range the tasks can use. By default both
+<em>uclamp_min</em> and <em>uclamp_max</em> are set to 1024. This means
+users can set the utilization clamp values for their task across the
+full range [0:1024].</p>
+<p>For example:</p>
+<blockquote>
+<p><strong>uclampset -s</strong> <code>-m 512</code>
+<code>-M 700</code></p>
+</blockquote>
+<p>will prevent any task from being boosted higher than 512. And all
+tasks in the systems are capped to a utilization of 700. Effectively
+rendering the maximum performance of the system to 700.</p>
+<p>Consult your kernel docs for the exact expected behavior on that
+kernel.</p>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>nice</strong>(1), <strong>renice</strong>(1),
+<strong>taskset</strong>(1), <strong>sched</strong>(7)</p>
+<p>See <strong>sched_setscheduler</strong>(2) and
+<strong>sched_setattr</strong>(2) for a description of the Linux
+scheduling scheme.</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>uclampset</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

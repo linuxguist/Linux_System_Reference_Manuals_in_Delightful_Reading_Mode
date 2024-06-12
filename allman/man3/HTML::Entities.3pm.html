@@ -1,0 +1,120 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTML::Entities - Encode or decode strings with HTML entities</p>
+<h1>SYNOPSIS</h1>
+<p>use HTML::Entities; $a = "V&amp;aring;re norske tegn b&amp;oslash;r
+&amp;#230res"; decode_entities($a); encode_entities($a,
+"\200-\377");</p>
+<p>For example, this:</p>
+<p>$input = "vis-à-vis Beyoncés naïve\npapier-mâché résumé"; print
+encode_entities($input), "\n"</p>
+<p>Prints this out:</p>
+<p>vis-&amp;agrave;-vis Beyonc&amp;eacute;s na&amp;iuml;ve
+papier-m&amp;acirc;ch&amp;eacute; r&amp;eacute;sum&amp;eacute;</p>
+<h1>DESCRIPTION</h1>
+<p>This module deals with encoding and decoding of strings with HTML
+character entities. The module provides the following functions:</p>
+<dl>
+<dt>decode_entities( $string, ... )</dt>
+<dd>
+<p>This routine replaces HTML entities found in the <code>$string</code>
+with the corresponding Unicode character. Unrecognized entities are left
+alone. If multiple strings are provided as argument they are each
+decoded separately and the same number of strings are returned. If
+called in void context the arguments are decoded in-place. This routine
+is exported by default.</p>
+</dd>
+<dt>_decode_entities( $string, \%entity2char )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>_decode_entities( $string, \%entity2char, $expand_prefix )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This will in-place replace HTML entities in <code>$string</code>. The
+<code>%entity2char</code> hash must be provided. Named entities not
+found in the <code>%entity2char</code> hash are left alone. Numeric
+entities are expanded unless their value overflow. The keys in
+<code>%entity2char</code> are the entity names to be expanded and their
+values are what they should expand into. The values do not have to be
+single character strings. If a key has ; as suffix, then occurrences in
+<code>$string</code> are only expanded if properly terminated with ;.
+Entities without ; will be expanded regardless of how they are
+terminated for compatibility with how common browsers treat entities in
+the Latin-1 range. If <code>$expand_prefix</code> is TRUE then entities
+without trailing ; in <code>%entity2char</code> will even be expanded as
+a prefix of a longer unrecognized name. The longest matching name in
+<code>%entity2char</code> will be used. This is mainly present for
+compatibility with an MSIE misfeature. $string = "foo&amp;nbspbar";
+_decode_entities($string, { nb =&gt; "@", nbsp =&gt; "\xA0" }, 1); print
+$string; # will print "foo bar" This routine is exported by default.</p>
+<dl>
+<dt>encode_entities( $string )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>encode_entities( $string, $unsafe_chars )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This routine replaces unsafe characters in <code>$string</code> with
+their entity representation. A second argument can be given to specify
+which characters to consider unsafe. The unsafe characters is specified
+using the regular expression character class syntax (what you find
+within brackets in regular expressions). The default set of characters
+to encode are control chars, high-bit chars, and the <code>&lt;</code>,
+<code>&amp;</code>, <code>&gt;</code>, and <code>"</code> characters.
+But this, for example, would encode <em>just</em> the <code>&lt;</code>,
+<code>&amp;</code>, <code>&gt;</code>, and <code>"</code> characters:
+$encoded = encode_entities($input, &lt;&gt;&amp;"); and this would only
+encode non-plain ASCII: $encoded = encode_entities($input,
+^\n\x20-\x25\x27-\x7e); This routine is exported by default.</p>
+<dl>
+<dt>encode_entities_numeric( $string )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>encode_entities_numeric( $string, $unsafe_chars )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This routine works just like encode_entities, except that the
+replacement entities are always
+<code>&amp;#x</code><em><code>hexnum</code></em><code>;</code> and never
+<code>&amp;</code><em><code>entname</code></em><code>;</code>. For
+example, <code>encode_entities("r\xF4le")</code> returns r&amp;ocirc;le,
+but <code>encode_entities_numeric("r\xF4le")</code> returns
+r&amp;#xF4;le. This routine is <em>not</em> exported by default. But you
+can always export it with
+<code>use HTML::Entities qw(encode_entities_numeric);</code> or even
+<code>use HTML::Entities qw(:DEFAULT encode_entities_numeric);</code></p>
+<p>All these routines modify the string passed as the first argument, if
+called in a void context. In scalar and array contexts, the encoded or
+decoded string is returned (without changing the input string).</p>
+<p>If you prefer not to import these routines into your namespace, you
+can call them as:</p>
+<p>use HTML::Entities (); $decoded = HTML::Entities::decode($a);
+$encoded = HTML::Entities::encode($a); $encoded =
+HTML::Entities::encode_numeric($a);</p>
+<p>The module can also export the <code>%char2entity</code> and the
+<code>%entity2char</code> hashes, which contain the mapping from all
+characters to the corresponding entities (and vice versa,
+respectively).</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1995-2006 Gisle Aas. All rights reserved.</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

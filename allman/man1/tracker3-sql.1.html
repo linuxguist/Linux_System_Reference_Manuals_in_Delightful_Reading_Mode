@@ -1,0 +1,42 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-sql - Use SQL to query the Tracker databases.</p>
+<h1>SYNOPSIS</h1>
+<pre><code>tracker3 sql -q &lt;sql&gt; | -f &lt;file&gt;</code></pre>
+<h1>DESCRIPTION</h1>
+<p>This command allows probing of the current database. When using
+commands like <strong>tracker3 sparql</strong>, the SPARQL used is
+translated into SQL before being run on the database. This allows direct
+use of the database using SQL avoiding the SPARQL engine entirely.</p>
+<p>The caller can run a query two ways, either by providing a
+<em>file</em> with the query or by providing a string with the
+<em>sql</em> query.</p>
+<p>The <em>file</em> argument can be either a local path or a URI. It
+also does not have to be an absolute path.</p>
+<h1>OPTIONS</h1>
+<p><strong>-f,
+--file=&lt;</strong><em>file</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Use a <em>file</em> with SPARQL content to query. Don’t forget to end
+all queries with a semicolon (;) and also to use quotes around table
+names. The quotes are important because most tables are named after
+ontology classes like "nfo:Document" and queries will fail without the
+quotes.</p>
+</blockquote>
+<p><strong>-q,
+--query=&lt;</strong><em>sql</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Use a <em>sql</em> string to query the database with.</p>
+</blockquote>
+<h1>EXAMPLES</h1>
+<p>Show first 10 "nfo:Document" entries where the TOC is not NULL</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sql -q SELECT * FROM &quot;nfo:Document&quot; WHERE &quot;nfo:tableOfContents&quot; NOT NULL LIMIT 10;</code></pre>
+</blockquote>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-sparql</strong>(1),
+<strong>tracker3-info</strong>(1).</p>
+<p><strong>http://en.wikipedia.org/wiki/SQL</strong></p>

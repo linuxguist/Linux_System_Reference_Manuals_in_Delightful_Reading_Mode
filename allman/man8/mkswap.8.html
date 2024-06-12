@@ -1,0 +1,152 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkswap - set up a Linux swap area</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkswap</strong> [options] <em>device</em> [<em>size</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>mkswap</strong> sets up a Linux swap area on a device or in a
+file.</p>
+<p>The <em>device</em> argument will usually be a disk partition
+(something like <em>/dev/sdb7</em>) but can also be a file. The Linux
+kernel does not look at partition IDs, but many installation scripts
+will assume that partitions of hex type 82 (LINUX_SWAP) are meant to be
+swap partitions. (<strong>Warning: Solaris also uses this type. Be
+careful not to kill your Solaris partitions.</strong>)</p>
+<p>The <em>size</em> parameter is superfluous but retained for backwards
+compatibility. (It specifies the desired size of the swap area in
+1024-byte blocks. <strong>mkswap</strong> will use the entire partition
+or file if it is omitted. Specifying it is unwise - a typo may destroy
+your disk.)</p>
+<p>After creating the swap area, you need the <strong>swapon</strong>(8)
+command to start using it. Usually swap areas are listed in
+<em>/etc/fstab</em> so that they can be taken into use at boot time by a
+<strong>swapon -a</strong> command in some boot script.</p>
+<h1>WARNING</h1>
+<p>The swap header does not touch the first block. A boot loader or disk
+label can be there, but it is not a recommended setup. The recommended
+setup is to use a separate partition for a Linux swap area.</p>
+<p><strong>mkswap</strong>, like many others mkfs-like utils,
+<strong>erases the first partition block to make any previous filesystem
+invisible.</strong></p>
+<p>However, <strong>mkswap</strong> refuses to erase the first block on
+a device with a disk label (SUN, BSD, ...).</p>
+<h1>OPTIONS</h1>
+<p><strong>-c</strong>, <strong>--check</strong></p>
+<blockquote>
+<p>Check the device (if it is a block device) for bad blocks before
+creating the swap area. If any bad blocks are found, the count is
+printed.</p>
+</blockquote>
+<p><strong>-f</strong>, <strong>--force</strong></p>
+<blockquote>
+<p>Go ahead even if the command is stupid. This allows the creation of a
+swap area larger than the file or partition it resides on.</p>
+<p>Also, without this option, <strong>mkswap</strong> will refuse to
+erase the first block on a device with a partition table.</p>
+</blockquote>
+<p><strong>-q</strong>, <strong>--quiet</strong></p>
+<blockquote>
+<p>Suppress output and warning messages.</p>
+</blockquote>
+<p><strong>-L</strong>, <strong>--label</strong> <em>label</em></p>
+<blockquote>
+<p>Specify a <em>label</em> for the device, to allow
+<strong>swapon</strong>(8) by label.</p>
+</blockquote>
+<p><strong>--lock</strong>[=<em>mode</em>]</p>
+<blockquote>
+<p>Use exclusive BSD lock for device or file it operates. The optional
+argument <em>mode</em> can be <strong>yes</strong>, <strong>no</strong>
+(or 1 and 0) or <strong>nonblock</strong>. If the <em>mode</em> argument
+is omitted, it defaults to <strong>yes</strong>. This option overwrites
+environment variable <strong>$LOCK_BLOCK_DEVICE</strong>. The default is
+not to use any lock at all, but it’s recommended to avoid collisions
+with <strong>systemd-udevd</strong>(8) or other tools.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--pagesize</strong> <em>size</em></p>
+<blockquote>
+<p>Specify the page <em>size</em> (in bytes) to use. This option is
+usually unnecessary; <strong>mkswap</strong> reads the size from the
+kernel.</p>
+</blockquote>
+<p><strong>-U</strong>, <strong>--uuid</strong> <em>UUID</em></p>
+<blockquote>
+<p>Specify the <em>UUID</em> to use. The default is to generate a UUID.
+The format of the UUID is a series of hex digits separated by hyphens,
+like this: "c1b9d5a2-f162-11cf-9ece-0020afc76f16". The UUID parameter
+may also be one of the following:</p>
+<p><strong>clear</strong></p>
+<blockquote>
+<p>clear the filesystem UUID</p>
+</blockquote>
+<p><strong>random</strong></p>
+<blockquote>
+<p>generate a new randomly-generated UUID</p>
+</blockquote>
+<p><strong>time</strong></p>
+<blockquote>
+<p>generate a new time-based UUID</p>
+</blockquote>
+</blockquote>
+<p><strong>-v</strong>, <strong>--swapversion 1</strong></p>
+<blockquote>
+<p>Specify the swap-space version. (This option is currently pointless,
+as the old <strong>-v 0</strong> option has become obsolete and now only
+<strong>-v 1</strong> is supported. The kernel has not supported v0
+swap-space format since 2.5.22 (June 2002). The new version v1 is
+supported since 2.1.117 (August 1998).)</p>
+</blockquote>
+<p><strong>--verbose</strong></p>
+<blockquote>
+<p>Verbose execution. With this option <strong>mkswap</strong> will
+output more details about detected problems during swap area set up.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p>LIBBLKID_DEBUG=all</p>
+<blockquote>
+<p>enables libblkid debug output.</p>
+</blockquote>
+<p>LOCK_BLOCK_DEVICE=&lt;mode&gt;</p>
+<blockquote>
+<p>use exclusive BSD lock. The mode is "1" or "0". See
+<strong>--lock</strong> for more details.</p>
+</blockquote>
+<h1>NOTES</h1>
+<p>The maximum useful size of a swap area depends on the architecture
+and the kernel version.</p>
+<p>The maximum number of the pages that is possible to address by swap
+area header is 4294967295 (32-bit unsigned int). The remaining space on
+the swap device is ignored.</p>
+<p>Presently, Linux allows 32 swap areas. The areas in use can be seen
+in the file <em>/proc/swaps</em>.</p>
+<p><strong>mkswap</strong> refuses areas smaller than 10 pages.</p>
+<p>If you don’t know the page size that your machine uses, you can look
+it up with <strong>getconf PAGESIZE</strong>.</p>
+<p>To set up a swap file, it is necessary to create that file before
+initializing it with <strong>mkswap</strong>, e.g. using a command
+like</p>
+<blockquote>
+<pre><code># dd if=/dev/zero of=swapfile bs=1MiB count=$((8*1024))</code></pre>
+</blockquote>
+<p>to create 8GiB swapfile.</p>
+<p>Please read notes from <strong>swapon</strong>(8) about <strong>the
+swap file use restrictions</strong> (holes, preallocation and
+copy-on-write issues).</p>
+<h1>SEE ALSO</h1>
+<p><strong>fdisk</strong>(8), <strong>swapon</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>mkswap</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

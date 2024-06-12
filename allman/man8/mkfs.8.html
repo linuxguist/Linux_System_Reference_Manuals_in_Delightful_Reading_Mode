@@ -1,0 +1,73 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkfs - build a Linux filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkfs</strong> [options] [<strong>-t</strong> <em>type</em>]
+[<em>fs-options</em>] <em>device</em> [<em>size</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>This mkfs frontend is deprecated in favour of filesystem
+specific mkfs.&lt;type&gt; utils.</strong></p>
+<p><strong>mkfs</strong> is used to build a Linux filesystem on a
+device, usually a hard disk partition. The <em>device</em> argument is
+either the device name (e.g., <em>/dev/hda1</em>, <em>/dev/sdb2</em>),
+or a regular file that shall contain the filesystem. The <em>size</em>
+argument is the number of blocks to be used for the filesystem.</p>
+<p>The exit status returned by <strong>mkfs</strong> is 0 on success and
+1 on failure.</p>
+<p>In actuality, <strong>mkfs</strong> is simply a front-end for the
+various filesystem builders (<strong>mkfs.</strong><em>fstype</em>)
+available under Linux. The filesystem-specific builder is searched for
+via your <strong>PATH</strong> environment setting only. Please see the
+filesystem-specific builder manual pages for further details.</p>
+<h1>OPTIONS</h1>
+<p><strong>-t</strong>, <strong>--type</strong> <em>type</em></p>
+<blockquote>
+<p>Specify the <em>type</em> of filesystem to be built. If not
+specified, the default filesystem type (currently ext2) is used.</p>
+</blockquote>
+<p><em>fs-options</em></p>
+<blockquote>
+<p>Filesystem-specific options to be passed to the real filesystem
+builder.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Produce verbose output, including all filesystem-specific commands
+that are executed. Specifying this option more than once inhibits
+execution of any filesystem-specific commands. This is really only
+useful for testing.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit. (Option <strong>-V</strong> will display
+version information only when it is the only parameter, otherwise it
+will work as <strong>--verbose</strong>.)</p>
+</blockquote>
+<h1>BUGS</h1>
+<p>All generic options must precede and not be combined with
+filesystem-specific options. Some filesystem-specific programs do not
+automatically detect the device size and require the <em>size</em>
+parameter to be specified.</p>
+<h1>AUTHORS</h1>
+<p>The manual page was shamelessly adapted from Remy Card’s version for
+the ext2 filesystem.</p>
+<h1>SEE ALSO</h1>
+<p><strong>fs</strong>(5), <strong>badblocks</strong>(8),
+<strong>fsck</strong>(8), <strong>mkdosfs</strong>(8),
+<strong>mke2fs</strong>(8), <strong>mkfs.bfs</strong>(8),
+<strong>mkfs.ext2</strong>(8), <strong>mkfs.ext3</strong>(8),
+<strong>mkfs.ext4</strong>(8), <strong>mkfs.minix</strong>(8),
+<strong>mkfs.msdos</strong>(8), <strong>mkfs.vfat</strong>(8),
+<strong>mkfs.xfs</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>mkfs</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

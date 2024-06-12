@@ -1,0 +1,117 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>rename - rename files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>rename</strong> [options] <em>expression replacement
+file</em>...</p>
+<h1>DESCRIPTION</h1>
+<p><strong>rename</strong> will rename the specified files by replacing
+the first occurrence of <em>expression</em> in their name by
+<em>replacement</em>.</p>
+<h1>OPTIONS</h1>
+<p><strong>-s</strong>, <strong>--symlink</strong></p>
+<blockquote>
+<p>Do not rename a symlink but its target.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Show which files were renamed, if any.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--no-act</strong></p>
+<blockquote>
+<p>Do not make any changes; add <strong>--verbose</strong> to see what
+would be made.</p>
+</blockquote>
+<p><strong>-a</strong>, <strong>--all</strong></p>
+<blockquote>
+<p>Replace all occurrences of <em>expression</em> rather than only the
+first one.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--last</strong></p>
+<blockquote>
+<p>Replace the last occurrence of <em>expression</em> rather than the
+first one.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--no-overwrite</strong></p>
+<blockquote>
+<p>Do not overwrite existing files. When <strong>--symlink</strong> is
+active, do not overwrite symlinks pointing to existing targets.</p>
+</blockquote>
+<p><strong>-i</strong>, <strong>--interactive</strong></p>
+<blockquote>
+<p>Ask before overwriting existing files.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>WARNING</h1>
+<p>The renaming has no safeguards by default or without any one of the
+options <strong>--no-overwrite</strong>, <strong>--interactive</strong>
+or <strong>--no-act</strong>. If the user has permission to rewrite file
+names, the command will perform the action without any questions. For
+example, the result can be quite drastic when the command is run as root
+in the <em>/lib</em> directory. Always make a backup before running the
+command, unless you truly know what you are doing.</p>
+<h1>INTERACTIVE MODE</h1>
+<p>As most standard utilities rename can be used with a terminal device
+(tty in short) in canonical mode, where the line is buffered by the tty
+and you press ENTER to validate the user input. If you put your tty in
+cbreak mode however, rename requires only a single key press to answer
+the prompt. To set cbreak mode, run for example:</p>
+<blockquote>
+<pre><code>sh -c &#39;stty -icanon min 1; &quot;$0&quot; &quot;$@&quot;; stty icanon&#39; rename -i from to files</code></pre>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>0</strong></p>
+<blockquote>
+<p>all requested rename operations were successful</p>
+</blockquote>
+<p><strong>1</strong></p>
+<blockquote>
+<p>all rename operations failed</p>
+</blockquote>
+<p><strong>2</strong></p>
+<blockquote>
+<p>some rename operations failed</p>
+</blockquote>
+<p><strong>4</strong></p>
+<blockquote>
+<p>nothing was renamed</p>
+</blockquote>
+<p><strong>64</strong></p>
+<blockquote>
+<p>unanticipated error occurred</p>
+</blockquote>
+<h1>EXAMPLES</h1>
+<p>Given the files <em>foo1</em>, ..., <em>foo9</em>, <em>foo10</em>,
+..., <em>foo278</em>, the commands</p>
+<blockquote>
+<pre><code>rename foo foo00 foo?
+rename foo foo0 foo??</code></pre>
+</blockquote>
+<p>will turn them into <em>foo001</em>, ..., <em>foo009</em>,
+<em>foo010</em>, ..., <em>foo278</em>. And</p>
+<blockquote>
+<pre><code>rename .htm .html *.htm</code></pre>
+</blockquote>
+<p>will fix the extension of your html files. Provide an empty string
+for shortening:</p>
+<blockquote>
+<pre><code>rename &#39;_with_long_name&#39; &#39;&#39; file_with_long_name.*</code></pre>
+</blockquote>
+<p>will remove the substring in the filenames.</p>
+<h1>SEE ALSO</h1>
+<p><strong>mv</strong>(1)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>rename</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

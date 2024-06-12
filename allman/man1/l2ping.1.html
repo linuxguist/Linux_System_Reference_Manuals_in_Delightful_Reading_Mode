@@ -1,0 +1,74 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>l2ping - Send L2CAP echo request and receive answer</p>
+<h1>SYNOPSIS</h1>
+<p><strong>l2ping</strong> [<em>OPTIONS</em>] <em>bd_addr</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>l2ping(1)</strong> sends a L2CAP echo request to the
+Bluetooth MAC address bd_addr given in dotted hex notation.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-i</strong><em> &lt;hciX&gt;</em></dt>
+<dd>
+<p>The command is applied to device <em>hciX</em>, which must be the
+name of an installed Bluetooth device (X = 0, 1, 2, ...) If not
+specified, the command will be sent to the first available Bluetooth
+device.</p>
+</dd>
+<dt><strong>-s</strong><em> size</em></dt>
+<dd>
+<p>The size of the data packets to be sent.</p>
+</dd>
+<dt><strong>-c</strong><em> count</em></dt>
+<dd>
+<p>Send count number of packets then exit.</p>
+</dd>
+<dt><strong>-t</strong><em> timeout</em></dt>
+<dd>
+<p>Wait timeout seconds for the response.</p>
+</dd>
+<dt><strong>-d</strong><em> delay</em></dt>
+<dd>
+<p>Wait delay seconds between pings.</p>
+</dd>
+<dt><strong>-f</strong></dt>
+<dd>
+<p>Kind of flood ping. Use with care! It reduces the delay time between
+packets to 0.</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Reverse ping (gnip?). Send echo response instead of echo request.</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>Verify response payload is identical to request payload. It is not
+required for remote stacks to return the request payload, but most
+stacks do (including Bluez).</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>bd_addr</strong></dt>
+<dd>
+<p>The Bluetooth MAC address to be pinged in dotted hex notation like
+<strong>01:02:03:ab:cd:ef</strong> or
+<strong>01:EF:cd:aB:02:03</strong></p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;, Marcel Holtmann
+&lt;marcel@holtmann.org&gt;, Nils Faerber
+&lt;nils@kernelconcepts.de&gt;, Adam Laurie
+&lt;adam@algroup.co.uk&gt;.</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

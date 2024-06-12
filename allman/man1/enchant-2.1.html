@@ -1,0 +1,90 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Enchant - a spellchecker</p>
+<h1>SYNOPSIS</h1>
+<p><strong>enchant-2</strong>
+<strong>-a</strong>|<strong>-l</strong>|<strong>-h</strong>|<strong>-v</strong>
+[<strong>-L</strong>] [<strong>-d</strong> <em>DICTIONARY</em>]
+[<em>FILE</em>]</p>
+<p><br />
+</p>
+<h1>DESCRIPTION</h1>
+<p><strong>Enchant</strong> is an ispell-compatible spellchecker.</p>
+<dl>
+<dt><strong>-d</strong> <em>DICTIONARY</em></dt>
+<dd>
+<p>use the given dictionary</p>
+</dd>
+<dt><strong>-p</strong> <em>WORDLIST</em></dt>
+<dd>
+<p>use the given personal wordlist</p>
+</dd>
+<dt><strong>-a</strong></dt>
+<dd>
+<p>list suggestions in ispell pipe mode format</p>
+</dd>
+<dt><strong>-l</strong></dt>
+<dd>
+<p>list only the misspellings</p>
+</dd>
+<dt><strong>-L</strong></dt>
+<dd>
+<p>display line numbers</p>
+</dd>
+<dt><strong>-h</strong></dt>
+<dd>
+<p>display help and exit</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>display version information and exit</p>
+</dd>
+</dl>
+<h1>ENCHANT ORDERING FILE</h1>
+<p>Enchant uses global and per-user ordering files named
+<em>enchant.ordering</em> to decide which spelling provider to use for
+particular languages. The per-user file takes precedence.</p>
+<p>The ordering file takes the form <em>language_tag:&lt;comma-separated
+list of spelling</em> providers&gt;. The language tag is an IETF BCP 47
+language tag, typically of the form <em>COUNTRY_LANGUAGE</em>. To see
+what dictionaries are available, run <em>enchant-lsmod-2</em>. '*' is
+used to mean "use this ordering for all languages, unless instructed
+otherwise." For example:</p>
+<p>*:aspell,hunspell,nuspell<br />
+en:aspell,hunspell,nuspell<br />
+en_GB:hunspell,nuspell,aspell<br />
+fr:hunspell,nuspell,aspell</p>
+<h1>FILES AND DIRECTORIES</h1>
+<p>Enchant looks in the following places for files, in decreasing order
+of precedence:</p>
+<dl>
+<dt><em>ENCHANT_CONFIG_DIR</em></dt>
+<dd>
+<p>(If the environment variable is set.)</p>
+</dd>
+<dt><em>XDG_CONFIG_HOME/enchant</em> (non-Windows systems)</dt>
+<dd>
+<p>Default: <em>~/.config/enchant</em></p>
+</dd>
+<dt><em>CSIDL_LOCAL_APPDATA\enchant</em> (Windows systems)</dt>
+<dd>
+<p>Default: <em>C:\Documents and Settings\</em>username<em>\Local
+Settings\Application Data\enchant</em></p>
+</dd>
+<dt><em>/usr/share/enchant</em></dt>
+<dd>
+<p>(Or the equivalent location relative to the enchant library for a
+relocatable build.)</p>
+</dd>
+</dl>
+<p>Dictionaries are looked for in a subdirectory with the same name as
+the provider; for example, <em>/usr/share/enchant/hunspell</em> and
+<em>~/.config/enchant/hunspell</em>.</p>
+<p>Some providers may also look in a standard system directory for their
+dictionaries; the hunspell provider can be configured to do so at build
+time.</p>
+<h1>SEE ALSO</h1>
+<p><strong>aspell</strong>(1), <strong>enchant-lsmod-2</strong>(1)</p>
+<h1>AUTHOR</h1>
+<p>Written by Dom Lachowicz and Reuben Thomas.</p>

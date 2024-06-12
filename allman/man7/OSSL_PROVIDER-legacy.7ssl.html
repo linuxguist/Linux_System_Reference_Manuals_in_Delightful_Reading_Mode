@@ -1,0 +1,127 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>OSSL_PROVIDER-legacy - OpenSSL legacy provider</p>
+<h1>DESCRIPTION</h1>
+<p>The OpenSSL legacy provider supplies OpenSSL implementations of
+algorithms that have been deemed legacy. Such algorithms have commonly
+fallen out of use, have been deemed insecure by the cryptography
+community, or something similar.</p>
+<p>We can consider this the retirement home of cryptographic
+algorithms.</p>
+<h2>Properties</h2>
+<p>The implementations in this provider specifically has this property
+defined:</p>
+<dl>
+<dt>"provider=legacy"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>It may be used in a property query string with fetching functions
+such as <strong>EVP_MD_fetch</strong> (3) or
+<strong>EVP_CIPHER_fetch</strong> (3), as well as with other functions
+that take a property query string, such as
+<strong>EVP_PKEY_CTX_new_from_name</strong> (3).</p>
+<p>It isn't mandatory to query for any of these properties, except to
+make sure to get implementations of this provider and none other.</p>
+<h1>OPERATIONS AND ALGORITHMS</h1>
+<p>The OpenSSL legacy provider supports these operations and
+algorithms:</p>
+<h2>Hashing Algorithms / Message Digests</h2>
+<dl>
+<dt>MD2, see EVP_MD-MD2 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>MD4, see EVP_MD-MD4 (7)</dt>
+<dd>
+
+</dd>
+<dt>MDC2, see EVP_MD-MDC2 (7)</dt>
+<dd>
+
+</dd>
+<dt>WHIRLPOOL, see EVP_MD-WHIRLPOOL (7)</dt>
+<dd>
+
+</dd>
+<dt>RIPEMD160, see EVP_MD-RIPEMD160 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Symmetric Ciphers</h2>
+<p>Not all of these symmetric cipher algorithms are enabled by
+default.</p>
+<dl>
+<dt>Blowfish, see EVP_CIPHER-BLOWFISH (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>CAST, see EVP_CIPHER-CAST (7)</dt>
+<dd>
+
+</dd>
+<dt>DES, see EVP_CIPHER-DES (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The algorithm names are: DES_ECB, DES_CBC, DES_OFB, DES_CFB,
+DES_CFB1, DES_CFB8 and DESX_CBC.</p>
+<dl>
+<dt>IDEA, see EVP_CIPHER-IDEA (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>RC2, see EVP_CIPHER-RC2 (7)</dt>
+<dd>
+
+</dd>
+<dt>RC4, see EVP_CIPHER-RC4 (7)</dt>
+<dd>
+
+</dd>
+<dt>RC5, see EVP_CIPHER-RC5 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Disabled by default. Use <em>enable-rc5</em> config option to
+enable.</p>
+<dl>
+<dt>SEED, see EVP_CIPHER-SEED (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Key Derivation Function (KDF)</h2>
+<dl>
+<dt>PBKDF1</dt>
+<dd>
+
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>OSSL_PARAM</strong> (3), <strong>openssl-core.h</strong> (7),
+<strong>openssl-core_dispatch.h</strong> (7),
+<strong>provider</strong> (7)</p>
+<h1>HISTORY</h1>
+<p>This functionality was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

@@ -1,0 +1,35 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>which - locate a command</p>
+<h1>SYNOPSIS</h1>
+<p>which [-a] filename ...</p>
+<h1>DESCRIPTION</h1>
+<p><strong>which</strong> returns the pathnames of the files (or links)
+which would be executed in the current environment, had its arguments
+been given as commands in a strictly POSIX-conformant shell. It does
+this by searching the PATH for executable files matching the names of
+the arguments. It does not canonicalize path names.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-a</strong></dt>
+<dd>
+<p>print all matching pathnames of each argument</p>
+</dd>
+</dl>
+<h1>EXIT STATUS</h1>
+<dl>
+<dt><strong>0</strong></dt>
+<dd>
+<p>if all specified commands are found and executable</p>
+</dd>
+<dt><strong>1</strong></dt>
+<dd>
+<p>if one or more specified commands is nonexistent or not
+executable</p>
+</dd>
+<dt><strong>2</strong></dt>
+<dd>
+<p>if an invalid option is specified</p>
+</dd>
+</dl>

@@ -1,0 +1,25 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-importd.service, systemd-importd - VM and container image
+import and export service</p>
+<h1>SYNOPSIS</h1>
+<p>systemd-importd.service</p>
+<p>/lib/systemd/systemd-importd</p>
+<h1>DESCRIPTION</h1>
+<p><strong>systemd-importd</strong> is a system service that allows
+importing, exporting and downloading of system images suitable for
+running as VM or containers. It is a companion service for
+<strong>systemd-machined.service</strong>(8), and provides the
+implementation for <strong>machinectl</strong>(1)s
+<strong>pull-raw</strong>, <strong>pull-tar</strong>,
+<strong>import-raw</strong>, <strong>import-tar</strong>,
+<strong>import-fs</strong>, <strong>export-raw</strong>, and
+<strong>export-tar</strong> commands.</p>
+<p>See <strong>org.freedesktop.import1</strong>(5) and
+<strong>org.freedesktop.LogControl1</strong>(5) for a description of the
+D-Bus API.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>machinectl</strong>(1),
+<strong>systemd-machined.service</strong>(8),
+<strong>systemd-nspawn</strong>(1)</p>

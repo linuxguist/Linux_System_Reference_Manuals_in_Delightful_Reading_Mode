@@ -1,0 +1,30 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>polkitd - The polkit system daemon</p>
+<h1>SYNOPSIS</h1>
+<p><strong>polkitd</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>polkitd</strong> provides the
+<em>org.freedesktop.PolicyKit1</em> D-Bus service on the system message
+bus. Users or administrators should never need to start this daemon as
+it will be automatically started by <strong>dbus-daemon</strong>(1) or
+<strong>systemd</strong>(1) whenever an application calls into the
+service.</p>
+<p><strong>polkitd</strong> must be started with superuser privileges
+but drops privileges early by switching to the unprivileged
+<em>polkitd</em> system user.</p>
+<p>See the <strong>polkit</strong>(8) man page for more information.</p>
+<h1>AUTHOR</h1>
+<p>Written by David Zeuthen &lt;davidz@redhat.com&gt; with a lot of help
+from many others.</p>
+<h1>BUGS</h1>
+<p>Please send bug reports to either the distribution or the
+polkit-devel mailing list, see the link
+<strong>http://lists.freedesktop.org/mailman/listinfo/polkit-devel</strong>
+on how to subscribe.</p>
+<h1>SEE ALSO</h1>
+<p><strong>polkit</strong>(8), <strong>pkaction</strong>(1),
+<strong>pkcheck</strong>(1), <strong>pkexec</strong>(1),
+<strong>pkttyagent</strong>(1), <strong>dbus-daemon</strong>(1),
+<strong>systemd</strong>(1)</p>

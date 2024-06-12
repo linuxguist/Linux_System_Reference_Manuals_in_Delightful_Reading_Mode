@@ -1,0 +1,114 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>timeout - run a command with a time limit</p>
+<h1>SYNOPSIS</h1>
+<p><strong>timeout</strong> [<em>OPTION</em>] <em>DURATION COMMAND</em>
+[<em>ARG</em>]...<br />
+<strong>timeout</strong> [<em>OPTION</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Start COMMAND, and kill it if still running after DURATION.</p>
+<p>Mandatory arguments to long options are mandatory for short options
+too.</p>
+<p><strong>--preserve-status</strong></p>
+<blockquote>
+<p>exit with the same status as COMMAND, even when the</p>
+</blockquote>
+<blockquote>
+<p>command times out</p>
+</blockquote>
+<p><strong>--foreground</strong></p>
+<blockquote>
+<p>when not running timeout directly from a shell prompt,</p>
+</blockquote>
+<blockquote>
+<p>allow COMMAND to read from the TTY and get TTY signals; in this mode,
+children of COMMAND will not be timed out</p>
+</blockquote>
+<p><strong>-k</strong>,
+<strong>--kill-after</strong>=<em>DURATION</em></p>
+<blockquote>
+<p>also send a KILL signal if COMMAND is still running</p>
+</blockquote>
+<blockquote>
+<p>this long after the initial signal was sent</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--signal</strong>=<em>SIGNAL</em></p>
+<blockquote>
+<p>specify the signal to be sent on timeout;</p>
+</blockquote>
+<blockquote>
+<p>SIGNAL may be a name like 'HUP' or a number; see 'kill
+<strong>-l</strong>' for a list of signals</p>
+</blockquote>
+<dl>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>diagnose to stderr any signal sent upon timeout</p>
+</dd>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>display this help and exit</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>output version information and exit</p>
+</dd>
+</dl>
+<p>DURATION is a floating point number with an optional suffix: 's' for
+seconds (the default), 'm' for minutes, 'h' for hours or 'd' for days. A
+duration of 0 disables the associated timeout.</p>
+<p>Upon timeout, send the TERM signal to COMMAND, if no other SIGNAL
+specified. The TERM signal kills any process that does not block or
+catch that signal. It may be necessary to use the KILL signal, since
+this signal can't be caught.</p>
+<h2>EXIT status:</h2>
+<dl>
+<dt>124</dt>
+<dd>
+<p>if COMMAND times out, and <strong>--preserve-status</strong> is not
+specified</p>
+</dd>
+<dt>125</dt>
+<dd>
+<p>if the timeout command itself fails</p>
+</dd>
+<dt>126</dt>
+<dd>
+<p>if COMMAND is found but cannot be invoked</p>
+</dd>
+<dt>127</dt>
+<dd>
+<p>if COMMAND cannot be found</p>
+</dd>
+<dt>137</dt>
+<dd>
+<p>if COMMAND (or timeout itself) is sent the KILL (9) signal
+(128+9)</p>
+</dd>
+<dt>-</dt>
+<dd>
+<p>the exit status of COMMAND otherwise</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>Some platforms don't currently support timeouts beyond the year
+2038.</p>
+<h1>AUTHOR</h1>
+<p>Written by Padraig Brady.</p>
+<h1>REPORTING BUGS</h1>
+<p>GNU coreutils online help:
+&lt;https://www.gnu.org/software/coreutils/&gt;<br />
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2022 Free Software Foundation, Inc. License GPLv3+: GNU
+GPL version 3 or later &lt;https://gnu.org/licenses/gpl.html&gt;.<br />
+This is free software: you are free to change and redistribute it. There
+is NO WARRANTY, to the extent permitted by law.</p>
+<h1>SEE ALSO</h1>
+<p><strong>kill</strong>(1)</p>
+<p><br />
+Full documentation
+&lt;https://www.gnu.org/software/coreutils/timeout&gt;<br />
+or available locally via: info '(coreutils) timeout invocation'</p>

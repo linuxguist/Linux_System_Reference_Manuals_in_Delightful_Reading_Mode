@@ -1,0 +1,22 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>X11::Protocol::Connection::UNIXSocket - Perl module for
+IO::Socket::UNIX-based X11 connections</p>
+<h1>SYNOPSIS</h1>
+<p>use X11::Protocol; use X11::Protocol::Connection::UNIXSocket; $conn =
+X11::Protocol::Connection::UNIXSocket -&gt;open($host, $display_number);
+$x = X11::Protocol-&gt;new($conn);</p>
+<h1>DESCRIPTION</h1>
+<p>This module is used by X11::Protocol to establish a connection and
+communicate with a server over a local Unix-domain socket connection,
+using the IO::Socket::UNIX module. The host argument is ignored.</p>
+<h1>AUTHOR</h1>
+<p>Stephen McCamant &lt;SMCCAM@cpan.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>perl</strong> (1), X11::Protocol,
+X11::Protocol::Connection::INETSocket,
+X11::Protocol::Connection::Socket, IO::Socket.</p>

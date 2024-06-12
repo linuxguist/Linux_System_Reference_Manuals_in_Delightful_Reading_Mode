@@ -1,0 +1,203 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-s_time - SSL/TLS performance timing program</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl</strong> <strong>s_time</strong>
+[<strong>-help</strong>] [<strong>-connect</strong>
+<em>host</em>:<em>port</em>] [<strong>-www</strong> <em>page</em>]
+[<strong>-cert</strong> <em>filename</em>] [<strong>-key</strong>
+<em>filename</em>] [<strong>-reuse</strong>] [<strong>-new</strong>]
+[<strong>-verify</strong> <em>depth</em>] [<strong>-time</strong>
+<em>seconds</em>] [<strong>-ssl3</strong>] [<strong>-tls1</strong>]
+[<strong>-tls1_1</strong>] [<strong>-tls1_2</strong>]
+[<strong>-tls1_3</strong>] [<strong>-bugs</strong>]
+[<strong>-cipher</strong> <em>cipherlist</em>]
+[<strong>-ciphersuites</strong> <em>val</em>] [<strong>-nameopt</strong>
+<em>option</em>] [<strong>-cafile</strong> <em>file</em>]
+[<strong>-CAfile</strong> <em>file</em>] [<strong>-no-CAfile</strong>]
+[<strong>-CApath</strong> <em>dir</em>] [<strong>-no-CApath</strong>]
+[<strong>-CAstore</strong> <em>uri</em>] [<strong>-no-CAstore</strong>]
+[<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command implements a generic SSL/TLS client which connects to a
+remote host using SSL/TLS. It can request a page from the server and
+includes the time to transfer the payload data in its timing
+measurements. It measures the number of connections within a given
+timeframe, the amount of data transferred (if any), and calculates the
+average time spent for one connection.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-connect host:port</dt>
+<dd>
+<p>This specifies the host and optional port to connect to.</p>
+</dd>
+<dt>-www page</dt>
+<dd>
+<p>This specifies the page to GET from the server. A value of '/' gets
+the <em>index.html</em> page. If this parameter is not specified, then
+this command will only perform the handshake to establish SSL
+connections but not transfer any payload data.</p>
+</dd>
+<dt>-cert certname</dt>
+<dd>
+<p>The certificate to use, if one is requested by the server. The
+default is not to use a certificate. The file is in PEM format.</p>
+</dd>
+<dt>-key keyfile</dt>
+<dd>
+<p>The private key to use. If not specified then the certificate file
+will be used. The file is in PEM format.</p>
+</dd>
+<dt>-verify depth</dt>
+<dd>
+<p>The verify depth to use. This specifies the maximum length of the
+server certificate chain and turns on server certificate verification.
+Currently the verify operation continues after errors so all the
+problems with a certificate chain can be seen. As a side effect the
+connection will never fail due to a server certificate verify
+failure.</p>
+</dd>
+<dt>-new</dt>
+<dd>
+<p>Performs the timing test using a new session ID for each connection.
+If neither <strong>-new</strong> nor <strong>-reuse</strong> are
+specified, they are both on by default and executed in sequence.</p>
+</dd>
+<dt>-reuse</dt>
+<dd>
+<p>Performs the timing test using the same session ID; this can be used
+as a test that session caching is working. If neither
+<strong>-new</strong> nor <strong>-reuse</strong> are specified, they
+are both on by default and executed in sequence.</p>
+</dd>
+<dt>-bugs</dt>
+<dd>
+<p>There are several known bugs in SSL and TLS implementations. Adding
+this option enables various workarounds.</p>
+</dd>
+<dt>-cipher cipherlist</dt>
+<dd>
+<p>This allows the TLSv1.2 and below cipher list sent by the client to
+be modified. This list will be combined with any TLSv1.3 ciphersuites
+that have been configured. Although the server determines which cipher
+suite is used it should take the first supported cipher in the list sent
+by the client. See <strong>openssl-ciphers</strong> (1) for more
+information.</p>
+</dd>
+<dt>-ciphersuites val</dt>
+<dd>
+<p>This allows the TLSv1.3 ciphersuites sent by the client to be
+modified. This list will be combined with any TLSv1.2 and below
+ciphersuites that have been configured. Although the server determines
+which cipher suite is used it should take the first supported cipher in
+the list sent by the client. See <strong>openssl-ciphers</strong> (1)
+for more information. The format for this list is a simple colon (:)
+separated list of TLSv1.3 ciphersuite names.</p>
+</dd>
+<dt>-time length</dt>
+<dd>
+<p>Specifies how long (in seconds) this command should establish
+connections and optionally transfer payload data from a server. Server
+and client performance and the link speed determine how many connections
+it can establish.</p>
+</dd>
+<dt>-nameopt option</dt>
+<dd>
+<p>This specifies how the subject or issuer names are displayed. See
+<strong>openssl-namedisplay-options</strong> (1) for details.</p>
+</dd>
+<dt>-CAfile file, -no-CAfile, -CApath dir, -no-CApath, -CAstore uri,
+-no-CAstore</dt>
+<dd>
+<p>See Trusted Certificate Options in
+<strong>openssl-verification-options</strong> (1) for details.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<dl>
+<dt>-cafile file</dt>
+<dd>
+<p>This is an obsolete synonym for <strong>-CAfile</strong>.</p>
+</dd>
+<dt>-ssl3, -tls1, -tls1_1, -tls1_2, -tls1_3</dt>
+<dd>
+<p>See TLS Version Options in <strong>openssl</strong> (1).</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>This command can be used to measure the performance of an SSL
+connection. To connect to an SSL HTTP server and get the default page
+the command</p>
+<p>openssl s_time -connect servername:443 -www / -CApath yourdir -CAfile
+yourfile.pem -cipher commoncipher [-ssl3]</p>
+<p>would typically be used (https uses port 443). <em>commoncipher</em>
+is a cipher to which both client and server can agree, see the
+<strong>openssl-ciphers</strong> (1) command for details.</p>
+<p>If the handshake fails then there are several possible causes, if it
+is nothing obvious like no client certificate then the
+<strong>-bugs</strong> and <strong>-ssl3</strong> options can be tried
+in case it is a buggy server. In particular you should play with these
+options <strong>before</strong> submitting a bug report to an OpenSSL
+mailing list.</p>
+<p>A frequent problem when attempting to get client certificates working
+is that a web client complains it has no certificates or gives an empty
+list to choose from. This is normally because the server is not sending
+the clients certificate authority in its acceptable CA list when it
+requests a certificate. By using <strong>openssl-s_client</strong> (1)
+the CA list can be viewed and checked. However, some servers only
+request client authentication after a specific URL is requested. To
+obtain the list in this case it is necessary to use the
+<strong>-prexit</strong> option of <strong>openssl-s_client</strong> (1)
+and send an HTTP request for an appropriate page.</p>
+<p>If a certificate is specified on the command line using the
+<strong>-cert</strong> option it will not be used unless the server
+specifically requests a client certificate. Therefore, merely including
+a client certificate on the command line is no guarantee that the
+certificate works.</p>
+<h1>BUGS</h1>
+<p>Because this program does not have all the options of the
+<strong>openssl-s_client</strong> (1) program to turn protocols on and
+off, you may not be able to measure the performance of all protocols
+with all servers.</p>
+<p>The <strong>-verify</strong> option should really exit if the server
+verification fails.</p>
+<h1>HISTORY</h1>
+<p>The <strong>-cafile</strong> option was deprecated in OpenSSL
+3.0.</p>
+<h1>SEE ALSO</h1>
+<p><strong>openssl</strong> (1), <strong>openssl-s_client</strong> (1),
+<strong>openssl-s_server</strong> (1),
+<strong>openssl-ciphers</strong> (1),
+<strong>ossl_store-file</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2004-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

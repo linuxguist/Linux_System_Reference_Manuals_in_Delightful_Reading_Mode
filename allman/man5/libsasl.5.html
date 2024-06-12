@@ -1,0 +1,233 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>libsasl - authentication library</p>
+<h1>SYNOPSIS</h1>
+<p>Cyrus SASL library handling communication between an application and
+the Cyrus SASL authentication framework.</p>
+<h1>Description</h1>
+<p>This document describes generic configuration options for the Cyrus
+SASL authentication library libsasl.</p>
+<p>The library handles communication between an application and the
+Cyrus SASL authentication framework. Both exchange information before
+libsasl can start offering authentication services for the
+application.</p>
+<p>The application, among other data, sends the service_name. The
+service name is the services name as specified by IANA. SMTP servers,
+for example, send <strong>smtp</strong> as service_name. This
+information is handed over by libsasl e.g. when Kerberos or PAM
+authentication takes place.</p>
+<p>Configuration options in general are read either from a file or
+passed by the application using libsasl during library
+initialization.</p>
+<h1>File-Based configuration</h1>
+<p>When an application (server) starts, it initializes the libsasl
+library. The application passes app_name (application name) to the SASL
+library. Its value is used to construct the name of the application
+specific SASL configuration file. The Cyrus SASL sample-server, for
+example, sends <strong>sample</strong> as app_name. Using this value the
+SASL library will search the configuration directories for a file named
+<em>sample.conf</em> and read configuration options from it.</p>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>Consult the applications manual to determine what app_name it sends
+to the Cyrus SASL library.</p>
+</blockquote>
+<h1>Application-Based Configuration</h1>
+<p>Configuration options for libsasl are written down together with
+application specific options in the applications configuration file. The
+application reads them and passes them over to libsasl when it loads the
+library.</p>
+<blockquote>
+<p><strong>Note</strong></p>
+<p>An example for application-based configuration is the Cyrus IMAP
+server imapd. SASL configuration is written to <em>imapd.conf</em> and
+passed to the SASL library when the imapd server starts.</p>
+</blockquote>
+<h1>Configuration Syntax</h1>
+<p>The general format of Cyrus SASL configuration file is as
+follows:</p>
+<dl>
+<dt>Configuration options</dt>
+<dd>
+<p>Configuration options are written each on a single physical line.
+Parameter and value must be separated by a colon and a single
+whitespace:</p>
+<pre><code>parameter: value</code></pre>
+<p><strong>Important</strong></p>
+<p>There must be no trailing whitespace after the value or Cyrus SASL
+will fail to apply the value appropriately!</p>
+</dd>
+<dt>Comments, Empty lines and whitespace-only lines</dt>
+<dd>
+<p>Empty lines and whitespace-only lines are ignored, as are lines whose
+first non-whitespace character is a ‘#’.</p>
+</dd>
+</dl>
+<h1>Options</h1>
+<p>There are generic options and options specific to the password
+verification service or auxiliary property plugin chosen by the
+administrator. Such specific options are documented in manuals listed in
+<strong>libsasl</strong>(5).</p>
+<p>The following configuration parameters are generic configuration
+options:</p>
+<dl>
+<dt>authdaemond_path (default: <strong>/dev/null</strong>)</dt>
+<dd>
+<p>Path to Courier MTA authdaemond's unix socket. Only applicable when
+pwcheck_method is set to <strong>authdaemond</strong>.</p>
+</dd>
+<dt>auto_transition: (default: <strong>no</strong>)</dt>
+<dd>
+<p>Automatically transition users to other mechanisms when they do a
+successful plaintext authentication and if an auxprop plugin is
+used.</p>
+<p><strong>Important</strong></p>
+<p>This option does not apply to the <strong>ldapdb</strong>(5) plugin.
+It is a read-only plugin.</p>
+<dl>
+<dt><strong>no</strong></dt>
+<dd>
+<p>Do not transition users to other mechanisms.</p>
+</dd>
+<dt><strong>noplain</strong></dt>
+<dd>
+<p>Transition users to other mechanisms, but write non-plaintext secrets
+only.</p>
+</dd>
+<dt><strong>yes</strong></dt>
+<dd>
+<p>Transition users to other mechanisms.</p>
+</dd>
+</dl>
+<p><strong>Note</strong></p>
+<p>The only mechanisms (as currently implemented) which don't use
+plaintext secrets are OTP and SRP.</p>
+</dd>
+<dt>auxprop_plugin: (default: empty)</dt>
+<dd>
+<p>A whitespace-separated list of one or more auxiliary plugins used if
+the pwcheck_method parameter specifies <strong>auxprop</strong> as an
+option. Plugins will be queried in list order. If no plugin is
+specified, all available plugins will be queried.</p>
+<dl>
+<dt><strong>ldapdb</strong></dt>
+<dd>
+<p>Specify <strong>ldapdb</strong> to use the Cyrus SASL
+<strong>ldapdb</strong>(5) plugin.</p>
+</dd>
+<dt><strong>sasldb</strong></dt>
+<dd>
+<p>Specify <strong>sasldb</strong> to use the Cyrus SASL
+<strong>sasldb</strong>(5) plugin.</p>
+</dd>
+<dt><strong>sql</strong></dt>
+<dd>
+<p>Specify <strong>sql</strong> to use the Cyrus SASL
+<strong>sql</strong>(5) plugin.</p>
+</dd>
+</dl>
+</dd>
+<dt>log_level: (default: <strong>1</strong>)</dt>
+<dd>
+<p>Specifies a numeric log level. Available log levels are:</p>
+<dl>
+<dt><strong>0</strong></dt>
+<dd>
+<p>Don't log anything</p>
+</dd>
+<dt><strong>1</strong></dt>
+<dd>
+<p>Log unusual errors</p>
+</dd>
+<dt><strong>2</strong></dt>
+<dd>
+<p>Log all authentication failures</p>
+</dd>
+<dt><strong>3</strong></dt>
+<dd>
+<p>Log non-fatal warnings</p>
+</dd>
+<dt><strong>4</strong></dt>
+<dd>
+<p>More verbose than 3</p>
+</dd>
+<dt><strong>5</strong></dt>
+<dd>
+<p>More verbose than 4</p>
+</dd>
+<dt><strong>6</strong></dt>
+<dd>
+<p>Traces of internal protocols</p>
+</dd>
+<dt><strong>7</strong></dt>
+<dd>
+<p>Traces of internal protocols, including passwords</p>
+</dd>
+</dl>
+<p><strong>Important</strong></p>
+<p>Cyrus SASL sends log messages to the application that runs it. The
+application decides if it forwards such messages to the
+<strong>sysklogd</strong>(8) service, to which facility they are sent
+and which priority is given to the message.</p>
+</dd>
+<dt>mech_list: (default: empty)</dt>
+<dd>
+<p>The optional mech_list parameter specifies a whitespace-separated
+list of one or more mechanisms allowed for authentication.</p>
+</dd>
+<dt>pwcheck_method: (default: <strong>auxprop</strong>)</dt>
+<dd>
+<p>A whitespace-separated list of one or more mechanisms. Cyrus SASL
+provides the following mechanisms:</p>
+<dl>
+<dt><strong>authdaemond</strong></dt>
+<dd>
+<p>Configures Cyrus SASL to contact the Courier MTA
+<strong>authdaemond</strong>(8) password verification service for
+password verification.</p>
+</dd>
+<dt><strong>alwaystrue</strong></dt>
+<dd>
+<p>Lets the pwcheck succeed always.</p>
+</dd>
+<dt><strong>auxprop</strong></dt>
+<dd>
+<p>Cyrus SASL will use its own plugin infrastructure to verify
+passwords. The auxprop_plugin parameter controls which plugins will be
+used.</p>
+</dd>
+<dt><strong>pwcheck</strong></dt>
+<dd>
+<p>Verify passwords using the Cyrus SASL <strong>pwcheck</strong>(8)
+password verification service. The pwcheck daemon is considered
+deprecated and should not be used anymore. Use the saslauthd password
+verification service instead.</p>
+</dd>
+<dt><strong>saslauthd</strong></dt>
+<dd>
+<p>Verify passwords using the Cyrus SASL <strong>saslauthd</strong>(8)
+password verification service.</p>
+</dd>
+</dl>
+</dd>
+<dt>saslauthd_path: (default: empty)</dt>
+<dd>
+<p>Path to <strong>saslauthd</strong>(8) run directory (including the
+<em>/mux</em> named pipe)</p>
+</dd>
+</dl>
+<h1>See also</h1>
+<p><strong>authdaemond</strong>(5), <strong>ldapdb</strong>(5),
+<strong>libsasl</strong>(5), <strong>saslauthd</strong>(8),
+<strong>saslauthd.conf</strong>(5), <strong>saslpasswd2</strong>(5),
+<strong>sasldblistusers2</strong>(5), <strong>sasldb</strong>(5),
+<strong>sql</strong>(5)</p>
+<h1>Author</h1>
+<p>This manual was written for the Debian distribution because the
+original program does not have a manual page. Parts of the documentation
+have been taken from the Cyrus SASL's <em>options.html</em>.</p>
+<blockquote>
+<pre><code>Patrick Ben Koetter
+&lt;p@state-of-mind.de&gt;</code></pre>
+</blockquote>

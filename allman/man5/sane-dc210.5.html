@@ -1,0 +1,94 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sane-dc210 - SANE backend for Kodak DC210 Digital Camera</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>sane-dc210</strong> library implements a SANE (Scanner
+Access Now Easy) backend that provides access to the Kodak DC210 camera.
+THIS IS EXTREMELY ALPHA CODE! USE AT YOUR OWN RISK!!</p>
+<h1>DEVICE NAMES</h1>
+<p>The current version of the backend only allows one camera to be
+connected. The device name is always "0".</p>
+<h1>CONFIGURATION</h1>
+<p>The contents of the <em>dc210.conf</em> specify the serial port and
+baud rate to use. The <strong>baud</strong> rate specifies the maximum
+rate to use while downloading pictures. (The camera is always
+initialized using 9600 baud, then switches to the higher rate). On my
+90MHz Pentium, I usually have no problems downloading at 115200 baud as
+long as the system is not excessively busy and the "interrupt-unmask
+flag" is set in the IDE driver (<em>hdparm -u1</em>). Supported baud
+rates are: 9600, 19200, 38400, 57600, and 115200.</p>
+<p>The <strong>dumpinquiry</strong> line causes some information about
+the camera to be printed.</p>
+<p><strong>cmdrespause</strong> specifies how many usec (1,000,000ths of
+a second) to wait between writing the command and reading the result.
+125000 seems to be the lowest I could go reliably.</p>
+<p><strong>breakpause</strong> specifies how many usec (1,000,000ths of
+a second) between sending the "back to default" break and sending
+commands.</p>
+<p>Empty lines and lines starting with a hash mark (#) are ignored. A
+sample configuration file is shown below:</p>
+<blockquote>
+<p>port=/dev/ttyS0<br />
+# this is a comment<br />
+baud=115200<br />
+dumpinquiry<br />
+cmdrespause=125000<br />
+breakpause=1000000</p>
+</blockquote>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/sane.d/dc210.conf</em></dt>
+<dd>
+<p>The backend configuration file (see also description of
+<strong>SANE_CONFIG_DIR</strong> below).</p>
+</dd>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-dc210.a</em></dt>
+<dd>
+<p>The static library implementing this backend.</p>
+</dd>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-dc210.so</em></dt>
+<dd>
+<p>The shared library implementing this backend (present on systems that
+support dynamic loading).</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>SANE_CONFIG_DIR</strong></dt>
+<dd>
+<p>This environment variable specifies the list of directories that may
+contain the configuration file. On *NIX systems, the directories are
+separated by a colon (`:'), under OS/2, they are separated by a
+semi-colon (`;'). If this variable is not set, the configuration file is
+searched in two default directories: first, the current working
+directory (".") and then in <em>/etc/sane.d.</em> If the value of the
+environment variable ends with the directory separator character, then
+the default directories are searched after the explicitly specified
+directories. For example, setting <strong>SANE_CONFIG_DIR</strong> to
+"/tmp/config:" would result in directories <em>tmp/config</em>,
+<em>.</em>, and <em>/etc/sane.d</em> being searched (in this order).</p>
+</dd>
+<dt><strong>SANE_DEBUG_DC210</strong></dt>
+<dd>
+<p>If the library was compiled with debugging support enabled, this
+environment variable controls the debug level for this backend. A value
+of 128 requests maximally copious debug output; smaller levels reduce
+verbosity.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>sane</strong>(7)</p>
+<h1>AUTHOR</h1>
+<p>Brian J. Murrell</p>
+<p>This backend is based somewhat on the dc25 backend included in this
+package by Peter Fales.</p>
+<p>The manpage was copied from the dc25 backend and somewhat edited by
+Henning Meier-Geinitz.</p>
+<h1>BUGS</h1>
+<p>Known bugs/limitations are: ?</p>
+<p>More general comments, suggestions, and inquiries about frontends or
+SANE should go to the SANE Developers mailing list (see
+<em>http://www.sane-project.org/mailing-lists.html</em> for details).
+You must be subscribed to the list, otherwise your mail won't be sent to
+the subscribers.</p>

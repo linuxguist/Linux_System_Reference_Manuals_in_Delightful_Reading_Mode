@@ -1,0 +1,63 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grdctl - Command line tool for configuring GNOME Remote Desktop</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grdctl</strong> [<em>OPTION</em>...] [<em>COMMAND</em>]
+[<em>SUBCOMMAND</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p>grdctl provides methods for configuring the GNOME Remote Desktop
+service, for example setting credentials.</p>
+<h1>OPTIONS</h1>
+<p><strong>--help</strong></p>
+<blockquote>
+<p>Show help text.</p>
+</blockquote>
+<h1>GENERAL COMMANDS</h1>
+<p><strong>status</strong></p>
+<blockquote>
+<p>Show current status.</p>
+</blockquote>
+<h1>RDP COMMANDS</h1>
+<p><strong>rdp</strong> <strong>enable</strong></p>
+<blockquote>
+<p>Enable the RDP backend.</p>
+</blockquote>
+<p><strong>rdp</strong> <strong>disable</strong></p>
+<blockquote>
+<p>Disable the RDP backend.</p>
+</blockquote>
+<p><strong>rdp</strong> <strong>set-tls-cert</strong>
+<em>TLS-CERT</em></p>
+<blockquote>
+<p>Set path to TLS certificate.</p>
+</blockquote>
+<p><strong>rdp</strong> <strong>set-tls-key</strong>
+<em>TLS-KEY</em></p>
+<blockquote>
+<p>Set path to TLS key.</p>
+</blockquote>
+<p><strong>rdp</strong> <strong>set-credentials</strong>
+<em>USERNAME</em> <em>PASSWORD</em></p>
+<blockquote>
+<p>Set username and password credentials.</p>
+</blockquote>
+<p><strong>rdp</strong> <strong>clear-credentials</strong></p>
+<blockquote>
+<p>Clear username and password credentials.</p>
+</blockquote>
+<p><strong>rdp</strong> <strong>enable-view-only</strong></p>
+<blockquote>
+<p>Disable remote control of input devices.</p>
+</blockquote>
+<p><strong>rdp</strong> <strong>disable-view-only</strong></p>
+<blockquote>
+<p>Enable remote control of input devices.</p>
+</blockquote>
+<h1>BUGS</h1>
+<p>The bug tracker can be reached by visiting the website
+<strong>https://gitlab.gnome.org/GNOME/gnome-remote-desktop/issues</strong>.
+Before sending a bug report, please verify that you have the latest
+version of gnome-remote-desktop. Many bugs (major and minor) are fixed
+at each release, and if yours is out of date, the problem may already
+have been solved.</p>

@@ -1,0 +1,52 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sepermit.conf - configuration file for the pam_sepermit module</p>
+<h1>DESCRIPTION</h1>
+<p>The lines of the configuration file have the following syntax:</p>
+<p><em>&lt;user&gt;</em>[:<em>&lt;option&gt;</em>:<em>&lt;option&gt;</em>...]</p>
+<p>The <strong>user</strong> can be specified in the following
+manner:</p>
+<blockquote>
+<p>·</p>
+<p>a username</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>a groupname, with <strong>@group</strong> syntax. This should not be
+confused with netgroups.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>a SELinux user name with <strong>%seuser</strong> syntax.</p>
+</blockquote>
+<p>The recognized options are:</p>
+<p><strong>exclusive</strong></p>
+<blockquote>
+<p>Only single login session will be allowed for the user and the users
+processes will be killed on logout.</p>
+</blockquote>
+<p><strong>ignore</strong></p>
+<blockquote>
+<p>The module will never return PAM_SUCCESS status for the user. It will
+return PAM_IGNORE if SELinux is in the enforcing mode, and PAM_AUTH_ERR
+otherwise. It is useful if you want to support passwordless guest users
+and other confined users with passwords simultaneously.</p>
+</blockquote>
+<p>The lines which start with # character are comments and are
+ignored.</p>
+<h1>EXAMPLES</h1>
+<p>These are some example lines which might be specified in
+/etc/security/sepermit.conf.</p>
+<blockquote>
+<pre><code>%guest_u:exclusive
+%staff_u:ignore
+%user_u:ignore
+    </code></pre>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>pam_sepermit</strong>(8), <strong>pam.d</strong>(5),
+<strong>pam</strong>(7), <strong>selinux</strong>(8),</p>
+<h1>AUTHOR</h1>
+<p>pam_sepermit and this manual page were written by Tomas Mraz
+&lt;tmraz@redhat.com&gt;</p>

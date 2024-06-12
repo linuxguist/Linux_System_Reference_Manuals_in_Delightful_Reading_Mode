@@ -1,0 +1,203 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mimetype - Determine file type</p>
+<h1>SYNOPSIS</h1>
+<p>mimetype [options] [-] files</p>
+<h1>DESCRIPTION</h1>
+<p>This script tries to determine the mime type of a file using the
+Shared MIME-info database. It is intended as a kind of
+<em><strong>file</strong> (1)</em> work-alike, but uses mimetypes
+instead of descriptions.</p>
+<p>If one symlinks the <em>file</em> command to <em>mimetype</em> it
+will behave a little more compatible, see --file-compat. Commandline
+options to specify alternative magic files are not implemented the same
+because of the conflicting data formats. Also the wording of the
+descriptions will differ.</p>
+<p>For naming switches I followed the manpage of
+<strong>file</strong> (1) version 4.02 when possible. They seem to
+differ completely from the spec in the 'utilities' chapter of IEEE Std
+1003.1-2001 (POSIX).</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-a, --all</dt>
+<dd>
+<p>Show output of all rules that match the file. TODO: this method now
+just returns one match for each method (globs, magic, etc.).</p>
+</dd>
+<dt>-b, --brief</dt>
+<dd>
+<p>Do not prepend filenames to output lines (brief mode).</p>
+</dd>
+<dt>--database=mimedir:mimedir:...</dt>
+<dd>
+<p>Force the program to look in these directories for the shared
+mime-info database. The directories specified by the basedir
+specification are ignored.</p>
+</dd>
+<dt>-d, --describe</dt>
+<dd>
+<p>Print file descriptions instead of mime types, this is the default
+when using --file-compat.</p>
+</dd>
+<dt>-D, --debug</dt>
+<dd>
+<p>Print debug information about how the mimetype was determined.</p>
+</dd>
+<dt>-f namefile, --namefile=namefile</dt>
+<dd>
+<p>Read the names of the files to be examined from the file 'namefile'
+(one per line) before the argument list.</p>
+</dd>
+<dt>--file-compat</dt>
+<dd>
+<p>Make mimetype behave a little more <strong>file</strong> (1)
+compatible. This is turned on automatically when you call mimetype by a
+link called 'file'. A single '-' won't be considered a separator between
+options and filenames anymore, but becomes identical to --stdin. ( You
+can still use '--' as separator, but that is not backward compatible
+with the original file command. ) Also the default becomes to print
+descriptions instead of mimetypes.</p>
+</dd>
+<dt>-F string, --separator=string</dt>
+<dd>
+<p>Use string as custom separator between the file name and its mimetype
+or description, defaults to ':' .</p>
+</dd>
+<dt>-h, --help</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-u, --usage</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Print a help message and exits.</p>
+<dl>
+<dt>-i, --mimetype</dt>
+<dd>
+<p>Use mime types, opposite to --describe, this is the default when
+_not_ using --file-compat.</p>
+</dd>
+<dt>-L, --dereference</dt>
+<dd>
+<p>Follow symbolic links.</p>
+</dd>
+<dt>-l code, --language=code</dt>
+<dd>
+<p>The language attribute specifies a two letter language code, this
+makes descriptions being outputted in the specified language.</p>
+</dd>
+<dt>-M, --magic-only</dt>
+<dd>
+<p>Do not check for extensions, globs or inode type, only look at the
+content of the file. This is particularly useful if for some reason you
+don't trust the name or the extension a file has.</p>
+</dd>
+<dt>-N, --noalign</dt>
+<dd>
+<p>Do not align output fields.</p>
+</dd>
+<dt>--output-format</dt>
+<dd>
+<p>If you want an alternative output format, you can specify a format
+string containing the following escapes: %f for the filename %d
+description %m mime type Alignment is not available when using this, you
+need to post-process the output to do that.</p>
+</dd>
+<dt>--stdin</dt>
+<dd>
+<p>Determine type of content from STDIN, less powerful then normal file
+checking because it only uses magic typing. This will happen also if the
+STDIN filehandle is a pipe. To use this option IO::Scalar needs to be
+installed.</p>
+</dd>
+<dt>-v, --version</dt>
+<dd>
+<p>Print the version of the program and exit.</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt>XDG_DATA_HOME</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>XDG_DATA_DIRS</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These variables can list base directories to search for data files.
+The shared mime-info will be expected in the mime sub directory of one
+of these directories. If these are not set, there will be searched for
+the following directories: $HOME/.local/share/mime /usr/local/share/mime
+/usr/share/mime See also the XDG Base Directory Specification
+&lt;http://freedesktop.org/Standards/basedir-spec&gt;</p>
+<h1>FILES</h1>
+<p>The base dir for all data files is determined by two environment
+variables, see ENVIRONMENT.</p>
+<dl>
+<dt>BASE/mime/packages/SOURCE.xml</dt>
+<dd>
+<p>All other files are compiled from these source files. To re-compile
+them use <strong>update-mime-database (1)</strong>.</p>
+</dd>
+<dt>BASE/mime/globs</dt>
+<dd>
+<p>Compiled information about globs.</p>
+</dd>
+<dt>BASE/mime/magic</dt>
+<dd>
+<p>Compiled information about magic numbers.</p>
+</dd>
+<dt>BASE/mime/MEDIA/SUBTYPE.xml</dt>
+<dd>
+<p>Descriptions of a mimetype in multiple languages, used for the
+--describe switch.</p>
+</dd>
+</dl>
+<h1>DIAGNOSTICS</h1>
+<p>If a file has an empty mimetype or an empty description, most
+probably the file doesn't exist and the given name doesn't match any
+globs. An empty description can also mean that there is no description
+available in the language you specified.</p>
+<p>The program exits with a non-zero exit value if either the
+commandline arguments failed, a module it depends on wasn't found or the
+shared mime-info database wasn't accessible. See File::MimeInfo for more
+details.</p>
+<h1>TODO</h1>
+<p>The '--all' switch doesn't really show all matches, but only one per
+mime-typing method. This needs to be implemented in the modules
+first.</p>
+<h1>BUGS</h1>
+<p>If you find bugs, please file them in our Github issue tracker at
+&lt;https://github.com/mbeijen/File-MimeInfo/issues&gt;.</p>
+<p><strong>mimetype</strong> doesn't provide a switch for looking inside
+compressed files because it seems to me that this can only be done by
+un-compressing the file, something that defeats the purpose. On the
+other hand the option should exist for strict compatibility with
+<strong>file</strong> (1). Possibly a subclass should be made for this
+one day.</p>
+<h1>AUTHOR</h1>
+<p>Jaap Karssenberg &lt;pardus@cpan.org&gt; Maintained by Michiel Beijen
+&lt;mb@x14.nl&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 2003, 2012 Jaap G Karssenberg. All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl.</p>
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
+<h1>SEE ALSO</h1>
+<p><strong>file</strong> (1), <strong>update-mime-database</strong> (1),
+<strong>File::MimeInfo</strong> (3),
+&lt;http://freedesktop.org/Software/shared-mime-info&gt;</p>

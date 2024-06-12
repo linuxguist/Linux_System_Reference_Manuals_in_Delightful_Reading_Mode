@@ -1,0 +1,393 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>OSSL_PROVIDER-default - OpenSSL default provider</p>
+<h1>DESCRIPTION</h1>
+<p>The OpenSSL default provider supplies the majority of OpenSSL's
+diverse algorithm implementations. If an application doesn't specify
+anything else explicitly (e.g. in the application or via config), then
+this is the provider that will be used as fallback: It is loaded
+automatically the first time that an algorithm is fetched from a
+provider or a function acting on providers is called and no other
+provider has been loaded yet.</p>
+<p>If an attempt to load a provider has already been made (whether
+successful or not) then the default provider won't be loaded
+automatically. Therefore if the default provider is to be used in
+conjunction with other providers then it must be loaded explicitly.
+Automatic loading of the default provider only occurs a maximum of once;
+if the default provider is explicitly unloaded then the default provider
+will not be automatically loaded again.</p>
+<h2>Properties</h2>
+<p>The implementations in this provider specifically have this property
+defined:</p>
+<dl>
+<dt>"provider=default"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>It may be used in a property query string with fetching functions
+such as <strong>EVP_MD_fetch</strong> (3) or
+<strong>EVP_CIPHER_fetch</strong> (3), as well as with other functions
+that take a property query string, such as
+<strong>EVP_PKEY_CTX_new_from_name</strong> (3).</p>
+<p>It isn't mandatory to query for this property, except to make sure to
+get implementations of this provider and none other.</p>
+<p>Some implementations may define additional properties. Exact
+information is listed below</p>
+<h1>OPERATIONS AND ALGORITHMS</h1>
+<p>The OpenSSL default provider supports these operations and
+algorithms:</p>
+<h2>Hashing Algorithms / Message Digests</h2>
+<dl>
+<dt>SHA1, see EVP_MD-SHA1 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>SHA2, see EVP_MD-SHA2 (7)</dt>
+<dd>
+
+</dd>
+<dt>SHA3, see EVP_MD-SHA3 (7)</dt>
+<dd>
+
+</dd>
+<dt>KECCAK-KMAC, see EVP_MD-KECCAK-KMAC (7)</dt>
+<dd>
+
+</dd>
+<dt>SHAKE, see EVP_MD-SHAKE (7)</dt>
+<dd>
+
+</dd>
+<dt>BLAKE2, see EVP_MD-BLAKE2 (7)</dt>
+<dd>
+
+</dd>
+<dt>SM3, see EVP_MD-SM3 (7)</dt>
+<dd>
+
+</dd>
+<dt>MD5, see EVP_MD-MD5 (7)</dt>
+<dd>
+
+</dd>
+<dt>MD5-SHA1, see EVP_MD-MD5-SHA1 (7)</dt>
+<dd>
+
+</dd>
+<dt>RIPEMD160, see EVP_MD-RIPEMD160 (7)</dt>
+<dd>
+
+</dd>
+<dt>NULL, see EVP_MD-NULL (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Symmetric Ciphers</h2>
+<dl>
+<dt>AES, see EVP_CIPHER-AES (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>ARIA, see EVP_CIPHER-ARIA (7)</dt>
+<dd>
+
+</dd>
+<dt>CAMELLIA, see EVP_CIPHER-CAMELLIA (7)</dt>
+<dd>
+
+</dd>
+<dt>3DES, see EVP_CIPHER-DES (7)</dt>
+<dd>
+
+</dd>
+<dt>SEED, see EVP_CIPHER-SEED (7)</dt>
+<dd>
+
+</dd>
+<dt>SM4, see EVP_CIPHER-SM4 (7)</dt>
+<dd>
+
+</dd>
+<dt>ChaCha20, see EVP_CIPHER-CHACHA (7)</dt>
+<dd>
+
+</dd>
+<dt>ChaCha20-Poly1305, see EVP_CIPHER-CHACHA (7)</dt>
+<dd>
+
+</dd>
+<dt>NULL, see EVP_CIPHER-NULL (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Message Authentication Code (MAC)</h2>
+<dl>
+<dt>BLAKE2, see EVP_MAC-BLAKE2 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>CMAC, see EVP_MAC-CMAC (7)</dt>
+<dd>
+
+</dd>
+<dt>GMAC, see EVP_MAC-GMAC (7)</dt>
+<dd>
+
+</dd>
+<dt>HMAC, see EVP_MAC-HMAC (7)</dt>
+<dd>
+
+</dd>
+<dt>KMAC, see EVP_MAC-KMAC (7)</dt>
+<dd>
+
+</dd>
+<dt>SIPHASH, see EVP_MAC-Siphash (7)</dt>
+<dd>
+
+</dd>
+<dt>POLY1305, see EVP_MAC-Poly1305 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Key Derivation Function (KDF)</h2>
+<dl>
+<dt>HKDF, see EVP_KDF-HKDF (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>SSKDF, see EVP_KDF-SS (7)</dt>
+<dd>
+
+</dd>
+<dt>PBKDF2, see EVP_KDF-PBKDF2 (7)</dt>
+<dd>
+
+</dd>
+<dt>PKCS12KDF, see EVP_KDF-PKCS12KDF (7)</dt>
+<dd>
+
+</dd>
+<dt>SSHKDF, see EVP_KDF-SSHKDF (7)</dt>
+<dd>
+
+</dd>
+<dt>TLS1-PRF, see EVP_KDF-TLS1_PRF (7)</dt>
+<dd>
+
+</dd>
+<dt>KBKDF, see EVP_KDF-KB (7)</dt>
+<dd>
+
+</dd>
+<dt>X942KDF-ASN1, see EVP_KDF-X942-ASN1 (7)</dt>
+<dd>
+
+</dd>
+<dt>X942KDF-CONCAT, see EVP_KDF-X942-CONCAT (7)</dt>
+<dd>
+
+</dd>
+<dt>X963KDF, see EVP_KDF-X963 (7)</dt>
+<dd>
+
+</dd>
+<dt>SCRYPT, see EVP_KDF-SCRYPT (7)</dt>
+<dd>
+
+</dd>
+<dt>KRB5KDF, see EVP_KDF-KRB5KDF (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Key Exchange</h2>
+<dl>
+<dt>DH, see EVP_KEYEXCH-DH (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>ECDH, see EVP_KEYEXCH-ECDH (7)</dt>
+<dd>
+
+</dd>
+<dt>X25519, see EVP_KEYEXCH-X25519 (7)</dt>
+<dd>
+
+</dd>
+<dt>X448, see EVP_KEYEXCH-X448 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Asymmetric Signature</h2>
+<dl>
+<dt>DSA, see EVP_SIGNATURE-DSA (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>RSA, see EVP_SIGNATURE-RSA (7)</dt>
+<dd>
+
+</dd>
+<dt>HMAC, see EVP_SIGNATURE-HMAC (7)</dt>
+<dd>
+
+</dd>
+<dt>SIPHASH, see EVP_SIGNATURE-Siphash (7)</dt>
+<dd>
+
+</dd>
+<dt>POLY1305, see EVP_SIGNATURE-Poly1305 (7)</dt>
+<dd>
+
+</dd>
+<dt>CMAC, see EVP_SIGNATURE-CMAC (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Asymmetric Cipher</h2>
+<dl>
+<dt>RSA, see EVP_ASYM_CIPHER-RSA (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>SM2, see EVP_ASYM_CIPHER-SM2 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Asymmetric Key Encapsulation</h2>
+<dl>
+<dt>RSA, see EVP_KEM-RSA (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Asymmetric Key Management</h2>
+<dl>
+<dt>DH, see EVP_KEYMGMT-DH (7)</dt>
+<dd>
+
+</dd>
+<dt>DHX, see EVP_KEYMGMT-DHX (7)</dt>
+<dd>
+
+</dd>
+<dt>DSA, see EVP_KEYMGMT-DSA (7)</dt>
+<dd>
+
+</dd>
+<dt>RSA, see EVP_KEYMGMT-RSA (7)</dt>
+<dd>
+
+</dd>
+<dt>EC, see EVP_KEYMGMT-EC (7)</dt>
+<dd>
+
+</dd>
+<dt>X25519, see EVP_KEYMGMT-X25519 (7)</dt>
+<dd>
+
+</dd>
+<dt>X448, see EVP_KEYMGMT-X448 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Random Number Generation</h2>
+<dl>
+<dt>CTR-DRBG, see EVP_RAND-CTR-DRBG (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>HASH-DRBG, see EVP_RAND-HASH-DRBG (7)</dt>
+<dd>
+
+</dd>
+<dt>HMAC-DRBG, see EVP_RAND-HMAC-DRBG (7)</dt>
+<dd>
+
+</dd>
+<dt>SEED-SRC, see EVP_RAND-SEED-SRC (7)</dt>
+<dd>
+
+</dd>
+<dt>TEST-RAND, see EVP_RAND-TEST-RAND (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Asymmetric Key Encoder</h2>
+<p>The default provider also includes all of the encoding algorithms
+present in the base provider. Some of these have the property fips=yes,
+to allow them to be used together with the FIPS provider.</p>
+<dl>
+<dt>RSA, see OSSL_ENCODER-RSA (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>DH, see OSSL_ENCODER-DH (7)</dt>
+<dd>
+
+</dd>
+<dt>DSA, see OSSL_ENCODER-DSA (7)</dt>
+<dd>
+
+</dd>
+<dt>EC, see OSSL_ENCODER-EC (7)</dt>
+<dd>
+
+</dd>
+<dt>X25519, see OSSL_ENCODER-X25519 (7)</dt>
+<dd>
+
+</dd>
+<dt>X448, see OSSL_ENCODER-X448 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>openssl-core.h</strong> (7),
+<strong>openssl-core_dispatch.h</strong> (7),
+<strong>provider</strong> (7),
+<strong>OSSL_PROVIDER-base</strong> (7)</p>
+<h1>HISTORY</h1>
+<p>The RIPEMD160 digest was added to the default provider in OpenSSL
+3.0.7.</p>
+<p>All other functionality was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

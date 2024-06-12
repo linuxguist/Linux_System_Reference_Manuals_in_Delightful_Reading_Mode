@@ -1,0 +1,40 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>nmtui - Text User Interface for controlling NetworkManager</p>
+<h1>SYNOPSIS</h1>
+<p><strong>nmtui-edit | nmtui edit</strong> {<em>name</em> |
+<em>id</em>}</p>
+<p><strong>nmtui-connect | nmtui connect</strong> {<em>name</em> |
+<em>uuid</em> | <em>device</em> | <em>SSID</em>}</p>
+<p><strong>nmtui-hostname | nmtui hostname</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>nmtui</strong> is a curses‐based TUI application for
+interacting with NetworkManager. When starting <strong>nmtui</strong>,
+the user is prompted to choose the activity to perform unless it was
+specified as the first argument.</p>
+<p>The supported activities are:</p>
+<p><strong>edit</strong></p>
+<blockquote>
+<p>Show a connection editor that supports adding, modifying, viewing and
+deleting connections. It provides similar functionality as
+<strong>nm-connection-editor</strong>.</p>
+</blockquote>
+<p><strong>connect</strong></p>
+<blockquote>
+<p>Show a list of available connections, with the option to activate or
+deactivate them. It provides similar functionality as
+<strong>nm-applet</strong>.</p>
+</blockquote>
+<p><strong>hostname</strong></p>
+<blockquote>
+<p>Set the system hostname.</p>
+</blockquote>
+<p>Corresponding to above activities, <strong>nmtui</strong> also comes
+with binaries named <strong>nmtui-edit</strong>,
+<strong>nmtui-connect</strong>, and <strong>nmtui-hostname</strong> to
+skip the selection of the activities.</p>
+<h1>SEE ALSO</h1>
+<p><strong>nmcli</strong>(1), <strong>nm-applet</strong>(1),
+<strong>nm-connection-editor</strong>(1),
+<strong>NetworkManager</strong>(8).</p>

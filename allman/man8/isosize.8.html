@@ -1,0 +1,62 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>isosize - output the length of an iso9660 filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>isosize</strong> [options] <em>iso9660_image_file</em></p>
+<h1>DESCRIPTION</h1>
+<p>This command outputs the length of an iso9660 filesystem that is
+contained in the specified file. This file may be a normal file or a
+block device (e.g. <em>/dev/hdd</em> or <em>/dev/sr0</em>). In the
+absence of any options (and errors), it will output the size of the
+iso9660 filesystem in bytes. This can now be a large number (&gt;&gt; 4
+GB).</p>
+<h1>OPTIONS</h1>
+<p><strong>-x</strong>, <strong>--sectors</strong></p>
+<blockquote>
+<p>Show the block count and block size in human-readable form. The
+output uses the term "sectors" for "blocks".</p>
+</blockquote>
+<p><strong>-d</strong>, <strong>--divisor</strong> <em>number</em></p>
+<blockquote>
+<p>Only has an effect when <strong>-x</strong> is not given. The value
+shown (if no errors) is the iso9660 file size in bytes divided by
+<em>number</em>. So if <em>number</em> is the block size then the shown
+value will be the block count.</p>
+<p>The size of the file (or block device) holding an iso9660 filesystem
+can be marginally larger than the actual size of the iso9660 filesystem.
+One reason for this is that cd writers are allowed to add "run out"
+sectors at the end of an iso9660 image.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>0</strong></p>
+<blockquote>
+<p>success</p>
+</blockquote>
+<p><strong>1</strong></p>
+<blockquote>
+<p>generic failure, such as invalid usage</p>
+</blockquote>
+<p><strong>32</strong></p>
+<blockquote>
+<p>all failed</p>
+</blockquote>
+<p><strong>64</strong></p>
+<blockquote>
+<p>some failed</p>
+</blockquote>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>isosize</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

@@ -1,0 +1,44 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Xorg.wrap - Xorg X server binary wrapper</p>
+<h1>DESCRIPTION</h1>
+<p>The Xorg X server may need root rights to function properly. To start
+the Xorg X server with these rights your system is using a suid root
+wrapper installed as /usr/lib/xorg/Xorg.wrap which will execute the real
+X server which is installed as /usr/lib/xorg/Xorg.</p>
+<p>By default Xorg.wrap will autodetect if root rights are necessary,
+and if not it will drop its elevated rights before starting the real X
+server. By default Xorg.wrap will only allow executing the real X server
+from login sessions on a physical console.</p>
+<h1>CONFIG FILE</h1>
+<p>Xorg.wrap's default behavior can be overridden from the
+<em>/etc/X11/Xwrapper.config</em> config file. Lines starting with a
+<strong>#</strong> in Xwrapper.config are considered comments and will
+be ignored. Any other non empty lines must take the form of
+<strong>key</strong> = <em>value</em>.</p>
+<dl>
+<dt><strong>allowed_users</strong> =
+<em>rootonly</em>|<em>console</em>|<em>anybody</em></dt>
+<dd>
+<p>Specify which users may start the X server through the wrapper. Use
+<em>rootonly</em> to only allow root, use <em>console</em> to only allow
+users logged into a physical console, and use <em>anybody</em> to allow
+anybody. The default is <em>console</em>.</p>
+</dd>
+<dt><strong>needs_root_rights</strong> =
+<em>yes</em>|<em>no</em>|<em>auto</em></dt>
+<dd>
+<p>Configure if the wrapper should drop its elevated (root) rights
+before starting the X server. Use <em>yes</em> to force execution as
+root, <em>no</em> to force execution with all suid rights dropped, and
+<em>auto</em> to let the wrapper auto-detect. The default is
+<em>auto</em>.</p>
+</dd>
+</dl>
+<p>When auto-detecting the wrapper will drop rights if kms graphics are
+available and not drop them if no kms graphics are detected. If a system
+has multiple graphics cards and some are not kms capable auto-detection
+may fail, in this case manual configuration should be used.</p>
+<h1>SEE ALSO</h1>
+<p>Xorg X server information: <em>Xorg</em>(1)</p>

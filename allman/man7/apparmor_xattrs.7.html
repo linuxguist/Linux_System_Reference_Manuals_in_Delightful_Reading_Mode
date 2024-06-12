@@ -1,0 +1,46 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>apparmor_xattrs - AppArmor profile xattr(7) matching</p>
+<h1>DESCRIPTION</h1>
+<p>AppArmor profiles can conditionally match files based on the presence
+and value of extended attributes in addition to file path. The following
+profile applies to any file under /usr/bin where the security.apparmor
+extended attribute has the value trusted:</p>
+<p>profile trusted /usr/bin/* xattrs=(security.apparmor="trusted") { #
+... }</p>
+<p>Note that security.apparmor and trusted are arbitrary, and profiles
+can match based on the value of any attribute.</p>
+<p>The xattrs value may also contain a path regex:</p>
+<p>profile trusted /usr/bin/* xattrs=(user.trust="tier/*") { # ... }</p>
+<p>The <strong>getfattr</strong> (1) and <strong>setfattr</strong> (1)
+tools can be used to view and manage xattr values:</p>
+<p>$ setfattr -n security.apparmor -v trusted /usr/bin/example-tool $
+getfattr --absolute-names -d -m - /usr/bin/example-tool # file:
+usr/bin/example-tool security.apparmor="trusted"</p>
+<p>The priority of each profile is determined by the length of the path,
+then the number of xattrs specified. A more specific path is preferred
+over xattr matches:</p>
+<p># Highest priority, longest path. profile example1
+/usr/bin/example-tool { # ... } # Lower priority than the longer path,
+but higher priority than a rule # with fewer xattr matches. profile
+example2 /usr/** xattrs=( security.apparmor="trusted" user.domain="**" )
+{ # ... } # Lowest priority. Same path length as the second profile, but
+has # fewer xattr matches. profile example2 /usr/** { # ... }</p>
+<p>xattr matching requires the following kernel feature:</p>
+<p>/sys/kernel/security/apparmor/features/domain/attach_conditions/xattr</p>
+<h1>KNOWN ISSUES</h1>
+<p>AppArmor profiles currently can't reliably match extended attributes
+with binary values such as security.evm and security.ima. In the future
+AppArmor may gain the ability to match based on the presence of certain
+attributes while ignoring their values.</p>
+<h1>SEE ALSO</h1>
+<p><strong>apparmor</strong> (8), <strong>apparmor_parser</strong> (8),
+<strong>apparmor.d</strong> (5), <strong>xattr</strong> (7),
+<strong>aa-autodep</strong> (1), <strong>clean</strong> (1),
+<strong>auditd</strong> (8), <strong>getfattr</strong> (1),
+<strong>setfattr</strong> (1), and
+&lt;https://wiki.apparmor.net&gt;.</p>

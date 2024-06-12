@@ -1,0 +1,53 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>getpcaps - display process capabilities</p>
+<h1>SYNOPSIS</h1>
+<p><strong>getpcaps</strong> [optional args] <em>pid</em>...</p>
+<h1>DESCRIPTION</h1>
+<p><strong>getpcaps</strong> displays the capabilities on the processes
+indicated by the <em>pid</em> value(s) given on the command line. A
+<em>pid</em> of 0 displays the capabilities of the process that is
+running <strong>getpcaps</strong> itself.</p>
+<p>The capabilities are displayed in the
+<strong>cap_from_text</strong>(3) format.</p>
+<p>Optional arguments:</p>
+<dl>
+<dt><strong>--help</strong> or <strong>--usage</strong></dt>
+<dd>
+<p>Displays usage information and exits.</p>
+</dd>
+<dt><strong>--ugly</strong> or <strong>--legacy</strong></dt>
+<dd>
+<p>Displays output in a somewhat ugly legacy format.</p>
+</dd>
+<dt><strong>--verbose</strong></dt>
+<dd>
+<p>Displays usage in a legacy-like format but not quite so ugly in
+modern default terminal fonts.</p>
+</dd>
+<dt><strong>--iab</strong></dt>
+<dd>
+<p>Displays IAB tuple capabilities from the process. The output format
+here is the text format described in <strong>cap_iab</strong>(3). Double
+quotes encase the regular process capabilities and square brackets
+encase the IAB tuple. This format is also used by
+<strong>captree</strong>(8).</p>
+</dd>
+</dl>
+<h1>REPORTING BUGS</h1>
+<p>Please report bugs via:</p>
+<dl>
+<dt>https://bugzilla.kernel.org/buglist.cgi?component=libcap&amp;list_id=1090757</dt>
+<dd>
+<h1>SEE ALSO</h1>
+</dd>
+</dl>
+<p><strong>capsh</strong>(1), <strong>cap_from_text</strong>(3),
+<strong>cap_iab</strong>(3), <strong>capabilities</strong>(7),
+<strong>captree</strong>(8), <strong>getcap</strong>(8), and
+<strong>setcap</strong>(8).</p>
+<h1>AUTHOR</h1>
+<p>This manual page was originally written by Robert Bihlmeyer
+&lt;robbe@debian.org&gt;, for the Debian GNU/Linux system (but may be
+used by others).</p>

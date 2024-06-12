@@ -1,0 +1,29 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>bdftruncate - generate truncated BDF font from ISO 10646-1-encoded
+BDF font</p>
+<h1>SYNOPSIS</h1>
+<p><strong>bdftruncate</strong> <em>threshold</em> <strong>&lt;</strong>
+<em>source.bdf</em> <strong>&gt;</strong> <em>destination.bdf</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>bdftruncate</strong> allows one to generate from an
+ISO10646-1 encoded BDF font other ISO10646-1 BDF fonts in which all
+characters above a threshold code value are stored unencoded. This is
+often desirable because the Xlib API and X11 protocol data structures
+used for representing font metric information are extremely inefficient
+when handling sparsely populated fonts.</p>
+<h1>EXAMPLE</h1>
+<p>The command</p>
+<blockquote>
+<p>bdftruncate 0x3200 &lt; 6x13.bdf &gt; 6x13t.bdf</p>
+</blockquote>
+<p>will generate the file 6x13t.bdf in which all glyphs with codes &gt;=
+0x3200 will only be stored unencoded (i.e., they are encoded at
+codepoint -1).</p>
+<h1>SEE ALSO</h1>
+<p><strong>ucs2any</strong>(1)</p>
+<h1>AUTHOR</h1>
+<p><strong>bdftruncate</strong> was written by Markus Kuhn.</p>
+<p>Branden Robinson wrote this manual page, originally for the Debian
+Project.</p>

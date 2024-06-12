@@ -1,0 +1,26 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>zcmp, zdiff - compare compressed files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>zcmp</strong> [ cmp_options ] file1 [ file2 ]<br />
+<strong>zdiff</strong> [ diff_options ] file1 [ file2 ]</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>zcmp</strong> and <strong>zdiff</strong> commands are
+used to invoke the <strong>cmp</strong> or the <strong>diff</strong>
+program on files compressed via <strong>gzip</strong>. All options
+specified are passed directly to <strong>cmp</strong> or
+<strong>diff</strong>. If only <em>file1</em> is specified, it is
+compared to the uncompressed contents of
+<em>file1</em><strong>.gz</strong><em>.</em> If two files are specified,
+their contents (uncompressed if necessary) are fed to
+<strong>cmp</strong> or <strong>diff</strong>. The input files are not
+modified. The exit status from <strong>cmp</strong> or
+<strong>diff</strong> is preserved.</p>
+<h1>SEE ALSO</h1>
+<p>cmp(1), diff(1), zmore(1), zgrep(1), znew(1), zforce(1), gzip(1),
+gzexe(1)</p>
+<h1>BUGS</h1>
+<p>Messages from the <strong>cmp</strong> or <strong>diff</strong>
+programs may refer to file names such as "-" instead of to the file
+names specified.</p>

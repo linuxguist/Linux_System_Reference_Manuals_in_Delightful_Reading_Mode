@@ -1,0 +1,32 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>rev - reverse lines characterwise</p>
+<h1>SYNOPSIS</h1>
+<p><strong>rev</strong> [option] [<em>file</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>rev</strong> utility copies the specified files to
+standard output, reversing the order of characters in every line. If no
+files are specified, standard input is read.</p>
+<p>This utility is a line-oriented tool and it uses in-memory allocated
+buffer for a whole wide-char line. If the input file is huge and without
+line breaks then allocating the memory for the file may be
+unsuccessful.</p>
+<h1>OPTIONS</h1>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tac</strong>(1)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>rev</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

@@ -1,0 +1,217 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTTP::Cookies - HTTP cookie jars</p>
+<h1>VERSION</h1>
+<p>version 6.10</p>
+<h1>SYNOPSIS</h1>
+<p>use HTTP::Cookies; $cookie_jar = HTTP::Cookies-&gt;new( file =&gt;
+"$ENV{HOME}/lwp_cookies.dat", autosave =&gt; 1, ); use LWP; my $browser
+= LWP::UserAgent-&gt;new; $browser-&gt;cookie_jar($cookie_jar);</p>
+<p>Or for an empty and temporary cookie jar:</p>
+<p>use LWP; my $browser = LWP::UserAgent-&gt;new;
+$browser-&gt;cookie_jar( {} );</p>
+<h1>DESCRIPTION</h1>
+<p>This class is for objects that represent a cookie jar Ω- that is, a
+database of all the HTTP cookies that a given LWP::UserAgent object
+knows about.</p>
+<p>Cookies are a general mechanism which server side connections can use
+to both store and retrieve information on the client side of the
+connection. For more information about cookies refer to Cookie Spec
+&lt;http://curl.haxx.se/rfc/cookie_spec.html&gt; and Cookie Central
+&lt;http://www.cookiecentral.com&gt;. This module also implements the
+new style cookies described in RFC 2965
+&lt;https://tools.ietf.org/html/rfc2965&gt;. The two variants of cookies
+are supposed to be able to coexist happily.</p>
+<p>Instances of the class <em>HTTP::Cookies</em> are able to store a
+collection of Set-Cookie2: and Set-Cookie: headers and are able to use
+this information to initialize Cookie-headers in <em>HTTP::Request</em>
+objects. The state of a <em>HTTP::Cookies</em> object can be saved in
+and restored from files.</p>
+<h1>LIMITATIONS</h1>
+<p>This module does not support Public Suffix
+&lt;https://publicsuffix.org/&gt; encouraged by a more recent standard,
+RFC 6265 &lt;https://tools.ietf.org/html/rfc6265&gt;.</p>
+<p>This module's shortcomings mean that a malicious Web site can set
+cookies to track your user agent across all sites under a top level
+domain. See <em>t/publicsuffix.t</em> in this module's distribution for
+details.</p>
+<p>HTTP::CookieJar::LWP supports Public Suffix, but only provides a
+limited subset of this module's functionality and does not support
+standards older than <em>RFC 6265</em>.</p>
+<h1>METHODS</h1>
+<p>The following methods are provided:</p>
+<dl>
+<dt>$cookie_jar = HTTP::Cookies-&gt;new</dt>
+<dd>
+<p>The constructor takes hash style parameters. The following parameters
+are recognized: file: name of the file to restore cookies from and save
+cookies to autosave: save during destruction (bool) ignore_discard: save
+even cookies that are requested to be discarded (bool) hide_cookie2: do
+not add Cookie2 header to requests Future parameters might include (not
+yet implemented): max_cookies 300 max_cookies_per_domain 20
+max_cookie_size 4096 no_cookies list of domain names that we never
+return cookies to</p>
+</dd>
+<dt>$cookie_jar-&gt;get_cookies( $url_or_domain )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$cookie_jar-&gt;get_cookies( $url_or_domain, $cookie_key,... )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Returns a hash of the cookies that applies to the given URL. If a
+domainname is given as argument, then a prefix of https:// is assumed.
+If one or more <code>$cookie_key</code> parameters are provided return
+the given values, or <code>undef</code> if the cookie isn't
+available.</p>
+<dl>
+<dt>$cookie_jar-&gt;add_cookie_header( $request )</dt>
+<dd>
+<p>The <strong>add_cookie_header()</strong> method will set the
+appropriate Cookie:-header for the <em>HTTP::Request</em> object given
+as argument. The <code>$request</code> must have a valid url attribute
+before this method is called.</p>
+</dd>
+<dt>$cookie_jar-&gt;extract_cookies( $response )</dt>
+<dd>
+<p>The <strong>extract_cookies()</strong> method will look for
+Set-Cookie: and Set-Cookie2: headers in the <em>HTTP::Response</em>
+object passed as argument. Any of these headers that are found are used
+to update the state of the <code>$cookie_jar</code>.</p>
+</dd>
+<dt>$cookie_jar-&gt;set_cookie( $version, $key, $val, $path, $domain,
+$port, $path_spec, $secure, $maxage, $discard, \%rest )</dt>
+<dd>
+<p>The <strong>set_cookie()</strong> method updates the state of the
+<code>$cookie_jar</code>. The <code>$key</code>, <code>$val</code>,
+<code>$domain</code>, <code>$port</code> and <code>$path</code>
+arguments are strings. The <code>$path_spec</code>,
+<code>$secure</code>, <code>$discard</code> arguments are boolean
+values. The <code>$maxage</code> value is a number indicating number of
+seconds that this cookie will live. A value of <code>$maxage</code>
+&lt;= 0 will delete this cookie. The <code>$version</code> argument sets
+the version of the cookie; the default value is 0 ( original Netscape
+spec ). Setting <code>$version</code> to another value indicates the RFC
+to which the cookie conforms (e.g. version 1 for RFC 2109).
+<code>%rest</code> defines various other attributes like Comment and
+CommentURL.</p>
+</dd>
+<dt>$cookie_jar-&gt;save</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$cookie_jar-&gt;save( $file )</dt>
+<dd>
+
+</dd>
+<dt>$cookie_jar-&gt;save( file =&gt; $file, ignore_discard =&gt;
+$ignore_discard )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This method file saves the state of the <code>$cookie_jar</code> to a
+file. The state can then be restored later using the
+<strong>load()</strong> method. If a filename is not specified we will
+use the name specified during construction. If the
+<code>$ignore_discard</code> value is true (or not specified, but
+attribute <em>ignore_discard</em> was set at cookie jar construction),
+then we will even save cookies that are marked to be discarded. The
+default is to save a sequence of Set-Cookie3 lines. Set-Cookie3 is a
+proprietary LWP format, not known to be compatible with any browser. The
+<em>HTTP::Cookies::Netscape</em> sub-class can be used to save in a
+format compatible with Netscape.</p>
+<dl>
+<dt>$cookie_jar-&gt;load</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$cookie_jar-&gt;load( $file )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This method reads the cookies from the file and adds them to the
+<code>$cookie_jar</code>. The file must be in the format written by the
+<strong>save()</strong> method.</p>
+<dl>
+<dt>$cookie_jar-&gt;revert</dt>
+<dd>
+<p>This method empties the <code>$cookie_jar</code> and re-loads the
+<code>$cookie_jar</code> from the last save file.</p>
+</dd>
+<dt>$cookie_jar-&gt;clear</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$cookie_jar-&gt;clear( $domain )</dt>
+<dd>
+
+</dd>
+<dt>$cookie_jar-&gt;clear( $domain, $path )</dt>
+<dd>
+
+</dd>
+<dt>$cookie_jar-&gt;clear( $domain, $path, $key )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Invoking this method without arguments will empty the whole
+<code>$cookie_jar</code>. If given a single argument only cookies
+belonging to that domain will be removed. If given two arguments,
+cookies belonging to the specified path within that domain are removed.
+If given three arguments, then the cookie with the specified key, path
+and domain is removed.</p>
+<dl>
+<dt>$cookie_jar-&gt;clear_temporary_cookies</dt>
+<dd>
+<p>Discard all temporary cookies. Scans for all cookies in the jar with
+either no expire field or a true <code>discard</code> flag. To be called
+when the user agent shuts down according to RFC 2965.</p>
+</dd>
+<dt>$cookie_jar-&gt;scan( \&amp;callback )</dt>
+<dd>
+<p>The argument is a subroutine that will be invoked for each cookie
+stored in the <code>$cookie_jar</code>. The subroutine will be invoked
+with the following arguments: 0 version 1 key 2 val 3 path 4 domain 5
+port 6 path_spec 7 secure 8 expires 9 discard 10 hash</p>
+</dd>
+<dt>$cookie_jar-&gt;as_string</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$cookie_jar-&gt;as_string( $skip_discardables )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The <strong>as_string()</strong> method will return the state of the
+<code>$cookie_jar</code> represented as a sequence of Set-Cookie3 header
+lines separated by \n. If <code>$skip_discardables</code> is TRUE, it
+will not return lines for cookies with the <em>Discard</em>
+attribute.</p>
+<h1>SEE ALSO</h1>
+<p>HTTP::Cookies::Netscape, HTTP::Cookies::Microsoft</p>
+<h1>AUTHOR</h1>
+<p>Gisle Aas &lt;gisle@activestate.com&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2002 by Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

@@ -1,0 +1,69 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pw-dot - The PipeWire dot graph dump</p>
+<h1>SYNOPSIS</h1>
+<pre><code>pw-dot [options]</code></pre>
+<h1>DESCRIPTION</h1>
+<p>Create a .dot file of the PipeWire graph.</p>
+<p>The .dot file can then be visualized with a tool like
+<strong>dotty</strong> or rendered to a PNG file with <strong>dot -Tpng
+pw.dot -o pw.png</strong>.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-r | --remote=NAME</strong></dt>
+<dd>
+<p>The name the remote instance to connect to. If left unspecified, a
+connection is made to the default PipeWire instance.</p>
+</dd>
+<dt><strong>-h | --help</strong></dt>
+<dd>
+<p>Show help.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Show version information.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-a | --all</strong></dt>
+<dd>
+<p>Show all object types.</p>
+</dd>
+<dt><strong>-s | --smart</strong></dt>
+<dd>
+<p>Show linked objects only.</p>
+</dd>
+<dt><strong>-d | --detail</strong></dt>
+<dd>
+<p>Show all object properties.</p>
+</dd>
+<dt><strong>-o FILE | --output=FILE</strong></dt>
+<dd>
+<p>Output file name (Default pw.dot). Use - for stdout.</p>
+</dd>
+<dt><strong>-L | --lr</strong></dt>
+<dd>
+<p>Lay the graph from left to right, instead of dot's default top to
+bottom.</p>
+</dd>
+<dt><strong>-9 | --90</strong></dt>
+<dd>
+<p>Lay the graph using 90-degree angles in edges.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>AUTHORS</h1>
+<p>The PipeWire Developers
+&lt;<em>https://gitlab.freedesktop.org/pipewire/pipewire/issues</em>&gt;;
+PipeWire is available from <em>https://pipewire.org</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>pipewire(1)</strong>, <strong>pw-cli(1)</strong>,
+<strong>pw-mon(1)</strong>,</p>

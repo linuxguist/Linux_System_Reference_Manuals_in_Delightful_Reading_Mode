@@ -1,0 +1,830 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tmpfiles.d - Configuration for creation, deletion and cleaning of
+volatile and temporary files</p>
+<h1>SYNOPSIS</h1>
+<pre><code>/etc/tmpfiles.d/*.conf
+/run/tmpfiles.d/*.conf
+/usr/lib/tmpfiles.d/*.conf
+    </code></pre>
+<pre><code>~/.config/user-tmpfiles.d/*.conf
+$XDG_RUNTIME_DIR/user-tmpfiles.d/*.conf
+~/.local/share/user-tmpfiles.d/*.conf
+...
+/usr/share/user-tmpfiles.d/*.conf
+    </code></pre>
+<pre><code>#Type Path                                     Mode User Group Age         Argument
+f     /file/to/create                          mode user group -           content
+f+    /file/to/create-or-truncate              mode user group -           content
+w     /file/to/write-to                        -    -    -     -           content
+w+    /file/to/append-to                       -    -    -     -           content
+d     /directory/to/create-and-clean-up        mode user group cleanup-age -
+D     /directory/to/create-and-remove          mode user group cleanup-age -
+e     /directory/to/clean-up                   mode user group cleanup-age -
+v     /subvolume-or-directory/to/create        mode user group cleanup-age -
+q     /subvolume-or-directory/to/create        mode user group cleanup-age -
+Q     /subvolume-or-directory/to/create        mode user group cleanup-age -
+p     /fifo/to/create                          mode user group -           -
+p+    /fifo/to/[re]create                      mode user group -           -
+L     /symlink/to/create                       -    -    -     -           symlink/target/path
+L+    /symlink/to/[re]create                   -    -    -     -           symlink/target/path
+c     /dev/char-device-to-create               mode user group -           major:minor
+c+    /dev/char-device-to-[re]create           mode user group -           major:minor
+b     /dev/block-device-to-create              mode user group -           major:minor
+b+    /dev/block-device-to-[re]create          mode user group -           major:minor
+C     /target/to/create                        -    -    -     cleanup-age /source/to/copy
+x     /path-or-glob/to/ignore/recursively      -    -    -     cleanup-age -
+X     /path-or-glob/to/ignore                  -    -    -     cleanup-age -
+r     /path-or-glob/to/remove                  -    -    -     -           -
+R     /path-or-glob/to/remove/recursively      -    -    -     -           -
+z     /path-or-glob/to/adjust/mode             mode user group -           -
+Z     /path-or-glob/to/adjust/mode/recursively mode user group -           -
+t     /path-or-glob/to/set/xattrs              -    -    -     -           xattrs
+T     /path-or-glob/to/set/xattrs/recursively  -    -    -     -           xattrs
+h     /path-or-glob/to/set/attrs               -    -    -     -           file attrs
+H     /path-or-glob/to/set/attrs/recursively   -    -    -     -           file attrs
+a     /path-or-glob/to/set/acls                -    -    -     -           POSIX ACLs
+a+    /path-or-glob/to/append/acls             -    -    -     -           POSIX ACLs
+A     /path-or-glob/to/set/acls/recursively    -    -    -     -           POSIX ACLs
+A+    /path-or-glob/to/append/acls/recursively -    -    -     -           POSIX ACLs
+</code></pre>
+<h1>DESCRIPTION</h1>
+<p>tmpfiles.d configuration files provide a generic mechanism to define
+the <em>creation</em> of regular files, directories, pipes, and device
+nodes, adjustments to their <em>access mode, ownership, attributes,
+quota assignments, and contents</em>, and finally their time-based
+<em>removal</em>. It is mostly commonly used for volatile and temporary
+files and directories (such as those located under /run/, /tmp/,
+/var/tmp/, the API file systems such as /sys/ or /proc/, as well as some
+other directories below /var/).</p>
+<p><strong>systemd-tmpfiles</strong> uses this configuration to create
+volatile files and directories during boot and to do periodic cleanup
+afterwards. See <strong>systemd-tmpfiles</strong>(8) for the description
+of systemd-tmpfiles-setup.service, systemd-tmpfiles-clean.service, and
+associated units.</p>
+<p>System daemons frequently require private runtime directories below
+/run/ to store communication sockets and similar. For these, it is
+better to use <em>RuntimeDirectory=</em> in their unit files (see
+<strong>systemd.exec</strong>(5) for details), if the flexibility
+provided by tmpfiles.d is not required. The advantages are that the
+configuration required by the unit is centralized in one place, and that
+the lifetime of the directory is tied to the lifetime of the service
+itself. Similarly, <em>StateDirectory=</em>, <em>CacheDirectory=</em>,
+<em>LogsDirectory=</em>, and <em>ConfigurationDirectory=</em> should be
+used to create directories under /var/lib/, /var/cache/, /var/log/, and
+/etc/. tmpfiles.d should be used for files whose lifetime is independent
+of any service or requires more complicated configuration.</p>
+<h1>CONFIGURATION DIRECTORIES AND PRECEDENCE</h1>
+<p>Each configuration file shall be named in the style of
+<em>package</em>.conf or <em>package</em>-<em>part</em>.conf. The second
+variant should be used when it is desirable to make it easy to override
+just this part of configuration.</p>
+<p>Files in /etc/tmpfiles.d override files with the same name in
+/usr/lib/tmpfiles.d and /run/tmpfiles.d. Files in /run/tmpfiles.d
+override files with the same name in /usr/lib/tmpfiles.d. Packages
+should install their configuration files in /usr/lib/tmpfiles.d. Files
+in /etc/tmpfiles.d are reserved for the local administrator, who may use
+this logic to override the configuration files installed by vendor
+packages. All configuration files are sorted by their filename in
+lexicographic order, regardless of which of the directories they reside
+in. If multiple files specify the same path, the entry in the file with
+the lexicographically earliest name will be applied (note that lines
+suppressed due to the "!" are filtered before application, meaning that
+if an early line carries the exclamation mark and is suppressed because
+of that, a later line matching in path will be applied). All other
+conflicting entries will be logged as errors. When two lines are prefix
+path and suffix path of each other, then the prefix line is always
+created first, the suffix later (and if removal applies to the line, the
+order is reversed: the suffix is removed first, the prefix later). Lines
+that take globs are applied after those accepting no globs. If multiple
+operations shall be applied on the same file (such as ACL, xattr, file
+attribute adjustments), these are always done in the same fixed order.
+Except for those cases, the files/directories are processed in the order
+they are listed.</p>
+<p>If the administrator wants to disable a configuration file supplied
+by the vendor, the recommended way is to place a symlink to /dev/null in
+/etc/tmpfiles.d/ bearing the same filename.</p>
+<h1>CONFIGURATION FILE FORMAT</h1>
+<p>The configuration format is one line per path, containing type, path,
+mode, ownership, age, and argument fields. The lines are separated by
+newlines, the fields by whitespace:</p>
+<blockquote>
+<pre><code>#Type Path        Mode User Group Age Argument...
+d     /run/user   0755 root root  10d -
+L     /tmp/foobar -    -    -     -   /dev/null</code></pre>
+</blockquote>
+<p>Fields may contain C-style escapes. With the exception of the seventh
+field (the "argument") all fields may be enclosed in quotes. Note that
+any whitespace found in the line after the beginning of the argument
+field will be considered part of the argument field. To begin the
+argument field with a whitespace character, use C-style escapes (e.g.
+"\x20").</p>
+<h2>Type</h2>
+<p>The type consists of a single letter and optionally one or emore
+modifier characters: a plus sign ("+"), exclamation mark ("!"), minus
+sign ("-"), equals sign ("="), tilde character ("~") and/or caret
+("^").</p>
+<p>The following line types are understood:</p>
+<p><em>f</em>, <em>f+</em></p>
+<blockquote>
+<p><em>f</em> will create a file if it does not exist yet. If the
+argument parameter is given and the file did not exist yet, it will be
+written to the file. <em>f+</em> will create or truncate the file. If
+the argument parameter is given, it will be written to the file. Does
+not follow symlinks.</p>
+</blockquote>
+<p><em>w</em>, <em>w+</em></p>
+<blockquote>
+<p>Write the argument parameter to a file, if the file exists. If
+suffixed with <em>+</em>, the line will be appended to the file. If your
+configuration writes multiple lines to the same file, use <em>w+</em>.
+Lines of this type accept shell-style globs in place of normal path
+names. The argument parameter will be written without a trailing
+newline. C-style backslash escapes are interpreted. Follows
+symlinks.</p>
+</blockquote>
+<p><em>d</em></p>
+<blockquote>
+<p>Create a directory. The mode and ownership will be adjusted if
+specified. Contents of this directory are subject to time-based cleanup
+if the age argument is specified.</p>
+</blockquote>
+<p><em>D</em></p>
+<blockquote>
+<p>Similar to <em>d</em>, but in addition the contents of the directory
+will be removed when <strong>--remove</strong> is used.</p>
+</blockquote>
+<p><em>e</em></p>
+<blockquote>
+<p>Adjust the mode and ownership of existing directories and remove
+their contents based on age. Lines of this type accept shell-style globs
+in place of normal path names. Contents of the directories are subject
+to time-based cleanup if the age argument is specified. If the age
+argument is "0", contents will be unconditionally deleted every time
+<strong>systemd-tmpfiles --clean</strong> is run.</p>
+<p>For this entry to be useful, at least one of the mode, user, group,
+or age arguments must be specified, since otherwise this entry has no
+effect. As an exception, an entry with no effect may be useful when
+combined with <em>!</em>, see the examples.</p>
+</blockquote>
+<p><em>v</em></p>
+<blockquote>
+<p>Create a subvolume if the path does not exist yet, the file system
+supports subvolumes (btrfs), and the system itself is installed into a
+subvolume (specifically: the root directory / is itself a subvolume).
+Otherwise, create a normal directory, in the same way as <em>d</em>.</p>
+<p>A subvolume created with this line type is not assigned to any
+higher-level quota group. For that, use <em>q</em> or <em>Q</em>, which
+allow creating simple quota group hierarchies, see below.</p>
+</blockquote>
+<p><em>q</em></p>
+<blockquote>
+<p>Create a subvolume or directory the same as <em>v</em>, but assign
+the subvolume to the same higher-level quota groups as the parent. This
+ensures that higher-level limits and accounting applied to the parent
+subvolume also include the specified subvolume. On non-btrfs file
+systems, this line type is identical to <em>d</em>.</p>
+<p>If the subvolume already exists, no change to the quota hierarchy is
+made, regardless of whether the subvolume is already attached to a quota
+group or not. Also see <em>Q</em> below. See
+<strong>btrfs-qgroup</strong>(8) for details about the btrfs quota group
+concept.</p>
+</blockquote>
+<p><em>Q</em></p>
+<blockquote>
+<p>Create the subvolume or directory the same as <em>v</em>, but assign
+the new subvolume to a new leaf quota group. Instead of copying the
+higher-level quota group assignments from the parent as is done with
+<em>q</em>, the lowest quota group of the parent subvolume is determined
+that is not the leaf quota group. Then, an "intermediary" quota group is
+inserted that is one level below this level, and shares the same ID part
+as the specified subvolume. If no higher-level quota group exists for
+the parent subvolume, a new quota group at level 255 sharing the same ID
+as the specified subvolume is inserted instead. This new intermediary
+quota group is then assigned to the parent subvolumes higher-level quota
+groups, and the specified subvolumes leaf quota group is assigned to
+it.</p>
+<p>Effectively, this has a similar effect as <em>q</em>, however
+introduces a new higher-level quota group for the specified subvolume
+that may be used to enforce limits and accounting to the specified
+subvolume and children subvolume created within it. Thus, by creating
+subvolumes only via <em>q</em> and <em>Q</em>, a concept of "subtree
+quotas" is implemented. Each subvolume for which <em>Q</em> is set will
+get a "subtree" quota group created, and all child subvolumes created
+within it will be assigned to it. Each subvolume for which <em>q</em> is
+set will not get such a "subtree" quota group, but it is ensured that
+they are added to the same "subtree" quota group as their immediate
+parents.</p>
+<p>It is recommended to use <em>Q</em> for subvolumes that typically
+contain further subvolumes, and where it is desirable to have accounting
+and quota limits on all child subvolumes together. Examples for
+<em>Q</em> are typically /home/ or /var/lib/machines/. In contrast,
+<em>q</em> should be used for subvolumes that either usually do not
+include further subvolumes or where no accounting and quota limits are
+needed that apply to all child subvolumes together. Examples for
+<em>q</em> are typically /var/ or /var/tmp/.</p>
+<p>As with <em>q</em>, <em>Q</em> has no effect on the quota group
+hierarchy if the subvolume already exists, regardless of whether the
+subvolume already belong to a quota group or not.</p>
+</blockquote>
+<p><em>p</em>, <em>p+</em></p>
+<blockquote>
+<p>Create a named pipe (FIFO) if it does not exist yet. If suffixed with
+<em>+</em> and a file already exists where the pipe is to be created, it
+will be removed and be replaced by the pipe.</p>
+</blockquote>
+<p><em>L</em>, <em>L+</em></p>
+<blockquote>
+<p>Create a symlink if it does not exist yet. If suffixed with
+<em>+</em> and a file or directory already exists where the symlink is
+to be created, it will be removed and be replaced by the symlink. If the
+argument is omitted, symlinks to files with the same name residing in
+the directory /usr/share/factory/ are created. Note that permissions and
+ownership on symlinks are ignored.</p>
+</blockquote>
+<p><em>c</em>, <em>c+</em></p>
+<blockquote>
+<p>Create a character device node if it does not exist yet. If suffixed
+with <em>+</em> and a file already exists where the device node is to be
+created, it will be removed and be replaced by the device node. It is
+recommended to suffix this entry with an exclamation mark to only create
+static device nodes at boot, as udev will not manage static device nodes
+that are created at runtime.</p>
+</blockquote>
+<p><em>b</em>, <em>b+</em></p>
+<blockquote>
+<p>Create a block device node if it does not exist yet. If suffixed with
+<em>+</em> and a file already exists where the device node is to be
+created, it will be removed and be replaced by the device node. It is
+recommended to suffix this entry with an exclamation mark to only create
+static device nodes at boot, as udev will not manage static device nodes
+that are created at runtime.</p>
+</blockquote>
+<p><em>C</em></p>
+<blockquote>
+<p>Recursively copy a file or directory, if the destination files or
+directories do not exist yet or the destination directory is empty. Note
+that this command will not descend into subdirectories if the
+destination directory already exists and is not empty. Instead, the
+entire copy operation is skipped. If the argument is omitted, files from
+the source directory /usr/share/factory/ with the same name are copied.
+Does not follow symlinks. Contents of the directories are subject to
+time-based cleanup if the age argument is specified.</p>
+</blockquote>
+<p><em>x</em></p>
+<blockquote>
+<p>Ignore a path during cleaning. Use this type to exclude paths from
+clean-up as controlled with the Age parameter. Note that lines of this
+type do not influence the effect of <em>r</em> or <em>R</em> lines.
+Lines of this type accept shell-style globs in place of normal path
+names.</p>
+</blockquote>
+<p><em>X</em></p>
+<blockquote>
+<p>Ignore a path during cleaning. Use this type to exclude paths from
+clean-up as controlled with the Age parameter. Unlike <em>x</em>, this
+parameter will not exclude the content if path is a directory, but only
+directory itself. Note that lines of this type do not influence the
+effect of <em>r</em> or <em>R</em> lines. Lines of this type accept
+shell-style globs in place of normal path names.</p>
+</blockquote>
+<p><em>r</em></p>
+<blockquote>
+<p>Remove a file or directory if it exists. This may not be used to
+remove non-empty directories, use <em>R</em> for that. Lines of this
+type accept shell-style globs in place of normal path names. Does not
+follow symlinks.</p>
+</blockquote>
+<p><em>R</em></p>
+<blockquote>
+<p>Recursively remove a path and all its subdirectories (if it is a
+directory). Lines of this type accept shell-style globs in place of
+normal path names. Does not follow symlinks.</p>
+</blockquote>
+<p><em>z</em></p>
+<blockquote>
+<p>Adjust the access mode, user and group ownership, and restore the
+SELinux security context of a file or directory, if it exists. Lines of
+this type accept shell-style globs in place of normal path names. Does
+not follow symlinks.</p>
+</blockquote>
+<p><em>Z</em></p>
+<blockquote>
+<p>Recursively set the access mode, user and group ownership, and
+restore the SELinux security context of a file or directory if it
+exists, as well as of its subdirectories and the files contained therein
+(if applicable). Lines of this type accept shell-style globs in place of
+normal path names. Does not follow symlinks.</p>
+</blockquote>
+<p><em>t</em></p>
+<blockquote>
+<p>Set extended attributes, see <strong>attr</strong>(5) for details.
+The argument field should take one or more assignment expressions in the
+form <em>namespace</em>.<em>attribute</em>=<em>value</em>, for examples
+see below. Lines of this type accept shell-style globs in place of
+normal path names. This can be useful for setting SMACK labels. Does not
+follow symlinks.</p>
+<p>Please note that extended attributes settable with this line type are
+a different concept from the Linux file attributes settable with
+<em>h</em>/<em>H</em>, see below.</p>
+</blockquote>
+<p><em>T</em></p>
+<blockquote>
+<p>Same as <em>t</em>, but operates recursively.</p>
+</blockquote>
+<p><em>h</em></p>
+<blockquote>
+<p>Set Linux file/directory attributes. Lines of this type accept
+shell-style globs in place of normal path names.</p>
+<p>The format of the argument field is <em>[+-=][aAcCdDeijPsStTu]</em>.
+The prefix <em>+</em> (the default one) causes the attributes to be
+added; <em>-</em> causes the attributes to be removed; <em>=</em> causes
+the attributes to be set exactly as the following letters. The letters
+"aAcCdDeijPsStTu" select the new attributes for the files, see
+<strong>chattr</strong>(1) for further information.</p>
+<p>Passing only <em>=</em> as argument resets all the file attributes
+listed above. It has to be pointed out that the <em>=</em> prefix limits
+itself to the attributes corresponding to the letters listed here. All
+other attributes will be left untouched. Does not follow symlinks.</p>
+<p>Please note that the Linux file attributes settable with this line
+type are a different concept from the extended attributes settable with
+<em>t</em>/<em>T</em>, see above.</p>
+</blockquote>
+<p><em>H</em></p>
+<blockquote>
+<p>Sames as <em>h</em>, but operates recursively.</p>
+</blockquote>
+<p><em>a</em>, <em>a+</em></p>
+<blockquote>
+<p>Set POSIX ACLs (access control lists), see <strong>acl</strong>(5).
+If suffixed with <em>+</em>, the specified entries will be added to the
+existing set. <strong>systemd-tmpfiles</strong> will automatically add
+the required base entries for user and group based on the access mode of
+the file, unless base entries already exist or are explicitly specified.
+The mask will be added if not specified explicitly or already present.
+Lines of this type accept shell-style globs in place of normal path
+names. This can be useful for allowing additional access to certain
+files. Does not follow symlinks.</p>
+</blockquote>
+<p><em>A</em>, <em>A+</em></p>
+<blockquote>
+<p>Same as <em>a</em> and <em>a+</em>, but recursive. Does not follow
+symlinks.</p>
+</blockquote>
+<h2>Type Modifiers</h2>
+<p>If the exclamation mark ("!") is used, this line is only safe to
+execute during boot, and can break a running system. Lines without the
+exclamation mark are presumed to be safe to execute at any time, e.g. on
+package upgrades. <strong>systemd-tmpfiles</strong> will take lines with
+an exclamation mark only into consideration, if the
+<strong>--boot</strong> option is given.</p>
+<p>For example:</p>
+<blockquote>
+<pre><code># Make sure these are created by default so that nobody else can
+d /tmp/.X11-unix 1777 root root 10d
+
+# Unlink the X11 lock files
+r! /tmp/.X[0-9]*-lock</code></pre>
+</blockquote>
+<p>The second line in contrast to the first one would break a running
+system, and will only be executed with <strong>--boot</strong>.</p>
+<p>If the minus sign ("-") is used, this line failing to run
+successfully during create (and only create) will not cause the
+execution of <strong>systemd-tmpfiles</strong> to return an error.</p>
+<p>For example:</p>
+<blockquote>
+<pre><code># Modify sysfs but dont fail if we are in a container with a read-only /proc
+w- /proc/sys/vm/swappiness - - - - 10</code></pre>
+</blockquote>
+<p>If the equals sign ("=") is used, the file types of existing objects
+in the specified path are checked, and removed if they do not match.
+This includes any implicitly created parent directories (which can be
+either directories or directory symlinks). For example, if there is a
+FIFO in place of one of the parent path components it will be replaced
+with a directory.</p>
+<p>If the tilde character ("~") is used, the argument (i.e. 6th) column
+is <strong>Base64 decoded</strong>[1] before use. This modifier is only
+supported on line types that can write file contents, i.e. <em>f</em>,
+<em>f+</em>, <em>w</em>, <em>+</em>. This is useful for writing
+arbitrary binary data (including newlines and NUL bytes) to files. Note
+that if this switch is used, the argument is not subject to specifier
+expansion, neither before nor after Base64 decoding.</p>
+<p>If the caret character ("^") is used, the argument (i.e. 6th) column
+takes a service credential name to read the argument data from. See
+<strong>System and Service Credentials</strong>[2] for details about the
+credentials concept. This modifier is only supported on line types that
+can write file contents, i.e. <em>f</em>, <em>f+</em>, <em>w</em>,
+<em>w+</em>. This is useful for writing arbitrary files with contents
+sourced from elsewhere, including from VM or container managers further
+up. If the specified credential is not set for the
+<strong>systemd-tmpfiles</strong> service, the line is silently skipped.
+If "^" and "~" are combined Base64 decoding is applied to the credential
+contents.</p>
+<p>Note that for all line types that result in creation of any kind of
+file node (i.e. <em>f</em>/<em>F</em>,
+<em>d</em>/<em>D</em>/<em>v</em>/<em>q</em>/<em>Q</em>, <em>p</em>,
+<em>L</em>, <em>c</em>/<em>b</em> and <em>C</em>) leading directories
+are implicitly created if needed, owned by root with an access mode of
+0755. In order to create them with different modes or ownership make
+sure to add appropriate <em>d</em> lines.</p>
+<h2>Path</h2>
+<p>The file system path specification supports simple specifier
+expansion, see below. The path (after expansion) must be absolute.</p>
+<h2>Mode</h2>
+<p>The file access mode to use when creating this file or directory. If
+omitted or when set to "-", the default is used: 0755 for directories,
+0644 for all other file objects. For <em>z</em>, <em>Z</em> lines, if
+omitted or when set to "-", the file access mode will not be modified.
+This parameter is ignored for <em>x</em>, <em>r</em>, <em>R</em>,
+<em>L</em>, <em>t</em>, and <em>a</em> lines.</p>
+<p>Optionally, if prefixed with "~", the access mode is masked based on
+the already set access bits for existing file or directories: if the
+existing file has all executable bits unset, all executable bits are
+removed from the new access mode, too. Similarly, if all read bits are
+removed from the old access mode, they will be removed from the new
+access mode too, and if all write bits are removed, they will be removed
+from the new access mode too. In addition, the sticky/SUID/SGID bit is
+removed unless applied to a directory. This functionality is
+particularly useful in conjunction with <em>Z</em>.</p>
+<p>By default the access mode of listed inodes is set to the specified
+mode regardless if it is created anew, or already existed. Optionally,
+if prefixed with ":", the configured access mode is only applied when
+creating new inodes, and if the inode the line refers to already exists,
+its access mode is left in place unmodified.</p>
+<h2>User, Group</h2>
+<p>The user and group to use for this file or directory. This may either
+be a numeric ID or a user/group name. If omitted or when set to "-", the
+user and group of the user who invokes <strong>systemd-tmpfiles</strong>
+is used. For <em>z</em> and <em>Z</em> lines, when omitted or when set
+to "-", the file ownership will not be modified. These parameters are
+ignored for <em>x</em>, <em>r</em>, <em>R</em>, <em>L</em>, <em>t</em>,
+and <em>a</em> lines.</p>
+<p>This field should generally only reference system users/groups, i.e.
+users/groups that are guaranteed to be resolvable during early boot. If
+this field references users/groups that only become resolveable during
+later boot (i.e. after NIS, LDAP or a similar networked directory
+service become available), execution of the operations declared by the
+line will likely fail. Also see <strong>Notes on Resolvability of User
+and Group Names</strong>[3] for more information on requirements on
+system user/group definitions.</p>
+<p>By default the ownership of listed inodes is set to the specified
+user/group regardless if it is created anew, or already existed.
+Optionally, if prefixed with ":", the configured user/group information
+is only applied when creating new inodes, and if the inode the line
+refers to already exists, its user/group is left in place
+unmodified.</p>
+<h2>Age</h2>
+<p>The date field, when set, is used to decide what files to delete when
+cleaning. If a file or directory is older than the current time minus
+the age field, it is deleted. The field format is a series of integers
+each followed by one of the following suffixes for the respective time
+units: <strong>s</strong>, <strong>m</strong> or <strong>min</strong>,
+<strong>h</strong>, <strong>d</strong>, <strong>w</strong>,
+<strong>ms</strong>, and <strong>us</strong>, meaning seconds, minutes,
+hours, days, weeks, milliseconds, and microseconds, respectively. Full
+names of the time units can be used too.</p>
+<p>If multiple integers and units are specified, the time values are
+summed. If an integer is given without a unit, <strong>s</strong> is
+assumed.</p>
+<p>When the age is set to zero, the files are cleaned
+unconditionally.</p>
+<p>The age field only applies to lines starting with <em>d</em>,
+<em>D</em>, <em>e</em>, <em>v</em>, <em>q</em>, <em>Q</em>, <em>C</em>,
+<em>x</em> and <em>X</em>. If omitted or set to "-", no automatic
+clean-up is done.</p>
+<p>If the age field starts with a tilde character "~", clean-up is only
+applied to files and directories one level inside the directory
+specified, but not the files and directories immediately inside it.</p>
+<p>The age of a file system entry is determined from its last
+modification timestamp (mtime), its last access timestamp (atime), and
+(except for directories) its last status change timestamp (ctime). By
+default, any of these three (or two) values will prevent cleanup if it
+is more recent than the current time minus the age field. To restrict
+the deletion based on particular type of file timestamps, the age-by
+argument can be used.</p>
+<p>The age-by argument overrides the timestamp types to be used for the
+age check. It can be specified by prefixing the age argument with a
+sequence of characters to specify the timestamp types and a colon (":"):
+"<em>age-by</em>...:<em>cleanup-age</em>". The argument can consist of
+<strong>a</strong> (<strong>A</strong> for directories),
+<strong>b</strong> (<strong>B</strong> for directories),
+<strong>c</strong> (<strong>C</strong> for directories), or
+<strong>m</strong> (<strong>M</strong> for directories). Those
+respectively indicate access, creation, last status change, and last
+modification time of a file system entry. The lower-case letter
+signifies that the given timestamp type should be considered for files,
+while the upper-case letter signifies that the given timestamp type
+should be considered for directories. See <strong>statx</strong>(2) file
+timestamp fields for more details about timestamp types.</p>
+<p>If not specified, the age-by field defaults to
+<strong>abcmABM</strong>, i.e. by default all file timestamps are taken
+into consideration, with the exception of the last status change
+timestamp (ctime) for directories. This is because the aging logic
+itself will alter the ctime whenever it deletes a file inside it. To
+ensure that running the aging logic does not feed back into the next
+iteration of itself, ctime for directories is ignored by default.</p>
+<p>For example:</p>
+<blockquote>
+<pre><code># Files created and modified, and directories accessed more than
+# an hour ago in &quot;/tmp/foo/bar&quot;, are subject to time-based cleanup.
+d /tmp/foo/bar - - - bmA:1h -</code></pre>
+</blockquote>
+<p>Note that while the aging algorithm is run a shared BSD file lock
+(see <strong>flock</strong>(2)) is taken on each directory the algorithm
+descends into (and each directory below that, and so on). If the aging
+algorithm finds a lock is already taken on some directory, it (and
+everything below it) is skipped. Applications may use this to
+temporarily exclude certain directory subtrees from the aging algorithm:
+the applications can take a BSD file lock themselves, and as long as
+they keep it aging of the directory and everything below it is
+disabled.</p>
+<h2>Argument</h2>
+<p>For <em>L</em> lines determines the destination path of the symlink.
+For <em>c</em> and <em>b</em>, determines the major/minor of the device
+node, with major and minor formatted as integers, separated by ":", e.g.
+"1:3". For <em>f</em>, <em>F</em>, and <em>w</em>, the argument may be
+used to specify a short string that is written to the file, suffixed by
+a newline. For <em>C</em>, specifies the source file or directory. For
+<em>t</em> and <em>T</em>, determines extended attributes to be set. For
+<em>a</em> and <em>A</em>, determines ACL attributes to be set. For
+<em>h</em> and <em>H</em>, determines the file attributes to set.
+Ignored for all other lines.</p>
+<p>This field can contain specifiers, see below.</p>
+<h1>SPECIFIERS</h1>
+<p>Specifiers can be used in the "path" and "argument" fields. An
+unknown or unresolvable specifier is treated as invalid configuration.
+The following expansions are understood:</p>
+<p><br />
+<strong>Table 1. Specifiers available</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Specifier</td>
+<td style="text-align: left;">Meaning</td>
+<td style="text-align: left;">Details</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%a"</td>
+<td style="text-align: left;">Architecture</td>
+<td style="text-align: left;">A short string identifying the
+architecture of the local system. A string such as <strong>x86</strong>,
+<strong>x86-64</strong> or <strong>arm64</strong>. See the architectures
+defined for <em>ConditionArchitecture=</em> in
+<strong>systemd.unit</strong>(5) for a full list.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%A"</td>
+<td style="text-align: left;">Operating system image version</td>
+<td style="text-align: left;">The operating system image version
+identifier of the running system, as read from the
+<em>IMAGE_VERSION=</em> field of /etc/os-release. If not set, resolves
+to an empty string. See <strong>os-release</strong>(5) for more
+information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%b"</td>
+<td style="text-align: left;">Boot ID</td>
+<td style="text-align: left;">The boot ID of the running system,
+formatted as string. See <strong>random</strong>(4) for more
+information.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%B"</td>
+<td style="text-align: left;">Operating system build ID</td>
+<td style="text-align: left;">The operating system build identifier of
+the running system, as read from the <em>BUILD_ID=</em> field of
+/etc/os-release. If not set, resolves to an empty string. See
+<strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%C"</td>
+<td style="text-align: left;">System or user cache directory</td>
+<td style="text-align: left;">In <strong>--user</strong> mode, this is
+the same as <em>$XDG_CACHE_HOME</em>, and /var/cache otherwise.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%g"</td>
+<td style="text-align: left;">User group</td>
+<td style="text-align: left;">This is the name of the group running the
+command. In case of the system instance this resolves to "root".</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%G"</td>
+<td style="text-align: left;">User GID</td>
+<td style="text-align: left;">This is the numeric GID of the group
+running the command. In case of the system instance this resolves to
+<strong>0</strong>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%h"</td>
+<td style="text-align: left;">User home directory</td>
+<td style="text-align: left;">This is the home directory of the user
+running the command. In case of the system instance this resolves to
+"/root".</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%H"</td>
+<td style="text-align: left;">Host name</td>
+<td style="text-align: left;">The hostname of the running system.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%l"</td>
+<td style="text-align: left;">Short host name</td>
+<td style="text-align: left;">The hostname of the running system,
+truncated at the first dot to remove any domain component.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%L"</td>
+<td style="text-align: left;">System or user log directory</td>
+<td style="text-align: left;">In <strong>--user</strong> mode, this is
+the same as <em>$XDG_CONFIG_HOME</em> with /log appended, and /var/log
+otherwise.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%m"</td>
+<td style="text-align: left;">Machine ID</td>
+<td style="text-align: left;">The machine ID of the running system,
+formatted as string. See <strong>machine-id</strong>(5) for more
+information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%M"</td>
+<td style="text-align: left;">Operating system image identifier</td>
+<td style="text-align: left;">The operating system image identifier of
+the running system, as read from the <em>IMAGE_ID=</em> field of
+/etc/os-release. If not set, resolves to an empty string. See
+<strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%o"</td>
+<td style="text-align: left;">Operating system ID</td>
+<td style="text-align: left;">The operating system identifier of the
+running system, as read from the <em>ID=</em> field of /etc/os-release.
+See <strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%S"</td>
+<td style="text-align: left;">System or user state directory</td>
+<td style="text-align: left;">In <strong>--user</strong> mode, this is
+the same as <em>$XDG_CONFIG_HOME</em>, and /var/lib otherwise.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%t"</td>
+<td style="text-align: left;">System or user runtime directory</td>
+<td style="text-align: left;">In <strong>--user</strong> mode, this is
+the same <em>$XDG_RUNTIME_DIR</em>, and /run/ otherwise.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%T"</td>
+<td style="text-align: left;">Directory for temporary files</td>
+<td style="text-align: left;">This is either /tmp or the path "$TMPDIR",
+"$TEMP" or "$TMP" are set to. (Note that the directory may be specified
+without a trailing slash.)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%u"</td>
+<td style="text-align: left;">User name</td>
+<td style="text-align: left;">This is the name of the user running the
+command. In case of the system instance this resolves to "root".</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%U"</td>
+<td style="text-align: left;">User UID</td>
+<td style="text-align: left;">This is the numeric UID of the user
+running the command. In case of the system instance this resolves to
+<strong>0</strong>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%v"</td>
+<td style="text-align: left;">Kernel release</td>
+<td style="text-align: left;">Identical to <strong>uname -r</strong>
+output.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%V"</td>
+<td style="text-align: left;">Directory for larger and persistent
+temporary files</td>
+<td style="text-align: left;">This is either /var/tmp or the path
+"$TMPDIR", "$TEMP" or "$TMP" are set to. (Note that the directory may be
+specified without a trailing slash.)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%w"</td>
+<td style="text-align: left;">Operating system version ID</td>
+<td style="text-align: left;">The operating system version identifier of
+the running system, as read from the <em>VERSION_ID=</em> field of
+/etc/os-release. If not set, resolves to an empty string. See
+<strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">"%W"</td>
+<td style="text-align: left;">Operating system variant ID</td>
+<td style="text-align: left;">The operating system variant identifier of
+the running system, as read from the <em>VARIANT_ID=</em> field of
+/etc/os-release. If not set, resolves to an empty string. See
+<strong>os-release</strong>(5) for more information.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">"%%"</td>
+<td style="text-align: left;">Single percent sign</td>
+<td style="text-align: left;">Use "%%" in place of "%" to specify a
+single percent sign.</td>
+</tr>
+</tbody>
+</table>
+<h1>EXAMPLES</h1>
+<p><strong>Example 1. Create directories with specific mode and
+ownership</strong></p>
+<p><strong>screen</strong>(1), needs two directories created at boot
+with specific modes and ownership:</p>
+<blockquote>
+<pre><code># /usr/lib/tmpfiles.d/screen.conf
+d /run/screens  1777 root screen 10d
+d /run/uscreens 0755 root screen 10d12h</code></pre>
+</blockquote>
+<p>Contents of /run/screens and /run/uscreens will be cleaned up after
+10 and 10½ days, respectively.</p>
+<p><strong>Example 2. Create a directory with a SMACK
+attribute</strong></p>
+<blockquote>
+<pre><code>D /run/cups - - - -
+t /run/cups - - - - security.SMACK64=printing user.attr-with-spaces=&quot;foo bar&quot;
+      </code></pre>
+</blockquote>
+<p>The directory will be owned by root and have default mode. Its
+contents are not subject to time-based cleanup, but will be obliterated
+when <strong>systemd-tmpfiles --remove</strong> runs.</p>
+<p><strong>Example 3. Create a directory and prevent its contents from
+cleanup</strong></p>
+<p><strong>abrt</strong>(1), needs a directory created at boot with
+specific mode and ownership and its content should be preserved from the
+automatic cleanup applied to the contents of /var/tmp:</p>
+<blockquote>
+<pre><code># /usr/lib/tmpfiles.d/tmp.conf
+d /var/tmp 1777 root root 30d</code></pre>
+</blockquote>
+<blockquote>
+<pre><code># /usr/lib/tmpfiles.d/abrt.conf
+d /var/tmp/abrt 0755 abrt abrt -</code></pre>
+</blockquote>
+<p><strong>Example 4. Apply clean up during boot and based on
+time</strong></p>
+<blockquote>
+<pre><code># /usr/lib/tmpfiles.d/dnf.conf
+r! /var/cache/dnf/*/*/download_lock.pid
+r! /var/cache/dnf/*/*/metadata_lock.pid
+r! /var/lib/dnf/rpmdb_lock.pid
+e  /var/cache/dnf/ - - - 30d</code></pre>
+</blockquote>
+<p>The lock files will be removed during boot. Any files and directories
+in /var/cache/dnf/ will be removed after they have not been accessed in
+30 days.</p>
+<p><strong>Example 5. Empty the contents of a cache directory on
+boot</strong></p>
+<blockquote>
+<pre><code># /usr/lib/tmpfiles.d/krb5rcache.conf
+e! /var/cache/krb5rcache - - - 0</code></pre>
+</blockquote>
+<p>Any files and subdirectories in /var/cache/krb5rcache/ will be
+removed on boot. The directory will not be created.</p>
+<p><strong>Example 6. Provision SSH public key access for root user via
+Credentials in QEMU</strong></p>
+<blockquote>
+<pre><code>-smbios type=11,value=io.systemd.credential.binary:tmpfiles.extra=$(echo &quot;f~ /root/.ssh/authorized_keys 700 root root - $(ssh-add -L | base64 -w 0)&quot; | base64 -w 0)</code></pre>
+</blockquote>
+<p>By passing this line to QEMU, the public key of the current user will
+be encoded in base64, added to a tmpfiles.d line that tells
+systemd-tmpfiles to decode it into /root/.ssh/authorized_keys, encode
+that line itself in base64 and pass it as a Credential that will be
+picked up by systemd from SMBIOS on boot.</p>
+<h1>/RUN/ AND /VAR/RUN/</h1>
+<p>/var/run/ is a deprecated symlink to /run/, and applications should
+use the latter. <strong>systemd-tmpfiles</strong> will warn if /var/run/
+is used.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>systemd-tmpfiles</strong>(8),
+<strong>systemd-delta</strong>(1), <strong>systemd.exec</strong>(5),
+<strong>attr</strong>(5), <strong>getfattr</strong>(1),
+<strong>setfattr</strong>(1), <strong>setfacl</strong>(1),
+<strong>getfacl</strong>(1), <strong>chattr</strong>(1),
+<strong>btrfs-subvolume</strong>(8),
+<strong>btrfs-qgroup</strong>(8)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>Base64 decoded</p>
+<p>https://www.rfc-editor.org/rfc/rfc4648.html</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>System and Service Credentials</p>
+<p>https://systemd.io/CREDENTIALS</p>
+</dd>
+<dt> 3.</dt>
+<dd>
+<p>Notes on Resolvability of User and Group Names</p>
+<p>https://systemd.io/UIDS-GIDS/#notes-on-resolvability-of-user-and-group-names</p>
+</dd>
+</dl>

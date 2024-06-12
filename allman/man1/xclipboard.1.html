@@ -1,0 +1,132 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xclipboard - X clipboard client</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xclipboard</strong> [ <em>-toolkitoption</em> ... ] [
+<strong>-w</strong> ] [ <strong>-nw</strong> ]</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>xclipboard</em> program is used to collect and display text
+selections that are sent to the CLIPBOARD by other clients. It is
+typically used to save CLIPBOARD selections for later use. It stores
+each CLIPBOARD selection as a separate string, each of which can be
+selected. Each time CLIPBOARD is asserted by another application,
+<em>xclipboard</em> transfers the contents of that selection to a new
+buffer and displays it in the text window. Buffers are never
+automatically deleted, so you'll want to use the delete button to get
+rid of useless items.</p>
+<p>Since <em>xclipboard</em> uses a Text Widget to display the contents
+of the clipboard, text sent to the CLIPBOARD may be re-selected for use
+in other applications. <em>xclipboard</em> also responds to requests for
+the CLIPBOARD selection from other clients by sending the entire
+contents of the currently displayed buffer.</p>
+<p>An <em>xclipboard</em> window has the following buttons across the
+top:</p>
+<dl>
+<dt><em>quit</em></dt>
+<dd>
+<p>When this button is pressed, <em>xclipboard</em> exits.</p>
+</dd>
+<dt><em>delete</em></dt>
+<dd>
+<p>When this button is pressed, the current buffer is deleted and the
+next one displayed.</p>
+</dd>
+<dt><em>new</em></dt>
+<dd>
+<p>Creates a new buffer with no contents. Useful in constructing a new
+CLIPBOARD selection by hand.</p>
+</dd>
+<dt><em>save</em></dt>
+<dd>
+<p>Displays a File Save dialog box. Pressing the Accept button saves the
+currently displayed buffer to the file specified in the text field.</p>
+</dd>
+<dt><em>next</em></dt>
+<dd>
+<p>Displays the next buffer in the list.</p>
+</dd>
+<dt><em>previous</em></dt>
+<dd>
+<p>Displays the previous buffer.</p>
+</dd>
+</dl>
+<h1>OPTIONS</h1>
+<p>The <em>xclipboard</em> program accepts all of the standard X Toolkit
+command line options as well as the following:</p>
+<dl>
+<dt><strong>-w</strong></dt>
+<dd>
+<p>This option indicates that lines of text that are too long to be
+displayed on one line in the clipboard should wrap around to the
+following lines.</p>
+</dd>
+<dt><strong>-nw</strong></dt>
+<dd>
+<p>This option indicates that long lines of text should not wrap around.
+This is the default behavior.</p>
+</dd>
+</dl>
+<h1>WIDGETS</h1>
+<p>In order to specify resources, it is useful to know the hierarchy of
+the widgets which compose <em>xclipboard</em>. In the notation below,
+indentation indicates hierarchical structure. The widget class name is
+given first, followed by the widget instance name.</p>
+<pre><code>XClipboard  xclipboard
+        Form  form
+                Command  Quit
+                Command  delete
+                Command  new
+                Command  Save
+                Command  next
+                Command  prev
+                Label  index
+                Text  text
+        TransientShell  fileDialogShell
+                Dialog  fileDialog
+                        Label  label
+                        Command  accept
+                        Command  cancel
+                        Text value
+        TransientShell  failDialogShell
+                Dialog  failDialog
+                        Label  label
+                        Command  continue</code></pre>
+<h1>SENDING/RETRIEVING CLIPBOARD CONTENTS</h1>
+<p>Text is copied to the clipboard whenever a client asserts ownership
+of the <strong>CLIPBOARD</strong> selection. Text is copied from the
+clipboard whenever a client requests the contents of the
+<strong>CLIPBOARD</strong> selection. Examples of event bindings that a
+user may wish to include in a resource configuration file to use the
+clipboard are:</p>
+<pre><code>*VT100.Translations: #override \
+        &lt;Btn3Up&gt;:       select-end(CLIPBOARD) \n\
+        &lt;Btn2Up&gt;:       insert-selection(PRIMARY,CLIPBOARD) \n\
+        &lt;Btn2Down&gt;:     ignore ()
+</code></pre>
+<h1>SEE ALSO</h1>
+<p>X(7), xcutsel(1), xterm(1), individual client documentation for how
+to make a selection and send it to the CLIPBOARD.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p>to get the default host and display number.</p>
+</dd>
+<dt><strong>XENVIRONMENT</strong></dt>
+<dd>
+<p>to get the name of a resource file that overrides the global
+resources stored in the RESOURCE_MANAGER property.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/X11/app-defaults/XClipboard</em></dt>
+<dd>
+<p>specifies required resources</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Ralph R. Swick, DEC/MIT Project Athena<br />
+Chris D. Peterson, MIT X Consortium<br />
+Keith Packard, MIT X Consortium</p>

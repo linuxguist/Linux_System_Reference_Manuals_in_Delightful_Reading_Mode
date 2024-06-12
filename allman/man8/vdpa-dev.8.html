@@ -1,0 +1,116 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>vdpa-dev - vdpa device configuration</p>
+<h1>SYNOPSIS</h1>
+<p><strong>vdpa</strong> <strong>dev</strong> [ <em>OPTIONS</em> ] {
+<em>COMMAND</em>|<em> </em> <strong>help</strong> }</p>
+<p><em>OPTIONS</em> := { <strong>-V</strong>[<em>ersion</em>] }</p>
+<p><strong>vdpa dev show</strong> [ <em>DEV</em> ]</p>
+<p><strong>vdpa dev help</strong></p>
+<p><strong>vdpa dev add</strong> <strong>name</strong> <em>NAME</em>
+<strong>mgmtdev</strong> <em>MGMTDEV</em> [ mac <em>MACADDR</em> ] [ mtu
+<em>MTU</em> ] [ max_vqp <em>MAX_VQ_PAIRS</em> ]</p>
+<p><strong>vdpa dev del</strong> <em>DEV</em></p>
+<p><strong>vdpa dev config show</strong> [ <em>DEV</em> ]</p>
+<p><strong>vdpa dev vstats show</strong> <em>DEV</em>
+<strong>qidx</strong> <em>QUEUE_INDEX</em></p>
+<h1>DESCRIPTION</h1>
+<h2>vdpa dev show - display vdpa device attributes</h2>
+<p><em>DEV</em> - specifies the vdpa device to show. If this argument is
+omitted all devices are listed.</p>
+<p>Format is:</p>
+<p>VDPA_DEVICE_NAME</p>
+<h2>vdpa dev add - add a new vdpa device.</h2>
+<dl>
+<dt><strong>name</strong><em> NAME</em></dt>
+<dd>
+<p>Name of the new vdpa device to add.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>mgmtdev</strong><em> MGMTDEV</em></dt>
+<dd>
+<p>Name of the management device to use for device addition.</p>
+</dd>
+</dl>
+<p><strong>mac</strong><em> MACADDR</em> - specifies the mac address for
+the new vdpa device. This is applicable only for the network type of
+vdpa device. This is optional.</p>
+<p><strong>mtu</strong><em> MTU</em> - specifies the mtu for the new
+vdpa device. This is applicable only for the network type of vdpa
+device. This is optional.</p>
+<h2>vdpa dev del - Delete the vdpa device.</h2>
+<p><em>DEV</em> - specifies the vdpa device to delete.</p>
+<h2>vdpa dev config show - Show configuration of specific device or all
+devices.</h2>
+<p><em>DEV</em> - specifies the vdpa device to show its configuration.
+If this argument is omitted all devices configuration is listed.</p>
+<p>Format is:</p>
+<p>VDPA_DEVICE_NAME</p>
+<h2>vdpa dev vstats show - shows vendor specific statistics for the
+given device and virtqueue index. The information is presented as
+name-value pairs where name is the name of the field and value is a
+numeric value for it.</h2>
+<dl>
+<dt><strong>DEV</strong></dt>
+<dd>
+<p>- specifies the vdpa device to query</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>qidx</strong><em> QUEUE_INDEX</em></dt>
+<dd>
+<p>- specifies the virtqueue index to query</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>vdpa dev show</p>
+<blockquote>
+<p>Shows the all vdpa devices on the system.</p>
+</blockquote>
+<p>vdpa dev show foo</p>
+<blockquote>
+<p>Shows the specified vdpa device.</p>
+</blockquote>
+<p>vdpa dev add name foo mgmtdev vdpa_sim_net</p>
+<blockquote>
+<p>Add the vdpa device named foo on the management device
+vdpa_sim_net.</p>
+</blockquote>
+<p>vdpa dev add name foo mgmtdev vdpa_sim_net mac 00:11:22:33:44:55</p>
+<blockquote>
+<p>Add the vdpa device named foo on the management device vdpa_sim_net
+with mac address of 00:11:22:33:44:55.</p>
+</blockquote>
+<p>vdpa dev add name foo mgmtdev vdpa_sim_net mac 00:11:22:33:44:55 mtu
+9000</p>
+<blockquote>
+<p>Add the vdpa device named foo on the management device vdpa_sim_net
+with mac address of 00:11:22:33:44:55 and mtu of 9000 bytes.</p>
+</blockquote>
+<p>vdpa dev add name foo mgmtdev auxiliary/mlx5_core.sf.1 mac
+00:11:22:33:44:55 max_vqp 8</p>
+<blockquote>
+<p>Add the vdpa device named foo on the management device
+auxiliary/mlx5_core.sf.1 with mac address of 00:11:22:33:44:55 and max 8
+virtqueue pairs</p>
+</blockquote>
+<p>vdpa dev del foo</p>
+<blockquote>
+<p>Delete the vdpa device named foo which was previously created.</p>
+</blockquote>
+<p>vdpa dev config show foo</p>
+<blockquote>
+<p>Shows the vdpa device configuration of device named foo.</p>
+</blockquote>
+<p>vdpa dev vstats show vdpa0 qidx 1</p>
+<blockquote>
+<p>Shows vendor specific statistics information for vdpa device vdpa0
+and virtqueue index 1</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>vdpa</strong>(8), <strong>vdpa-mgmtdev</strong>(8),<br />
+</p>
+<h1>AUTHOR</h1>
+<p>Parav Pandit &lt;parav@nvidia.com&gt;</p>

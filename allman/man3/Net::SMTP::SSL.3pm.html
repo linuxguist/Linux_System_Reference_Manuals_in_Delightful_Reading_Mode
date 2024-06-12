@@ -1,0 +1,31 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::SMTP::SSL - SSL support for Net::SMTP</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::SMTP::SSL; my $smtps = Net::SMTP::SSL-&gt;new("example.com",
+Port =&gt; 465);</p>
+<h1>DEPRECATED</h1>
+<p><strong>Hey! Read this!</strong></p>
+<p>Since Net::SMTP v1.28 (2014-10-08), Net::SMTP itself has support for
+SMTP over SSL, and also for STARTTLS. Use Net::SMTP, not
+Net::SMTP::SSL.</p>
+<h1>DESCRIPTION</h1>
+<p>Implements the same API as Net::SMTP, but uses IO::Socket::SSL for
+its network operations. Due to the nature of <code>Net::SMTP</code>'s
+<code>new</code> method, it is not overridden to make use of a default
+port for the SMTPS service. Perhaps future versions will be smart like
+that. Port <code>465</code> is usually what you want, and it's not a
+pain to specify that.</p>
+<p>For interface documentation, please see Net::SMTP.</p>
+<h1>SEE ALSO</h1>
+<p>Net::SMTP, IO::Socket::SSL, perl.</p>
+<h1>AUTHOR</h1>
+<p>Casey West, &lt;<em>casey@geeknest.com</em>&gt;.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 2004 Casey West. All rights reserved. This module is
+free software; you can redistribute it and/or modify it under the same
+terms as Perl itself.</p>

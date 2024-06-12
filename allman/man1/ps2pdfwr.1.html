@@ -1,0 +1,26 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ps2pdfwr - Convert PostScript to PDF without specifying
+CompatibilityLevel, using ghostscript</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ps2pdfwr</strong> [options...] {input.[e]ps|-}
+[output.pdf|-]</p>
+<h1>DESCRIPTION</h1>
+<p>This wrapper script invokes <strong>gs</strong>(1) with following
+arguments</p>
+<p><strong>-q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite</strong></p>
+<p>as well as the appropriate <strong>-dOutputFile</strong> argument,
+all preceded and followed by any command-line arguments. Finally, the
+security option <strong>-dSAFER</strong> is prepended before all the
+other options (This is now redundant as "SAFER" is now the default, but
+the option does no harm).</p>
+<p>The version-specific <strong>ps2pdf</strong> scripts all invoke this
+one with the addition of the respective compatibility level option.</p>
+<h1>SEE ALSO</h1>
+<p>gs(1), ps2pdf(1)</p>
+<h1>VERSION</h1>
+<p>This document was last revised for Ghostscript version 10.00.0.</p>
+<h1>AUTHOR</h1>
+<p>Artifex Software, Inc. are the primary maintainers of Ghostscript.
+This manpage by George Ferguson.</p>

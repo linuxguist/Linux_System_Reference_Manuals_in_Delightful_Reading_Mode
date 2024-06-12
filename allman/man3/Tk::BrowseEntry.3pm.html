@@ -1,0 +1,179 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::BrowseEntry - entry widget with popup choices.</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::BrowseEntry; $b = $frame-&gt;BrowseEntry(-label =&gt;
+"Label", -variable =&gt; \$var); $b-&gt;insert("end", "opt1");
+$b-&gt;insert("end", "opt2"); $b-&gt;insert("end", "opt3"); ...
+$b-&gt;pack;</p>
+<h1>SUPER-CLASS</h1>
+<p>The <code>BrowseEntry</code> class is derived from the
+<code>Frame</code> class and inherits all the methods, options and
+subwidgets of its super-class. By default, options and methods are
+delegated to the entry subwidget.</p>
+<h1>DESCRIPTION</h1>
+<p>BrowseEntry is a poor man's ComboBox. It may be considered an
+enhanced version of LabEntry which provides a button to popup the
+choices of the possible values that the Entry may take. BrowseEntry
+supports all the options LabEntry supports except
+<strong>-textvariable</strong>. This is replaced by
+<strong>-variable</strong>. Other options that BrowseEntry supports:</p>
+<dl>
+<dt>-arrowimage</dt>
+<dd>
+<p>Specifies the image to be used in the arrow button beside the entry
+widget. The default is an downward arrow image in the file
+cbxarrow.xbm</p>
+</dd>
+<dt>-autolimitheight</dt>
+<dd>
+<p>If set to a true value, then the height of the listbox will be at
+most the number of entries in the list. The overall maximum of
+<code>-listheight</code> still applies.</p>
+</dd>
+<dt>-autolistwidth</dt>
+<dd>
+<p>If set to a true value, then the width of the listbox will match the
+width of the largest entry.</p>
+</dd>
+<dt>-browsecmd</dt>
+<dd>
+<p>Specifies a function to call when a selection is made in the popped
+up listbox. It is passed the widget and the text of the entry selected.
+This function is called after the entry variable has been assigned the
+value.</p>
+</dd>
+<dt>-browse2cmd</dt>
+<dd>
+<p>Like <code>-browsecmd</code>, but the callback is called with the
+listbox index instead of the selected value.</p>
+</dd>
+<dt>-buttontakefocus</dt>
+<dd>
+<p>Set the <code>-takefocus</code> option of the button subwidget.</p>
+</dd>
+<dt>-choices</dt>
+<dd>
+<p>Specifies the list of choices to pop up. This is a reference to an
+array of strings specifying the choices.</p>
+</dd>
+<dt>-colorstate</dt>
+<dd>
+<p>The state of the widget is reflected by color. A non-editable entry
+widget will get a light gray background, while an editable entry will be
+almost white. [This may change]</p>
+</dd>
+<dt>-listcmd</dt>
+<dd>
+<p>Specifies the function to call when the button next to the entry is
+pressed to popup the choices in the listbox. This is called before
+popping up the listbox, so can be used to populate the entries in the
+listbox.</p>
+</dd>
+<dt>-listheight</dt>
+<dd>
+<p>Set the height of the listbox. See also
+<code>-autolimitheight</code>.</p>
+</dd>
+<dt>-listwidth</dt>
+<dd>
+<p>Specifies the width of the popup listbox.</p>
+</dd>
+<dt>-state</dt>
+<dd>
+<p>Specifies one of three states for the widget: normal, readonly, or
+disabled. If the widget is disabled then the value may not be changed
+and the arrow button won't activate. If the widget is readonly, the
+entry may not be edited, but it may be changed by choosing a value from
+the popup listbox. normal is the default.</p>
+</dd>
+<dt>-style</dt>
+<dd>
+<p>Set the style of the widget. Permitted values are
+<code>MSWin32</code> and <code>unix</code>. By default
+<code>-style</code> is set to the current platform. Widgets with the
+<code>unix</code> style will look like a normal <code>BrowseEntry</code>
+widget, whereas with the <code>MSWin32</code> style the arrow will look
+close to the Windows' standard combobox widget, while moving the mouse
+the entries will be highlighted, and probably includes other
+changes.</p>
+</dd>
+<dt>-variable</dt>
+<dd>
+<p>Specifies the variable in which the entered value is to be
+stored.</p>
+</dd>
+</dl>
+<h1>METHODS</h1>
+<dl>
+<dt>insert(index, string)</dt>
+<dd>
+<p>Inserts the text of <em>string</em> at the specified <em>index</em>.
+This string then becomes available as one of the choices.</p>
+</dd>
+<dt>delete(index1, index2)</dt>
+<dd>
+<p>Deletes items from <em>index1</em> to <em>index2</em>.</p>
+</dd>
+<dt>get</dt>
+<dd>
+<p>The get method is delegated to the choices listbox.</p>
+</dd>
+</dl>
+<h1>ADVERTISED WIDGETS</h1>
+<p>The following widgets are advertised:</p>
+<dl>
+<dt>entry</dt>
+<dd>
+<p>The entry widget.</p>
+</dd>
+<dt>arrow</dt>
+<dd>
+<p>The button with the arrow image.</p>
+</dd>
+<dt>choices</dt>
+<dd>
+<p>The toplevel widget containing the choice listbox.</p>
+</dd>
+<dt>slistbox</dt>
+<dd>
+<p>The scrolled listbox with the choices.</p>
+</dd>
+</dl>
+<h1>SUBCLASSING</h1>
+<p>To make subclassing easier, the following methods may be overridden
+to use other standard widgets in composing the mega widget:</p>
+<dl>
+<dt>LabEntryWidget</dt>
+<dd>
+<p>A widget class compatible with Tk::LabEntry used for the entry.</p>
+</dd>
+<dt>ButtonWidget</dt>
+<dd>
+<p>A widget class compatible with Tk::Button used for the arrow
+button.</p>
+</dd>
+<dt>ListboxWidget</dt>
+<dd>
+<p>A widget class compatible with Tk::Listbox used for the choices
+listbox.</p>
+</dd>
+</dl>
+<p>For example to use a <code>NumEntry</code> widget (from the Tk-GBARR
+CPAN distribution) instead of the normal <code>Entry</code> widget:</p>
+<p>package Tk::NumBrowseEntry; use base qw(Tk::BrowseEntry); use
+Tk::NumEntry; Construct Tk::Widget NumBrowseEntry; sub LabEntryWidget {
+"NumEntry" }</p>
+<h1>BUGS</h1>
+<p>BrowseEntry should really provide more of the ComboBox options.</p>
+<h1>AUTHOR</h1>
+<p><strong>Rajappa Iyer</strong> rsi@earthling.net</p>
+<p><strong>Chris Dean</strong> ctdean@cogit.com made additions.</p>
+<p>More additions by <strong>Slaven Rezic</strong> slaven@rezic.de</p>
+<p>This code was inspired by ComboBox.tcl in Tix4.0 by Ioi Lam and bears
+more than a passing resemblance to ComboBox code. This may be
+distributed under the same conditions as Perl.</p>

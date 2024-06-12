@@ -1,0 +1,142 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>cksum - compute and verify file checksums</p>
+<h1>SYNOPSIS</h1>
+<p><strong>cksum</strong> [<em>OPTION</em>]... [<em>FILE</em>]...</p>
+<h1>DESCRIPTION</h1>
+<p>Print or verify checksums. By default use the 32 bit CRC
+algorithm.</p>
+<p>With no FILE, or when FILE is -, read standard input.</p>
+<p>Mandatory arguments to long options are mandatory for short options
+too.</p>
+<dl>
+<dt><strong>-a</strong>, <strong>--algorithm</strong>=<em>TYPE</em></dt>
+<dd>
+<p>select the digest type to use. See DIGEST below.</p>
+</dd>
+<dt><strong>-c</strong>, <strong>--check</strong></dt>
+<dd>
+<p>read checksums from the FILEs and check them</p>
+</dd>
+<dt><strong>-l</strong>, <strong>--length</strong>=<em>BITS</em></dt>
+<dd>
+<p>digest length in bits; must not exceed the max for the blake2
+algorithm and must be a multiple of 8</p>
+</dd>
+<dt><strong>--tag</strong></dt>
+<dd>
+<p>create a BSD-style checksum (the default)</p>
+</dd>
+<dt><strong>--untagged</strong></dt>
+<dd>
+<p>create a reversed style checksum, without digest type</p>
+</dd>
+<dt><strong>-z</strong>, <strong>--zero</strong></dt>
+<dd>
+<p>end each output line with NUL, not newline, and disable file name
+escaping</p>
+</dd>
+</dl>
+<h2>The following five options are useful only when verifying
+checksums:</h2>
+<dl>
+<dt><strong>--ignore-missing</strong></dt>
+<dd>
+<p>don't fail or report status for missing files</p>
+</dd>
+<dt><strong>--quiet</strong></dt>
+<dd>
+<p>don't print OK for each successfully verified file</p>
+</dd>
+<dt><strong>--status</strong></dt>
+<dd>
+<p>don't output anything, status code shows success</p>
+</dd>
+<dt><strong>--strict</strong></dt>
+<dd>
+<p>exit non-zero for improperly formatted checksum lines</p>
+</dd>
+<dt><strong>-w</strong>, <strong>--warn</strong></dt>
+<dd>
+<p>warn about improperly formatted checksum lines</p>
+</dd>
+<dt><strong>--debug</strong></dt>
+<dd>
+<p>indicate which implementation used</p>
+</dd>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>display this help and exit</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>output version information and exit</p>
+</dd>
+</dl>
+<h2>DIGEST determines the digest algorithm and default output
+format:</h2>
+<dl>
+<dt>sysv</dt>
+<dd>
+<p>(equivalent to sum <strong>-s</strong>)</p>
+</dd>
+<dt>bsd</dt>
+<dd>
+<p>(equivalent to sum <strong>-r</strong>)</p>
+</dd>
+<dt>crc</dt>
+<dd>
+<p>(equivalent to cksum)</p>
+</dd>
+<dt>md5</dt>
+<dd>
+<p>(equivalent to md5sum)</p>
+</dd>
+<dt>sha1</dt>
+<dd>
+<p>(equivalent to sha1sum)</p>
+</dd>
+<dt>sha224</dt>
+<dd>
+<p>(equivalent to sha224sum)</p>
+</dd>
+<dt>sha256</dt>
+<dd>
+<p>(equivalent to sha256sum)</p>
+</dd>
+<dt>sha384</dt>
+<dd>
+<p>(equivalent to sha384sum)</p>
+</dd>
+<dt>sha512</dt>
+<dd>
+<p>(equivalent to sha512sum)</p>
+</dd>
+<dt>blake2b</dt>
+<dd>
+<p>(equivalent to b2sum)</p>
+</dd>
+<dt>sm3</dt>
+<dd>
+<p>(only available through cksum)</p>
+</dd>
+</dl>
+<p>When checking, the input should be a former output of this program,
+or equivalent standalone program.</p>
+<h1>AUTHOR</h1>
+<p>Written by Padraig Brady and Q. Frank Xia.</p>
+<h1>REPORTING BUGS</h1>
+<p>GNU coreutils online help:
+&lt;https://www.gnu.org/software/coreutils/&gt;<br />
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2022 Free Software Foundation, Inc. License GPLv3+: GNU
+GPL version 3 or later &lt;https://gnu.org/licenses/gpl.html&gt;.<br />
+This is free software: you are free to change and redistribute it. There
+is NO WARRANTY, to the extent permitted by law.</p>
+<h1>SEE ALSO</h1>
+<p>Full documentation
+&lt;https://www.gnu.org/software/coreutils/cksum&gt;<br />
+or available locally via: info '(coreutils) cksum invocation'</p>

@@ -1,0 +1,55 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>fusermount3</strong> - mount and unmount FUSE filesystems</p>
+<h1>SYNOPSIS</h1>
+<p><strong>fusermount3</strong> [<em>OPTIONS</em>]
+<em>MOUNTPOINT</em></p>
+<h1>DESCRIPTION</h1>
+<p>Filesystem in Userspace (FUSE) is a simple interface for userspace
+programs to export a virtual filesystem to the Linux kernel. It also
+aims to provide a secure method for non privileged users to create and
+mount their own filesystem implementations.</p>
+<p><strong>fusermount3</strong> is a program to mount and unmount FUSE
+filesystems. It should be called directly only for unmounting FUSE file
+systems. To allow mounting and unmounting by unprivileged users,
+<strong>fusermount3</strong> needs to be installed set-uid root.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-h</dt>
+<dd>
+<p>print help.</p>
+</dd>
+<dt>-V</dt>
+<dd>
+<p>print version.</p>
+</dd>
+<dt>-o OPTION[,OPTION...]</dt>
+<dd>
+<p>mount options.</p>
+</dd>
+<dt>-u</dt>
+<dd>
+<p>unmount.</p>
+</dd>
+<dt>-q</dt>
+<dd>
+<p>quiet.</p>
+</dd>
+<dt>-z</dt>
+<dd>
+<p>lazy unmount.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><em>mount</em>(8), <em>mount.fuse3</em>(8), <em>fuse</em>(4),</p>
+<h1>HOMEPAGE</h1>
+<p>More information about fusermount3 and the FUSE project can be found
+at &lt;<em>http://fuse.sourceforge.net/</em>&gt;.</p>
+<h1>AUTHORS</h1>
+<p>FUSE is currently maintained by Nikolaus Rath
+&lt;Nikolaus@rath.org&gt;</p>
+<p>The original author of FUSE is Miklos Szeredi
+&lt;<em>miklos@szeredi.hu</em>&gt;.</p>
+<p>This manual page was originally written by Daniel Baumann
+&lt;<em>daniel.baumann@progress-technologies.net</em>&gt;.</p>

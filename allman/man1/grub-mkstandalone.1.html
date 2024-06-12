@@ -1,0 +1,114 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-mkstandalone - make a memdisk-based GRUB image</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-mkstandalone</strong> [<em>OPTION</em>...]
+[<em>OPTION</em>] <em>SOURCE</em>...</p>
+<h1>DESCRIPTION</h1>
+<p>Generate a standalone image (containing all modules) in the selected
+format</p>
+<dl>
+<dt><strong>--compress</strong>=<em>no</em>|xz|gz|lzo</dt>
+<dd>
+<p>compress GRUB files [optional]</p>
+</dd>
+<dt><strong>--disable-shim-lock</strong></dt>
+<dd>
+<p>disable shim_lock verifier</p>
+</dd>
+<dt><strong>--dtb</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed a specific DTB</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>use images and modules under DIR
+[default=/usr/lib/grub/&lt;platform&gt;]</p>
+</dd>
+<dt><strong>--fonts</strong>=<em>FONTS</em></dt>
+<dd>
+<p>install FONTS [default=unicode]</p>
+</dd>
+<dt><strong>--install-modules</strong>=<em>MODULES</em></dt>
+<dd>
+<p>install only MODULES and their dependencies [default=all]</p>
+</dd>
+<dt><strong>-k</strong>, <strong>--pubkey</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed FILE as public key for signature checking</p>
+</dd>
+<dt><strong>--locale-directory</strong>=<em>DIR</em> use translations
+under DIR</dt>
+<dd>
+<p>[default=/usr/share/locale]</p>
+</dd>
+<dt><strong>--locales</strong>=<em>LOCALES</em></dt>
+<dd>
+<p>install only LOCALES [default=all]</p>
+</dd>
+<dt><strong>--modules</strong>=<em>MODULES</em></dt>
+<dd>
+<p>pre-load specified modules MODULES</p>
+</dd>
+<dt><strong>--sbat</strong>=<em>FILE</em></dt>
+<dd>
+<p>SBAT metadata</p>
+</dd>
+<dt><strong>--themes</strong>=<em>THEMES</em></dt>
+<dd>
+<p>install THEMES [default=starfield]</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt><strong>--core-compress</strong>=<em>xz</em>|none|auto</dt>
+<dd>
+<p>choose the compression to use for core image</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--output</strong>=<em>FILE</em></dt>
+<dd>
+<p>save output in FILE [required]</p>
+</dd>
+<dt><strong>-O</strong>, <strong>--format</strong>=<em>FILE</em></dt>
+<dd>
+<p>generate an image in FORMAT available formats: i386-coreboot,
+i386-multiboot, i386-pc, i386-xen_pvh, i386-pc-pxe, i386-pc-eltorito,
+i386-efi, i386-ieee1275, i386-qemu, x86_64-efi, i386-xen, x86_64-xen,
+mipsel-yeeloong-flash, mipsel-fuloong2f-flash, mipsel-loongson-elf,
+powerpc-ieee1275, sparc64-ieee1275-raw, sparc64-ieee1275-cdcore,
+sparc64-ieee1275-aout, ia64-efi, mips-arc, mipsel-arc,
+mipsel-qemu_mips-elf, mips-qemu_mips-flash, mipsel-qemu_mips-flash,
+mips-qemu_mips-elf, arm-uboot, arm-coreboot-vexpress,
+arm-coreboot-veyron, arm-efi, arm64-efi, riscv32-efi, riscv64-efi</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<p>Graft point syntax (E.g. <em>/boot/grub/grub</em>.cfg=./grub.cfg) is
+accepted</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-mkimage</strong>(1)</p>
+<p>The full documentation for <strong>grub-mkstandalone</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-mkstandalone</strong> programs are properly installed at
+your site, the command</p>
+<blockquote>
+<p><strong>info grub-mkstandalone</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

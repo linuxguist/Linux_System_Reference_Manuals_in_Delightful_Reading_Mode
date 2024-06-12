@@ -1,0 +1,42 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Binding::Value - Strongly typed data value</p>
+<h1>SYNOPSIS</h1>
+<p># Import the convenience functions use Net::DBus qw(:typing); # Call
+a method with passing an int32 $object-&gt;doit(dint32("3"));</p>
+<h1>DESCRIPTION</h1>
+<p>This module provides a simple wrapper around a raw Perl value,
+associating an explicit DBus type with the value. This is used in cases
+where a client is communicating with a server which does not provide
+introspection data, but for which the basic data types are not
+sufficient. This class should not be used directly, rather the
+convenience functions in Net::DBus be called.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $value = Net::DBus::Binding::Value-&gt;new($type, $value);</dt>
+<dd>
+<p>Creates a wrapper for the perl value <code>$value</code> marking it
+as having the dbus data type <code>$type</code>. It is not necessary to
+call this method directly, instead the data typing methods in the
+Net::DBus object should be used.</p>
+</dd>
+<dt>my $raw = $value-&gt;value</dt>
+<dd>
+<p>Returns the raw perl value wrapped by this object</p>
+</dd>
+<dt>my $type = $value-&gt;type</dt>
+<dd>
+<p>Returns the dbus data type this value is marked as having</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2004-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus, Net::DBus::Binding::Introspector,
+Net::DBus::Binding::Iterator</p>

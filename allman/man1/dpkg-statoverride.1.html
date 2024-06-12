@@ -1,0 +1,183 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dpkg-statoverride - override ownership and mode of files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dpkg-statoverride</strong> [<em>option</em>...]
+<em>command</em></p>
+<h1>DESCRIPTION</h1>
+<p>“<strong>stat overrides</strong>” are a way to tell
+<strong>dpkg</strong>(1) to use a different owner or mode for a path
+when a package is installed (this applies to any filesystem object that
+<strong>dpkg</strong> handles, including directories, devices, etc.).
+This can be used to force programs that are normally setuid to be
+install without a setuid flag, or only executable by a certain
+group.</p>
+<p><strong>dpkg-statoverride</strong> is a utility to manage the list of
+stat overrides. It has three basic functions: adding, removing and
+listing overrides.</p>
+<h1>COMMANDS</h1>
+<dl>
+<dt>--add user group mode path</dt>
+<dd>
+<p>Add an override for <em>path</em>. <em>path</em> does not need to
+exist nor be known to <strong>dpkg</strong> when this command is used;
+the override will be stored and used later. Users and groups can be
+specified by their name (for example <strong>root</strong> or
+<strong>nobody</strong>), or by their number by prepending the number
+with a ‘<strong>#</strong>’ (for example <strong>#0</strong> or
+<strong>#65534</strong>). The <em>mode</em> needs to be specified in
+octal. If <strong>--update</strong> is specified and <em>path</em>
+exists, it is immediately set to the new owner and mode.</p>
+</dd>
+<dt>--remove path</dt>
+<dd>
+<p>Remove an override for <em>path</em>, the status of <em>path</em> is
+left unchanged by this command.</p>
+</dd>
+<dt>--list [glob-pattern]</dt>
+<dd>
+<p>List all overrides. If a glob pattern is specified restrict the
+output to overrides which match the glob.</p>
+</dd>
+<dt>--help</dt>
+<dd>
+<p>Show the usage message and exit.</p>
+</dd>
+<dt>--force-help</dt>
+<dd>
+<p>Give help about the <strong>--force-</strong><em>thing</em> options
+(since dpkg 1.19.5).</p>
+</dd>
+<dt>--version</dt>
+<dd>
+<p>Show the version and exit.</p>
+</dd>
+</dl>
+<h1>OPTIONS</h1>
+<dl>
+<dt>--admindir directory</dt>
+<dd>
+<p>Set the administrative directory to <em>directory</em>. This is where
+the <em>statoverride</em> file is stored. Defaults to
+«<em>/var/lib/dpkg</em>» if <strong>DPKG_ADMINDIR</strong> has not been
+set.</p>
+</dd>
+<dt>--instdir directory</dt>
+<dd>
+<p>Set the installation directory, which refers to the directory where
+packages get installed (since dpkg 1.19.2). Defaults to «<em>/</em>» if
+<strong>DPKG_ROOT</strong> has not been set.</p>
+</dd>
+<dt>--root directory</dt>
+<dd>
+<p>Set the root directory to <strong>directory</strong>, which sets the
+installation directory to «<em>directory</em>» and the administrative
+directory to «<em>directory</em><strong>/var/lib/dpkg</strong>» (since
+dpkg 1.19.2) if <strong>DPKG_ROOT</strong> has not been set.</p>
+</dd>
+<dt>--force-things</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>--no-force-things, --refuse-things</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Force or refuse (<strong>no-force</strong> and
+<strong>refuse</strong> mean the same thing) to do some things (since
+dpkg 1.19.5). <em>things</em> is a comma separated list of things
+specified below. <strong>--force-help</strong> displays a message
+describing them. Things marked with (*) are forced by default.
+<em>Warning: These options are mostly intended to be used by experts
+only.</em> Using them without fully understanding their effects may
+break your whole system. <strong>all</strong>: Turns on (or off) all
+force options. <strong>statoverride-add</strong>: Overwrite an existing
+stat override when adding it (since dpkg 1.19.5).
+<strong>statoverride-remove</strong>: Ignore a missing stat override
+when removing it (since dpkg 1.19.5). <strong>security-mac</strong>(*):
+Use platform-specific Mandatory Access Controls (MAC) based security
+when installing files into the filesystem (since dpkg 1.19.5). On Linux
+systems the implementation uses SELinux. <strong>not-root</strong>: Try
+to (de)install things even when not root (since dpkg 1.21.8).</p>
+<dl>
+<dt>--force</dt>
+<dd>
+<p>Force an action, even if a sanity check would otherwise prohibit it.
+This is necessary to override an existing override. This option is
+deprecated (since dpkg 1.19.5), it is replaced by
+<strong>--force-all</strong>.</p>
+</dd>
+<dt>--update</dt>
+<dd>
+<p>Immediately try to change the <em>path</em> to the new owner and mode
+if it exists.</p>
+</dd>
+<dt>--quiet</dt>
+<dd>
+<p>Be less verbose about what we do.</p>
+</dd>
+</dl>
+<h1>EXIT STATUS</h1>
+<ol start="0" type="1">
+<li><p>The requested action was successfully performed.</p></li>
+<li><p>For <strong>--list</strong>, if there are no overrides or none
+match the supplied glob.</p></li>
+<li><p>Fatal or unrecoverable error due to invalid command-line usage,
+or interactions with the system, such as accesses to the database,
+memory allocations, etc.</p></li>
+</ol>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt>DPKG_ROOT</dt>
+<dd>
+<p>If set and the <strong>--instdir</strong> or <strong>--root</strong>
+options have not been specified, it will be used as the filesystem root
+directory (since dpkg 1.19.2).</p>
+</dd>
+<dt>DPKG_ADMINDIR</dt>
+<dd>
+<p>If set and the <strong>--admindir</strong> or <strong>--root</strong>
+options have not been specified, it will be used as the
+<strong>dpkg</strong> data directory.</p>
+</dd>
+<dt>DPKG_DEBUG</dt>
+<dd>
+<p>Sets the debug mask (since dpkg 1.21.10) from an octal value. The
+currently accepted flags are described in the <strong>dpkg
+--debug</strong> option, but not all these flags might have an effect on
+this program.</p>
+</dd>
+<dt>DPKG_FORCE</dt>
+<dd>
+<p>If set and none of the <strong>--force-</strong><em>...</em> options
+have been specified, it will be used as the force options to use (since
+dpkg 1.19.5).</p>
+</dd>
+<dt>DPKG_COLORS</dt>
+<dd>
+<p>Sets the color mode (since dpkg 1.18.5). The currently accepted
+values are: <strong>auto</strong> (default), <strong>always</strong> and
+<strong>never</strong>.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt>/var/lib/dpkg/statoverride</dt>
+<dd>
+<p>File which contains the current list of stat overrides of the system.
+It is located in the <strong>dpkg</strong> administration directory,
+along with other files important to <strong>dpkg</strong>, such as
+<em>status</em> or <em>available</em>. <strong>Note:</strong>
+<strong>dpkg-statoverride</strong> preserves the old copy of this file,
+with extension “-old”, before replacing it with the new one.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>dpkg</strong>(1).</p>

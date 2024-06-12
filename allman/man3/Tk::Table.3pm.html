@@ -1,0 +1,56 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Table - Scrollable 2 dimensional table of Tk widgets</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::Table; $table = $parent-&gt;Table(-rows =&gt; number,
+-columns =&gt; number, -scrollbars =&gt; anchor, -fixedrows =&gt;
+number, -fixedcolumns =&gt; number, -takefocus =&gt; boolean); $widget =
+$table-&gt;Button(...); $old = $table-&gt;put($row,$col,$widget); $old =
+$table-&gt;put($row,$col,"Text"); # simple Label $widget =
+$table-&gt;get($row,$col); $cols = $table-&gt;totalColumns; $rows =
+$table-&gt;totalRows; $table-&gt;see($widget);
+$table-&gt;see($row,$col); ($row,$col) = $table-&gt;Posn($widget);</p>
+<h1>DESCRIPTION</h1>
+<p>Tk::Table is an all-perl widget/geometry manager which allows a two
+dimensional table of arbitrary perl/Tk widgets to be displayed.</p>
+<p>Entries in the Table are simply ordinary perl/Tk widgets. They should
+be created with the Table as their parent. Widgets are positioned in the
+table using:</p>
+<p>$table-&gt;put($row,$col,$widget)</p>
+<p>If <em><code>$widget</code></em> is not a reference it is treated as
+a string, and a Lable widget is created with the string as its text.</p>
+<p>All the widgets in each column are set to the same width - the
+requested width of the widest widget in the column. Likewise, all the
+widgets in each row are set to the same height - the requested height of
+the tallest widget in the column.</p>
+<p>A number of rows and/or columns can be marked as 'fixed' - and so can
+serve as 'headings' for the remainder the rows which are scrollable.</p>
+<p>The requested size of the table as a whole is such that the number of
+rows specified by -rows (default 10), and number of columns specified by
+-columns (default 10) can be displayed.</p>
+<p>If the Table is told it can take the keyboard focus then cursor and
+scroll keys scroll the displayed widgets.</p>
+<p><code>-scrollbars</code>. By default, scrollbars will be added
+<code>nw</code>. To disable scrollbars, set <code>-scrollbars</code> to
+an empty string:</p>
+<p>$table = $parent-&gt;Table(-scrollbars =&gt; , ...);</p>
+<p>The table can be emptied using</p>
+<p>$table-&gt;clear</p>
+<p>the widgets which were in the table are destroyed.</p>
+<p>The Tk::Table widget is derived from a Tk::Frame, so inherits all its
+configure options.</p>
+<p>The default focus traversal is giving the focus only to the table
+widget as a whole. To enable focus traversal into table cells (e.g. if
+there are embedded entry widgets), then the option
+<code>-takefocus</code> has to be set to <code>0</code>.</p>
+<h1>BUGS / Snags / Possible enhancements</h1>
+<ul>
+<li><p>Very large Tables consume a lot of X windows.</p></li>
+<li><p>No equivalent of pack's -anchor/-pad etc. options</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Tk::grid, Tk::HList, Tk::TableMatrix, Tk::MListbox, Tk::Columns</p>

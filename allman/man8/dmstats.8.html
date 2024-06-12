@@ -1,0 +1,938 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dmstats — device-mapper statistics management</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dmsetup</strong> <strong>stats</strong> <em>command</em>
+[OPTIONS]</p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<p><strong>dmstats</strong></p>
+<h1>DESCRIPTION</h1>
+<p>The dmstats program manages IO statistics regions for devices that
+use the device-mapper driver. Statistics regions may be created,
+deleted, listed and reported on using the tool.</p>
+<p>The first argument to dmstats is a
+<em>command</em><strong>.</strong></p>
+<p>The second argument is the <em>device name</em><strong>,</strong>
+<em>uuid</em> <strong>or</strong> <em>major</em> <strong>and</strong>
+<em>minor</em> <strong>numbers.</strong></p>
+<p>Further options permit the selection of regions, output format
+control, and reporting behaviour.</p>
+<p>When no device argument is given dmstats will by default operate on
+all device-mapper devices present. The <strong>create and
+delete</strong> commands require the use of <strong>--alldevices when
+used in this way.</strong></p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>--alias <em>name</em></strong></dt>
+<dd>
+<p>Specify an alias name for a group.</p>
+</dd>
+<dt><strong>--alldevices</strong></dt>
+<dd>
+<p>If no device arguments are given allow operation on all devices when
+creating or deleting regions.</p>
+</dd>
+<dt><strong>--allprograms</strong></dt>
+<dd>
+<p>Include regions from all program IDs for list and report
+operations.</p>
+</dd>
+<dt><strong>--allregions</strong></dt>
+<dd>
+<p>Include all present regions for commands that normally accept a
+single region identifier.</p>
+</dd>
+<dt><strong>--area</strong></dt>
+<dd>
+<p>When peforming a list or report, include objects of type area in the
+results.</p>
+</dd>
+<dt><strong>--areas <em>nr_areas</em></strong></dt>
+<dd>
+<p>Specify the number of statistics areas to create within a new
+region.</p>
+</dd>
+<dt><strong>--areasize <em>area_size</em>[</strong></dt>
+<dd>
+<p><strong>b</strong>|<strong>B</strong>|<strong>s</strong>|<strong>S</strong>|<strong>k</strong>|<strong>K</strong>|<strong>m</strong>|<strong>M</strong>|<strong></strong>
+<strong>g</strong>|<strong>G</strong>|<strong>t</strong>|<strong>T</strong>|<strong>p</strong>|<strong>P</strong>|<strong>e</strong>|<strong>E</strong>]
+Specify the size of areas into which a new region should be divided. An
+optional suffix selects units of:</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--clear</strong></dt>
+<dd>
+<p>When printing statistics counters, also atomically reset them to
+zero.</p>
+</dd>
+<dt><strong>--count <em>count</em></strong></dt>
+<dd>
+<p>Specify the iteration count for repeating reports. If the count
+argument is zero reports will continue to repeat until interrupted.</p>
+</dd>
+<dt><strong>--group</strong></dt>
+<dd>
+<p>When peforming a list or report, include objects of type group in the
+results.</p>
+</dd>
+<dt><strong>--filemap</strong></dt>
+<dd>
+<p>Instead of creating regions on a device as specified by command line
+options, open the file found at each <strong>file_path</strong>
+<em>argument, and</em> create regions corresponding to the locations of
+the on-disk extents allocated to the file(s).</p>
+</dd>
+<dt><strong>--nomonitor</strong></dt>
+<dd>
+<p>Disable the <strong>dmfilemapd</strong> <em>daemon when creating new
+file mapped</em> groups. Normally the device-mapper filemap monitoring
+daemon, <strong>dmfilemapd</strong><em>, is started for each file mapped
+group to update the</em> set of regions as the file changes on-disk: use
+of this option disables this behaviour.</p>
+<p>Regions in the group may still be updated with the
+<strong>update_filemap</strong> <em>command, or by starting the daemon
+manually.</em></p>
+</dd>
+<dt><strong>--follow <em>follow_mode</em></strong></dt>
+<dd>
+<p>Specify the <strong>dmfilemapd</strong> <em>file following mode. The
+file map</em> monitoring daemon can monitor files in two distinct ways:
+the mode affects the behaviour of the daemon when a file under
+monitoring is renamed or unlinked, and the conditions which cause the
+daemon to terminate.</p>
+<p>The <strong>follow_mode</strong> <em>argument is either "inode", for
+follow-inode</em> mode, or "path", for follow-path.</p>
+<p>If follow-inode mode is used, the daemon will hold the file open, and
+continue to update regions from the same file descriptor. This means
+that the mapping will follow rename, move (within the same file system),
+and unlink operations. This mode is useful if the file is expected to be
+moved, renamed, or unlinked while it is being monitored.</p>
+<p>In follow-inode mode, the daemon will exit once it detects that the
+file has been unlinked and it is the last holder of a reference to
+it.</p>
+<p>If follow-path is used, the daemon will re-open the provided path on
+each monitoring iteration. This means that the group will be updated to
+reflect a new file being moved to the same path as the original file.
+This mode is useful for files that are expected to be updated via unlink
+and rename.</p>
+<p>In follow-path mode, the daemon will exit if the file is removed and
+not replaced within a brief tolerance interval.</p>
+<p>In either mode, the daemon exits automatically if the monitored group
+is removed.</p>
+</dd>
+<dt><strong>--foreground</strong></dt>
+<dd>
+<p>Specify that the <strong>dmfilemapd</strong> <em>daemon should run in
+the foreground.</em> The daemon will not fork into the background, and
+will replace the <strong>dmstats</strong> <em>command that started
+it.</em></p>
+</dd>
+<dt><strong>--groupid <em>id</em></strong></dt>
+<dd>
+<p>Specify the group to operate on.</p>
+</dd>
+<dt><strong>--bounds <em>histogram_boundaries</em></strong></dt>
+<dd>
+<p>[<strong>ns</strong>|<strong>us</strong>|<strong>ms</strong>|<strong>s</strong>]
+Specify the boundaries of a latency histogram to be tracked for the
+region as a comma separated list of latency values. Latency values are
+given in nanoseconds. An optional unit suffix of
+<strong>ns</strong>,<strong>us</strong>,<strong>ms</strong>, or
+<strong>s</strong> <em>may be given after each value to specify units
+of</em> nanoseconds, microseconds, miliseconds or seconds
+respectively.</p>
+</dd>
+<dt><strong>--histogram</strong></dt>
+<dd>
+<p>When used with the <strong>report</strong> <em>and</em>
+<strong>list</strong> <em>commands select default</em> fields that
+emphasize latency histogram data.</p>
+</dd>
+<dt><strong>--interval <em>seconds</em></strong></dt>
+<dd>
+<p>Specify the interval in seconds between successive iterations for
+repeating reports. If <strong>--interval</strong> <em>is specified
+but</em> <strong>--count</strong> <em>is not,</em> reports will continue
+to repeat until interrupted.</p>
+</dd>
+<dt><strong>--length <em>length</em>[</strong></dt>
+<dd>
+<p><strong>b</strong>|<strong>B</strong>|<strong>s</strong>|<strong>S</strong>|<strong>k</strong>|<strong>K</strong>|<strong>m</strong>|<strong>M</strong>|<strong></strong>
+<strong>g</strong>|<strong>G</strong>|<strong>t</strong>|<strong>T</strong>|<strong>p</strong>|<strong>P</strong>|<strong>e</strong>|<strong>E</strong>]
+Specify the length of a new statistics region in sectors. An optional
+suffix selects units of:</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-j</strong>|<strong>--major</strong>
+<strong><em>major</em></strong></dt>
+<dd>
+<p>Specify the major number.</p>
+</dd>
+<dt><strong>-m</strong>|<strong>--minor</strong>
+<strong><em>minor</em></strong></dt>
+<dd>
+<p>Specify the minor number.</p>
+</dd>
+<dt><strong>--nogroup</strong></dt>
+<dd>
+<p>When creating regions mapping the extents of a file in the file
+system, do not create a group or set an alias.</p>
+</dd>
+<dt><strong>--nosuffix</strong></dt>
+<dd>
+<p>Suppress the suffix on output sizes. Use with
+<strong>--units</strong> (except h and H) if processing the output.</p>
+</dd>
+<dt><strong>--notimesuffix</strong></dt>
+<dd>
+<p>Suppress the suffix on output time values. Histogram boundary values
+will be reported in units of nanoseconds.</p>
+</dd>
+<dt><strong>-o</strong>|<strong>--options</strong></dt>
+<dd>
+<p>Specify which report fields to display.</p>
+</dd>
+<dt><strong>-O</strong>|<strong>--sort</strong>
+<strong><em>sort_fields</em></strong></dt>
+<dd>
+<p>Sort output according to the list of fields given. Precede any sort
+field with '<strong>-</strong><em>' for a reverse sort on that
+column.</em></p>
+</dd>
+<dt><strong>--precise</strong></dt>
+<dd>
+<p>Attempt to use nanosecond precision counters when creating new
+statistics regions.</p>
+</dd>
+<dt><strong>--programid <em>id</em></strong></dt>
+<dd>
+<p>Specify a program ID string. When creating new statistics regions
+this string is stored with the region. Subsequent operations may supply
+a program ID in order to select only regions with a matching value. The
+default program ID for dmstats-managed regions is "dmstats".</p>
+</dd>
+<dt><strong>--region</strong></dt>
+<dd>
+<p>When peforming a list or report, include objects of type region in
+the results.</p>
+</dd>
+<dt><strong>--regionid <em>id</em></strong></dt>
+<dd>
+<p>Specify the region to operate on.</p>
+</dd>
+<dt><strong>--regions <em>region_list</em></strong></dt>
+<dd>
+<p>Specify a list of regions to group. The group list is a
+comma-separated list of region identifiers. Continuous sequences of
+identifiers may be expressed as a hyphen separated range, for example:
+'1-10'.</p>
+</dd>
+<dt><strong>--relative</strong></dt>
+<dd>
+<p>If displaying the histogram report show relative (percentage) values
+instead of absolute counts.</p>
+</dd>
+<dt><strong>-S</strong>|<strong>--select</strong>
+<strong><em>selection</em></strong></dt>
+<dd>
+<p>Display only rows that match <em>selection criteria. All rows with
+the</em> additional "selected" column (<strong>-o selected</strong><em>)
+showing 1 if the row matches</em> the <em>selection and 0 otherwise. The
+selection criteria are defined by</em> specifying column names and their
+valid values while making use of supported comparison operators.</p>
+</dd>
+<dt><strong>--start <em>start</em>[</strong></dt>
+<dd>
+<p><strong>b</strong>|<strong>B</strong>|<strong>s</strong>|<strong>S</strong>|<strong>k</strong>|<strong>K</strong>|<strong>m</strong>|<strong>M</strong>|<strong></strong>
+<strong>g</strong>|<strong>G</strong>|<strong>t</strong>|<strong>T</strong>|<strong>p</strong>|<strong>P</strong>|<strong>e</strong>|<strong>E</strong>]
+Specify the start offset of a new statistics region in sectors. An
+optional suffix selects units of:</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--segments</strong></dt>
+<dd>
+<p>When used with <strong>create</strong>, create a new statistics
+region for each target contained in the given device(s). This causes a
+separate region to be allocated for each segment of the device.</p>
+<p>The newly created regions are automatically placed into a group
+unless the <strong>--nogroup</strong> option is given. When grouping is
+enabled a group alias may be specified using the
+<strong>--alias</strong> option.</p>
+</dd>
+<dt><strong>--units</strong> </dt>
+<dd>
+<p>[<em>units</em>]<em></em>
+[<strong>h</strong>|<strong>H</strong>|<strong></strong>
+<strong>b</strong>|<strong>B</strong>|<strong>s</strong>|<strong>S</strong>|<strong>k</strong>|<strong>K</strong>|<strong>m</strong>|<strong>M</strong>|<strong></strong>
+<strong>g</strong>|<strong>G</strong>|<strong>t</strong>|<strong>T</strong>|<strong>p</strong>|<strong>P</strong>|<strong>e</strong>|<strong>E</strong>]
+Set the display units for report output. All sizes are output in these
+units: (<strong>h</strong>)uman-readable,</p>
+</dd>
+</dl>
+<p>Can also specify custom units e.g. <strong>--units 3M</strong>.</p>
+<dl>
+<dt><strong>--userdata <em>user_data</em></strong></dt>
+<dd>
+<p>Specify user data (a word) to be stored with a new region. The value
+is added to any internal auxiliary data (for example, group
+information), and stored with the region in the aux_data field provided
+by the kernel. Whitespace is not permitted.</p>
+</dd>
+<dt><strong>-u</strong>|<strong>--uuid</strong></dt>
+<dd>
+<p>Specify the uuid.</p>
+</dd>
+<dt><strong>-v</strong>|<strong>--verbose</strong>
+[<strong>-v</strong>|<strong>--verbose</strong>]</dt>
+<dd>
+<p>Produce additional output.</p>
+</dd>
+</dl>
+<h1>COMMANDS</h1>
+<p><br />
+Instructs the kernel to clear statistics counters for the speficied
+regions (with the exception of in-flight IO counters).</p>
+<p><br />
+Creates one or more new statistics regions on the specified
+device(s).</p>
+<p>The region will span the entire device unless
+<strong>--start</strong> <em>and</em> <strong>--length</strong>
+<em>or</em> <strong>--segments</strong> <em>are given. The</em>
+<strong>--start</strong> <em>an</em> <strong>--length</strong>
+<em>options allow a region of arbitrary length to be placed</em> at an
+arbitrary offset into the device. The <strong>--segments</strong>
+<em>option</em> causes a new region to be created for each target in the
+corresponding device-mapper device's table.</p>
+<p>If the <strong>--precise</strong> <em>option is used the command will
+attempt to</em> create a region using nanosecond precision counters.</p>
+<p>If <strong>--bounds</strong> <em>is given a latency histogram will be
+tracked for</em> the new region. The boundaries of the histogram bins
+are given as a comma separated list of latency values. There is an
+implicit lower bound of zero on the first bin and an implicit upper
+bound of infinity (or the configured interval duration) on the final
+bin.</p>
+<p>Latencies are given in nanoseconds. An optional unit suffix of ns,
+us, ms, or s may be given after each value to specify units of
+nanoseconds, microseconds, miliseconds or seconds respectively, so for
+example, 10ms is equivalent to 10000000. Latency values with a precision
+of less than one milisecond can only be used when precise timestamps are
+enabled: if <strong>--precise</strong> <em>is not given and values less
+than one milisecond are</em> used it will be enabled automatically.</p>
+<p>An optional <strong>program_id</strong> <em>or</em>
+<strong>user_data</strong> <em>string may be associated</em> with the
+region. A <strong>program_id</strong> <em>may then be used to select
+regions</em> for subsequent list, print, and report operations. The
+<strong>user_data</strong> stores an arbitrary string and is not used by
+dmstats or the device-mapper kernel statistics subsystem.</p>
+<p>By default dmstats creates regions with a <strong>program_id</strong>
+<em>of</em> "dmstats".</p>
+<p>On success the <strong>region_id</strong> <em>of the newly created
+region is printed</em> to stdout.</p>
+<p>If the <strong>--filemap</strong> <em>option is given with a regular
+file, or list</em> of files, as the <strong>file_path</strong>
+<em>argument, instead of creating regions</em> with parameters specified
+on the command line, <strong>dmstats</strong> <em>will open</em> the
+files located at <strong>file_path</strong> <em>and create regions
+corresponding to</em> the physical extents allocated to the file. This
+can be used to monitor statistics for individual files in the file
+system, for example, virtual machine images, swap areas, or large
+database files.</p>
+<p>To work with the <strong>--filemap</strong> <em>option, files must be
+located on a</em> local file system, backed by a device-mapper device,
+that supports physical extent data using the FIEMAP ioctl (Ext4 and XFS
+for e.g.).</p>
+<p>By default regions that map a file are placed into a group and the
+group alias is set to the basename of the file. This behaviour can be
+overridden with the <strong>--alias</strong> <em>and</em>
+<strong>--nogroup</strong> <em>options.</em></p>
+<p>Creating a group that maps a file automatically starts a daemon,
+<strong>dmfilemapd</strong> <em>to monitor the file and update the
+mapping as the</em> extents allocated to the file change. This behaviour
+can be disabled using the <strong>--nomonitor</strong>
+<em>option.</em></p>
+<p>Use the <strong>--group</strong> <em>option to only display
+information for groups</em> when listing and reporting.</p>
+<p><br />
+Delete the specified statistics region. All counters and resources used
+by the region are released and the region will not appear in the output
+of subsequent list, print, or report operations.</p>
+<p>All regions registered on a device may be removed using
+<strong>--allregions</strong><em>.</em></p>
+<p>To remove all regions on all devices both
+<strong>--allregions</strong> <em>and</em> <strong>--alldevices</strong>
+<em>must be used.</em></p>
+<p>If a <strong>--groupid</strong> <em>is given instead of a</em>
+<strong>--regionid</strong> <em>the</em> command will attempt to delete
+the group and all regions that it contains.</p>
+<p>If a deleted region is the first member of a group of regions the
+group will also be removed.</p>
+<p><br />
+Combine one or more statistics regions on the specified device into a
+group.</p>
+<p>The list of regions to be grouped is specified with
+<strong>--regions</strong> and an optional alias may be assigned with
+<strong>--alias</strong><em>. The set of</em> regions is given as a
+comma-separated list of region identifiers. A continuous range of
+identifers spanning from <strong>R1</strong> <em>to</em>
+<strong>R2</strong> <em>may</em> be expressed as
+'<strong>R1</strong><em>-</em><strong>R2</strong><em>'.</em></p>
+<p>Regions that have a histogram configured can be grouped: in this case
+the number of histogram bins and their bounds must match exactly.</p>
+<p>On success the group list and newly created <strong>group_id</strong>
+<em>are</em> printed to stdout.</p>
+<p>The group metadata is stored with the first (lowest numbered)
+<strong>region_id</strong> <em>in the group: deleting this region will
+also delete</em> the group and other group members will be returned to
+their prior state.</p>
+<p><br />
+Outputs a summary of the commands available, optionally including the
+list of report fields.</p>
+<p><br />
+List the statistics regions, areas, or groups registered on the device.
+If the <strong>--allprograms</strong> <em>switch is given all regions
+will be listed</em> regardless of region program ID values.</p>
+<p>By default only regions and groups are included in list output. If
+<strong>-v</strong> <em>or</em> <strong>--verbose</strong> <em>is given
+the report will also include a</em> row of information for each
+configured group and for each area contained in each region
+displayed.</p>
+<p>Regions that contain a single area are by default omitted from the
+verbose list since their properties are identical to the area that they
+contain - to view all regions regardless of the number of areas present
+use <strong>--region</strong><em>). To also view the areas contained
+within regions</em> use <strong>--area</strong><em>.</em></p>
+<p>If <strong>--histogram</strong> <em>is given the report will include
+the bin count</em> and latency boundary values for any configured
+histograms.</p>
+<p><br />
+Print raw statistics counters for the specified region or for all
+present regions.</p>
+<p><br />
+Start a report for the specified object or for all present objects. If
+the count argument is specified, the report will repeat at a fixed
+interval set by the <strong>--interval</strong> <em>option. The default
+interval is</em> one second.</p>
+<p>If the <strong>--allprograms</strong> <em>switch is given, all
+regions will be</em> listed, regardless of region program ID values.</p>
+<p>If the <strong>--histogram</strong> <em>is given the report will
+include the histogram</em> values and latency boundaries.</p>
+<p>If the <strong>--relative</strong> <em>is used the default histogram
+field displays</em> bin values as a percentage of the total number of
+I/Os.</p>
+<p>Object types (areas, regions and groups) to include in the report are
+selected using the <strong>--area</strong><em>,</em>
+<strong>--region</strong><em>, and</em> <strong>--group</strong>
+options.</p>
+<p><br />
+Remove an existing group and return all the group's regions to their
+original state.</p>
+<p>The group to be removed is specified using
+<strong>--groupid</strong><em>.</em></p>
+<p><br />
+Update a group of <strong>dmstats</strong> <em>regions specified by</em>
+<strong>group_id</strong><em>,</em> that were previously created with
+<strong>--filemap</strong><em>, either directly,</em> or by starting the
+monitoring daemon, <strong>dmfilemapd</strong><em>.</em></p>
+<p>This will add and remove regions to reflect changes in the allocated
+extents of the file on-disk, since the time that it was crated or last
+updated.</p>
+<p>Use of this command is not normally needed since the
+<strong>dmfilemapd</strong> daemon will automatically monitor filemap
+groups and perform these updates when required.</p>
+<p>If a filemapped group was created with
+<strong>--nomonitor</strong><em>, or the</em> daemon has been killed,
+the <strong>update_filemap</strong> <em>can be used to</em> manually
+force an update or start a new daemon.</p>
+<p>Use <strong>--nomonitor</strong> <em>to force a direct update and
+disable starting</em> the monitoring daemon.</p>
+<h1>REGIONS, AREAS, AND GROUPS</h1>
+<p>The device-mapper statistics facility allows separate performance
+counters to be maintained for arbitrary regions of devices. A region may
+span any range: from a single sector to the whole device. A region may
+be further sub-divided into a number of distinct areas (one or more),
+each with its own counter set. In this case a summary value for the
+entire region is also available for use in reports.</p>
+<p>In addition, one or more regions on one device can be combined into a
+statistics group. Groups allow several regions to be aggregated and
+reported as a single entity; counters for all regions and areas are
+summed and used to report totals for all group members. Groups also
+permit the assignment of an optional alias, allowing meaningful names to
+be associated with sets of regions.</p>
+<p>The group metadata is stored with the first (lowest numbered)
+<strong>region_id</strong> <em>in the group: deleting this region will
+also delete</em> the group and other group members will be returned to
+their prior state.</p>
+<p>By default new regions span the entire device. The
+<strong>--start</strong> <em>and</em> <strong>--length</strong>
+<em>options allows a region of any size to be placed at any</em>
+location on the device.</p>
+<p>Using offsets it is possible to create regions that map individual
+objects within a block device (for example: partitions, files in a file
+system, or stripes or other structures in a RAID volume). Groups allow
+several non-contiguous regions to be assembled together for reporting
+and data aggregation.</p>
+<p>A region may be either divided into the specified number of
+equal-sized areas, or into areas of the given size by specifying one of
+<strong>--areas</strong> <em>or</em> <strong>--areasize</strong>
+<em>when creating a region with the</em> <strong>create</strong>
+<em>command. Depending on the size of the areas and the device</em>
+region the final area within the region may be smaller than
+requested.</p>
+<h2>Region identifiers</h2>
+<p>Each region is assigned an identifier when it is created that is used
+to reference the region in subsequent operations. Region identifiers are
+unique within a given device (including across different
+<strong>program_id</strong> values).</p>
+<p>Depending on the sequence of create and delete operations, gaps may
+exist in the sequence of <strong>region_id</strong> <em>values for a
+particular device.</em></p>
+<p>The <strong>region_id</strong> <em>should be treated as an opaque
+identifier used to</em> reference the region.</p>
+<h2>Group identifiers</h2>
+<p>Groups are also assigned an integer identifier at creation time; like
+region identifiers, group identifiers are unique within the containing
+device.</p>
+<p>The <strong>group_id</strong> <em>should be treated as an opaque
+identifier used to</em> reference the group.</p>
+<h1>FILE MAPPING</h1>
+<p>Using <strong>--filemap</strong><em>, it is possible to create
+regions that</em> correspond to the extents of a file in the file
+system. This allows IO statistics to be monitored on a per-file basis,
+for example to observe large database files, virtual machine images, or
+other files of interest.</p>
+<p>To be able to use file mapping, the file must be backed by a
+device-mapper device, and in a file system that supports the FIEMAP
+ioctl (and which returns data describing the physical location of
+extents). This currently includes <strong>xfs(5)</strong> <em>and</em>
+<strong>ext4(5)</strong><em>.</em></p>
+<p>By default the regions making up a file are placed together in a
+group, and the group alias is set to the <strong>basename(3)</strong>
+<em>of the</em> file. This allows statistics to be reported for the file
+as a whole, aggregating values for the regions making up the group. To
+see only the whole file (group) when using the <strong>list</strong>
+<em>and</em> <strong>report</strong> commands, use
+<strong>--group</strong><em>.</em></p>
+<p>Since it is possible for the file to change after the initial group
+of regions is created, the <strong>update_filemap</strong> <em>command,
+and</em> <strong>dmfilemapd</strong> <em>daemon are provided to update
+file mapped groups</em> either manually or automatically.</p>
+<h2>File follow modes</h2>
+<p>The file map monitoring daemon can monitor files in two distinct
+ways: follow-inode mode, and follow-path mode.</p>
+<p>The mode affects the behaviour of the daemon when a file under
+monitoring is renamed or unlinked, and the conditions which cause the
+daemon to terminate.</p>
+<p>If follow-inode mode is used, the daemon will hold the file open, and
+continue to update regions from the same file descriptor. This means
+that the mapping will follow rename, move (within the same file system),
+and unlink operations. This mode is useful if the file is expected to be
+moved, renamed, or unlinked while it is being monitored.</p>
+<p>In follow-inode mode, the daemon will exit once it detects that the
+file has been unlinked and it is the last holder of a reference to
+it.</p>
+<p>If follow-path is used, the daemon will re-open the provided path on
+each monitoring iteration. This means that the group will be updated to
+reflect a new file being moved to the same path as the original file.
+This mode is useful for files that are expected to be updated via unlink
+and rename.</p>
+<p>In follow-path mode, the daemon will exit if the file is removed and
+not replaced within a brief tolerance interval (one second).</p>
+<p>To stop the daemon, delete the group containing the mapped regions:
+the daemon will automatically shut down.</p>
+<p>The daemon can also be safely killed at any time and the group kept:
+if the file is still being allocated the mapping will become
+progressively out-of-date as extents are added and removed (in this case
+the daemon can be re-started or the group updated manually with the
+<strong>update_filemap</strong> <em>command).</em></p>
+<p>See the <strong>create</strong> <em>command and</em>
+<strong>--filemap</strong><em>,</em> <strong>--follow</strong><em>,</em>
+and <strong>--nomonitor</strong> <em>options for further
+information.</em></p>
+<h2>Limitations</h2>
+<p>The daemon attempts to maintain good synchronisation between the file
+extents and the regions contained in the group, however, since it can
+only react to new allocations once they have been written, there are
+inevitably some IO events that cannot be counted when a file is growing,
+particularly if the file is being extended by a single thread writing
+beyond end-of-file (for example, the <strong>dd</strong>
+<em>program).</em></p>
+<p>There is a further loss of events in that there is currently no way
+to atomically resize a <strong>dmstats</strong> <em>region and preserve
+its current</em> counter values. This affects files when they grow by
+extending the final extent, rather than allocating a new extent: any
+events that had accumulated in the region between any prior operation
+and the resize are lost.</p>
+<p>File mapping is currently most effective in cases where the majority
+of IO does not trigger extent allocation. Future updates may address
+these limitations when kernel support is available.</p>
+<h1>REPORT FIELDS</h1>
+<p>The dmstats report provides several types of field that may be added
+to the default field set, or used to create custom reports.</p>
+<p>All performance counters and metrics are calculated per-area.</p>
+<h2>Derived metrics</h2>
+<p>A number of metrics fields are included that provide high level
+performance indicators. These are based on the fields provided by the
+conventional Linux iostat program and are derived from the basic counter
+values provided by the kernel for each area.</p>
+<dl>
+<dt><strong>reads_merged_per_sec</strong></dt>
+<dd>
+<p>Reads merged per second.</p>
+</dd>
+<dt><strong>writes_merged_per_sec</strong></dt>
+<dd>
+<p>Writes merged per second.</p>
+</dd>
+<dt><strong>reads_per_sec</strong></dt>
+<dd>
+<p>Reads completed per second.</p>
+</dd>
+<dt><strong>writes_per_sec</strong></dt>
+<dd>
+<p>Writes completed per second.</p>
+</dd>
+<dt><strong>read_size_per_sec</strong></dt>
+<dd>
+<p>Size of data read per second.</p>
+</dd>
+<dt><strong>write_size_per_sec</strong></dt>
+<dd>
+<p>Size of data written per second.</p>
+</dd>
+<dt><strong>avg_request_size</strong></dt>
+<dd>
+<p>Average request size.</p>
+</dd>
+<dt><strong>queue_size</strong></dt>
+<dd>
+<p>Average queue size.</p>
+</dd>
+<dt><strong>await</strong></dt>
+<dd>
+<p>The average wait time for read and write operations.</p>
+</dd>
+<dt><strong>r_await</strong></dt>
+<dd>
+<p>The average wait time for read operations.</p>
+</dd>
+<dt><strong>w_await</strong></dt>
+<dd>
+<p>The average wait time for write operations.</p>
+</dd>
+<dt><strong>throughput</strong></dt>
+<dd>
+<p>The device throughput in operations per second.</p>
+</dd>
+<dt><strong>service_time</strong></dt>
+<dd>
+<p>The average service time (in milliseconds) for operations issued to
+the device.</p>
+</dd>
+<dt><strong>util</strong></dt>
+<dd>
+<p>Percentage of CPU time during which I/O requests were issued to the
+device (bandwidth utilization for the device). Device saturation occurs
+when this value is close to 100%.</p>
+</dd>
+</dl>
+<h2>Group, region and area meta fields</h2>
+<p>Meta fields provide information about the groups, regions, or areas
+that the statistics values relate to. This includes the region and area
+identifier, start, length, and counts, as well as the program ID and
+user data values.</p>
+<dl>
+<dt><strong>region_id</strong></dt>
+<dd>
+<p>Region identifier. This is a non-negative integer returned by the
+kernel when a statistics region is created.</p>
+</dd>
+<dt><strong>region_start</strong></dt>
+<dd>
+<p>The region start location. Display units are selected by the
+<strong>--units</strong> <em>option.</em></p>
+</dd>
+<dt><strong>region_len</strong></dt>
+<dd>
+<p>The length of the region. Display units are selected by the
+<strong>--units</strong> <em>option.</em></p>
+</dd>
+<dt><strong>area_id</strong></dt>
+<dd>
+<p>Area identifier. Area identifiers are assigned by the device-mapper
+statistics library and uniquely identify each area within a region. Each
+ID corresponds to a distinct set of performance counters for that area
+of the statistics region. Area identifiers are always monotonically
+increasing within a region so that higher ID values correspond to
+greater sector addresses within the area and no gaps in the sequence of
+identifiers exist.</p>
+</dd>
+<dt><strong>area_start</strong></dt>
+<dd>
+<p>The area start location. Display units are selected by the
+<strong>--units</strong> <em>option.</em></p>
+</dd>
+<dt><strong>area_len</strong></dt>
+<dd>
+<p>The length of the area. Display units are selected by the
+<strong>--units</strong> <em>option.</em></p>
+</dd>
+<dt><strong>area_count</strong></dt>
+<dd>
+<p>The number of areas in this region.</p>
+</dd>
+<dt><strong>program_id</strong></dt>
+<dd>
+<p>The program ID value associated with this region.</p>
+</dd>
+<dt><strong>user_data</strong></dt>
+<dd>
+<p>The user data value associated with this region.</p>
+</dd>
+<dt><strong>group_id</strong></dt>
+<dd>
+<p>Group identifier. This is a non-negative integer returned by the
+dmstats <strong>group</strong> <em>command when a statistics group is
+created.</em></p>
+</dd>
+<dt><strong>interval_ns</strong></dt>
+<dd>
+<p>The estimated interval over which the current counter values have
+accumulated. The value is reported as an integer expressed in units of
+nanoseconds.</p>
+</dd>
+<dt><strong>interval</strong></dt>
+<dd>
+<p>The estimated interval over which the current counter values have
+accumulated. The value is reported as a real number in units of
+seconds.</p>
+</dd>
+</dl>
+<h2>Basic counters</h2>
+<p>Basic counters provide access to the raw counter data from the
+kernel, allowing further processing to be carried out by another
+program.</p>
+<p>The kernel provides thirteen separate counters for each statistics
+area. The first eleven of these match the counters provided in
+/proc/diskstats or /sys/block/*/*/stat. The final pair provide separate
+counters for read and write time.</p>
+<dl>
+<dt><strong>read_count</strong></dt>
+<dd>
+<p>Count of reads completed this interval.</p>
+</dd>
+<dt><strong>reads_merged_count</strong></dt>
+<dd>
+<p>Count of reads merged this interval.</p>
+</dd>
+<dt><strong>read_sector_count</strong></dt>
+<dd>
+<p>Count of 512 byte sectors read this interval.</p>
+</dd>
+<dt><strong>read_time</strong></dt>
+<dd>
+<p>Accumulated duration of all read requests (ns).</p>
+</dd>
+<dt><strong>write_count</strong></dt>
+<dd>
+<p>Count of writes completed this interval.</p>
+</dd>
+<dt><strong>writes_merged_count</strong></dt>
+<dd>
+<p>Count of writes merged this interval.</p>
+</dd>
+<dt><strong>write_sector_count</strong></dt>
+<dd>
+<p>Count of 512 byte sectors written this interval.</p>
+</dd>
+<dt><strong>write_time</strong></dt>
+<dd>
+<p>Accumulated duration of all write requests (ns).</p>
+</dd>
+<dt><strong>in_progress_count</strong></dt>
+<dd>
+<p>Count of requests currently in progress.</p>
+</dd>
+<dt><strong>io_ticks</strong></dt>
+<dd>
+<p>Nanoseconds spent servicing requests.</p>
+</dd>
+<dt><strong>queue_ticks</strong></dt>
+<dd>
+<p>This field is incremented at each I/O start, I/O completion, I/O
+merge, or read of these stats by the number of I/Os in progress
+multiplied by the number of milliseconds spent doing I/O since the last
+update of this field. This can provide an easy measure of both I/O
+completion time and the backlog that may be accumulating.</p>
+</dd>
+<dt><strong>read_ticks</strong></dt>
+<dd>
+<p>Nanoseconds spent servicing reads.</p>
+</dd>
+<dt><strong>write_ticks</strong></dt>
+<dd>
+<p>Nanoseconds spent servicing writes.</p>
+</dd>
+</dl>
+<h2>Histogram fields</h2>
+<p>Histograms measure the frequency distribution of user specified I/O
+latency intervals. Histogram bin boundaries are specified when a region
+is created.</p>
+<p>A brief representation of the histogram values and latency intervals
+can be included in the report using these fields.</p>
+<dl>
+<dt><strong>hist_count</strong></dt>
+<dd>
+<p>A list of the histogram counts for the current statistics area in
+order of ascending latency value. Each value represents the number of
+I/Os with latency times falling into that bin's time range during the
+sample period.</p>
+</dd>
+<dt><strong>hist_count_bounds</strong></dt>
+<dd>
+<p>A list of the histogram counts for the current statistics area in
+order of ascending latency value including bin boundaries: each count is
+prefixed by the lower bound of the corresponding histogram bin.</p>
+</dd>
+<dt><strong>hist_count_ranges</strong></dt>
+<dd>
+<p>A list of the histogram counts for the current statistics area in
+order of ascending latency value including bin boundaries: each count is
+prefixed by both the lower and upper bounds of the corresponding
+histogram bin.</p>
+</dd>
+<dt><strong>hist_percent</strong></dt>
+<dd>
+<p>A list of the relative histogram values for the current statistics
+area in order of ascending latency value, expressed as a percentage.
+Each value represents the proportion of I/Os with latency times falling
+into that bin's time range during the sample period.</p>
+</dd>
+<dt><strong>hist_percent_bounds</strong></dt>
+<dd>
+<p>A list of the relative histogram values for the current statistics
+area in order of ascending latency value, expressed as a percentage and
+including bin boundaries. Each value represents the proportion of I/Os
+with latency times falling into that bin's time range during the sample
+period and is prefixed with the corresponding bin's lower bound.</p>
+</dd>
+<dt><strong>hist_percent_ranges</strong></dt>
+<dd>
+<p>A list of the relative histogram values for the current statistics
+area in order of ascending latency value, expressed as a percentage and
+including bin boundaries. Each value represents the proportion of I/Os
+with latency times falling into that bin's time range during the sample
+period and is prefixed with the corresponding bin's lower and upper
+bounds.</p>
+</dd>
+<dt><strong>hist_bounds</strong></dt>
+<dd>
+<p>A list of the histogram boundary values for the current statistics
+area in order of ascending latency value. The values are expressed in
+whole units of seconds, miliseconds, microseconds or nanoseconds with a
+suffix indicating the unit.</p>
+</dd>
+<dt><strong>hist_ranges</strong></dt>
+<dd>
+<p>A list of the histogram bin ranges for the current statistics area in
+order of ascending latency value. The values are expressed as
+"LOWER-UPPER" in whole units of seconds, miliseconds, microseconds or
+nanoseconds with a suffix indicating the unit.</p>
+</dd>
+<dt><strong>hist_bins</strong></dt>
+<dd>
+<p>The number of latency histogram bins configured for the area.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>Create a whole-device region with one area on vg00/lvol1<br />
+# <strong>dmstats create vg00/lvol1</strong><br />
+vg00/lvol1: Created new region with 1 area(s) as region ID 0</p>
+<p>Create a 32M region 1G into device d0<br />
+# <strong>dmstats create --start 1G --length 32M d0</strong><br />
+d0: Created new region with 1 area(s) as region ID 0</p>
+<p>Create a whole-device region with 8 areas on every device<br />
+<br />
+# <strong>dmstats create --areas 8</strong><br />
+vg00-lvol1: Created new region with 8 area(s) as region ID 0<br />
+vg00-lvol2: Created new region with 8 area(s) as region ID 0<br />
+vg00-lvol3: Created new region with 8 area(s) as region ID 0<br />
+vg01-lvol0: Created new region with 8 area(s) as region ID 2<br />
+vg01-lvol1: Created new region with 8 area(s) as region ID 0<br />
+vg00-lvol2: Created new region with 8 area(s) as region ID 1</p>
+<p>Delete all regions on all devices<br />
+<br />
+# <strong>dmstats delete --alldevices --allregions</strong></p>
+<p>Create a whole-device region with areas 10GiB in size on vg00/lvol1
+using dmsetup<br />
+<br />
+# <strong>dmsetup stats create --areasize 10G vg00/lvol1</strong><br />
+vg00-lvol1: Created new region with 5 area(s) as region ID 1</p>
+<p>Create a 1GiB region with 16 areas at the start of vg00/lvol1<br />
+# <strong>dmstats create --start 0 --len 1G --areas=16
+vg00/lvol1</strong><br />
+vg00-lvol1: Created new region with 16 area(s) as region ID 0</p>
+<p>List the statistics regions registered on vg00/lvol1<br />
+# <strong>dmstats list vg00/lvol1</strong><br />
+Name RgID RStart RSize #Areas ASize ProgID<br />
+vg00-lvol1 0 0 61.00g 1 61.00g dmstats<br />
+vg00-lvol1 1 61.00g 19.20g 1 19.20g dmstats<br />
+vg00-lvol1 2 80.20g 2.14g 1 2.14g dmstats</p>
+<p>Display five statistics reports for vg00/lvol1 at an interval of one
+second<br />
+<br />
+# <strong>dmstats report --interval 1 --count 5
+vg00/lvol1</strong><br />
+# <strong>dmstats report</strong><br />
+Name RgID ArID AStart ASize RRqM/s WRqM/s R/s W/s RSz/s WSz/s AvRqSz
+QSize Util% AWait RdAWa WrAWa<br />
+vg_hex-lv_home 0 0 0 61.00g 0.00 0.00 0.00 218.00 0 1.04m 4.50k 2.97
+81.70 13.62 0.00 13.62<br />
+vg_hex-lv_home 1 0 61.00g 19.20g 0.00 0.00 0.00 5.00 0 548.00k 109.50k
+0.14 11.00 27.40 0.00 27.40<br />
+vg_hex-lv_home 2 0 80.20g 2.14g 0.00 0.00 0.00 14.00 0 1.15m 84.00k 0.39
+18.70 27.71 0.00 27.71</p>
+<p>Create one region for reach target contained in device
+vg00/lvol1<br />
+<br />
+# <strong>dmstats create --segments vg00/lvol1</strong><br />
+vg00-lvol1: Created new region with 1 area(s) as region ID 0<br />
+vg00-lvol1: Created new region with 1 area(s) as region ID 1<br />
+vg00-lvol1: Created new region with 1 area(s) as region ID 2</p>
+<p>Create regions mapping each file in the directory images/ and place
+them into separate groups, each named after the corresponding file<br />
+# <strong>dmstats create --filemap images/*</strong><br />
+images/vm1.qcow2: Created new group with 87 region(s) as group ID
+0.<br />
+images/vm1-1.qcow2: Created new group with 8 region(s) as group ID
+87.<br />
+images/vm2.qcow2: Created new group with 11 region(s) as group ID
+95.<br />
+images/vm2-1.qcow2: Created new group with 1454 region(s) as group ID
+106.<br />
+images/vm3.img: Created new group with 2 region(s) as group ID 1560.</p>
+<p>Print raw counters for region 4 on device d0<br />
+# <strong>dmstats print --regionid 4 d0</strong><br />
+2097152+65536 0 0 0 0 29 0 264 701 0 41 701 0 41</p>
+<h1>AUTHORS</h1>
+<p>Bryn M. Reeves &lt;bmr@redhat.com&gt;</p>
+<h1>SEE ALSO</h1>
+<p><strong>dmsetup</strong>(8)</p>
+<p>LVM2 resource page: <a
+href="https://www.sourceware.org/lvm2"></a><br />
+Device-mapper resource page: <a
+href="http://sources.redhat.com/dm"></a></p>
+<p>Device-mapper statistics kernel documentation<br />
+<em>Documentation/device-mapper/statistics.txt</em></p>

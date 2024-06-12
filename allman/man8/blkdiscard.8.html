@@ -1,0 +1,86 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>blkdiscard - discard sectors on a device</p>
+<h1>SYNOPSIS</h1>
+<p><strong>blkdiscard</strong> [options] [<strong>-o</strong>
+<em>offset</em>] [<strong>-l</strong> <em>length</em>]
+<em>device</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>blkdiscard</strong> is used to discard device sectors. This
+is useful for solid-state drivers (SSDs) and thinly-provisioned storage.
+Unlike <strong>fstrim</strong>(8), this command is used directly on the
+block device.</p>
+<p>By default, <strong>blkdiscard</strong> will discard all blocks on
+the device. Options may be used to modify this behavior based on range
+or size, as explained below.</p>
+<p>The <em>device</em> argument is the pathname of the block device.</p>
+<p><strong>WARNING: All data in the discarded region on the device will
+be lost!</strong></p>
+<h1>OPTIONS</h1>
+<p>The <em>offset</em> and <em>length</em> arguments may be followed by
+the multiplicative suffixes KiB (=1024), MiB (=1024*1024), and so on for
+GiB, TiB, PiB, EiB, ZiB and YiB (the "iB" is optional, e.g., "K" has the
+same meaning as "KiB") or the suffixes KB (=1000), MB (=1000*1000), and
+so on for GB, TB, PB, EB, ZB and YB.</p>
+<p><strong>-f</strong>, <strong>--force</strong></p>
+<blockquote>
+<p>Disable all checking. Since v2.36 the block device is open in
+exclusive mode (<strong>O_EXCL</strong>) by default to avoid collision
+with mounted filesystem or another kernel subsystem. The
+<strong>--force</strong> option disables the exclusive access mode.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--offset</strong> <em>offset</em></p>
+<blockquote>
+<p>Byte offset into the device from which to start discarding. The
+provided value must be aligned to the device sector size. The default
+value is zero.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--length</strong> <em>length</em></p>
+<blockquote>
+<p>The number of bytes to discard (counting from the starting point).
+The provided value must be aligned to the device sector size. If the
+specified value extends past the end of the device,
+<strong>blkdiscard</strong> will stop at the device size boundary. The
+default value extends to the end of the device.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--step</strong> <em>length</em></p>
+<blockquote>
+<p>The number of bytes to discard within one iteration. The default is
+to discard all by one ioctl call.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--secure</strong></p>
+<blockquote>
+<p>Perform a secure discard. A secure discard is the same as a regular
+discard except that all copies of the discarded blocks that were
+possibly created by garbage collection must also be erased. This
+requires support from the device.</p>
+</blockquote>
+<p><strong>-z</strong>, <strong>--zeroout</strong></p>
+<blockquote>
+<p>Zero-fill rather than discard.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Display the aligned values of <em>offset</em> and <em>length</em>. If
+the <strong>--step</strong> option is specified, it prints the discard
+progress every second.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>fstrim</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>blkdiscard</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

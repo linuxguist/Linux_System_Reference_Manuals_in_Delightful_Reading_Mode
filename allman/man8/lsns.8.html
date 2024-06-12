@@ -1,0 +1,109 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lsns - list namespaces</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lsns</strong> [options] <em>namespace</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>lsns</strong> lists information about all the currently
+accessible namespaces or about the given <em>namespace</em>. The
+<em>namespace</em> identifier is an inode number.</p>
+<p>The default output is subject to change. So whenever possible, you
+should avoid using default outputs in your scripts. Always explicitly
+define expected output mode (<strong>--tree</strong> or
+<strong>--list</strong>) and columns by using the
+<strong>--output</strong> option together with a columns list in
+environments where a stable output is required.</p>
+<p>The <strong>NSFS</strong> column, printed when <strong>net</strong>
+is specified for the <strong>--type</strong> option, is special; it uses
+multi-line cells. Use the option <strong>--nowrap</strong> to switch to
+","-separated single-line representation.</p>
+<p>Note that <strong>lsns</strong> reads information directly from the
+<em>/proc</em> filesystem and for non-root users it may return
+incomplete information. The current <em>/proc</em> filesystem may be
+unshared and affected by a PID namespace (see <strong>unshare
+--mount-proc</strong> for more details). <strong>lsns</strong> is not
+able to see persistent namespaces without processes where the namespace
+instance is held by a bind mount to
+/proc/<em>pid</em>/ns/<em>type</em>.</p>
+<h1>OPTIONS</h1>
+<p><strong>-J</strong>, <strong>--json</strong></p>
+<blockquote>
+<p>Use JSON output format.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--list</strong></p>
+<blockquote>
+<p>Use list output format.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print a header line.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Specify which output columns to print. Use <strong>--help</strong> to
+get a list of all supported columns.</p>
+<p>The default list of columns may be extended if <em>list</em> is
+specified in the format <strong>+</strong><em>list</em> (e.g.,
+<strong>lsns -o +PATH</strong>).</p>
+</blockquote>
+<p><strong>--output-all</strong></p>
+<blockquote>
+<p>Output all available columns.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--task</strong> <em>PID</em></p>
+<blockquote>
+<p>Display only the namespaces held by the process with this
+<em>PID</em>.</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--raw</strong></p>
+<blockquote>
+<p>Use the raw output format.</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--type</strong> <em>type</em></p>
+<blockquote>
+<p>Display the specified <em>type</em> of namespaces only. The supported
+types are <strong>mnt</strong>, <strong>net</strong>,
+<strong>ipc</strong>, <strong>user</strong>, <strong>pid</strong>,
+<strong>uts</strong>, <strong>cgroup</strong> and <strong>time</strong>.
+This option may be given more than once.</p>
+</blockquote>
+<p><strong>-u</strong>, <strong>--notruncate</strong></p>
+<blockquote>
+<p>Do not truncate text in columns.</p>
+</blockquote>
+<p><strong>-W</strong>, <strong>--nowrap</strong></p>
+<blockquote>
+<p>Do not use multi-line text in columns.</p>
+</blockquote>
+<p><strong>-T</strong>, <strong>--tree</strong> <em>rel</em></p>
+<blockquote>
+<p>Use tree-like output format. If <strong>process</strong> is given as
+<em>rel</em>, print process tree(s) in each name space. This is default
+when <strong>--tree</strong> is not specified. If
+<strong>parent</strong> is given, print tree(s) constructed by the
+parent/child relationship. If <strong>owner</strong> is given, print
+tree(s) constructed by the owner/owned relationship.
+<strong>owner</strong> is used as default when <em>rel</em> is
+omitted.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>nsenter</strong>(1), <strong>unshare</strong>(1),
+<strong>clone</strong>(2), <strong>namespaces</strong>(7),
+<strong>ioctl_ns</strong>(2), <strong>ip-netns</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>lsns</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

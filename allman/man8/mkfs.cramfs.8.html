@@ -1,0 +1,93 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkfs.cramfs - make compressed ROM file system</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkfs.cramfs</strong> [options] <em>directory file</em></p>
+<h1>DESCRIPTION</h1>
+<p>Files on cramfs file systems are zlib-compressed one page at a time
+to allow random read access. The metadata is not compressed, but is
+expressed in a terse representation that is more space-efficient than
+conventional file systems.</p>
+<p>The file system is intentionally read-only to simplify its design;
+random write access for compressed files is difficult to implement.
+cramfs ships with a utility (<strong>mkcramfs</strong>(8)) to pack files
+into new cramfs images.</p>
+<p>File sizes are limited to less than 16 MB.</p>
+<p>Maximum file system size is a little under 272 MB. (The last file on
+the file system must begin before the 256 MB block, but can extend past
+it.)</p>
+<h1>ARGUMENTS</h1>
+<p>The <em>directory</em> is simply the root of the directory tree that
+we want to generate a compressed filesystem out of.</p>
+<p>The <em>file</em> will contain the cram file system, which later can
+be mounted.</p>
+<h1>OPTIONS</h1>
+<p><strong>-v</strong></p>
+<blockquote>
+<p>Enable verbose messaging.</p>
+</blockquote>
+<p><strong>-E</strong></p>
+<blockquote>
+<p>Treat all warnings as errors, which are reflected as command exit
+status.</p>
+</blockquote>
+<p><strong>-b</strong> <em>blocksize</em></p>
+<blockquote>
+<p>Use defined block size, which has to be divisible by page size.</p>
+</blockquote>
+<p><strong>-e</strong> <em>edition</em></p>
+<blockquote>
+<p>Use defined file system edition number in superblock.</p>
+</blockquote>
+<p><strong>-N</strong> <em>big, little, host</em></p>
+<blockquote>
+<p>Use defined endianness. Value defaults to <em>host</em>.</p>
+</blockquote>
+<p><strong>-i</strong> <em>file</em></p>
+<blockquote>
+<p>Insert a <em>file</em> to cramfs file system.</p>
+</blockquote>
+<p><strong>-n</strong> <em>name</em></p>
+<blockquote>
+<p>Set name of the cramfs file system.</p>
+</blockquote>
+<p><strong>-p</strong></p>
+<blockquote>
+<p>Pad by 512 bytes for boot code.</p>
+</blockquote>
+<p><strong>-s</strong></p>
+<blockquote>
+<p>This option is ignored. Originally the <strong>-s</strong> turned on
+directory entry sorting.</p>
+</blockquote>
+<p><strong>-z</strong></p>
+<blockquote>
+<p>Make explicit holes.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>0</strong></p>
+<blockquote>
+<p>success</p>
+</blockquote>
+<p><strong>8</strong></p>
+<blockquote>
+<p>operation error, such as unable to allocate memory</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>fsck.cramfs</strong>(8), <strong>mount</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>mkfs.cramfs</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

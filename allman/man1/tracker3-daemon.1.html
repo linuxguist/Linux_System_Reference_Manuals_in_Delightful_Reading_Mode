@@ -1,0 +1,133 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-daemon - Start, stop, restart and list daemons responsible
+for indexing content</p>
+<h1>SYNOPSIS</h1>
+<pre><code>tracker3 daemon [options...]
+tracker3 daemon -s | -t [daemons] | -k [daemons] | -l
+tracker3 daemon -f | -w [ontology]
+tracker3 daemon --miner &lt;miner&gt; --pause[-for-process] &lt;reason&gt;
+tracker3 daemon --miner &lt;miner&gt; --resume &lt;cookie&gt;</code></pre>
+<h1>DESCRIPTION</h1>
+<p>Tracker indexes content with daemon processes that run in the
+background. The <strong>tracker3 daemon</strong> command allows for
+control of these components. This ranges from starting, stopping and
+killing processes to pausing and resuming them.</p>
+<p>In addition to all this, there are ways to follow or watch what is
+happening in real time from a top level and right down where the SPARQL
+commits are happening too.</p>
+<p>If no arguments are provided this command will show the current
+status of all Tracker data miners.</p>
+<p>The data miners can be paused or resumed using this command and you
+can also list miners running and available.</p>
+<h1>OPTIONS</h1>
+<p><strong>-p, --list-processes</strong></p>
+<blockquote>
+<p>This lists all Tracker processes in the system.</p>
+</blockquote>
+<p>*-k, --kill</p>
+<blockquote>
+<p>This uses SIGKILL to stop all Tracker processes found matching the
+parameter, if no extra parameter is passed, "all" will be assumed. This
+is not advised unless you are having problems stopping Tracker in the
+first place. This <strong>GUARANTEES</strong> death.</p>
+</blockquote>
+<p>*-t, --terminate=</p>
+<blockquote>
+<p>This uses SIGTERM to stop all Tracker processes. This is recommended
+over --kill because it gives the processes time to shutdown cleanly.</p>
+</blockquote>
+<p><strong>-s, --start</strong></p>
+<blockquote>
+<p>Starts all miners.</p>
+</blockquote>
+<p><strong>-f, --follow</strong></p>
+<blockquote>
+<p>Follow status changes to daemons as they happen. This is a top level
+view of what is happening. You will see the name for each daemon and a
+state with the progress in that state.</p>
+</blockquote>
+<p>This requires Ctrl+C to stop and return to the command line. Each new
+status is put on a new line.</p>
+<p><strong>-w, --watch=[</strong><em>ontology</em><strong>]</strong></p>
+<blockquote>
+<p>Watch changes that happen to the database in real time. This requires
+Ctrl+C to stop and return to the command line.</p>
+</blockquote>
+<p>If <em>ontology</em> is unspecified, all updates are shown. The
+<em>ontology</em> can be a comma separated list of shorthand or long
+hand ontology properties. For example:</p>
+<blockquote>
+<pre><code>    $ tracker3 daemon -w nie:url,nie:mimeType,nfo:fileSize,nie:dataSource
+    Now listening for resource updates to the database
+    All nie:plainTextContent properties are omitted
+
+    Press Ctrl+C to stop
+
+    nfo:Document
+       nfo:fileSize = 1770
+       nie:dataSource = http://tracker.api.gnome.org/ontology/v3/tracker#extractor-data-source
+       nie:mimeType = text/plain
+       nie:url = file:///home/martyn/.bash_aliases
+    nfo:Document
+       nie:dataSource = http://tracker.api.gnome.org/ontology/v3/tracker#extractor-data-source
+
+    ...</code></pre>
+</blockquote>
+<p><strong>--list-common-statuses</strong></p>
+<blockquote>
+<p>This will list statuses most commonly produced by miners and the
+store. These statuses are not translated when sent over D-Bus and should
+be translated by each application. These are not considered static and
+are subject to change at any point.</p>
+</blockquote>
+<p>Additionally, these statuses are not the only ones which may be
+reported by a miner. There may be other states pertaining to the
+specific roles of the miner in question.</p>
+<p><strong>--list-miners-running</strong></p>
+<blockquote>
+<p>This will list all miners which have responded to a D-Bus call.
+Sometimes it is helpful to use this command with
+<strong>--list-miners-available.</strong></p>
+</blockquote>
+<p><strong>--list-miners-available</strong></p>
+<blockquote>
+<p>This will list all miners which are available even if they are not
+running at the moment.</p>
+</blockquote>
+<p><strong>--pause-details</strong></p>
+<blockquote>
+<p>For listing all miners which are paused and the reasons for being
+paused, you can use this. It will also display the application that
+requested the pause too.</p>
+</blockquote>
+<p><strong>--miner=&lt;</strong><em>miner</em><strong>&gt;</strong></p>
+<blockquote>
+<p>This argument is used with <strong>--pause</strong> or
+<strong>--resume</strong> to say which miner you want to pause or
+resume. You can use the full D-Bus name, e.g.
+"org.freedesktop.Tracker3.Miner.Files" OR you can use the suffix, e.g.
+"Files".</p>
+</blockquote>
+<p><strong>--pause=&lt;</strong><em>reason</em><strong>&gt;</strong></p>
+<blockquote>
+<p>The <em>reason</em> here is useful to know WHY the miner should be
+paused. A miner can be paused many times by multiple applications. Only
+when all pauses have been resumed will it continue. If successful, a
+cookie will be given to uniquely identify the request. This cookie is
+used to resume the pause at a later stage.</p>
+</blockquote>
+<p><strong>--pause-for-process=&lt;</strong><em>reason</em><strong>&gt;</strong></p>
+<blockquote>
+<p>This works exactly the same way as <strong>--pause</strong> with the
+exception that it only keeps the pause active while the calling process
+is alive. As soon as you press Ctrl+C the pause is resumed
+automatically.</p>
+</blockquote>
+<p><strong>--resume=&lt;</strong><em>cookie</em><strong>&gt;</strong></p>
+<blockquote>
+<p>The <em>cookie</em> is given by a successful <strong>--pause</strong>
+command. It is a number which identifies each pause request. When all
+pauses have been resumed, the miner will resume working.</p>
+</blockquote>

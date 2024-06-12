@@ -1,0 +1,34 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Binding::Message::MethodCall - a message encoding a method
+call</p>
+<h1>DESCRIPTION</h1>
+<p>This module is part of the low-level DBus binding APIs, and should
+not be used by application code. No guarantees are made about APIs under
+the <code>Net::DBus::Binding::</code> namespace being stable across
+releases.</p>
+<p>This module provides a convenience constructor for creating a message
+representing a method call.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $call = Net::DBus::Binding::Message::MethodCall-&gt;new(
+service_name =&gt; $service, object_path =&gt; $object, interface =&gt;
+$interface, method_name =&gt; $name);</dt>
+<dd>
+<p>Create a message representing a call on the object located at the
+path <code>object_path</code> within the client owning the well-known
+name given by <code>service_name</code>. The method to be invoked has
+the name <code>method_name</code> within the interface specified by the
+<code>interface</code> parameter.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2004-2009 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::Binding::Message</p>

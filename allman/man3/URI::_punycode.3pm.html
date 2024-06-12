@@ -1,0 +1,46 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>URI::_punycode - encodes Unicode string in Punycode</p>
+<h1>SYNOPSIS</h1>
+<p>use strict; use warnings; use utf8; use URI::_punycode
+qw(encode_punycode decode_punycode); # encode a unicode string my
+$punycode = encode_punycode(http://☃.net); # http://.net-xc8g $punycode
+= encode_punycode(bücher); # bcher-kva $punycode =
+encode_punycode(他们为什么不说中文); # ihqwcrb4cv8a8dqg056pqjye # decode
+a punycode string back into a unicode string my $unicode =
+decode_punycode(http://.net-xc8g); # http://☃.net $unicode =
+decode_punycode(bcher-kva); # bücher $unicode =
+decode_punycode(ihqwcrb4cv8a8dqg056pqjye); # 他们为什么不说中文</p>
+<h1>DESCRIPTION</h1>
+<p>URI::_punycode is a module to encode / decode Unicode strings into
+Punycode &lt;https://tools.ietf.org/html/rfc3492&gt;, an efficient
+encoding of Unicode for use with IDNA
+&lt;https://tools.ietf.org/html/rfc5890&gt;.</p>
+<h1>FUNCTIONS</h1>
+<p>All functions throw exceptions on failure. You can <code>catch</code>
+them with Syntax::Keyword::Try or Try::Tiny. The following functions are
+exported by default.</p>
+<h2>encode_punycode</h2>
+<p>my $punycode = encode_punycode(http://☃.net); # http://.net-xc8g
+$punycode = encode_punycode(bücher); # bcher-kva $punycode =
+encode_punycode(他们为什么不说中文) # ihqwcrb4cv8a8dqg056pqjye</p>
+<p>Takes a Unicode string (UTF8-flagged variable) and returns a Punycode
+encoding for it.</p>
+<h2>decode_punycode</h2>
+<p>my $unicode = decode_punycode(http://.net-xc8g); # http://☃.net
+$unicode = decode_punycode(bcher-kva); # bücher $unicode =
+decode_punycode(ihqwcrb4cv8a8dqg056pqjye); # 他们为什么不说中文</p>
+<p>Takes a Punycode encoding and returns original Unicode string.</p>
+<h1>AUTHOR</h1>
+<p>Tatsuhiko Miyagawa &lt;<em>miyagawa@bulknews.net</em>&gt; is the
+author of IDNA::Punycode which was the basis for this module.</p>
+<h1>SEE ALSO</h1>
+<p>IDNA::Punycode, RFC 3492 &lt;https://tools.ietf.org/html/rfc3492&gt;,
+RFC 5891 &lt;https://tools.ietf.org/html/rfc5891&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

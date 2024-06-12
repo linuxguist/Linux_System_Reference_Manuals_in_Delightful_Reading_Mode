@@ -1,0 +1,95 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl_user_macros, OPENSSL_API_COMPAT, OPENSSL_NO_DEPRECATED - User
+defined macros</p>
+<h1>DESCRIPTION</h1>
+<p>User defined macros allow the programmer to control certain aspects
+of what is exposed by the OpenSSL headers.</p>
+<p><strong>NOTE:</strong> to be effective, a user defined macro <em>must
+be defined</em> before including any header file that depends on it,
+either in the compilation command (<code>cc -DMACRO=value</code>) or by
+defining the macro in source before including any headers.</p>
+<p>Other manual pages may refer to this page when declarations depend on
+user defined macros.</p>
+<h2>The macros</h2>
+<dl>
+<dt>OPENSSL_API_COMPAT</dt>
+<dd>
+<p>The value is a version number, given in one of the following two
+forms:</p>
+<dl>
+<dt>"0xMNNFF000L"</dt>
+<dd>
+<p>This is the form supported for all versions up to 1.1.x, where
+<code>M</code> represents the major number, <code>NN</code> represents
+the minor number, and <code>FF</code> represents the fix number, as a
+hexadecimal number. For version 1.1.0, that's <code>0x10100000L</code>.
+Any version number may be given, but these numbers are the current known
+major deprecation points, making them the most meaningful:</p>
+<dl>
+<dt>"0x00908000L" (version 0.9.8)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"0x10000000L" (version 1.0.0)</dt>
+<dd>
+
+</dd>
+<dt>"0x10100000L" (version 1.1.0)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>For convenience, higher numbers are accepted as well, as long as
+feasible. For example, <code>0x60000000L</code> will work as expected.
+However, it is recommended to start using the second form instead:</p>
+</dd>
+<dt>"mmnnpp"</dt>
+<dd>
+<p>This form is a simple decimal number calculated with this formula:
+<em>major</em> * 10000 + <em>minor</em> * 100 + <em>patch</em> where
+<em>major</em>, <em>minor</em> and <em>patch</em> are the desired major,
+minor and patch components of the version number. For example:</p>
+<dl>
+<dt>30000 corresponds to version 3.0.0</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>10002 corresponds to version 1.0.2</dt>
+<dd>
+
+</dd>
+<dt>420101 corresponds to version 42.1.1</dt>
+<dd>
+
+</dd>
+</dl>
+</dd>
+</dl>
+<p>If <strong>OPENSSL_API_COMPAT</strong> is undefined, this default
+value is used in its place: <code>30000</code></p>
+</dd>
+<dt>OPENSSL_NO_DEPRECATED</dt>
+<dd>
+<p>If this macro is defined, all deprecated public symbols in all
+OpenSSL versions up to and including the version given by
+<strong>OPENSSL_API_COMPAT</strong> (or the default value given above,
+when <strong>OPENSSL_API_COMPAT</strong> isn't defined) will be
+hidden.</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2018-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

@@ -1,0 +1,172 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xwud - image displayer for X</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xwud</strong> [-in <em>file</em>] [-noclick] [-geometry
+<em>geom</em>] [-display <em>display</em>] [-new] [-std &lt;maptype&gt;]
+[-raw] [-vis &lt;vis-type-or-id&gt;] [-scale] [-help] [-rv] [-plane
+<em>number</em>] [-fg <em>color</em>] [-bg <em>color</em>] [-dumpheader]
+[-version]</p>
+<h1>DESCRIPTION</h1>
+<p><em>Xwud</em> is an X Window System image undumping utility.
+<em>Xwud</em> allows X users to display in a window an image saved in a
+specially formatted dump file, such as produced by <em>xwd(1)</em>.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-bg <em>color</em></strong></dt>
+<dd>
+<p>If a bitmap image (or a single plane of an image) is displayed, this
+option can be used to specify the color to display for the "0" bits in
+the image.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-display <em>display</em></strong></dt>
+<dd>
+<p>This option allows you to specify the server to connect to; see
+<em>X(7)</em>.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-dumpheader</strong></dt>
+<dd>
+<p>This option prints out the XWD header information only. Nothing is
+displayed.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-fg <em>color</em></strong></dt>
+<dd>
+<p>If a bitmap image (or a single plane of an image) is displayed, this
+option can be used to specify the color to display for the "1" bits in
+the image.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-geometry <em>geom</em></strong></dt>
+<dd>
+<p>This option allows you to specify the size and position of the
+window. Typically you will only want to specify the position, and let
+the size default to the actual size of the image.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-help</strong></dt>
+<dd>
+<p>Print out a short description of the allowable options.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-in <em>file</em></strong></dt>
+<dd>
+<p>This option allows the user to explicitly specify the input file on
+the command line. If no input file is given, the standard input is
+assumed.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-new</strong></dt>
+<dd>
+<p>This option forces creation of a new colormap for displaying the
+image. If the image characteristics happen to match those of the
+display, this can get the image on the screen faster, but at the cost of
+using a new colormap (which on most displays will cause other windows to
+go technicolor).</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-noclick</strong></dt>
+<dd>
+<p>Clicking any button in the window will terminate the application,
+unless this option is specified. Termination can always be achieved by
+typing 'q', 'Q', or ctrl-c.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-plane <em>number</em></strong></dt>
+<dd>
+<p>You can select a single bit plane of the image to display with this
+option. Planes are numbered with zero being the least significant
+bit.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-raw</strong></dt>
+<dd>
+<p>This option forces the image to be displayed with whatever color
+values happen to currently exist on the screen. This option is mostly
+useful when undumping an image back onto the same screen that the image
+originally came from, while the original windows are still on the
+screen, and results in getting the image on the screen faster.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-rv</strong></dt>
+<dd>
+<p>If a bitmap image (or a single plane of an image) is displayed, this
+option forces the foreground and background colors to be swapped. This
+may be needed when displaying a bitmap image which has the color sense
+of pixel values "0" and "1" reversed from what they are on your
+display.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-scale</strong></dt>
+<dd>
+<p>Allow the window to be resized, and scale the image to the size of
+the window.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-std <em>maptype</em></strong></dt>
+<dd>
+<p>This option causes the image to be displayed using the specified
+Standard Colormap. The property name is obtained by converting the type
+to upper case, prepending "RGB_", and appending "_MAP". Typical types
+are "best", "default", and "gray". See <em>xstdcmap(1)</em> for one way
+of creating Standard Colormaps.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-version</strong></dt>
+<dd>
+<p>This option causes <em>xwd</em> to print its version information and
+exit.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-vis <em>vis-type-or-id</em></strong></dt>
+<dd>
+<p>This option allows you to specify a particular visual or visual
+class. The default is to pick the "best" one. A particular class can be
+specified: "StaticGray", "GrayScale", "StaticColor", "PseudoColor",
+"DirectColor", or "TrueColor". Or "Match" can be specified, meaning use
+the same class as the source image. Alternatively, an exact visual id
+(specific to the server) can be specified, either as a hexadecimal
+number (prefixed with "0x") or as a decimal number. Finally, "default"
+can be specified, meaning to use the same class as the colormap of the
+root window. Case is not significant in any of these strings.</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p>To get default display.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><strong>XWDFile.h</strong></dt>
+<dd>
+<p>X Window Dump File format definition file.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>xwud doesn't handle big/deep images very well on servers that don't
+have the BIG-REQUESTS extension.</p>
+<h1>SEE ALSO</h1>
+<p>xwd(1), xstdcmap(1), X(7)</p>
+<h1>AUTHOR</h1>
+<p>Bob Scheifler, MIT X Consortium</p>

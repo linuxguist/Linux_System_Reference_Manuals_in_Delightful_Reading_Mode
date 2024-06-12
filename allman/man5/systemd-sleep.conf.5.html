@@ -1,0 +1,175 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-sleep.conf, sleep.conf.d - Suspend and hibernation
+configuration file</p>
+<h1>SYNOPSIS</h1>
+<p>/etc/systemd/sleep.conf</p>
+<p>/etc/systemd/sleep.conf.d/*.conf</p>
+<p>/run/systemd/sleep.conf.d/*.conf</p>
+<p>/usr/lib/systemd/sleep.conf.d/*.conf</p>
+<h1>DESCRIPTION</h1>
+<p><strong>systemd</strong> supports four general power-saving
+modes:</p>
+<p>suspend</p>
+<blockquote>
+<p>a low-power state where execution of the OS is paused, and complete
+power loss might result in lost data, and which is fast to enter and
+exit. This corresponds to suspend, standby, or freeze states as
+understood by the kernel.</p>
+</blockquote>
+<p>hibernate</p>
+<blockquote>
+<p>a low-power state where execution of the OS is paused, and complete
+power loss does not result in lost data, and which might be slow to
+enter and exit. This corresponds to the hibernation as understood by the
+kernel.</p>
+</blockquote>
+<p>hybrid-sleep</p>
+<blockquote>
+<p>a low-power state where execution of the OS is paused, which might be
+slow to enter, and on complete power loss does not result in lost data
+but might be slower to exit in that case. This mode is called
+suspend-to-both by the kernel.</p>
+</blockquote>
+<p>suspend-then-hibernate</p>
+<blockquote>
+<p>A low power state where the system is initially suspended (the state
+is stored in RAM). If the system supports low-battery alarms (ACPI
+_BTP), then the system will be woken up by the ACPI low-battery signal
+and hibernated (the state is then stored on disk). Also, if not
+interrupted within the timespan specified by <em>HibernateDelaySec=</em>
+or the estimated timespan until the system battery charge level goes
+down to 5%, then the system will be woken up by the RTC alarm and
+hibernated. The estimated timespan is calculated from the change of the
+battery capacity level after the time specified by
+<em>SuspendEstimationSec=</em> or when the system is woken up from the
+suspend.</p>
+</blockquote>
+<p>Settings in these files determine what strings will be written to
+/sys/power/disk and /sys/power/state by
+<strong>systemd-sleep</strong>(8) when <strong>systemd</strong>(1)
+attempts to suspend or hibernate the machine. See
+<strong>systemd.syntax</strong>(7) for a general description of the
+syntax.</p>
+<h1>CONFIGURATION DIRECTORIES AND PRECEDENCE</h1>
+<p>The default configuration is set during compilation, so configuration
+is only needed when it is necessary to deviate from those defaults.
+Initially, the main configuration file in /etc/systemd/ contains
+commented out entries showing the defaults as a guide to the
+administrator. Local overrides can be created by editing this file or by
+creating drop-ins, as described below. Using drop-ins for local
+configuration is recommended over modifications to the main
+configuration file.</p>
+<p>In addition to the "main" configuration file, drop-in configuration
+snippets are read from /usr/lib/systemd/*.conf.d/,
+/usr/local/lib/systemd/*.conf.d/, and /etc/systemd/*.conf.d/. Those
+drop-ins have higher precedence and override the main configuration
+file. Files in the *.conf.d/ configuration subdirectories are sorted by
+their filename in lexicographic order, regardless of in which of the
+subdirectories they reside. When multiple files specify the same option,
+for options which accept just a single value, the entry in the file
+sorted last takes precedence, and for options which accept a list of
+values, entries are collected as they occur in the sorted files.</p>
+<p>When packages need to customize the configuration, they can install
+drop-ins under /usr/. Files in /etc/ are reserved for the local
+administrator, who may use this logic to override the configuration
+files installed by vendor packages. Drop-ins have to be used to override
+package drop-ins, since the main configuration file has lower
+precedence. It is recommended to prefix all filenames in those
+subdirectories with a two-digit number and a dash, to simplify the
+ordering of the files.</p>
+<p>To disable a configuration file supplied by the vendor, the
+recommended way is to place a symlink to /dev/null in the configuration
+directory in /etc/, with the same filename as the vendor configuration
+file.</p>
+<h1>OPTIONS</h1>
+<p>The following options can be configured in the [Sleep] section of
+/etc/systemd/sleep.conf or a sleep.conf.d file:</p>
+<p><em>AllowSuspend=</em>, <em>AllowHibernation=</em>,
+<em>AllowSuspendThenHibernate=</em>, <em>AllowHybridSleep=</em></p>
+<blockquote>
+<p>By default any power-saving mode is advertised if possible (i.e. the
+kernel supports that mode, the necessary resources are available). Those
+switches can be used to disable specific modes.</p>
+<p>If <em>AllowHibernation=no</em> or <em>AllowSuspend=no</em> is used,
+this implies <em>AllowSuspendThenHibernate=no</em> and
+<em>AllowHybridSleep=no</em>, since those methods use both suspend and
+hibernation internally. <em>AllowSuspendThenHibernate=yes</em> and
+<em>AllowHybridSleep=yes</em> can be used to override and enable those
+specific modes.</p>
+</blockquote>
+<p><em>SuspendMode=</em>, <em>HibernateMode=</em>,
+<em>HybridSleepMode=</em></p>
+<blockquote>
+<p>The string to be written to /sys/power/disk by, respectively,
+<strong>systemd-suspend.service</strong>(8),
+<strong>systemd-hibernate.service</strong>(8), or
+<strong>systemd-hybrid-sleep.service</strong>(8). More than one value
+can be specified by separating multiple values with whitespace. They
+will be tried in turn, until one is written without error. If none of
+the writes succeed, the operation will be aborted.</p>
+<p>The allowed set of values is determined by the kernel and is shown in
+the file itself (use <strong>cat /sys/power/disk</strong> to display).
+See <strong>the kernel documentation</strong>[1] for more details.</p>
+<p><strong>systemd-suspend-then-hibernate.service</strong>(8) uses the
+value of <em>SuspendMode=</em> when suspending and the value of
+<em>HibernateMode=</em> when hibernating.</p>
+</blockquote>
+<p><em>SuspendState=</em>, <em>HibernateState=</em>,
+<em>HybridSleepState=</em></p>
+<blockquote>
+<p>The string to be written to /sys/power/state by, respectively,
+<strong>systemd-suspend.service</strong>(8),
+<strong>systemd-hibernate.service</strong>(8), or
+<strong>systemd-hybrid-sleep.service</strong>(8). More than one value
+can be specified by separating multiple values with whitespace. They
+will be tried in turn, until one is written without error. If none of
+the writes succeed, the operation will be aborted.</p>
+<p>The allowed set of values is determined by the kernel and is shown in
+the file itself (use <strong>cat /sys/power/state</strong> to display).
+See <strong>the kernel documentation</strong>[1] for more details.</p>
+<p><strong>systemd-suspend-then-hibernate.service</strong>(8) uses the
+value of <em>SuspendState=</em> when suspending and the value of
+<em>HibernateState=</em> when hibernating.</p>
+</blockquote>
+<p><em>HibernateDelaySec=</em></p>
+<blockquote>
+<p>The amount of time the system spends in suspend mode before the
+system is automatically put into hibernate mode. Only used by
+<strong>systemd-suspend-then-hibernate.service</strong>(8). If the
+system has a battery, then defaults to the estimated timespan until the
+system battery charge level goes down to 5%. If the system has no
+battery, then defaults to 2h.</p>
+</blockquote>
+<p><em>SuspendEstimationSec=</em></p>
+<blockquote>
+<p>The RTC alarm will wake the system after the specified timespan to
+measure the system battery capacity level and estimate battery
+discharging rate, which is used for estimating timespan until the system
+battery charge level goes down to 5%. Only used by
+<strong>systemd-suspend-then-hibernate.service</strong>(8). Defaults to
+1h.</p>
+</blockquote>
+<h1>EXAMPLE: FREEZE</h1>
+<p>Example: to exploit the “freeze” mode added in Linux 3.9, one can use
+<strong>systemctl suspend</strong> with</p>
+<blockquote>
+<pre><code>[Sleep]
+SuspendState=freeze</code></pre>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>systemd-sleep</strong>(8),
+<strong>systemd-suspend.service</strong>(8),
+<strong>systemd-hibernate.service</strong>(8),
+<strong>systemd-hybrid-sleep.service</strong>(8),
+<strong>systemd-suspend-then-hibernate.service</strong>(8),
+<strong>systemd</strong>(1), <strong>systemd.directives</strong>(7)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>the kernel documentation</p>
+<p>https://www.kernel.org/doc/html/latest/admin-guide/pm/sleep-states.html#basic-sysfs-interfaces-for-system-suspend-and-hibernation</p>
+</dd>
+</dl>

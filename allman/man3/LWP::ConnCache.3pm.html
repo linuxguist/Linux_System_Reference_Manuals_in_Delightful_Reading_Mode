@@ -1,0 +1,122 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>LWP::ConnCache - Connection cache manager</p>
+<h1>NOTE</h1>
+<p>This module is experimental. Details of its interface is likely to
+change in the future.</p>
+<h1>SYNOPSIS</h1>
+<p>use LWP::ConnCache; my $cache = LWP::ConnCache-&gt;new;
+$cache-&gt;deposit($type, $key, $sock); $sock =
+$cache-&gt;withdraw($type, $key);</p>
+<h1>DESCRIPTION</h1>
+<p>The <code>LWP::ConnCache</code> class is the standard connection
+cache manager for LWP::UserAgent.</p>
+<h1>METHODS</h1>
+<p>The following basic methods are provided:</p>
+<h2>new</h2>
+<p>my $cache = LWP::ConnCache-&gt;new( %options )</p>
+<p>This method constructs a new LWP::ConnCache object. The only option
+currently accepted is <code>total_capacity</code>. If specified it
+initializes the total_capacity in LWP::ConnCache option. It defaults to
+<code>1</code>.</p>
+<h2>total_capacity</h2>
+<p>my $cap = $cache-&gt;total_capacity; $cache-&gt;total_capacity(0); #
+drop all immediately $cache-&gt;total_capacity(undef); # no limit
+$cache-&gt;total_capacity($number);</p>
+<p>Get/sets the number of connection that will be cached. Connections
+will start to be dropped when this limit is reached. If set to
+<code>0</code>, then all connections are immediately dropped. If set to
+<code>undef</code>, then there is no limit.</p>
+<h2>capacity</h2>
+<p>my $http_capacity = $cache-&gt;capacity(http);
+$cache-&gt;capacity(http, 2 );</p>
+<p>Get/set a limit for the number of connections of the specified type
+that can be cached. The first parameter is a short string like
+<code>"http"</code> or <code>"ftp"</code>.</p>
+<h2>drop</h2>
+<p>$cache-&gt;drop(); # Drop ALL connections # which is just a synonym
+for: $cache-&gt;drop(sub{1}); # Drop ALL connections # drop all
+connections older than 22 seconds and add a reason for it!
+$cache-&gt;drop(22, "Older than 22 secs dropped"); # which is just a
+synonym for: $cache-&gt;drop(sub { my ($conn, $type, $key,
+$deposit_time) = @_; if ($deposit_time &lt; 22) { # true values drop the
+connection return 1; } # false values dont drop the connection return 0;
+}, "Older than 22 secs dropped" );</p>
+<p>Drop connections by some criteria. The <code>$checker</code> argument
+is a subroutine that is called for each connection. If the routine
+returns a TRUE value then the connection is dropped. The routine is
+called with <code>($conn, $type, $key, $deposit_time)</code> as
+arguments.</p>
+<p>Shortcuts: If the <code>$checker</code> argument is absent (or
+<code>undef</code>) all cached connections are dropped. If the
+<code>$checker</code> is a number then all connections untouched that
+the given number of seconds or more are dropped. If
+<code>$checker</code> is a string then all connections of the given type
+are dropped.</p>
+<p>The <code>reason</code> is passed on to the dropped in LWP::ConnCache
+method.</p>
+<h2>prune</h2>
+<p>$cache-&gt;prune();</p>
+<p>Calling this method will drop all connections that are dead. This is
+tested by calling the ping in LWP::ConnCache method on the connections.
+If the ping in LWP::ConnCache method exists and returns a false value,
+then the connection is dropped.</p>
+<h2>get_types</h2>
+<p>my @types = $cache-&gt;get_types();</p>
+<p>This returns all the <code>type</code> fields used for the currently
+cached connections.</p>
+<h2>get_connections</h2>
+<p>my @conns = $cache-&gt;get_connections(); # all connections my @conns
+= $cache-&gt;get_connections(http); # connections for http</p>
+<p>This returns all connection objects of the specified type. If no type
+is specified then all connections are returned. In scalar context the
+number of cached connections of the specified type is returned.</p>
+<h1>PROTOCOL METHODS</h1>
+<p>The following methods are called by low-level protocol modules to try
+to save away connections and to get them back.</p>
+<h2>deposit</h2>
+<p>$cache-&gt;deposit($type, $key, $conn);</p>
+<p>This method adds a new connection to the cache. As a result, other
+already cached connections might be dropped. Multiple connections with
+the same type/key might be added.</p>
+<h2>withdraw</h2>
+<p>my $conn = $cache-&gt;withdraw($type, $key);</p>
+<p>This method tries to fetch back a connection that was previously
+deposited. If no cached connection with the specified
+<code>$type</code>/$key is found, then <code>undef</code> is returned.
+There is not guarantee that a deposited connection can be withdrawn, as
+the cache manger is free to drop connections at any time.</p>
+<h1>INTERNAL METHODS</h1>
+<p>The following methods are called internally. Subclasses might want to
+override them.</p>
+<h2>enforce_limits</h2>
+<p>$conn-&gt;enforce_limits([$type])</p>
+<p>This method is called with after a new connection is added
+(deposited) in the cache or capacity limits are adjusted. The default
+implementation drops connections until the specified capacity limits are
+not exceeded.</p>
+<h2>dropping</h2>
+<p>$conn-&gt;dropping($conn_record, $reason)</p>
+<p>This method is called when a connection is dropped. The record
+belonging to the dropped connection is passed as the first argument and
+a string describing the reason for the drop is passed as the second
+argument. The default implementation makes some noise if the
+<code>$LWP::ConnCache::DEBUG</code> variable is set and nothing
+more.</p>
+<h1>SUBCLASSING</h1>
+<p>For specialized cache policy it makes sense to subclass
+<code>LWP::ConnCache</code> and perhaps override the deposit in
+LWP::ConnCache, enforce_limits in LWP::ConnCache, and dropping in
+LWP::ConnCache methods.</p>
+<p>The object itself is a hash. Keys prefixed with <code>cc_</code> are
+reserved for the base class.</p>
+<h1>SEE ALSO</h1>
+<p>LWP::UserAgent</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2001 Gisle Aas.</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

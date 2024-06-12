@@ -1,0 +1,26 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>00-upstream-settings</strong> - dconf configuration file</p>
+<h1>SYNOPSIS</h1>
+<p><strong>/etc/dconf/db/ibus.d/00-upstream-settings</strong></p>
+<h1>DESCRIPTION</h1>
+<p>IBus is an Intelligent Input Bus. It is a new input framework for
+Linux OS. It provides full featured and user friendly input method user
+interface. It also may help developers to develop input method
+easily.</p>
+<p><strong>00-upstream-settings</strong> is a text configuration file of
+dconf and can be converted to /etc/dconf/db/ibus by <strong>dconf
+update</strong> command with a write privilege in /etc/dconf/db.
+/etc/dconf/db/ibus is a database file of dconf and saves the IBus
+default settings. The saved keys and values can be readed by dconf
+command.</p>
+<blockquote>
+<pre><code>env DCONF_PROFILE=ibus dconf list /desktop/ibus/
+</code></pre>
+</blockquote>
+<h1>BUGS</h1>
+<p>If you find a bug, please report it at
+https://github.com/ibus/ibus/issues</p>
+<h1>SEE ALSO</h1>
+<p><strong>dconf</strong>(1) <strong>ibus</strong>(5)</p>

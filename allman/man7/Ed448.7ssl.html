@@ -1,0 +1,80 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_SIGNATURE-ED25519, EVP_SIGNATURE-ED448, Ed25519, Ed448 - EVP_PKEY
+Ed25519 and Ed448 support</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Ed25519</strong> and <strong>Ed448</strong> EVP_PKEY
+implementation supports key generation, one-shot digest sign and digest
+verify using PureEdDSA and <strong>Ed25519</strong> or
+<strong>Ed448</strong> (see RFC8032). It has associated private and
+public key formats compatible with RFC 8410.</p>
+<h2>ED25519 and ED448 Signature Parameters</h2>
+<p>No additional parameters can be set during one-shot signing or
+verification. In particular, because PureEdDSA is used, a digest must
+<strong>NOT</strong> be specified when signing or verifying. See
+<strong>EVP_PKEY-X25519</strong> (7) for information related to
+<strong>X25519</strong> and <strong>X448</strong> keys.</p>
+<p>The following signature parameters can be retrieved using
+<strong>EVP_PKEY_CTX_get_params()</strong>.</p>
+<dl>
+<dt>"algorithm-id" (OSSL_SIGNATURE_PARAM_ALGORITHM_ID) &lt;octet
+string&gt;</dt>
+<dd>
+<p>The parameters are described in
+<strong>provider-signature</strong> (7).</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>The PureEdDSA algorithm does not support the streaming mechanism of
+other signature algorithms using, for example,
+<strong>EVP_DigestUpdate()</strong>. The message to sign or verify must
+be passed using the one-shot <strong>EVP_DigestSign()</strong> and
+<strong>EVP_DigestVerify()</strong> functions.</p>
+<p>When calling <strong>EVP_DigestSignInit()</strong> or
+<strong>EVP_DigestVerifyInit()</strong>, the digest <em>type</em>
+parameter <strong>MUST</strong> be set to NULL.</p>
+<p>Applications wishing to sign certificates (or other structures such
+as CRLs or certificate requests) using Ed25519 or Ed448 can either use
+<strong>X509_sign()</strong> or <strong>X509_sign_ctx()</strong> in the
+usual way.</p>
+<p>Ed25519 or Ed448 private keys can be set directly using
+<strong>EVP_PKEY_new_raw_private_key</strong> (3) or loaded from a
+PKCS#8 private key file using
+<strong>PEM_read_bio_PrivateKey</strong> (3) (or similar function).
+Completely new keys can also be generated (see the example below).
+Setting a private key also sets the associated public key.</p>
+<p>Ed25519 or Ed448 public keys can be set directly using
+<strong>EVP_PKEY_new_raw_public_key</strong> (3) or loaded from a
+SubjectPublicKeyInfo structure in a PEM file using
+<strong>PEM_read_bio_PUBKEY</strong> (3) (or similar function).</p>
+<p>Ed25519 and Ed448 can be tested with the
+<strong>openssl-speed</strong> (1) application since version 1.1.1.
+Valid algorithm names are <strong>ed25519</strong>,
+<strong>ed448</strong> and <strong>eddsa</strong>. If
+<strong>eddsa</strong> is specified, then both Ed25519 and Ed448 are
+benchmarked.</p>
+<h1>EXAMPLES</h1>
+<p>To sign a message using a ED25519 or ED448 key:</p>
+<p>void do_sign(EVP_PKEY *ed_key, unsigned char *msg, size_t msg_len) {
+size_t sig_len; unsigned char *sig = NULL; EVP_MD_CTX *md_ctx =
+EVP_MD_CTX_new(); EVP_DigestSignInit(md_ctx, NULL, NULL, NULL, ed_key);
+/* Calculate the requires size for the signature by passing a NULL
+buffer */ EVP_DigestSign(md_ctx, NULL, &amp;sig_len, msg, msg_len); sig
+= OPENSSL_zalloc(sig_len); EVP_DigestSign(md_ctx, sig, &amp;sig_len,
+msg, msg_len); ... OPENSSL_free(sig); EVP_MD_CTX_free(md_ctx); }</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY-X25519</strong> (7)
+<strong>provider-signature</strong> (7),
+<strong>EVP_DigestSignInit</strong> (3),
+<strong>EVP_DigestVerifyInit</strong> (3),</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2017-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

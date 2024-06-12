@@ -1,0 +1,107 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>evp - high-level cryptographic functions</p>
+<h1>SYNOPSIS</h1>
+<p>#include &lt;openssl/evp.h&gt;</p>
+<h1>DESCRIPTION</h1>
+<p>The EVP library provides a high-level interface to cryptographic
+functions.</p>
+<p>The <strong>EVP_Seal</strong><em>XXX</em> and
+<strong>EVP_Open</strong><em>XXX</em> functions provide public key
+encryption and decryption to implement digital envelopes.</p>
+<p>The <strong>EVP_DigestSign</strong><em>XXX</em> and
+<strong>EVP_DigestVerify</strong><em>XXX</em> functions implement
+digital signatures and Message Authentication Codes (MACs). Also see the
+older <strong>EVP_Sign</strong><em>XXX</em> and
+<strong>EVP_Verify</strong><em>XXX</em> functions.</p>
+<p>Symmetric encryption is available with the
+<strong>EVP_Encrypt</strong><em>XXX</em> functions. The
+<strong>EVP_Digest</strong><em>XXX</em> functions provide message
+digests.</p>
+<p>The <strong>EVP_PKEY</strong><em>XXX</em> functions provide a
+high-level interface to asymmetric algorithms. To create a new EVP_PKEY
+see <strong>EVP_PKEY_new</strong> (3). EVP_PKEYs can be associated with
+a private key of a particular algorithm by using the functions described
+on the <strong>EVP_PKEY_fromdata</strong> (3) page, or new keys can be
+generated using <strong>EVP_PKEY_keygen</strong> (3). EVP_PKEYs can be
+compared using <strong>EVP_PKEY_eq</strong> (3), or printed using
+<strong>EVP_PKEY_print_private</strong> (3).
+<strong>EVP_PKEY_todata</strong> (3) can be used to convert a key back
+into an <strong>OSSL_PARAM</strong> (3) array.</p>
+<p>The EVP_PKEY functions support the full range of asymmetric algorithm
+operations:</p>
+<dl>
+<dt>For key agreement see EVP_PKEY_derive (3)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>For signing and verifying see EVP_PKEY_sign (3), EVP_PKEY_verify (3)
+and EVP_PKEY_verify_recover (3). However, note that these functions do
+not perform a digest of the data to be signed. Therefore, normally you
+would use the EVP_DigestSignInit (3) functions for this purpose.</dt>
+<dd>
+
+</dd>
+<dt>For encryption and decryption see EVP_PKEY_encrypt (3) and
+EVP_PKEY_decrypt (3) respectively. However, note that these functions
+perform encryption and decryption only. As public key encryption is an
+expensive operation, normally you would wrap an encrypted message in a
+"digital envelope" using the EVP_SealInit (3) and EVP_OpenInit (3)
+functions.</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The <strong>EVP_BytesToKey</strong> (3) function provides some
+limited support for password based encryption. Careful selection of the
+parameters will provide a PKCS#5 PBKDF1 compatible implementation.
+However, new applications should not typically use this (preferring, for
+example, PBKDF2 from PCKS#5).</p>
+<p>The <strong>EVP_Encode</strong><em>XXX</em> and
+<strong>EVP_Decode</strong><em>XXX</em> functions implement base 64
+encoding and decoding.</p>
+<p>All the symmetric algorithms (ciphers), digests and asymmetric
+algorithms (public key algorithms) can be replaced by ENGINE modules
+providing alternative implementations. If ENGINE implementations of
+ciphers or digests are registered as defaults, then the various EVP
+functions will automatically use those implementations automatically in
+preference to built in software implementations. For more information,
+consult the <strong>engine</strong> (3) man page.</p>
+<p>Although low-level algorithm specific functions exist for many
+algorithms their use is discouraged. They cannot be used with an ENGINE
+and ENGINE versions of new algorithms cannot be accessed using the
+low-level functions. Also makes code harder to adapt to new algorithms
+and some options are not cleanly supported at the low-level and some
+operations are more efficient using the high-level interface.</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_DigestInit</strong> (3),
+<strong>EVP_EncryptInit</strong> (3), <strong>EVP_OpenInit</strong> (3),
+<strong>EVP_SealInit</strong> (3),
+<strong>EVP_DigestSignInit</strong> (3),
+<strong>EVP_SignInit</strong> (3), <strong>EVP_VerifyInit</strong> (3),
+<strong>EVP_EncodeInit</strong> (3), <strong>EVP_PKEY_new</strong> (3),
+<strong>EVP_PKEY_fromdata</strong> (3),
+<strong>EVP_PKEY_todata</strong> (3),
+<strong>EVP_PKEY_keygen</strong> (3),
+<strong>EVP_PKEY_print_private</strong> (3),
+<strong>EVP_PKEY_decrypt</strong> (3),
+<strong>EVP_PKEY_encrypt</strong> (3),
+<strong>EVP_PKEY_sign</strong> (3),
+<strong>EVP_PKEY_verify</strong> (3),
+<strong>EVP_PKEY_verify_recover</strong> (3),
+<strong>EVP_PKEY_derive</strong> (3),
+<strong>EVP_BytesToKey</strong> (3),
+<strong>ENGINE_by_id</strong> (3)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

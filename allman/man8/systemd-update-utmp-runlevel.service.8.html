@@ -1,0 +1,18 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-update-utmp.service, systemd-update-utmp-runlevel.service,
+systemd-update-utmp - Write audit and utmp updates at bootup, runlevel
+changes and shutdown</p>
+<h1>SYNOPSIS</h1>
+<p>systemd-update-utmp.service</p>
+<p>systemd-update-utmp-runlevel.service</p>
+<p>/lib/systemd/systemd-update-utmp</p>
+<h1>DESCRIPTION</h1>
+<p>systemd-update-utmp-runlevel.service is a service that writes SysV
+runlevel changes to utmp and wtmp, as well as the audit logs, as they
+occur. systemd-update-utmp.service does the same for system reboots and
+shutdown requests.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>utmp</strong>(5),
+<strong>auditd</strong>(8)</p>

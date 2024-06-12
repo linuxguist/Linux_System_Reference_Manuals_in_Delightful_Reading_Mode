@@ -1,0 +1,101 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>w - Show who is logged on and what they are doing.</p>
+<h1>SYNOPSIS</h1>
+<p><strong>w</strong> [<em>options</em>] [<em>user</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>w</strong> displays information about the users currently on
+the machine, and their processes. The header shows, in this order, the
+current time, how long the system has been running, how many users are
+currently logged on, and the system load averages for the past 1, 5, and
+15 minutes.</p>
+<p>The following entries are displayed for each user: login name, the
+tty name, the remote host, login time, idle time, JCPU, PCPU, and the
+command line of their current process.</p>
+<p>The JCPU time is the time used by all processes attached to the tty.
+It does not include past background jobs, but does include currently
+running background jobs.</p>
+<p>The PCPU time is the time used by the current process, named in the
+"what" field.</p>
+<h1>COMMAND-LINE OPTIONS</h1>
+<dl>
+<dt><strong>-h</strong>, <strong>--no-header</strong></dt>
+<dd>
+<p>Don't print the header.</p>
+</dd>
+<dt><strong>-u</strong>, <strong>--no-current</strong></dt>
+<dd>
+<p>Ignores the username while figuring out the current process and cpu
+times. To demonstrate this, do a <strong>su</strong> and do a
+<strong>w</strong> and a <strong>w -u</strong>.</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--short</strong></dt>
+<dd>
+<p>Use the short format. Don't print the login time, JCPU or PCPU
+times.</p>
+</dd>
+<dt><strong>-f</strong>, <strong>--from</strong></dt>
+<dd>
+<p>Toggle printing the <strong>from</strong> (remote hostname) field.
+The default as released is for the <strong>from</strong> field to not be
+printed, although your system administrator or distribution maintainer
+may have compiled a version in which the <strong>from</strong> field is
+shown by default.</p>
+</dd>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>Display help text and exit.</p>
+</dd>
+<dt><strong>-i</strong>, <strong>--ip-addr</strong></dt>
+<dd>
+<p>Display IP address instead of hostname for <strong>from</strong>
+field.</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Display version information.</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--old-style</strong></dt>
+<dd>
+<p>Old style output. Prints blank space for idle times less than one
+minute.</p>
+</dd>
+<dt><strong>user</strong> </dt>
+<dd>
+<p>Show information about the specified user only.</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt>PROCPS_USERLEN</dt>
+<dd>
+<p>Override the default width of the username column. Defaults to 8.</p>
+</dd>
+<dt>PROCPS_FROMLEN</dt>
+<dd>
+<p>Override the default width of the from column. Defaults to 16.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/var/run/utmp</em></dt>
+<dd>
+<p>information about who is currently logged on</p>
+</dd>
+<dt><em>/proc</em></dt>
+<dd>
+<p>process information</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>free</strong>(1), <strong>ps</strong>(1),
+<strong>top</strong>(1), <strong>uptime</strong>(1),
+<strong>utmp</strong>(5), <strong>who</strong>(1)</p>
+<h1>AUTHORS</h1>
+<p><strong>w</strong> was re-written almost entirely by Charles Blake,
+based on the version by <a href="greenfie@gauss.rutgers.edu">Larry
+Greenfield</a> and <a href="johnsonm@redhat.com">Michael K.
+Johnson</a></p>
+<h1>REPORTING BUGS</h1>
+<p>Please send bug reports to <a href="procps@freelists.org"></a></p>

@@ -1,0 +1,116 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::overview - An overview of an Object Oriented Tk8 extension for
+perl5</p>
+<h1>SYNOPSIS</h1>
+<p><code>use Tk;</code></p>
+<p><code>$main = MainWindow-&gt;new();</code></p>
+<p><code>$widget = $main-&gt;</code><em><code>Widget</code></em><code>(...);</code></p>
+<p><code>$widget-&gt;pack(...);</code></p>
+<p>...</p>
+<p><code>MainLoop;</code></p>
+<h1>DESCRIPTION</h1>
+<p>In writing the perl Tk extension, the goals were to provide a
+complete interface to the latest production version of John Ousterhout's
+Tk, while providing an Object Oriented interface to perl code.</p>
+<h1>CONTENTS</h1>
+<p>The package is composed of three loosely connected parts:</p>
+<dl>
+<dt>pTk - Converted Tk source</dt>
+<dd>
+<p>The <em>pTk</em> sub-directory is a copy of the C code of Tk8.x,
+modified to allow use by languages other than the original Tcl. (The pTk
+can be read as 'perl' Tk or 'portable' Tk, depending on your
+sensibilities.)</p>
+</dd>
+<dt>Tk to Perl 'Glue'</dt>
+<dd>
+<p>The top level directory provides <em>Tk.xs</em> and <em>tkGlue.c</em>
+which provide the perl-callable interfaces to pTk</p>
+</dd>
+<dt>Perl code for 'Widget' Classes</dt>
+<dd>
+<p>The <em>Tk</em> sub-directory contains the various perl modules that
+comprise the Classes that are visible to Tk applications. The major
+widgets such as <strong>Tk::Text</strong> are actually in separate
+directories at the top level (e.g. <em>Text/*</em> for
+<strong>Tk::Text</strong>) and are dynamically loaded as needed on
+platforms which support perl5's <strong>DynaLoader</strong>.</p>
+</dd>
+</dl>
+<h1>CLASS HIERARCHY</h1>
+<dl>
+<dt>package Tk; - the 'base class'</dt>
+<dd>
+<p>All the command names documented in Tcl/Tk are made to look like perl
+sub's and reside in the Tk package. Their names are all lower case.
+Typically there are very few commands at this level which are called
+directly by applications.</p>
+</dd>
+<dt>package Tk::Widget; - the 'Widget class'</dt>
+<dd>
+<p>There are no actual objects of the <strong>Tk::Widget</strong> class;
+however all the various Tk window widgets inherit from it, and it in
+turn inherits all the core Tk functions from Tk.
+<strong>Tk::Widget</strong> provides various functions and interfaces
+which are common to all Widgets. A widget is represented to perl as a
+blessed reference to a hash. There are some members of the hash which
+are private to Tk and its tkGlue code. Keys starting with
+<strong>'.'</strong> and of the form
+<strong>/^_[A-Z][A-Za-z_]+_$/</strong> (i.e. starting and ending in _
+and with first char after _ being upper case) should be considered
+reserved to <strong>Tk</strong>.</p>
+</dd>
+<dt>Tk::Button, Tk::Entry, Tk::Text ...</dt>
+<dd>
+<p>There is one class for each of the Tk widget item types. Some of them
+like <strong>Tk::Frame</strong> do very little indeed, and really only
+exist so that they can be derived from or so that focus or menu
+traversal can discover the kind of window being processed. Other
+classes, <strong>Tk::Text</strong> for example, provide a lot of methods
+used with Tk's bind to provide a rich keyboard/mouse interface to the
+widgets' data. These widget classes also include conversions of the Tcl
+code for event bindings, keyboard focus traversal, menu bars, and menu
+keyboard traversal. All the Tcl functions have been converted, but the
+names have changed (systematically) and they have been split up between
+the various classes in what I hope is an appropriate manner. Name
+changes are normally: dropping initial tk_ as the Tk-ness is implicit in
+the <strong>Tk::</strong> prefix, and similarly dropping say Menu from
+the name if it has been moved the Tk::Menu class. Thus 'proc
+tkMenuNextEntry' becomes 'sub NextEntry' in the Tk::Menu package.</p>
+</dd>
+<dt>Tk::Image</dt>
+<dd>
+<p>This does for Tk8.x's images what <strong>Tk::Widget</strong> does
+for widgets. Images are new to Tk8.x and the class structure is not
+mature either. There are three sub-classes <strong>Tk::Bitmap</strong>,
+<strong>Tk::Pixmap</strong> and <strong>Tk::Photo</strong>. It is
+possible to create dynamic or auto-loaded image types inherited from
+<strong>Tk::Image</strong> for other image types or photo formats (e.g.
+support for TIFF format).</p>
+</dd>
+<dt>Composite Widgets</dt>
+<dd>
+<p>A composite is some kind of 'frame' with subwidgets which give it
+useful behaviour. <strong>Tk::Dialog</strong> is an example of a
+composite widget classes built from the basic <strong>Tk</strong> ones.
+It is intended that user code should not need to be aware that a
+particular class is a composite, and create and configure such widgets
+in the same manner as any other kind. The <strong>configure</strong>
+mechanism and the methods of the class manipulate the subwidgets as
+required. Composite widgets are implemented via
+<strong>Tk::Frame</strong> and multiple inheritance. The two 'frame'
+base classes <strong>Tk::Frame</strong> and
+<strong>Tk::Toplevel</strong> include the additional class
+<strong>Tk::Derived</strong> in their inheritance.
+<strong>Tk::Derived</strong> provides methods to allow additional
+<strong>configure</strong> options to be defined for a widget. A
+Composite widget is typically defined as derived from
+<strong>Tk::Frame</strong> or <strong>Tk::Toplevel</strong> (e.g.
+<strong>Tk::Dialog</strong>).</p>
+</dd>
+</dl>

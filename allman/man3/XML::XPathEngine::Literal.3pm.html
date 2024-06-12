@@ -1,0 +1,27 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>XML::XPathEngine::Literal - Simple string values.</p>
+<h1>DESCRIPTION</h1>
+<p>In XPath terms a Literal is what we know as a string.</p>
+<h1>API</h1>
+<h2>new($string)</h2>
+<p>Create a new Literal object with the value in <code>$string</code>.
+Note that &amp;quot; and &amp;apos; will be converted to " and '
+respectively. That is not part of the XPath specification, but I
+consider it useful. Note though that you have to go to extraordinary
+lengths in an XML template file (be it XSLT or whatever) to make use of
+this:</p>
+<p>&lt;xsl:value-of select="&amp;quot;Im feeling
+&amp;amp;quot;sad&amp;amp;quot;&amp;quot;"/&gt;</p>
+<p>Which produces a Literal of:</p>
+<p>Im feeling "sad"</p>
+<h2><strong>value()</strong></h2>
+<p>Also overloaded as stringification, simply returns the literal string
+value.</p>
+<h2>cmp($literal)</h2>
+<p>Returns the equivalent of perl's cmp operator against the given
+<code>$literal</code>.</p>

@@ -1,0 +1,128 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-passwd - compute password hashes</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl passwd</strong> [<strong>-help</strong>]
+[<strong>-1</strong>] [<strong>-apr1</strong>]
+[<strong>-aixmd5</strong>] [<strong>-5</strong>] [<strong>-6</strong>]
+[<strong>-salt</strong> <em>string</em>] [<strong>-in</strong>
+<em>file</em>] [<strong>-stdin</strong>] [<strong>-noverify</strong>]
+[<strong>-quiet</strong>] [<strong>-table</strong>]
+[<strong>-reverse</strong>] [<strong>-rand</strong> <em>files</em>]
+[<strong>-writerand</strong> <em>file</em>] [<strong>-provider</strong>
+<em>name</em>] [<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>] [<em>password</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command computes the hash of a password typed at run-time or the
+hash of each password in a list. The password list is taken from the
+named file for option <strong>-in</strong>, from stdin for option
+<strong>-stdin</strong>, or from the command line, or from the terminal
+otherwise.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-1</dt>
+<dd>
+<p>Use the MD5 based BSD password algorithm <strong>1</strong>
+(default).</p>
+</dd>
+<dt>-apr1</dt>
+<dd>
+<p>Use the <strong>apr1</strong> algorithm (Apache variant of the BSD
+algorithm).</p>
+</dd>
+<dt>-aixmd5</dt>
+<dd>
+<p>Use the <strong>AIX MD5</strong> algorithm (AIX variant of the BSD
+algorithm).</p>
+</dd>
+<dt>-5</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-6</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Use the <strong>SHA256</strong> / <strong>SHA512</strong> based
+algorithms defined by Ulrich Drepper. See
+&lt;https://www.akkadia.org/drepper/SHA-crypt.txt&gt;.</p>
+<dl>
+<dt>-salt string</dt>
+<dd>
+<p>Use the specified salt. When reading a password from the terminal,
+this implies <strong>-noverify</strong>.</p>
+</dd>
+<dt>-in file</dt>
+<dd>
+<p>Read passwords from <em>file</em>.</p>
+</dd>
+<dt>-stdin</dt>
+<dd>
+<p>Read passwords from <strong>stdin</strong>.</p>
+</dd>
+<dt>-noverify</dt>
+<dd>
+<p>Don't verify when reading a password from the terminal.</p>
+</dd>
+<dt>-quiet</dt>
+<dd>
+<p>Don't output warnings when passwords given at the command line are
+truncated.</p>
+</dd>
+<dt>-table</dt>
+<dd>
+<p>In the output list, prepend the cleartext password and a TAB
+character to each password hash.</p>
+</dd>
+<dt>-reverse</dt>
+<dd>
+<p>When the <strong>-table</strong> option is used, reverse the order of
+cleartext and hash.</p>
+</dd>
+<dt>-rand files, -writerand file</dt>
+<dd>
+<p>See Random State Options in <strong>openssl</strong> (1) for
+details.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<h1>EXAMPLES</h1>
+<p>% openssl passwd -1 -salt xxxxxxxx password
+$1$xxxxxxxx$UYCIxa628.9qXjpQCjM4a. % openssl passwd -apr1 -salt xxxxxxxx
+password $apr1$xxxxxxxx$dxHfLAsjHkDRmG83UXe8K0 % openssl passwd -aixmd5
+-salt xxxxxxxx password xxxxxxxx$8Oaipk/GPKhC64w/YVeFD/</p>
+<h1>HISTORY</h1>
+<p>The <strong>-crypt</strong> option was removed in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

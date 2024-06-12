@@ -1,0 +1,73 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>bluetooth-meshd - Bluetooth Mesh daemon</p>
+<h1>SYNOPSIS</h1>
+<p><strong>bluetooth-meshd</strong> [<em>options</em> ...]</p>
+<h1>DESCRIPTION</h1>
+<p>Daemon for managing Bluetooth Mesh connections on Linux.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-h<em>,</em> --help</strong></dt>
+<dd>
+<p>Print bluetooth-meshd options and exit.</p>
+</dd>
+<dt><strong>-n<em>,</em> --nodetach</strong></dt>
+<dd>
+<p>Enable logging in foreground. Directs log output to the controlling
+terminal in addition to syslog.</p>
+</dd>
+<dt><strong>-i</strong><em> &lt;type&gt;,</em><strong> --io</strong><em>
+&lt;type&gt;</em></dt>
+<dd>
+<p>Specifies I/O interface type:</p>
+<p><em>hci&lt;index&gt;</em> <strong>- Use generic HCI io on interface
+hci&lt;index&gt;,</strong> or, if no idex is specified, the first
+available one.</p>
+<p><em>unit:&lt;fd_path&gt;</em><strong>- Specifies open file descriptor
+for</strong> daemon testing.</p>
+<p>By default, if no type is specified, uses generic I/O on the first
+available HCI interface.</p>
+</dd>
+<dt><strong>-c</strong><em> &lt;file&gt;,</em><strong>
+--config</strong><em> &lt;file&gt;</em></dt>
+<dd>
+<p>Specifies an explicit config file path instead of relying on the
+default path(<em>/etc/bluetooth/mesh-main.conf</em><strong>) for the
+config file.</strong></p>
+</dd>
+<dt><strong>-s</strong><em> &lt;dir_path&gt;,</em><strong>
+--storage</strong><em> &lt;dir</em><strong>path&gt;</strong></dt>
+<dd>
+<p>Specifies an explicit storage directory path instead of the default
+path(<em>/var/lib/bluetooth/mesh</em><strong>) for storing mesh node(s)
+configuration.</strong></p>
+</dd>
+<dt><strong>-d<em>,</em> --debug</strong></dt>
+<dd>
+<p>Enable debug output.</p>
+</dd>
+<dt><strong>-b<em>,</em> --dbus-debug</strong></dt>
+<dd>
+<p>Enable D-Bus debug output.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>FILES</h1>
+<blockquote>
+<dl>
+<dt><strong><em>/etc/bluetooth/mesh-main.conf</em></strong></dt>
+<dd>
+<p>Location of the global configuration file containing mesh daemon
+settings.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

@@ -1,0 +1,71 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Scrolled - Create a widget with attached scrollbar(s)</p>
+<h1>SYNOPSIS</h1>
+<p>    <em><code>$whatever</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>Scrolled</strong>(<em>Whatever</em>
+?,<strong>-scrollbars</strong>=&gt;<em>where</em>? ?,...?);</p>
+<h1>DESCRIPTION</h1>
+<p>To stop a flood of <strong>ScrlWhatever</strong> widgets Perl/Tk
+introcuded the special constructor <strong>Scrolled</strong>.
+<strong>Scrolled</strong> creates a widget of the given Class
+<em>Whatever</em> with attached scrollbar(s).</p>
+<h1>OPTIONS</h1>
+<p>All options beside <strong>-scrollbars</strong> explained below are
+passed to the <em>Whatever</em> widget constructor.</p>
+<dl>
+<dt>-scrollbars</dt>
+<dd>
+<p>Expects as argument the position where the scrollbars should be
+created: <strong>w</strong>, <strong>e</strong> or <strong>n</strong>,
+<strong>s</strong> or a combination of them. If the one or both
+positions are prefixed with <strong>o</strong> the scrollbar will only
+show up if there is a 'real' need to scroll.</p>
+</dd>
+</dl>
+<h1>ADVERTISED SUBWIDGETS</h1>
+<p>See Subwidget in Tk::mega how to use advertised widgets.</p>
+<dl>
+<dt>scrolled</dt>
+<dd>
+<p>the scrolled widget</p>
+</dd>
+<dt>widget</dt>
+<dd>
+<p>same as <strong>scrolled</strong> above. <em>widget</em> is the kind
+of widget passed to scrolled as first argument in all lowercase.</p>
+</dd>
+<dt>xscrollbar</dt>
+<dd>
+<p>the <strong>Scrollbar</strong> widget used for horizontal scrolling
+(if it exists)</p>
+</dd>
+<dt>yscrollbar</dt>
+<dd>
+<p>the <strong>Scrollbar</strong> widget used for vertical scrolling (if
+it exists)</p>
+</dd>
+<dt>corner</dt>
+<dd>
+<p>a frame in the corner between the vertical and horizontal
+scrolbar</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>If a widget does not support <em>-{x,y}scrollcommand</em> options,
+<strong>Scrolled</strong> does not complain if the specified widget
+class does not support them. E.g.,</p>
+<p>    <em><code>$parent</code></em>-&gt;<strong>Scrolled</strong>(<strong>'Button'</strong>,
+...)</p>
+<p>One does not get an error message or warning when one tries to
+configure scrollbars after the widget construction:</p>
+<p>    <em><code>$ascrolled</code></em>-&gt;<strong>configure</strong>(<strong>-scrollbars</strong>
+=&gt; <strong>'e'</strong>);</p>
+<h1>SEE ALSO</h1>
+<p>Tk::Scrollbar</p>
+<h1>KEYWORDS</h1>
+<p>scrolled, scrollbar</p>

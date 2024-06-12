@@ -1,0 +1,45 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_MD-common - The OpenSSL EVP_MD implementations, common things</p>
+<h1>DESCRIPTION</h1>
+<p>All the OpenSSL EVP_MD implementations understand the following
+<strong>OSSL_PARAM</strong> (3) entries that are gettable with
+<strong>EVP_MD_get_params</strong> (3), as well as these:</p>
+<dl>
+<dt>"blocksize" (OSSL_DIGEST_PARAM_BLOCK_SIZE) &lt;unsigned
+integer&gt;</dt>
+<dd>
+<p>The digest block size. The length of the blocksize parameter should
+not exceed that of a <strong>size_t</strong>. This value can also be
+retrieved with <strong>EVP_MD_get_block_size</strong> (3).</p>
+</dd>
+<dt>"size" (OSSL_DIGEST_PARAM_SIZE) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>The digest output size. The length of the size parameter should not
+exceed that of a <strong>size_t</strong>. This value can also be
+retrieved with <strong>EVP_MD_get_size</strong> (3).</p>
+</dd>
+<dt>"flags" (OSSL_DIGEST_PARAM_FLAGS) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>Diverse flags that describe exceptional behaviour for the digest.
+These flags are described in DESCRIPTION in
+<strong>EVP_MD_meth_set_flags</strong> (3). The length of the flags
+parameter should equal that of an <strong>unsigned long int</strong>.
+This value can also be retrieved with
+<strong>EVP_MD_get_flags</strong> (3).</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_MD_get_params</strong> (3),
+<strong>provider-digest</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

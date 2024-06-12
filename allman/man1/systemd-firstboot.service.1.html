@@ -1,0 +1,269 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-firstboot, systemd-firstboot.service - Initialize basic
+system settings on or before the first boot-up of a system</p>
+<h1>SYNOPSIS</h1>
+<p><strong>systemd-firstboot</strong> [OPTIONS...]</p>
+<p>systemd-firstboot.service</p>
+<h1>DESCRIPTION</h1>
+<p><strong>systemd-firstboot</strong> initializes the most basic system
+settings interactively on the first boot, or optionally
+non-interactively when a system image is created. The service is started
+if <em>ConditionFirstBoot=yes</em> is satisfied. This essentially means
+that /etc/ is empty, see <strong>systemd.unit</strong>(5) for
+details.</p>
+<p>The following settings may be set up:</p>
+<blockquote>
+<p>·</p>
+<p>The system locale, more specifically the two locale variables
+<em>LANG=</em> and <em>LC_MESSAGES</em></p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>The system keyboard map</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>The system time zone</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>The system hostname</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>The machine ID of the system</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>The root users password</p>
+</blockquote>
+<p>Each of the fields may either be queried interactively by users, set
+non-interactively on the tools command line, or be copied from a host
+system that is used to set up the system image.</p>
+<p>If a setting is already initialized, it will not be overwritten and
+the user will not be prompted for the setting.</p>
+<p>Note that this tool operates directly on the file system and does not
+involve any running system services, unlike
+<strong>localectl</strong>(1), <strong>timedatectl</strong>(1) or
+<strong>hostnamectl</strong>(1). This allows
+<strong>systemd-firstboot</strong> to operate on mounted but not booted
+disk images and in early boot. It is not recommended to use
+<strong>systemd-firstboot</strong> on the running system while it is
+up.</p>
+<h1>OPTIONS</h1>
+<p>The following options are understood:</p>
+<p><strong>--root=</strong><em>root</em></p>
+<blockquote>
+<p>Takes a directory path as an argument. All paths will be prefixed
+with the given alternate <em>root</em> path, including config search
+paths. This is useful to operate on a system image mounted to the
+specified directory instead of the host system itself.</p>
+</blockquote>
+<p><strong>--image=</strong><em>path</em></p>
+<blockquote>
+<p>Takes a path to a disk image file or block device node. If specified
+all operations are applied to file system in the indicated disk image.
+This is similar to <strong>--root=</strong> but operates on file systems
+stored in disk images or block devices. The disk image should either
+contain just a file system or a set of file systems within a GPT
+partition table, following the <strong>Discoverable Partitions
+Specification</strong>[1]. For further information on supported disk
+images, see <strong>systemd-nspawn</strong>(1)s switch of the same
+name.</p>
+</blockquote>
+<p><strong>--locale=</strong><em>LOCALE</em>,
+<strong>--locale-messages=</strong><em>LOCALE</em></p>
+<blockquote>
+<p>Sets the system locale, more specifically the <em>LANG=</em> and
+<em>LC_MESSAGES</em> settings. The argument should be a valid locale
+identifier, such as "de_DE.UTF-8". This controls the
+<strong>locale.conf</strong>(5) configuration file.</p>
+</blockquote>
+<p><strong>--keymap=</strong><em>KEYMAP</em></p>
+<blockquote>
+<p>Sets the system keyboard layout. The argument should be a valid
+keyboard map, such as "de-latin1". This controls the "KEYMAP" entry in
+the <strong>vconsole.conf</strong>(5) configuration file.</p>
+</blockquote>
+<p><strong>--timezone=</strong><em>TIMEZONE</em></p>
+<blockquote>
+<p>Sets the system time zone. The argument should be a valid time zone
+identifier, such as "Europe/Berlin". This controls the
+<strong>localtime</strong>(5) symlink.</p>
+</blockquote>
+<p><strong>--hostname=</strong><em>HOSTNAME</em></p>
+<blockquote>
+<p>Sets the system hostname. The argument should be a hostname,
+compatible with DNS. This controls the <strong>hostname</strong>(5)
+configuration file.</p>
+</blockquote>
+<p><strong>--machine-id=</strong><em>ID</em></p>
+<blockquote>
+<p>Sets the systems machine ID. This controls the
+<strong>machine-id</strong>(5) file.</p>
+</blockquote>
+<p><strong>--root-password=</strong><em>PASSWORD</em>,
+<strong>--root-password-file=</strong><em>PATH</em>,
+<strong>--root-password-hashed=</strong><em>HASHED_PASSWORD</em></p>
+<blockquote>
+<p>Sets the password of the systems root user. This creates/modifies the
+<strong>passwd</strong>(5) and <strong>shadow</strong>(5) files. This
+setting exists in three forms: <strong>--root-password=</strong> accepts
+the password to set directly on the command line,
+<strong>--root-password-file=</strong> reads it from a file and
+<strong>--root-password-hashed=</strong> accepts an already hashed
+password on the command line. See <strong>shadow</strong>(5) for more
+information on the format of the hashed password. Note that it is not
+recommended to specify plaintext passwords on the command line, as other
+users might be able to see them simply by invoking
+<strong>ps</strong>(1).</p>
+</blockquote>
+<p><strong>--root-shell=</strong><em>SHELL</em></p>
+<blockquote>
+<p>Sets the shell of the systems root user. This creates/modifies the
+<strong>passwd</strong>(5) file.</p>
+</blockquote>
+<p><strong>--kernel-command-line=</strong><em>CMDLINE</em></p>
+<blockquote>
+<p>Sets the systems kernel command line. This controls the
+/etc/kernel/cmdline file which is used by
+<strong>kernel-install</strong>(8).</p>
+</blockquote>
+<p><strong>--prompt-locale</strong>, <strong>--prompt-keymap</strong>,
+<strong>--prompt-timezone</strong>, <strong>--prompt-hostname</strong>,
+<strong>--prompt-root-password</strong>,
+<strong>--prompt-root-shell</strong></p>
+<blockquote>
+<p>Prompt the user interactively for a specific basic setting. Note that
+any explicit configuration settings specified on the command line take
+precedence, and the user is not prompted for it.</p>
+</blockquote>
+<p><strong>--prompt</strong></p>
+<blockquote>
+<p>Query the user for locale, keymap, timezone, hostname, roots
+password, and roots shell. This is equivalent to specifying
+<strong>--prompt-locale</strong>, <strong>--prompt-keymap</strong>,
+<strong>--prompt-timezone</strong>, <strong>--prompt-hostname</strong>,
+<strong>--prompt-root-password</strong>,
+<strong>--prompt-root-shell</strong> in combination.</p>
+</blockquote>
+<p><strong>--copy-locale</strong>, <strong>--copy-keymap</strong>,
+<strong>--copy-timezone</strong>, <strong>--copy-root-password</strong>,
+<strong>--copy-root-shell</strong></p>
+<blockquote>
+<p>Copy a specific basic setting from the host. This only works in
+combination with <strong>--root=</strong> (see above).</p>
+</blockquote>
+<p><strong>--copy</strong></p>
+<blockquote>
+<p>Copy locale, keymap, time zone, root password and shell from the
+host. This is equivalent to specifying <strong>--copy-locale</strong>,
+<strong>--copy-keymap</strong>, <strong>--copy-timezone</strong>,
+<strong>--copy-root-password</strong>,
+<strong>--copy-root-shell</strong> in combination.</p>
+</blockquote>
+<p><strong>--setup-machine-id</strong></p>
+<blockquote>
+<p>Initialize the systems machine ID to a random ID. This only works in
+combination with <strong>--root=</strong>.</p>
+</blockquote>
+<p><strong>--force</strong></p>
+<blockquote>
+<p>systemd-firstboot doesnt modify existing files unless
+<strong>--force</strong> is specified. For modifications to /etc/passwd
+and /etc/shadow, systemd-firstboot only modifies the entry of the "root"
+user instead of overwriting the entire file.</p>
+</blockquote>
+<p><strong>--delete-root-password</strong></p>
+<blockquote>
+<p>Removes the password of the systems root user, enabling login as root
+without a password unless the root account is locked. Note that this is
+extremely insecure and hence this option should not be used lightly.</p>
+</blockquote>
+<p><strong>--welcome=</strong></p>
+<blockquote>
+<p>Takes a boolean argument. By default when prompting the user for
+configuration options a brief welcome text is shown before the first
+question is asked. Pass false to this option to turn off the welcome
+text.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Print a short help text and exit.</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Print a short version string and exit.</p>
+</blockquote>
+<h1>CREDENTIALS</h1>
+<p><strong>systemd-firstboot</strong> supports the service credentials
+logic as implemented by <em>LoadCredential=</em>/<em>SetCredential=</em>
+(see <strong>systemd.exec</strong>(1) for details). The following
+credentials are used when passed in:</p>
+<p>"passwd.hashed-password.root", "passwd.plaintext-password.root"</p>
+<blockquote>
+<p>A hashed or plaintext version of the root password to use, in place
+of prompting the user. These credentials are equivalent to the same ones
+defined for the <strong>systemd-sysusers.service</strong>(8)
+service.</p>
+</blockquote>
+<p>"passwd.shell.root"</p>
+<blockquote>
+<p>Specifies the shell binary to use for the specified account.
+Equivalent to the credential of the same name defined for the
+<strong>systemd-sysusers.service</strong>(8) service.</p>
+</blockquote>
+<p>"firstboot.locale", "firstboot.locale-messages"</p>
+<blockquote>
+<p>These credentials specify the locale settings to set during first
+boot, in place of prompting the user.</p>
+</blockquote>
+<p>"firstboot.keymap"</p>
+<blockquote>
+<p>This credential specifies the keyboard setting to set during first
+boot, in place of prompting the user.</p>
+</blockquote>
+<p>"firstboot.timezone"</p>
+<blockquote>
+<p>This credential specifies the system timezone setting to set during
+first boot, in place of prompting the user.</p>
+</blockquote>
+<p>Note that by default the systemd-firstboot.service unit file is set
+up to inherit the listed credentials from the service manager. Thus,
+when invoking a container with an unpopulated /etc/ for the first time
+it is possible to configure the root users password to be "systemd" like
+this:</p>
+<blockquote>
+<pre><code># systemd-nspawn --image=... --set-credential=firstboot.locale:de_DE.UTF-8 ...</code></pre>
+</blockquote>
+<p>Note that these credentials are only read and applied during the
+first boot process. Once they are applied they remain applied for
+subsequent boots, and the credentials are not considered anymore.</p>
+<h1>EXIT STATUS</h1>
+<p>On success, 0 is returned, a non-zero failure code otherwise.</p>
+<h1>KERNEL COMMAND LINE</h1>
+<p><em>systemd.firstboot=</em></p>
+<blockquote>
+<p>Takes a boolean argument, defaults to on. If off,
+systemd-firstboot.service wont interactively query the user for basic
+settings at first boot, even if those settings are not initialized
+yet.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>locale.conf</strong>(5),
+<strong>vconsole.conf</strong>(5), <strong>localtime</strong>(5),
+<strong>hostname</strong>(5), <strong>machine-id</strong>(5),
+<strong>shadow</strong>(5),
+<strong>systemd-machine-id-setup</strong>(1),
+<strong>localectl</strong>(1), <strong>timedatectl</strong>(1),
+<strong>hostnamectl</strong>(1)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>Discoverable Partitions Specification</p>
+<p>https://systemd.io/DISCOVERABLE_PARTITIONS</p>
+</dd>
+</dl>

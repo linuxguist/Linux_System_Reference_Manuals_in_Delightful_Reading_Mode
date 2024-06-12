@@ -1,0 +1,313 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-sparql - Use SparQL to query the Tracker databases.</p>
+<h1>SYNOPSIS</h1>
+<pre><code>tracker3 sparql -q &lt;sparql&gt; [-u] | -f &lt;file&gt;
+tracker3 sparql -t [class] [-s &lt;needle&gt;] [-p]
+tracker3 sparql [-c] [-p] [-x] [-n [class]] [-i [property]] [-s &lt;needle&gt;]
+tracker3 sparql [--get-longhand &lt;class&gt;] [--get-shorthand &lt;class&gt;]</code></pre>
+<h1>DESCRIPTION</h1>
+<p>This command allows probing of the current database schema (also
+known as ontology) and running low level queries or updates on the data
+set. In terms of the database ontology, it’s easy to find out what
+properties are indexed for speed, or notified on changes, what classes
+are available and the properties belonging to those classes. There are
+also visual tools to display an ascii tree layout of the classes and
+their relationships to each other.</p>
+<p>When the caller runs a query, the query is in RDF and SPARQL. This
+can be done two ways. Either by providing a <em>file</em> with the query
+or by providing a string with the <em>sparql</em> query.</p>
+<p>The <em>file</em> argument can be either a local path or a URI. It
+also does not have to be an absolute path.</p>
+<h1>OPTIONS</h1>
+<p><strong>-f,
+--file=&lt;</strong><em>file</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Use a <em>file</em> with SPARQL content to query or update.</p>
+</blockquote>
+<p><strong>-q,
+--query=&lt;</strong><em>sparql</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Use a <em>sparql</em> string to query the database with.</p>
+</blockquote>
+<p><strong>-u, --update</strong></p>
+<blockquote>
+<p>This has to be used with <strong>--query</strong>. This tells
+"tracker3 sparql" to use the SPARQL update extensions so it knows it
+isn’t a regular data lookup request. So if your query is intended to
+change data in the database, this option is needed.</p>
+</blockquote>
+<p><strong>-c, --list-classes</strong></p>
+<blockquote>
+<p>Returns a list of classes which describe the ontology used for
+storing data. These classes are also used in queries. For example,
+<em>http://www.w3.org/2000/01/rdf-schema#Resource</em> is one of many
+classes which should be returned here.</p>
+</blockquote>
+<p><strong>-x, --list-class-prefixes</strong></p>
+<blockquote>
+<p>Returns a list of classes and their related prefixes. Prefixes are
+used to make querying a lot simpler and are much like an alias. For
+example, <em>http://www.w3.org/2000/01/rdf-schema#Resource</em> has the
+prefix <em>rdfs</em> so queries can be cut down to:</p>
+</blockquote>
+<p>"SELECT ?u WHERE \{ ?u a rdfs:Resource }"</p>
+<p><strong>-p,
+--list-properties=[</strong><em>class</em><strong>]</strong></p>
+<blockquote>
+<p>Returns a list of properties which pertain to a <em>class</em>. You
+can use both formats here for the <em>class</em>, either the full name
+<em>http://tracker.api.gnome.org/ontology/v3/nfo#Video</em> or the
+shortened prefix name <em>nfo:Video</em>.</p>
+</blockquote>
+<p>This gives the following result:</p>
+<blockquote>
+<pre><code>$ tracker3 sparql -p nfo:Video
+
+Properties: 2
+  http://tracker.api.gnome.org/ontology/v3/nfo#frameRate
+  http://tracker.api.gnome.org/ontology/v3/nfo#frameCount</code></pre>
+</blockquote>
+<p>These properties <em>nfo:frameRate</em> and <em>nfo:frameCount</em>
+can then be used in queries.</p>
+<p>See also <strong>--tree</strong> and <strong>--query</strong>.</p>
+<p><strong>-n,
+--list-notifies=[</strong><em>class</em><strong>]</strong></p>
+<blockquote>
+<p>Returns a list of classes which are notified over D-Bus about any
+changes that occur in the database. The <em>class</em> does not have to
+be supplied here. This is optional and filters the results according to
+any argument supplied. With no <em>class</em>, all classes are
+listed.</p>
+</blockquote>
+<p><strong>-i,
+--list-indexes=[</strong><em>property</em><strong>]</strong></p>
+<blockquote>
+<p>Returns a list of properties which are indexed in the database.
+Indexes improves query speed but also add an indexing penalty. The
+<em>property</em> does not have to be supplied here. This is optional
+and filters the results according to any argument supplied. With no
+<em>property</em>, all properties are listed.</p>
+<blockquote>
+<p>·</p>
+<p>-g, --list-graphs:: List all the named graphs in the database. These
+are used by the filesystem miner to separate metadata so that apps can
+only see the information relevant to them.</p>
+</blockquote>
+</blockquote>
+<p><strong>-t, --tree=[</strong><em>class</em><strong>]</strong></p>
+<blockquote>
+<p>Prints a tree showing all parent classes of <em>class</em> in the
+ontology. The <em>class</em> can be provided in shorthand or longhand
+(see <strong>--get-shorthand</strong> and
+<strong>--get-longhand</strong> for details). For example:</p>
+</blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -t nmo:MMSMessage
+ROOT
+  +-- rdfs:Resource (C)
+  |  +-- nie:InformationElement (C)
+  |  |  +-- nfo:Document (C)
+  |  |  |  +-- nfo:TextDocument (C)
+  |  |  |  |  `-- nmo:Message (C)
+  |  |  |  |  |  +-- nmo:PhoneMessage (C)
+  |  |  |  |  |  |  `-- nmo:MMSMessage (C)</code></pre>
+</blockquote>
+<p>If no <em>class</em> is given, the entire tree is shown.</p>
+<p>The <strong>--search</strong> command line option can be used to
+highlight parts of the tree you’re looking for. The search is case
+insensitive.</p>
+<p>The <strong>--properties</strong> command line option can be used to
+show properties for each class displayed, for example:</p>
+<blockquote>
+<pre><code>$ tracker3 sparql -t nfo:FileDataObject -p
+ROOT
+  +-- rdfs:Resource (C)
+  |  --&gt; http://purl.org/dc/elements/1.1/contributor (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/coverage (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/creator (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/date (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/description (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/format (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/identifier (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/language (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/publisher (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/relation (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/rights (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/source (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/subject (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/title (P)
+  |  --&gt; http://purl.org/dc/elements/1.1/type (P)
+  |  --&gt; nao:deprecated (P)
+  |  --&gt; nao:hasTag (P)
+  |  --&gt; nao:identifier (P)
+  |  --&gt; nao:isRelated (P)
+  |  --&gt; nao:lastModified (P)
+  |  --&gt; nao:numericRating (P)
+  |  --&gt; rdf:type (P)
+  |  --&gt; rdfs:comment (P)
+  |  --&gt; rdfs:label (P)
+  |  --&gt; nrl:added (P)
+  |  --&gt; nrl:damaged (P)
+  |  --&gt; nrl:modified (P)
+  |  +-- nie:DataObject (C)
+  |  |  --&gt; nfo:belongsToContainer (P)
+  |  |  --&gt; nie:byteSize (P)
+  |  |  --&gt; nie:created (P)
+  |  |  --&gt; nie:dataSource (P)
+  |  |  --&gt; nie:interpretedAs (P)
+  |  |  --&gt; nie:isPartOf (P)
+  |  |  --&gt; nie:lastRefreshed (P)
+  |  |  --&gt; nie:url (P)
+  |  |  --&gt; tracker:available (P)
+  |  |  +-- nfo:FileDataObject (C)
+  |  |  |  --&gt; nfo:fileCreated (P)
+  |  |  |  --&gt; nfo:fileLastAccessed (P)
+  |  |  |  --&gt; nfo:fileLastModified (P)
+  |  |  |  --&gt; nfo:fileName (P)
+  |  |  |  --&gt; nfo:fileOwner (P)
+  |  |  |  --&gt; nfo:fileSize (P)
+  |  |  |  --&gt; nfo:hasHash (P)
+  |  |  |  --&gt; nfo:permissions (P)</code></pre>
+</blockquote>
+<p><strong>-s,
+--search=&lt;</strong><em>needle</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Returns a list of classes and properties which partially match
+<em>needle</em> in the ontology. This is a case insensitive match, for
+example:</p>
+</blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -s text
+
+Classes: 4
+  http://tracker.api.gnome.org/ontology/v3/nfo#TextDocument
+  http://tracker.api.gnome.org/ontology/v3/nfo#PlainTextDocument
+  http://tracker.api.gnome.org/ontology/v3/nfo#PaginatedTextDocument
+  http://tracker.api.gnome.org/ontology/v3/nmm#SynchronizedText
+
+Properties: 4
+  http://tracker.api.gnome.org/ontology/v3/tracker#fulltextIndexed
+  http://tracker.api.gnome.org/ontology/v3/nie#plainTextContent
+  http://tracker.api.gnome.org/ontology/v3/nmo#plainTextMessageContent
+  http://tracker.api.gnome.org/ontology/v3/scal#textLocation</code></pre>
+</blockquote>
+<p>See also <strong>--tree</strong>.</p>
+<p><strong>--get-shorthand=&lt;</strong><em>class</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Returns the shorthand for a class given by a URL. For example:</p>
+</blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql --get-shorthand http://tracker.api.gnome.org/ontology/v3/nmo#plainTextMessageContent
+nmo:plainTextMessageContent</code></pre>
+</blockquote>
+<p><strong>--get-longhand=&lt;</strong><em>class</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Returns the longhand for a class given in the form of CLASS:PROPERTY.
+For example:</p>
+</blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql --get-longhand nmm:MusicPiece
+http://tracker.api.gnome.org/ontology/v3/nmm#MusicPiece</code></pre>
+</blockquote>
+<h1>EXAMPLES</h1>
+<p>List all classes</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?cl WHERE { ?cl a rdfs:Class }&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>List all properties for the Resources class (see
+--list-properties)</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?prop WHERE {
+    ?prop a rdf:Property ;
+    rdfs:domain &lt;http://www.w3.org/2000/01/rdf-schema#Resource&gt;
+}&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>List all class namespace prefixes</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?prefix ?ns WHERE {
+    ?ns a nrl:Namespace ;
+    nrl:prefix ?prefix
+}&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>List all music files</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?song WHERE { ?song a nmm:MusicPiece }&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>List all music albums, showing title, track count, and length in
+seconds.</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?title COUNT(?song)
+                      AS songs
+                      SUM(?length) AS totallength
+                      WHERE {
+    ?album a nmm:MusicAlbum ;
+    nie:title ?title .
+    ?song nmm:musicAlbum ?album ;
+    nfo:duration ?length
+} GROUP BY ?album&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>List all music from a particular artist</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?song ?title WHERE {
+    ?song nmm:performer [ nmm:artistName Artist Name ] ;
+    nie:title ?title
+}&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>Set the played count for a song</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -u -q &quot;DELETE {
+    &lt;file:///home/user/Music/song.mp3&gt; nie:usageCounter ?count
+} WHERE {
+    &lt;file:///home/user/Music/song.mp3&gt; nie:usageCounter ?count
+} INSERT {
+    &lt;file:///home/user/Music/song.mp3&gt; nie:usageCounter 42
+}&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>List all image files</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?image WHERE { ?image a nfo:Image }&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>List all image files with a specific tag</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?image WHERE {
+    ?image a nfo:Image ;
+    nao:hasTag [ nao:prefLabel tag ]
+}&quot;</code></pre>
+</blockquote>
+</blockquote>
+<p>List all image files created on a specific month and order by
+date</p>
+<blockquote>
+<blockquote>
+<pre><code>$ tracker3 sparql -q &quot;SELECT ?image ?date WHERE {
+    ?image a nfo:Image ;
+    nie:contentCreated ?date .
+    FILTER (?date &gt;= 2008-07-01T00:00:00 &amp;&amp;
+            ?date &lt;  2008-08-01T00:00:00)
+} ORDER BY ?date&quot;</code></pre>
+</blockquote>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-sql</strong>(1),
+<strong>tracker3-info</strong>(1).</p>
+<p><strong>http://nepomuk.semanticdesktop.org/</strong>
+<strong>http://www.w3.org/TR/rdf-sparql-query/</strong></p>

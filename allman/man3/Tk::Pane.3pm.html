@@ -1,0 +1,129 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Pane - A window panner</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::Pane; $pane = $mw-&gt;Scrolled("Pane", Name =&gt; fred,
+-scrollbars =&gt; soe, -sticky =&gt; we, -gridded =&gt; y );
+$pane-&gt;Frame; $pane-&gt;pack;</p>
+<h1>DESCRIPTION</h1>
+<p><strong>Tk::Pane</strong> provides a scrollable frame widget. Once
+created it can be treated as a frame, except it is scrollable.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-gridded =&gt; direction</dt>
+<dd>
+<p>Specifies if the top and left edges of the pane should snap to a grid
+column. This option is only useful if the widgets in the pane are
+managed by the <em>grid</em> geometry manager. Possible values are
+<strong>x</strong>, <strong>y</strong> and <strong>xy</strong>.</p>
+</dd>
+<dt>-sticky =&gt; style</dt>
+<dd>
+<p>If Pane is larger than its requested dimensions, this option may be
+used to position (or stretch) the slave within its cavity.
+<em>Style</em> is a string that contains zero or more of the characters
+n, s, e or w. The string can optionally contains spaces or commas, but
+they are ignored. Each letter refers to a side (north, south, east, or
+west) that the slave will stick to. If both n and s (or e and w) are
+specified, the slave will be stretched to fill the entire height (or
+width) of its cavity.</p>
+</dd>
+</dl>
+<h1>METHODS</h1>
+<dl>
+<dt>$pane-&gt;see($widget ?,options?)</dt>
+<dd>
+<p>Adjusts the view so that <em><code>$widget</code></em> is visable.
+Additional parameters in <em>options-value</em> pairs can be passed,
+each <em>option-value</em> pair must be one of the following</p>
+<dl>
+<dt>-anchor =&gt; anchor</dt>
+<dd>
+<p>Specifies how to make the widget visable. If not given then as much
+of the widget as possible is made visable. Possible values are
+<strong>n</strong>, <strong>s</strong>, <strong>w</strong>,
+<strong>e</strong>, <strong>nw</strong>, <strong>ne</strong>,
+<strong>sw</strong> and <strong>se</strong>. This will cause an edge on
+the widget to be aligned with the corresponding edge on the pane. for
+example <strong>nw</strong> will cause the top left of the widget to be
+placed at the top left of the pane. <strong>s</strong> will cause the
+bottom of the widget to be placed at the bottom of the pane, and as much
+of the widget as possible made visable in the x direction.</p>
+</dd>
+</dl>
+</dd>
+<dt>$pane-&gt;xview</dt>
+<dd>
+<p>Returns a list containing two elements, both of which are real
+fractions between 0 and 1. The first element gives the position of the
+left of the window, relative to the Pane as a whole (0.5 means it is
+halfway through the Pane, for example). The second element gives the
+position of the right of the window, relative to the Pane as a
+whole.</p>
+</dd>
+<dt>$pane-&gt;xview($widget)</dt>
+<dd>
+<p>Adjusts the view in the window so that <em>widget</em> is displayed
+at the left of the window.</p>
+</dd>
+<dt>$pane-&gt;xview(moveto =&gt; fraction)</dt>
+<dd>
+<p>Adjusts the view in the window so that <em>fraction</em> of the total
+width of the Pane is off-screen to the left. fraction must be a fraction
+between 0 and 1.</p>
+</dd>
+<dt>$pane-&gt;xview(scroll =&gt; number, what)</dt>
+<dd>
+<p>This command shifts the view in the window left or right according to
+<em>number</em> and <em>what</em>. <em>Number</em> must be an integer.
+<em>What</em> must be either <strong>units</strong> or
+<strong>pages</strong> or an abbreviation of one of these. If
+<em>what</em> is <strong>units</strong>, the view adjusts left or right
+by <em>number</em>*10 screen units on the display; if it is
+<strong>pages</strong> then the view adjusts by number screenfuls. If
+number is negative then widgets farther to the left become visible; if
+it is positive then widgets farther to the right become visible.</p>
+</dd>
+<dt>$pane-&gt;yview</dt>
+<dd>
+<p>Returns a list containing two elements, both of which are real
+fractions between 0 and 1. The first element gives the position of the
+top of the window, relative to the Pane as a whole (0.5 means it is
+halfway through the Pane, for example). The second element gives the
+position of the bottom of the window, relative to the Pane as a
+whole.</p>
+</dd>
+<dt>$pane-&gt;yview($widget)</dt>
+<dd>
+<p>Adjusts the view in the window so that <em>widget</em> is displayed
+at the top of the window.</p>
+</dd>
+<dt>$pane-&gt;yview(moveto =&gt; fraction)</dt>
+<dd>
+<p>Adjusts the view in the window so that <em>fraction</em> of the total
+width of the Pane is off-screen to the top. fraction must be a fraction
+between 0 and 1.</p>
+</dd>
+<dt>$pane-&gt;yview(scroll =&gt; number, what)</dt>
+<dd>
+<p>This command shifts the view in the window up or down according to
+<em>number</em> and <em>what</em>. <em>Number</em> must be an integer.
+<em>What</em> must be either <strong>units</strong> or
+<strong>pages</strong> or an abbreviation of one of these. If
+<em>what</em> is <strong>units</strong>, the view adjusts up or down by
+<em>number</em>*10 screen units on the display; if it is
+<strong>pages</strong> then the view adjusts by number screenfuls. If
+number is negative then widgets farther up become visible; if it is
+positive then widgets farther down become visible.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Graham Barr &lt;<em>gbarr@pobox.com</em>&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 1997-1998 Graham Barr. All rights reserved. This
+program is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.</p>

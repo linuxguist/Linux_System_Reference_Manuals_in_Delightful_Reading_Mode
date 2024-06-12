@@ -1,0 +1,43 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gamma4scanimage - create a gamma table for scanimage</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gamma4scanimage</strong> <em>gamma</em> [<em>shadow</em>
+[<em>highlight</em> [<em>maxin</em> [<em>maxout</em>]]]]</p>
+<h1>DESCRIPTION</h1>
+<p>The tool <strong>gamma4scanimage</strong> creates a gamma table in
+the format expected by scanimage. You can define a
+<strong>gamma,</strong> a <strong>shadow</strong> and a
+<strong>highlight</strong> value. You also can specify the size
+(<strong>maxin</strong>) and maximum output value
+(<strong>maxout</strong>) of the gamma table.</p>
+<p><strong>gamma</strong> is a floating point value, neutral value being
+1.0. If the value is larger than 1.0 then the image is brighter.</p>
+<p><strong>shadow</strong> defines the minimum input value that is
+necessary to create an output value larger than zero. shadow has to be
+in the range [0..<strong>maxin</strong>]. Its default value is 0.</p>
+<p><strong>highlight</strong> defines the maximum input value that
+produces an output value smaller than maxout. highlight must be in the
+range [0..<strong>maxin</strong>] and larger than shadow. Its default
+value is the same as <strong>maxin</strong> (16383 if not set).</p>
+<p><strong>maxin</strong> defines the size of the gamma table. The size
+depends on the scanner/backend. If the scanner uses 8 bit gamma input
+then <strong>maxin</strong> must be set to 255, 1023 for 10 bits, 4095
+for 12 bits, and 16383 for 14 bits. The default is 16383. To find out
+what value <strong>maxin</strong> has to be, call
+<strong>scanimage</strong>(1) with a very large gamma table
+[0]0-[99999]255 and <strong>scanimage</strong>(1) will print an error
+message with the needed gamma table size.</p>
+<p><strong>maxout</strong> defines the maximum output value. Take a look
+at the output of <em>scanimage -h</em> to find out what
+<strong>maxout</strong> must be. The default value is 255.</p>
+<h1>EXAMPLE</h1>
+<p>scanimage --custom-gamma=yes --gamma-table `gamma4scanimage 1.8 0
+11500 16383 255` &gt;image.pnm</p>
+<h1>SEE ALSO</h1>
+<p><strong>sane</strong>(7), <strong>scanimage</strong>(1)</p>
+<h1>AUTHOR</h1>
+<p>Oliver Rauch</p>
+<h1>EMAIL-CONTACT</h1>
+<p><em>Oliver.Rauch@Rauch-Domain.DE</em></p>

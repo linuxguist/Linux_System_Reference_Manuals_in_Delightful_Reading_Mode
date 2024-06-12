@@ -1,0 +1,217 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pppstats - print PPP statistics</p>
+<h1>SYNOPSIS</h1>
+<p><strong>pppstats</strong> [ <strong>-a</strong> ] [
+<strong>-d</strong> ] [ <strong>-v</strong> ] [ <strong>-r</strong> ] [
+<strong>-z</strong> ] [ <strong>-c</strong> <em>&lt;count&gt;</em> ] [
+<strong>-w</strong> <em>&lt;secs&gt;</em> ] [ <em>interface</em> ]</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>pppstats</strong> utility reports PPP-related statistics
+at regular intervals for the specified PPP interface. If the interface
+is unspecified, it will default to ppp0. The display is split
+horizontally into input and output sections containing columns of
+statistics describing the properties and volume of packets received and
+transmitted by the interface.</p>
+<p>The options are as follows:</p>
+<dl>
+<dt><strong>-a</strong></dt>
+<dd>
+<p>Display absolute values rather than deltas. With this option, all
+reports show statistics for the time since the link was initiated.
+Without this option, the second and subsequent reports show statistics
+for the time since the last report.</p>
+</dd>
+<dt><strong>-d</strong></dt>
+<dd>
+<p>Show data rate (kB/s) instead of bytes.</p>
+</dd>
+<dt><strong>-c <em>count</em></strong></dt>
+<dd>
+<p>Repeat the display <em>count</em> times. If this option is not
+specified, the default repeat count is 1 if the <strong>-w</strong>
+option is not specified, otherwise infinity.</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Display additional statistics summarizing the compression ratio
+achieved by the packet compression algorithm in use.</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>Display additional statistics relating to the performance of the Van
+Jacobson TCP header compression algorithm.</p>
+</dd>
+<dt><strong>-w <em>wait</em></strong></dt>
+<dd>
+<p>Pause <em>wait</em> seconds between each display. If this option is
+not specified, the default interval is 5 seconds.</p>
+</dd>
+<dt><strong>-z</strong></dt>
+<dd>
+<p>Instead of the standard display, show statistics indicating the
+performance of the packet compression algorithm in use.</p>
+</dd>
+</dl>
+<p>The following fields are printed on the input side when the
+<strong>-z</strong> option is not used:</p>
+<dl>
+<dt><strong>IN</strong></dt>
+<dd>
+<p>The total number of bytes received by this interface.</p>
+</dd>
+<dt><strong>PACK</strong></dt>
+<dd>
+<p>The total number of packets received by this interface.</p>
+</dd>
+<dt><strong>VJCOMP</strong></dt>
+<dd>
+<p>The number of header-compressed TCP packets received by this
+interface.</p>
+</dd>
+<dt><strong>VJUNC</strong></dt>
+<dd>
+<p>The number of header-uncompressed TCP packets received by this
+interface. Not reported when the <strong>-r</strong> option is
+specified.</p>
+</dd>
+<dt><strong>VJERR</strong></dt>
+<dd>
+<p>The number of corrupted or bogus header-compressed TCP packets
+received by this interface. Not reported when the <strong>-r</strong>
+option is specified.</p>
+</dd>
+<dt><strong>VJTOSS</strong></dt>
+<dd>
+<p>The number of VJ header-compressed TCP packets dropped on reception
+by this interface because of preceding errors. Only reported when the
+<strong>-v</strong> option is specified.</p>
+</dd>
+<dt><strong>NON-VJ</strong></dt>
+<dd>
+<p>The total number of non-TCP packets received by this interface. Only
+reported when the <strong>-v</strong> option is specified.</p>
+</dd>
+<dt><strong>RATIO</strong></dt>
+<dd>
+<p>The compression ratio achieved for received packets by the packet
+compression scheme in use, defined as the uncompressed size divided by
+the compressed size. Only reported when the <strong>-r</strong> option
+is specified.</p>
+</dd>
+<dt><strong>UBYTE</strong></dt>
+<dd>
+<p>The total number of bytes received, after decompression of compressed
+packets. Only reported when the <strong>-r</strong> option is
+specified.</p>
+</dd>
+</dl>
+<p>The following fields are printed on the output side:</p>
+<dl>
+<dt><strong>OUT</strong></dt>
+<dd>
+<p>The total number of bytes transmitted from this interface.</p>
+</dd>
+<dt><strong>PACK</strong></dt>
+<dd>
+<p>The total number of packets transmitted from this interface.</p>
+</dd>
+<dt><strong>VJCOMP</strong></dt>
+<dd>
+<p>The number of TCP packets transmitted from this interface with
+VJ-compressed TCP headers.</p>
+</dd>
+<dt><strong>VJUNC</strong></dt>
+<dd>
+<p>The number of TCP packets transmitted from this interface with
+VJ-uncompressed TCP headers. Not reported when the <strong>-r</strong>
+option is specified.</p>
+</dd>
+<dt><strong>NON-VJ</strong></dt>
+<dd>
+<p>The total number of non-TCP packets transmitted from this interface.
+Not reported when the <strong>-r</strong> option is specified.</p>
+</dd>
+<dt><strong>VJSRCH</strong></dt>
+<dd>
+<p>The number of searches for the cached header entry for a VJ header
+compressed TCP packet. Only reported when the <strong>-v</strong> option
+is specified.</p>
+</dd>
+<dt><strong>VJMISS</strong></dt>
+<dd>
+<p>The number of failed searches for the cached header entry for a VJ
+header compressed TCP packet. Only reported when the <strong>-v</strong>
+option is specified.</p>
+</dd>
+<dt><strong>RATIO</strong></dt>
+<dd>
+<p>The compression ratio achieved for transmitted packets by the packet
+compression scheme in use, defined as the size before compression
+divided by the compressed size. Only reported when the
+<strong>-r</strong> option is specified.</p>
+</dd>
+<dt><strong>UBYTE</strong></dt>
+<dd>
+<p>The total number of bytes to be transmitted, before packet
+compression is applied. Only reported when the <strong>-r</strong>
+option is specified.</p>
+</dd>
+</dl>
+<p>When the <strong>-z</strong> option is specified,
+<strong>pppstats</strong> instead displays the following fields,
+relating to the packet compression algorithm currently in use. If packet
+compression is not in use, these fields will all display zeroes. The
+fields displayed on the input side are:</p>
+<dl>
+<dt><strong>COMPRESSED BYTE</strong></dt>
+<dd>
+<p>The number of bytes of compressed packets received.</p>
+</dd>
+<dt><strong>COMPRESSED PACK</strong></dt>
+<dd>
+<p>The number of compressed packets received.</p>
+</dd>
+<dt><strong>INCOMPRESSIBLE BYTE</strong></dt>
+<dd>
+<p>The number of bytes of incompressible packets (that is, those which
+were transmitted in uncompressed form) received.</p>
+</dd>
+<dt><strong>INCOMPRESSIBLE PACK</strong></dt>
+<dd>
+<p>The number of incompressible packets received.</p>
+</dd>
+<dt><strong>COMP RATIO</strong></dt>
+<dd>
+<p>The recent compression ratio for incoming packets, defined as the
+uncompressed size divided by the compressed size (including both
+compressible and incompressible packets).</p>
+</dd>
+</dl>
+<p>The fields displayed on the output side are:</p>
+<dl>
+<dt><strong>COMPRESSED BYTE</strong></dt>
+<dd>
+<p>The number of bytes of compressed packets transmitted.</p>
+</dd>
+<dt><strong>COMPRESSED PACK</strong></dt>
+<dd>
+<p>The number of compressed packets transmitted.</p>
+</dd>
+<dt><strong>INCOMPRESSIBLE BYTE</strong></dt>
+<dd>
+<p>The number of bytes of incompressible packets transmitted (that is,
+those which were transmitted in uncompressed form).</p>
+</dd>
+<dt><strong>INCOMPRESSIBLE PACK</strong></dt>
+<dd>
+<p>The number of incompressible packets transmitted.</p>
+</dd>
+<dt><strong>COMP RATIO</strong></dt>
+<dd>
+<p>The recent compression ratio for outgoing packets.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>pppd(8)</p>

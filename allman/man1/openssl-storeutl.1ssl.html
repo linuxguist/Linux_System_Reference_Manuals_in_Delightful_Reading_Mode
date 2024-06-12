@@ -1,0 +1,154 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-storeutl - STORE command</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl</strong> <strong>storeutl</strong>
+[<strong>-help</strong>] [<strong>-out</strong> <em>file</em>]
+[<strong>-noout</strong>] [<strong>-passin</strong> <em>arg</em>]
+[<strong>-text</strong> <em>arg</em>] [<strong>-r</strong>]
+[<strong>-certs</strong>] [<strong>-keys</strong>]
+[<strong>-crls</strong>] [<strong>-subject</strong> <em>arg</em>]
+[<strong>-issuer</strong> <em>arg</em>] [<strong>-serial</strong>
+<em>arg</em>] [<strong>-alias</strong> <em>arg</em>]
+[<strong>-fingerprint</strong> <em>arg</em>]
+[<strong>-<em>digest</em></strong>] [<strong>-engine</strong>
+<em>id</em>] [<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>] <em>uri</em></p>
+<h1>DESCRIPTION</h1>
+<p>This command can be used to display the contents (after decryption as
+the case may be) fetched from the given URI.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-out filename</dt>
+<dd>
+<p>specifies the output filename to write to or standard output by
+default.</p>
+</dd>
+<dt>-noout</dt>
+<dd>
+<p>this option prevents output of the PEM data.</p>
+</dd>
+<dt>-passin arg</dt>
+<dd>
+<p>the key password source. For more information about the format of
+<em>arg</em> see <strong>openssl-passphrase-options</strong> (1).</p>
+</dd>
+<dt>-text</dt>
+<dd>
+<p>Prints out the objects in text form, similarly to the
+<strong>-text</strong> output from <strong>openssl-x509</strong> (1),
+<strong>openssl-pkey</strong> (1), etc.</p>
+</dd>
+<dt>-r</dt>
+<dd>
+<p>Fetch objects recursively when possible.</p>
+</dd>
+<dt>-certs</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-keys</dt>
+<dd>
+
+</dd>
+<dt>-crls</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Only select the certificates, keys or CRLs from the given URI.
+However, if this URI would return a set of names (URIs), those are
+always returned. Note that all options must be given before the
+<em>uri</em> argument. Otherwise they are ignored.</p>
+<dl>
+<dt>-subject arg</dt>
+<dd>
+<p>Search for an object having the subject name <em>arg</em>. The arg
+must be formatted as <code>/type0=value0/type1=value1/type2=...</code>.
+Special characters may be escaped by <code>\</code> (backslash),
+whitespace is retained. Empty values are permitted but are ignored for
+the search. That is, a search with an empty value will have the same
+effect as not specifying the type at all. Giving a single <code>/</code>
+will lead to an empty sequence of RDNs (a NULL-DN). Multi-valued RDNs
+can be formed by placing a <code>+</code> character instead of a
+<code>/</code> between the AttributeValueAssertions (AVAs) that specify
+the members of the set. Example:
+<code>/DC=org/DC=OpenSSL/DC=users/UID=123456+CN=John Doe</code></p>
+</dd>
+<dt>-issuer arg</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-serial arg</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Search for an object having the given issuer name and serial number.
+These two options <em>must</em> be used together. The issuer arg must be
+formatted as <code>/type0=value0/type1=value1/type2=...</code>,
+characters may be escaped by \ (backslash), no spaces are skipped. The
+serial arg may be specified as a decimal value or a hex value if
+preceded by <code>0x</code>.</p>
+<dl>
+<dt>-alias arg</dt>
+<dd>
+<p>Search for an object having the given alias.</p>
+</dd>
+<dt>-fingerprint arg</dt>
+<dd>
+<p>Search for an object having the given fingerprint.</p>
+</dd>
+<dt>-digest</dt>
+<dd>
+<p>The digest that was used to compute the fingerprint given with
+<strong>-fingerprint</strong>.</p>
+</dd>
+<dt>-engine id</dt>
+<dd>
+<p>See Engine Options in <strong>openssl</strong> (1). This option is
+deprecated.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<h1>SEE ALSO</h1>
+<p><strong>openssl</strong> (1)</p>
+<h1>HISTORY</h1>
+<p>This command was added in OpenSSL 1.1.1.</p>
+<p>The <strong>-engine</strong> option was deprecated in OpenSSL
+3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2016-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

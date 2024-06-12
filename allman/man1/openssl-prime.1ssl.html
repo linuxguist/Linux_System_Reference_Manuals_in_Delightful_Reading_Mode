@@ -1,0 +1,75 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-prime - compute prime numbers</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl prime</strong> [<strong>-help</strong>]
+[<strong>-hex</strong>] [<strong>-generate</strong>]
+[<strong>-bits</strong> <em>num</em>] [<strong>-safe</strong>]
+[<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>] [<strong>-checks</strong>
+<em>num</em>] [<em>number</em> ...]</p>
+<h1>DESCRIPTION</h1>
+<p>This command checks if the specified numbers are prime.</p>
+<p>If no numbers are given on the command line, the
+<strong>-generate</strong> flag should be used to generate primes
+according to the requirements specified by the rest of the flags.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Display an option summary.</p>
+</dd>
+<dt>-hex</dt>
+<dd>
+<p>Generate hex output.</p>
+</dd>
+<dt>-generate</dt>
+<dd>
+<p>Generate a prime number.</p>
+</dd>
+<dt>-bits num</dt>
+<dd>
+<p>Generate a prime with <em>num</em> bits.</p>
+</dd>
+<dt>-safe</dt>
+<dd>
+<p>When used with <strong>-generate</strong>, generates a safe prime. If
+the number generated is <em>n</em>, then check that
+<code>(</code><em><code>n</code></em><code>-1)/2</code> is also
+prime.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<dl>
+<dt>-checks num</dt>
+<dd>
+<p>This parameter is ignored.</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2017-2020 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

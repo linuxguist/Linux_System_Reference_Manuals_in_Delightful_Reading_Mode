@@ -1,0 +1,1015 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ispell, buildhash, munchlist, findaffix, tryaffix, icombine, ijoin -
+Interactive spelling checking</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ispell</strong> [<em>common-flags</em>]
+[<strong>-M</strong>|<strong>-N</strong>]
+[<strong>-L</strong><em>context</em><strong>]</strong>
+[<strong>-V</strong>] files<br />
+<strong>ispell</strong> [<em>common-flags</em>]
+<strong>-l</strong><br />
+<strong>ispell</strong> [<em>common-flags</em>] [<strong>-f</strong>
+file] [<strong>-s</strong>]
+[<strong>-a</strong>|<strong>-A</strong>]<br />
+<strong>ispell</strong> [<strong>-d</strong> <em>file</em>]
+[<strong>-w</strong> <em>chars</em>] <strong>-c</strong><br />
+<strong>ispell</strong> [<strong>-d</strong> <em>file</em>]
+[<strong>-w</strong> <em>chars</em>]
+<strong>-e</strong>[<strong>e</strong>]<br />
+<strong>ispell</strong> [<strong>-d</strong> <em>file</em>]
+<strong>-D</strong><br />
+<strong>ispell</strong> <strong>-v</strong>[<strong>v</strong>]</p>
+<dl>
+<dt>common-flags:</dt>
+<dd>
+<p>[<strong>-t</strong>] [<strong>-n</strong>] [<strong>-H</strong>]
+[<strong>-o</strong>] [<strong>-b</strong>] [<strong>-x</strong>]
+[<strong>-B</strong>] [<strong>-C</strong>] [<strong>-P</strong>]
+[<strong>-m</strong>] [<strong>-S</strong>] [<strong>-d</strong>
+<em>file</em>] [<strong>-p</strong> <em>file</em>] [<strong>-w</strong>
+<em>chars</em>] [<strong>-W</strong> <em>n</em>] [<strong>-T</strong>
+<em>type</em>] [<strong>-k<em>name</em></strong> <em>list</em>]
+[<strong>-F</strong> <em>program</em>]</p>
+</dd>
+</dl>
+<p>Helper programs:</p>
+<p><strong>buildhash</strong> [<strong>-s</strong>] <em>dict-file
+affix-file hash-file</em><br />
+<strong>buildhash</strong> <strong>-s</strong> <em>count
+affix-file</em></p>
+<dl>
+<dt><strong>munchlist</strong></dt>
+<dd>
+<p>[<strong>-l</strong> <em>aff-file</em>] [<strong>-c</strong>
+<em>conv-file</em>] [<strong>-T</strong> <em>suffix</em>]<br />
+[<strong>-s</strong> <em>hash-file</em>] [<strong>-D</strong>]
+[<strong>-v</strong>] [<strong>-w</strong> <em>chars</em>]
+[<em>files</em>]</p>
+</dd>
+<dt><strong>findaffix</strong></dt>
+<dd>
+<p>[<strong>-p</strong>|<strong>-s</strong>] [<strong>-f</strong>]
+[<strong>-c</strong>] [<strong>-m</strong> <em>min</em>]
+[<strong>-M</strong> <em>max</em>] [<strong>-e</strong>
+<em>elim</em>]<br />
+[<strong>-t</strong> <em>tabchar</em>] [<strong>-l</strong>
+<em>low</em>] [<em>files</em>]</p>
+</dd>
+</dl>
+<p><strong>tryaffix</strong> [<strong>-p</strong>|<strong>-s]</strong>
+[<strong>-c</strong>] <em>expanded-file</em>
+<em>affix</em>[<em>+addition</em>] ...</p>
+<p><strong>icombine</strong> [<strong>-T</strong> <em>type</em>]
+[<strong>-w</strong> <em>chars</em>] [<em>aff-file</em>]</p>
+<p><strong>ijoin</strong> [<strong>-s</strong>|<strong>-u</strong>]
+<em>join-options</em> <em>file1</em> <em>file2</em></p>
+<h1>DESCRIPTION</h1>
+<p><em>Ispell</em> is fashioned after the <em>spell</em> program from
+ITS (called <em>ispell</em> on Twenex systems.) The most common usage is
+"ispell filename". In this case, <em>ispell</em> will display each word
+which does not appear in the dictionary at the top of the screen and
+allow you to change it. If there are "near misses" in the dictionary
+(words which differ by only a single letter, a missing or extra letter,
+a pair of transposed letters, or a missing space or hyphen), then they
+are also displayed on following lines. As well as "near misses", ispell
+may display other guesses at ways to make the word from a known root,
+with each guess preceded by question marks. Finally, the line containing
+the word and the previous line are printed at the bottom of the screen.
+If your terminal can display in reverse video, the word itself is
+highlighted. You have the option of replacing the word completely, or
+choosing one of the suggested words. Commands are single characters as
+follows (case is ignored):</p>
+<blockquote>
+<ol start="18" type="A">
+<li><p>Replace the misspelled word completely.</p></li>
+</ol>
+<dl>
+<dt>Space</dt>
+<dd>
+<p>Accept the word this time only.</p>
+</dd>
+</dl>
+<ol type="A">
+<li><p>Accept the word for the rest of this <em>ispell</em>
+session.</p></li>
+</ol>
+<ol type="I">
+<li><p>Accept the word, capitalized as it is in the file, and update
+private dictionary.</p></li>
+</ol>
+<ol start="21" type="A">
+<li><p>Accept the word, and add an uncapitalized (actually, all
+lower-case) version to the private dictionary.</p></li>
+</ol>
+<dl>
+<dt>0–n</dt>
+<dd>
+<p>Replace with one of the suggested words.</p>
+</dd>
+</dl>
+<ol start="12" type="A">
+<li><p>Look up words in system dictionary (controlled by the WORDS
+compilation option).</p></li>
+<li><p>Write the rest of this file, ignoring misspellings, and start
+next file.</p></li>
+<li><p>Exit immediately and leave the file unchanged.</p></li>
+</ol>
+<dl>
+<dt>!</dt>
+<dd>
+<p>Shell escape.</p>
+</dd>
+<dt>^L</dt>
+<dd>
+<p>Redraw screen.</p>
+</dd>
+<dt>^Z</dt>
+<dd>
+<p>Suspend ispell.</p>
+</dd>
+<dt>?</dt>
+<dd>
+<p>Give help screen.</p>
+</dd>
+</dl>
+</blockquote>
+<p>If the <strong>-M</strong> switch is specified, a one-line mini-menu
+at the bottom of the screen will summarize these options. Conversely,
+the <strong>-N</strong> switch may be used to suppress the mini-menu.
+(The minimenu is displayed by default if <em>ispell</em> was compiled
+with the MINIMENU option, but these two switches will always override
+the default).</p>
+<p>If the <strong>-L</strong> flag is given, the specified number is
+used as the number of lines of context to be shown at the bottom of the
+screen (The default is to calculate the amount of context as a certain
+percentage of the screen size). The amount of context is subject to a
+system-imposed limit.</p>
+<p>If the <strong>-V</strong> flag is given, characters that are not in
+the 7-bit ANSI printable character set will always be displayed in the
+style of "cat -v", even if <em>ispell</em> thinks that these characters
+are valid ISO Latin-1 on your system. This is useful when working with
+older terminals. Without this switch, <em>ispell</em> will display 8-bit
+characters "as is" if they have been defined as string characters for
+the chosen file type.</p>
+<p>"Normal" mode, as well as the <strong>-l</strong>,
+<strong>-a</strong>, and <strong>-A</strong> options and interactive
+mode (see below) also accepts the following "common" flags on the
+command line:</p>
+<blockquote>
+<dl>
+<dt>-t</dt>
+<dd>
+<p>The input file is in TeX or LaTeX format.</p>
+</dd>
+<dt>-n</dt>
+<dd>
+<p>The input file is in nroff/troff format.</p>
+</dd>
+<dt>-H</dt>
+<dd>
+<p>The input file is in SGML/HTML format. (This should really be
+<strong>-s</strong>, but for historical reasons that flag was already
+taken.)</p>
+</dd>
+<dt>-o</dt>
+<dd>
+<p>The input file should be treated as ordinary text. (This could be
+used to override DEFTEXFLAG.)</p>
+</dd>
+<dt>-g</dt>
+<dd>
+<p>The input file is in Debian control file format. Ispell will ignore
+everything outside the Description(s).</p>
+</dd>
+<dt>-b</dt>
+<dd>
+<p>Create a backup file by appending ".bak" to the name of the input
+file.</p>
+</dd>
+<dt>-x</dt>
+<dd>
+<p>Delete the backup file after spell-checking is finished.</p>
+</dd>
+<dt>-B</dt>
+<dd>
+<p>Report run-together words with missing blanks as spelling errors.</p>
+</dd>
+<dt>-C</dt>
+<dd>
+<p>Consider run-together words as valid compounds.</p>
+</dd>
+<dt>-P</dt>
+<dd>
+<p>Don't generate extra root/affix combinations.</p>
+</dd>
+<dt>-m</dt>
+<dd>
+<p>Make possible root/affix combinations that aren't in the
+dictionary.</p>
+</dd>
+<dt>-S</dt>
+<dd>
+<p>Sort the list of guesses by probable correctness.</p>
+</dd>
+<dt>-d file</dt>
+<dd>
+<p>Specify an alternate dictionary file. For example, use <strong>-d
+british</strong> to choose /usr/lib/ispell/british.{aff|hash} instead of
+your default ispell dictionary.</p>
+</dd>
+<dt>-p file</dt>
+<dd>
+<p>Specify an alternate personal dictionary.</p>
+</dd>
+<dt>-w chars</dt>
+<dd>
+<p>Specify additional characters that can be part of a word.</p>
+</dd>
+<dt>-W n</dt>
+<dd>
+<p>Specify length of words that are always valid.</p>
+</dd>
+<dt>-T type</dt>
+<dd>
+<p>Assume a given formatter type for all files.</p>
+</dd>
+</dl>
+</blockquote>
+<p>The <strong>-H</strong>, <strong>-n</strong>, <strong>-t</strong>,
+and <strong>-o</strong> options select whether <em>ispell</em> runs in
+HTML (<strong>-H</strong>), nroff/troff (<strong>-n</strong>), TeX/LaTeX
+(<strong>-t</strong>), or ordinary text (<strong>-o</strong>) input
+mode. mode. (The default mode is controlled by the DEFTEXFLAG
+installation option, but is normally nroff/troff mode for historical
+reasons.) Unless overridden by one of the mode-selection switches,
+TeX/LaTeX mode is automatically selected if an input file has the
+extension ".tex", and HTML mode is automatically selected if an input
+file has the extension ".html" or ".htm".</p>
+<p>In HTML mode, HTML tags delimited by &lt;&gt; signs are skipped,
+except that the "ALT=" construct is recognized if it appears with no
+spaces around the equals sign, and the text inside is spell-checked.</p>
+<p>In TeX/LaTeX mode, whenever a backslash ("\") is found,
+<em>ispell</em> will skip to the next whitespace or TeX/LaTeX delimiter.
+Certain commands contain arguments which should not be checked, such as
+labels and reference keys as are found in the \cite command, since they
+contain arbitrary, non-word arguments. Spell checking is also suppressed
+when in math mode. Thus, for example, given</p>
+<blockquote>
+<p>\chapter {This is a Ckapter} \cite{SCH86}</p>
+</blockquote>
+<p><em>ispell</em> will find "Ckapter" but not "SCH". The
+<strong>-t</strong> option does not recognize the TeX comment character
+"%", so comments are also spell-checked. It also assumes correct LaTeX
+syntax. Arguments to infrequently used commands and some optional
+arguments are sometimes checked unnecessarily. The bibliography will not
+be checked if <em>ispell</em> was compiled with
+<strong>IGNOREBIB</strong> defined. Otherwise, the bibliography will be
+checked but the reference key will not.</p>
+<p>References for the <em>tib</em> (if available on your
+system)<em>,</em> bibliography system, that is, text between a ``[.'' or
+``&lt;.'' and ``.]'' or ``.&gt;'' will always be ignored in TeX/LaTeX
+mode.</p>
+<p>The <strong>-b</strong> and <strong>-x</strong> options control
+whether <em>ispell</em> leaves a backup (.bak) file for each input file.
+The .bak file contains the pre-corrected text. If there are file opening
+or writing errors, the .bak file may be left for recovery purposes even
+with the <strong>-x</strong> option. The default for this option is
+controlled by the DEFNOBACKUPFLAG installation option.</p>
+<p>The <strong>-B</strong> and <strong>-C</strong> options control how
+<em>ispell</em> handles run-together words, such as "notthe" for "not
+the". If <strong>-B</strong> is specified, such words will be considered
+as errors, and <em>ispell</em> will list variations with an inserted
+blank or hyphen as possible replacements. If <strong>-C</strong> is
+specified, run-together words will be considered to be valid compounds,
+so long as both components are in the dictionary, and each component is
+at least as long as a language-dependent minimum (3 characters, by
+default). This is useful for languages such as German and Norwegian,
+where many compound words are formed by concatenation. (Note that
+compounds formed from three or more root words will still be considered
+errors). The default for this option is language-dependent; in a
+multi-lingual installation the default may vary depending on which
+dictionary you choose. <strong>Warning:</strong> the <strong>-C</strong>
+option can cause <em>ispell</em> to recognize non-words and
+misspellings. Use it with caution!</p>
+<p>The <strong>-P</strong> and <strong>-m</strong> options control when
+<em>ispell</em> automatically generates suggested root/affix
+combinations for possible addition to your personal dictionary. (These
+are the entries in the "guess" list which are preceded by question
+marks.) If <strong>-P</strong> is specified, such guesses are displayed
+only if <em>ispell</em> cannot generate any possibilities that match the
+current dictionary. If <strong>-m</strong> is specified, such guesses
+are always displayed. This can be useful if the dictionary has a limited
+word list, or a word list with few suffixes. However, you should be
+careful when using this option, as it can generate guesses that produce
+invalid words. The default for this option is controlled by the
+dictionary file used.</p>
+<p>The <strong>-S</strong> option suppresses <em>ispell</em>'s normal
+behavior of sorting the list of possible replacement words. Some people
+may prefer this, since it somewhat enhances the probability that the
+correct word will be low-numbered.</p>
+<p>The <strong>-d</strong> option is used to specify an alternate hashed
+dictionary file, other than the default. If the filename does not
+contain a "/", the library directory for the default dictionary file is
+prefixed; thus, to use a dictionary in the local directory "-d
+./xxx.hash" must be used. This is useful to allow dictionaries for
+alternate languages. Unlike previous versions of <em>ispell</em>, a
+dictionary of <em>/dev/null</em> is invalid, because the dictionary
+contains the affix table. If you need an effectively empty dictionary,
+create a one-entry list with an unlikely string (e.g., "qqqqq").</p>
+<p>The <strong>-p</strong> option is used to specify an alternate
+personal dictionary file. If the file name does not begin with "/",
+$HOME is prefixed. Also, the shell variable WORDLIST may be set, which
+renames the personal dictionary in the same manner. The command line
+overrides any WORDLIST setting. If neither the <strong>-p</strong>
+switch nor the WORDLIST environment variable is given, <em>ispell</em>
+will search for a personal dictionary in both the current directory and
+$HOME, creating one in $HOME if none is found. The preferred name is
+constructed by appending ".ispell_" to the base name of the hash file.
+For example, if you use the English dictionary, your personal dictionary
+would be named ".ispell_english". However, if the file ".ispell_words"
+exists, it will be used as the personal dictionary regardless of the
+language hash file chosen. This feature is included primarily for
+backwards compatibility.</p>
+<p>If the <strong>-p</strong> option is <em>not</em> specified,
+<em>ispell</em> will look for personal dictionaries in both the current
+directory and the home directory. If dictionaries exist in both places,
+they will be merged. If any words are added to the personal dictionary,
+they will be written to the current directory if a dictionary already
+existed in that place; otherwise they will be written to the dictionary
+in the home directory.</p>
+<p>The <strong>-w</strong> option may be used to specify characters
+other than alphabetics which may also appear in words. For instance,
+<strong>-w</strong> "&amp;" will allow "AT&amp;T" to be picked up.
+Underscores are useful in many technical documents. There is an
+admittedly crude provision in this option for 8-bit international
+characters. Non-printing characters may be specified in the usual way by
+inserting a backslash followed by the octal character code; e.g., "\014"
+for a form feed. Alternatively, if "n" appears in the character string,
+the (up to) three characters following are a DECIMAL code 0–255, for the
+character. For example, to include bells and form feeds in your words
+(an admittedly silly thing to do, but aren't most pedagogical
+examples):</p>
+<blockquote>
+<p>n007n012</p>
+</blockquote>
+<p>Numeric digits other than the three following "n" are simply numeric
+characters. Use of "n" does not conflict with anything because actual
+alphabetics have no meaning - alphabetics are already accepted.
+<em>Ispell</em> will typically be used with input from a file, meaning
+that preserving parity for possible 8 bit characters from the input text
+is OK. If you specify the -l option, and actually type text from the
+terminal, this may create problems if your stty settings preserve
+parity.</p>
+<p>It is not possible to use <strong>-w</strong> with certain
+characters. In particular, the flag-marker character for the language
+(defined in the affix file, but usually "/") can never be made into a
+word character.</p>
+<p>The <strong>-W</strong> option may be used to change the length of
+words that <em>ispell</em> always accepts as valid. Normally,
+<em>ispell</em> will accept all 1-character words as valid, which is
+equivalent to specifying "<strong>-W 1</strong>." (The default for this
+switch is actually controlled by the MINWORD installation option, so it
+may vary at your installation.) If you want all words to be checked
+against the dictionary, regardless of length, you might want to specify
+"<strong>-W 0</strong>". On the other hand, if your document specifies a
+lot of three-letter acronyms, you would specify "<strong>-W 3</strong>"
+to accept all words of three letters or less. Regardless of the setting
+of this option, <em>ispell</em> will only generate words that are in the
+dictionary as suggested replacements for words; this prevents the list
+from becoming too long. Obviously, this option can be very dangerous,
+since short misspellings may be missed. If you use this option a lot,
+you should probably make a last pass without it before you publish your
+document, to protect yourself against errors.</p>
+<p>The <strong>-T</strong> option is used to specify a default formatter
+type for use in generating string characters. This switch overrides the
+default type determined from the file name. The <em>type</em> argument
+may be either one of the unique names defined in the language affix file
+(e.g., <strong>nroff</strong>) or a file suffix including the dot (e.g.,
+<strong>.tex</strong>). If no <strong>-T</strong> option appears and no
+type can be determined from the file name, the default string character
+type declared in the language affix file will be used.</p>
+<p>The <strong>-k</strong> option is used to enhance the behavior of
+certain deformatters. The <em>name</em> parameter gives the name of a
+deformatter keyword set (see below), and the <em>list</em> parameter
+gives a list of one or more keywords that are to be treated specially.
+If <em>list</em> begins with a plus (+) sign, it is added to the
+existing keywords; otherwise it replaces the existing keyword list. For
+example, <strong>-ktexskip1 +bibliographystyle</strong> adds
+"bibliographystyle" to the TeX skip-1 list, while <strong>-khtmlignore
+pre,strong</strong> replaces the HTML ignore list with "pre" and
+"strong". The lists available are:</p>
+<dl>
+<dt>texskip1</dt>
+<dd>
+<p>TeX/LaTeX commands that take a single argument that should not be
+spell-checked, such as "bibliographystyle". The default is "end",
+"vspace", "hspace", "cite", "ref", "parbox", "label", "input", "nocite",
+"include", "includeonly", "documentstyle", "documentclass",
+"usepackage", "selectlanguage", "pagestyle", "pagenumbering",
+"hyphenation", "pageref", and "psfig", plus "bibliography" in some
+installations. These keywords are case-sensitive.</p>
+</dd>
+<dt>texskip2</dt>
+<dd>
+<p>TeX/LaTeX commands that take two arguments that should not be
+spell-checked, such as "setlength". The default is "rule", "setcounter",
+"addtocounter", "setlength", "addtolength", and "settowidth". These
+keywords are case-sensitive.</p>
+</dd>
+<dt>htmlignore</dt>
+<dd>
+<p>HTML tags that delimit text that should not be spell-checked until
+the matching end tag is reached. The default is "code", "samp", "kbd",
+"pre", "listing", and "address". These keywords are case-insensitive.
+(Note that the content inside HTML tags, such as HREF=, is not normally
+checked.)</p>
+</dd>
+<dt>htmlcheck</dt>
+<dd>
+<p>Subfields that should be spell-checked even inside HTML tags. The
+default is "alt", so that the ALT= portion of IMG tags will be
+spell-checked. These keywords are case-insensitive.</p>
+</dd>
+</dl>
+<p>All of the above keyword lists can also be modified by environment
+variables whose names are the same as above, except in uppercase, e.g.,
+TEXSKIP1. The <strong>-k</strong> switch overrides (or adds to) the
+environment variables, and the environment variables override or add to
+the built-in defaults.</p>
+<p>The <strong>-F</strong> switch specifies an external deformatter
+program. This program should read data from its standard input and write
+to its standard output. The program <em>must</em> produce exactly one
+character of output for each character of input, or ispell will lose
+synchronization and corrupt the output file. Whitespace characters
+(especially blanks, tabs, and newlines) and characters that should be
+spell-checked should be passed through unchanged. Characters that should
+not be spell-checked should be converted into blanks or other non-word
+characters. For example, an HTML deformatter might turn all HTML tags
+into blanks, and also blank out all text delimited by tags such as
+"code" or "kbd".</p>
+<p>The <strong>-F</strong> switch is the preferred way to deformat files
+for ispell, and eventually will become the only way.</p>
+<p>If <em>ispell</em> is invoked without any filenames or mode switches,
+it enters an interactive mode designed to let the user check the
+spelling of individual words. The program repeatedly prompts on standard
+output with "word:" and responds with either "ok" (possibly with
+commentary), "not found", or "how about" followed by a list of
+suggestions.</p>
+<p>The <strong>-l</strong> or "list" option to <em>ispell</em> is used
+to produce a list of misspelled words from the standard input.</p>
+<p>The <strong>-a</strong> option is intended to be used from other
+programs through a pipe. In this mode, <em>ispell</em> prints a one-line
+version identification message, and then begins reading lines of input.
+For each input line, a single line is written to the standard output for
+each word checked for spelling on the line. If the word was found in the
+main dictionary, or your personal dictionary, then the line contains
+only a '*'. If the word was found through affix removal, then the line
+contains a '+', a space, and the root word. If the word was found
+through compound formation (concatenation of two words, controlled by
+the <strong>-C</strong> option), then the line contains only a '-'.</p>
+<p>If the word is not in the dictionary, but there are near misses, then
+the line contains an '&amp;', a space, the misspelled word, a space, the
+number of near misses, the number of characters between the beginning of
+the line and the beginning of the misspelled word, a colon, another
+space, and a list of the near misses separated by commas and spaces.
+Following the near misses (and identified only by the count of near
+misses), if the word could be formed by adding (invalid) affixes to a
+known root, is a list of suggested derivations, again separated by
+commas and spaces. If there are no near misses at all, the line format
+is the same, except that the '&amp;' is replaced by '?' (and the
+near-miss count is always zero). The suggested derivations following the
+near misses are in the form:</p>
+<blockquote>
+<p>[prefix+] root [-prefix] [-suffix] [+suffix]</p>
+</blockquote>
+<p>(e.g., "re+fry-y+ies" to get "refries") where each optional
+<em>pfx</em> and <em>sfx</em> is a string. Also, each near miss or guess
+is capitalized the same as the input word unless such capitalization is
+invalid; in the latter case each near miss is capitalized correctly
+according to the dictionary.</p>
+<p>Finally, if the word does not appear in the dictionary, and there are
+no near misses, then the line contains a '#', a space, the misspelled
+word, a space, and the character offset from the beginning of the line.
+Each sentence of text input is terminated with an additional blank line,
+indicating that <em>ispell</em> has completed processing the input
+line.</p>
+<p>These output lines can be summarized as follows:</p>
+<blockquote>
+<dl>
+<dt>OK:</dt>
+<dd>
+<p>*</p>
+</dd>
+<dt>Root:</dt>
+<dd>
+<p>+ &lt;root&gt;</p>
+</dd>
+<dt>Compound:</dt>
+<dd>
+<p>-</p>
+</dd>
+<dt>Miss:</dt>
+<dd>
+<p>&amp; &lt;original&gt; &lt;count&gt; &lt;offset&gt;: &lt;miss&gt;,
+&lt;miss&gt;, ..., &lt;guess&gt;, ...</p>
+</dd>
+<dt>Guess:</dt>
+<dd>
+<p>? &lt;original&gt; 0 &lt;offset&gt;: &lt;guess&gt;, &lt;guess&gt;,
+...</p>
+</dd>
+<dt>None:</dt>
+<dd>
+<p># &lt;original&gt; &lt;offset&gt;</p>
+</dd>
+</dl>
+</blockquote>
+<p>For example, a dummy dictionary containing the words "fray", "Frey",
+"fry", and "refried" might produce the following response to the command
+"echo 'frqy refries' | ispell -a -m -d ./test.hash":</p>
+<blockquote>
+<pre><code>(#) International Ispell Version 3.0.05 (beta), 08/10/91
+&amp; frqy 3 0: fray, Frey, fry
+&amp; refries 1 5: refried, re+fry-y+ies</code></pre>
+</blockquote>
+<p>This mode is also suitable for interactive use when you want to
+figure out the spelling of a single word.</p>
+<p>The <strong>-A</strong> option works just like <strong>-a</strong>,
+except that if a line begins with the string "&amp;Include_File&amp;",
+the rest of the line is taken as the name of a file to read for further
+words. Input returns to the original file when the include file is
+exhausted. Inclusion may be nested up to five deep. The key string may
+be changed with the environment variable <strong>INCLUDE_STRING</strong>
+(the ampersands, if any, must be included).</p>
+<p>When in the <strong>-a</strong> mode, <em>ispell</em> will also
+accept lines of single words prefixed with any of '*', '&amp;', '@',
+'+', '-', '~', '#', '!', '%', '`', or '^'. A line starting with '*'
+tells <em>ispell</em> to insert the word into the user's dictionary
+(similar to the I command). A line starting with '&amp;' tells
+<em>ispell</em> to insert an all-lowercase version of the word into the
+user's dictionary (similar to the U command). A line starting with '@'
+causes <em>ispell</em> to accept this word in the future (similar to the
+A command). A line starting with '+', followed immediately by
+<strong>tex</strong> or <strong>nroff</strong> will cause
+<em>ispell</em> to parse future input according the syntax of that
+formatter. A line consisting solely of a '+' will place <em>ispell</em>
+in TeX/LaTeX mode (similar to the <strong>-t</strong> option) and '-'
+returns <em>ispell</em> to nroff/troff mode (but these commands are
+obsolete). However, the string character type is <em>not</em> changed;
+the '~' command must be used to do this. A line starting with '~' causes
+<em>ispell</em> to set internal parameters (in particular, the default
+string character type) based on the filename given in the rest of the
+line. (A file suffix is sufficient, but the period must be included.
+Instead of a file name or suffix, a unique name, as listed in the
+language affix file, may be specified.) However, the formatter parsing
+is <em>not</em> changed; the '+' command must be used to change the
+formatter. A line prefixed with '#' will cause the personal dictionary
+to be saved. A line prefixed with '!' will turn on <em>terse</em> mode
+(see below), and a line prefixed with '%' will return <em>ispell</em> to
+normal (non-terse) mode. A line prefixed with '`' will turn on
+verbose-correction mode (see below); this mode can only be disabled by
+turning on terse mode with '%'.</p>
+<p>Any input following the prefix characters '+', '-', '#', '!', '%', or
+'`' is ignored, as is any input following the filename on a '~' line. To
+allow spell-checking of lines beginning with these characters, a line
+starting with '^' has that character removed before it is passed to the
+spell-checking code. It is recommended that programmatic interfaces
+prefix every data line with an uparrow to protect themselves against
+future changes in <em>ispell</em>.</p>
+<p>To summarize these:</p>
+<blockquote>
+<ul>
+<li><p>Add to personal dictionary</p></li>
+</ul>
+<ol class="example" type="1">
+<li><p>Accept word, but leave out of dictionary</p></li>
+</ol>
+<ol>
+<li><p>Save current personal dictionary</p></li>
+</ol>
+<dl>
+<dt>~</dt>
+<dd>
+<p>Set parameters based on filename</p>
+</dd>
+</dl>
+<ul>
+<li><p>Enter TeX mode</p></li>
+<li><p>Exit TeX mode</p></li>
+</ul>
+<dl>
+<dt>!</dt>
+<dd>
+<p>Enter terse mode</p>
+</dd>
+<dt>%</dt>
+<dd>
+<p>Exit terse mode</p>
+</dd>
+<dt>`</dt>
+<dd>
+<p>Enter verbose-correction mode</p>
+</dd>
+<dt>^</dt>
+<dd>
+<p>Spell-check rest of line</p>
+</dd>
+</dl>
+</blockquote>
+<p>In <em>terse</em> mode, <em>ispell</em> will not print lines
+beginning with '*', '+', or '-', all of which indicate correct words.
+This significantly improves running speed when the driving program is
+going to ignore correct words anyway.</p>
+<p>In <em>verbose-correction</em> mode, <em>ispell</em> includes the
+original word immediately after the indicator character in output lines
+beginning with '*', '+', and '-', which simplifies interaction for some
+programs.</p>
+<p>The <strong>-s</strong> option is only valid in conjunction with the
+<strong>-a</strong> or <strong>-A</strong> options, and only on
+BSD-derived systems. If specified, <em>ispell</em> will stop itself with
+a <strong>SIGTSTP</strong> signal after each line of input. It will not
+read more input until it receives a <strong>SIGCONT</strong> signal.
+This may be useful for handshaking with certain text editors.</p>
+<p>The <strong>-f</strong> option is only valid in conjunction with the
+<strong>-a</strong> or <strong>-A</strong> options. If
+<strong>-f</strong> is specified, <em>ispell</em> will write its results
+to the given file, rather than to standard output.</p>
+<p>The <strong>-v</strong> option causes <em>ispell</em> to print its
+current version identification on the standard output and exit. If the
+switch is doubled, <em>ispell</em> will also print the options that it
+was compiled with.</p>
+<p>The <strong>-c</strong>, <strong>-e</strong>[<strong>1\n5</strong>],
+and <strong>-D</strong> options of <em>ispell</em>, are primarily
+intended for use by the <em>munchlist</em> shell script. The
+<strong>-c</strong> switch causes a list of words to be read from the
+standard input. For each word, a list of possible root words and affixes
+will be written to the standard output. Some of the root words will be
+invalid and must be filtered from the output by other means; the
+<em>munchlist</em> script does this. As an example, the command:</p>
+<blockquote>
+<p>echo BOTHER | ispell -c</p>
+</blockquote>
+<p>produces:</p>
+<blockquote>
+<pre><code>BOTHER BOTHE/R BOTH/R</code></pre>
+</blockquote>
+<p>The <strong>-e</strong> switch is the reverse of <strong>-c</strong>;
+it expands affix flags to produce a list of words. For example, the
+command:</p>
+<blockquote>
+<p>echo BOTH/R | ispell -e</p>
+</blockquote>
+<p>produces:</p>
+<blockquote>
+<pre><code>BOTH BOTHER</code></pre>
+</blockquote>
+<p>An optional expansion level can also be specified. A level of 1
+(<strong>-e1</strong>) is the same as <strong>-e</strong> alone. A level
+of 2 causes the original root/affix combination to be prepended to the
+line:</p>
+<blockquote>
+<pre><code>BOTH/R BOTH BOTHER</code></pre>
+</blockquote>
+<p>A level of 3 causes multiple lines to be output, one for each
+generated word, with the original root/affix combination followed by the
+word it creates:</p>
+<blockquote>
+<pre><code>BOTH/R BOTH
+BOTH/R BOTHER</code></pre>
+</blockquote>
+<p>A level of 4 causes a floating-point number to be appended to each of
+the level-3 lines, giving the ratio between the length of the root and
+the total length of all generated words including the root:</p>
+<blockquote>
+<pre><code>BOTH/R BOTH 2.500000
+BOTH/R BOTHER 2.500000</code></pre>
+</blockquote>
+<p>A level of 5 causes multiple lines to be output, one for each
+generated word. If the generated word did not use any affixes, the line
+is just that word. If one or more affixes were used, the original root
+and the affixes actually used are printed, joined by a plus sign; then
+the generated word is printed:</p>
+<blockquote>
+<pre><code>BOTH
+BOTH+R BOTHER</code></pre>
+</blockquote>
+<p>Finally, the <strong>-D</strong> flag causes the affix tables from
+the dictionary file to be dumped to standard output.</p>
+<p><em>Ispell</em> is aware of the correct capitalizations of words in
+the dictionary and in your personal dictionary. As well as recognizing
+words that must be capitalized (e.g., George) and words that must be
+all-capitals (e.g., NASA), it can also handle words with "unusual"
+capitalization (e.g., "ITCorp" or "TeX"). If a word is capitalized
+incorrectly, the list of possibilities will include all acceptable
+capitalizations. (More than one capitalization may be acceptable; for
+example, my dictionary lists both "ITCorp" and "ITcorp".)</p>
+<p>Normally, this feature will not cause you surprises, but there is one
+circumstance you need to be aware of. If you use "I" to add a word to
+your dictionary that is at the beginning of a sentence (e.g., the first
+word of this paragraph if "normally" were not in the dictionary), it
+will be marked as "capitalization required". A subsequent usage of this
+word without capitalization (e.g., the quoted word in the previous
+sentence) will be considered a misspelling by <em>ispell</em>, and it
+will suggest the capitalized version. You must then compare the actual
+spellings by eye, and then type "I" to add the uncapitalized variant to
+your personal dictionary. You can avoid this problem by using "U" to add
+the original word, rather than "I".</p>
+<p>The rules for capitalization are as follows:</p>
+<ol type="1">
+<li><p>Any word may appear in all capitals, as in headings.</p></li>
+<li><p>Any word that is in the dictionary in all-lowercase form may
+appear either in lowercase or capitalized (as at the beginning of a
+sentence).</p></li>
+<li><p>Any word that has "funny" capitalization (i.e., it contains both
+cases and there is an uppercase character besides the first) must appear
+exactly as in the dictionary, except as permitted by rule (1). If the
+word is acceptable in all-lowercase, it must appear thus in a dictionary
+entry.</p></li>
+</ol>
+<h2>buildhash</h2>
+<p>The <em>buildhash</em> program builds hashed dictionary files for
+later use by <em>ispell.</em> The raw word list (with affix flags) is
+given in <em>dict-file</em>, and the affix flags are defined by
+<em>affix-file</em>. The hashed output is written to <em>hash-file</em>.
+The formats of the two input files are described in <em>ispell</em>(5).
+The <strong>-s</strong> (silent) option suppresses the usual status
+messages that are written to the standard error device.</p>
+<h2>munchlist</h2>
+<p>The <em>munchlist</em> shell script is used to reduce the size of
+dictionary files, primarily personal dictionary files. It is also
+capable of combining dictionaries from various sources. The given
+<em>files</em> are read (standard input if no arguments are given),
+reduced to a minimal set of roots and affixes that will match the same
+list of words, and written to standard output.</p>
+<p>Input for munchlist contains of raw words (e.g from your personal
+dictionary files) or root and affix combinations (probably generated in
+earlier munchlist runs). Each word or root/affix combination must be on
+a separate line.</p>
+<p>The <strong>-D</strong> (debug) option leaves temporary files around
+under standard names instead of deleting them, so that the script can be
+debugged. Warning: on a multiuser system, this can be a security hole.
+To avoid possible destruction of important files, don't run the script
+as root, and set MUNCHDEBUGDIR to the name of a directory that only you
+can access.</p>
+<p>The <strong>-v</strong> (verbose) option causes progress messages to
+be reported to stderr so you won't get nervous that <em>munchlist</em>
+has hung.</p>
+<p>If the <strong>-s</strong> (strip) option is specified, words that
+are in the specified <em>hash-file</em> are removed from the word list.
+This can be useful with personal dictionaries.</p>
+<p>The <strong>-l</strong> option can be used to specify an alternate
+<em>affix-file</em> for munching dictionaries in languages other than
+English.</p>
+<p>The <strong>-c</strong> option can be used to convert dictionaries
+that were built with an older affix file, without risk of accidentally
+introducing unintended affix combinations into the dictionary.</p>
+<p>The <strong>-T</strong> option allows dictionaries to be converted to
+a canonical string-character format. The suffix specified is looked up
+in the affix file (<strong>-l</strong> switch) to determine the
+string-character format used for the input file; the output always uses
+the canonical string-character format. For example, a dictionary
+collected from TeX source files might be converted to canonical format
+by specifying <strong>-T tex</strong>.</p>
+<p>The <strong>-w</strong> option is passed on to <em>ispell</em>.</p>
+<h2>findaffix</h2>
+<p>The <em>findaffix</em> shell script is an aid to writers of new
+language descriptions in choosing affixes. The given dictionary
+<em>files</em> (standard input if none are given) are examined for
+possible prefixes (<strong>-p</strong> switch) or suffixes
+(<strong>-s</strong> switch, the default). Each commonly-occurring affix
+is presented along with a count of the number of times it appears and an
+estimate of the number of bytes that would be saved in a dictionary hash
+file if it were added to the language table. Only affixes that generate
+valid roots (found in the original input) are listed.</p>
+<p>If the "-c" option is not given, the output lines are in the
+following format:</p>
+<blockquote>
+<p>strip/add/count/bytes</p>
+</blockquote>
+<p>where <em>strip</em> is the string that should be stripped from a
+root word before adding the affix, <em>add</em> is the affix to be
+added, <em>count</em> is a count of the number of times that this
+<em>strip</em>/<em>add</em> combination appears, and <em>bytes</em> is
+an estimate of the number of bytes that might be saved in the raw
+dictionary file if this combination is added to the affix file. The
+field separator in the output will be the tab character specified by the
+<strong>-t</strong> switch; the default is a slash ("/").</p>
+<p>If the <strong>-c</strong> ("clean output") option is given, the
+appearance of the output is made visually cleaner (but harder to
+post-process) by changing it to:</p>
+<blockquote>
+<p>-strip+add&lt;tab&gt;count&lt;tab&gt;bytes</p>
+</blockquote>
+<p>where <em>strip</em>, <em>add</em>, <em>count</em>, and
+<em>bytes</em> are as before, and <em>&lt;tab&gt;</em> represents the
+ASCII tab character.</p>
+<p>The method used to generate possible affixes will also generate
+longer affixes which have common headers or trailers. For example, the
+two words "moth" and "mother" will generate not only the obvious
+substitution "+er" but also "-h+her" and "-th+ther" (and possibly even
+longer ones, depending on the value of <em>min</em>). To prevent
+cluttering the output with such affixes, any affix pair that shares a
+common header (or, for prefixes, trailer) string longer than
+<em>elim</em> characters (default 1) will be suppressed. You may want to
+set "elim" to a value greater than 1 if your language has string
+characters; usually the need for this parameter will become obvious when
+you examine the output of your <em>findaffix</em> run.</p>
+<p>Normally, the affixes are sorted according to the estimate of bytes
+saved. The <strong>-f</strong> switch may be used to cause the affixes
+to be sorted by frequency of appearance.</p>
+<p>To save output file space, affixes which occur fewer than 10 times
+are eliminated; this limit may be changed with the <strong>-l</strong>
+switch. The <strong>-M</strong> switch specifies a maximum affix length
+(default 8). Affixes longer than this will not be reported. (This saves
+on temporary disk space and makes the script run faster.)</p>
+<p>Affixes which generate stems shorter than 3 characters are
+suppressed. (A stem is the word after the <em>strip</em> string has been
+removed, and before the <em>add</em> string has been added.) This
+reduces both the running time and the size of the output file. This
+limit may be changed with the <strong>-m</strong> switch. The minimum
+stem length should only be set to 1 if you have a <em>lot</em> of free
+time and disk space (in the range of many days and hundreds of
+megabytes).</p>
+<p>The <em>findaffix</em> script requires a non-blank field-separator
+character for internal use. Normally, this character is a slash ("/"),
+but if the slash appears as a character in the input word list, a
+different character can be specified with the <strong>-t</strong>
+switch.</p>
+<p>Ispell dictionaries should be expanded before being fed to
+<em>findaffix</em>; in addition, characters that are not in the English
+alphabet (if any) should be translated to lowercase.</p>
+<h2>tryaffix</h2>
+<p>The <em>tryaffix</em> shell script is used to estimate the
+effectiveness of a proposed prefix (<strong>-p</strong> switch) or
+suffix (<strong>-s</strong> switch, the default) with a given
+<em>expanded-file</em>. Only one affix can be tried with each execution
+of <em>tryaffix</em>, although multiple arguments can be used to
+describe varying forms of the same affix flag (e.g., the
+<strong>D</strong> flag for English can add either <em>D</em> or
+<em>ED</em> depending on whether a trailing E is already present). Each
+word in the expanded dictionary that ends (or begins) with the chosen
+suffix (or prefix) has that suffix (prefix) removed; the dictionary is
+then searched for root words that match the stripped word. Normally, all
+matching roots are written to standard output, but if the
+<strong>-c</strong> (count) flag is given, only a statistical summary of
+the results is written. The statistics given are a count of words the
+affix potentially applies to and an estimate of the number of dictionary
+bytes that a flag using the affix would save. The estimate will be high
+if the flag generates words that are currently generated by other affix
+flags (e.g., in English, <em>bathers</em> can be generated by either
+<em>bath/X</em> or <em>bather/S</em>).</p>
+<p>The dictionary file, <em>expanded-file</em>, must already be expanded
+(using the <strong>-e</strong> switch of <em>ispell</em>) and sorted,
+and things will usually work best if uppercase has been folded to lower
+with 'tr'.</p>
+<p>The <em>affix</em> arguments are things to be stripped from the
+dictionary file to produce trial roots: for English, <em>con</em>
+(prefix) and <em>ing</em> (suffix) are examples. The <em>addition</em>
+parts of the argument are letters that would have been stripped off the
+root before adding the affix. For example, in English the affix
+<em>ing</em> normally strips <em>e</em> for words ending in that letter
+(e.g., <em>like</em> becomes <em>liking</em>) so we might run:</p>
+<blockquote>
+<pre><code>tryaffix ing ing+e</code></pre>
+</blockquote>
+<p>to cover both cases.</p>
+<p>All of the shell scripts contain documentation as commentary at the
+beginning; sometimes these comments contain useful information beyond
+the scope of this manual page.</p>
+<p>It is possible to install <em>ispell</em> in such a way as to only
+support ASCII range text if desired.</p>
+<h2>icombine</h2>
+<p>The <em>icombine</em> program is a helper for <em>munchlist</em>. It
+reads a list of words in dictionary format (roots plus flags) from the
+standard input, and produces a reduced list on standard output which
+combines common roots found on adjacent entries. Identical roots which
+have differing flags will have their flags combined, and roots which
+have differing capitalizations will be combined in a way which only
+preserves important capitalization information. The optional
+<em>aff-file</em> specifies a language file which defines the character
+sets used and the meanings of the various flags. The <strong>-T</strong>
+switch can be used to select among alternative string character types by
+giving a dummy suffix that can be found in an
+<strong>altstringtype</strong> statement. The <strong>-w</strong> switch
+is identical to the same switch in <em>ispell</em>.</p>
+<h2>ijoin</h2>
+<p>The <em>ijoin</em> program is a re-implementation of <em>join</em>(1)
+which handles long lines and 8-bit characters correctly. The
+<strong>-s</strong> switch specifies that the <em>sort</em>(1) program
+used to prepare the input to <em>ijoin</em> uses signed comparisons on
+8-bit characters; the <strong>-u</strong> switch specifies that
+<em>sort</em>(1) uses unsigned comparisons. All other options and
+behaviors of <em>join</em>(1) are duplicated as exactly as possible
+based on the manual page, except that <em>ijoin</em> will not handle
+newline as a field separator. See the <em>join</em>(1) manual page for
+more information.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt>DICTIONARY</dt>
+<dd>
+<p>Default dictionary to use, if no <strong>-d</strong> flag is
+given.</p>
+</dd>
+<dt>ISPELL_CHARSET</dt>
+<dd>
+<p>Formatter type or character encoding to use, if none is chosen by a
+flag option.</p>
+</dd>
+<dt>WORDLIST</dt>
+<dd>
+<p>Personal dictionary file name</p>
+</dd>
+<dt>INCLUDE_STRING</dt>
+<dd>
+<p>Code for file inclusion under the <strong>-A</strong> option</p>
+</dd>
+<dt>TMPDIR</dt>
+<dd>
+<p>Directory used for some of munchlist's temporary files</p>
+</dd>
+<dt>MUNCHDEBUGDIR</dt>
+<dd>
+<p>Directory used to hold the output of munchlists' <strong>-D</strong>
+option.</p>
+</dd>
+<dt>TEXSKIP1</dt>
+<dd>
+<p>List of single-argument TeX keywords that <em>ispell</em> should
+ignore.</p>
+</dd>
+<dt>TEXSKIP2</dt>
+<dd>
+<p>List of two-argument TeX keywords that <em>ispell</em> should
+ignore.</p>
+</dd>
+<dt>HTMLIGNORE</dt>
+<dd>
+<p>List of HTML keywords that delimit text that should not be
+spell-checked.</p>
+</dd>
+<dt>HTMLCHECK</dt>
+<dd>
+<p>List of HTML fields that should always be spell-checked, even inside
+a tag.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt>/usr/lib/ispell/default.hash</dt>
+<dd>
+<p>Hashed dictionary (may be found in some other local directory,
+depending on the system).</p>
+</dd>
+<dt>/usr/lib/ispell/default.aff</dt>
+<dd>
+<p>Affix-definition file for <em>munchlist</em></p>
+</dd>
+<dt>/usr/share/dict/words</dt>
+<dd>
+<p>For the Lookup function.</p>
+</dd>
+<dt>$HOME/.ispell_hashfile</dt>
+<dd>
+<p>User's private dictionary</p>
+</dd>
+<dt>.ispell_hashfile</dt>
+<dd>
+<p>Directory-specific private dictionary</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><em>egrep</em>(1), <em>look</em>(1), <em>join</em>(1),
+<em>sort</em>(1), <em>spell</em>(1), <em>sq</em>(1), <em>tib</em> (if
+available on your system)<em>,</em> <em>ispell</em>(5),
+<em>english</em>(5)</p>
+<h1>BUGS</h1>
+<p><em>Ispell</em> should understand more <em>troff</em> syntax, and
+deal more intelligently with contractions.</p>
+<p>Although small personal dictionaries are sorted before they are
+written out, the order of capitalizations of the same word is somewhat
+random.</p>
+<p>When the <strong>-x</strong> flag is specified, <em>ispell</em> will
+unlink any existing .bak file.</p>
+<p>There are too many flags, and many of them have non-mnemonic
+names.</p>
+<p>The <strong>-e</strong> flag should accept mnemonic arguments instead
+of numeric ones.</p>
+<p><em>Munchlist</em> does not deal very gracefully with dictionaries
+which contain "non-word" characters. Such characters ought to be deleted
+from the dictionary with a warning message.</p>
+<h1>AUTHOR</h1>
+<p>Pace Willisson (pace@mit-vax), 1983, based on the PDP-10 assembly
+version. That version was written by R. E. Gorin in 1971, and later
+revised by W. E. Matson (1974) and W. B. Ackerman (1978).</p>
+<p>Collected, revised, and enhanced for the Usenet by Walt Buehring,
+1987.</p>
+<p>Table-driven multi-lingual version by Geoff Kuenning, 1987–88.</p>
+<p>Large dictionaries provided by Bob Devine (vianet!devine).</p>
+<p>A complete list of contributors is too large to list here, but is
+distributed with the <em>ispell</em> sources in the file
+"Contributors".</p>
+<h1>VERSION</h1>
+<p>The version of <em>ispell</em> described by this manual page is
+International Ispell Version 3.4.05 11 Mar 2022.</p>

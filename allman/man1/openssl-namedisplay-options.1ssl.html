@@ -1,0 +1,173 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-namedisplay-options - Distinguished name display options</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl</strong> <em>command</em> [ <em>options</em> ... ] [
+<em>parameters</em> ... ]</p>
+<h1>DESCRIPTION</h1>
+<p>OpenSSL provides fine-grain control over how the subject and issuer
+DN's are displayed. This is specified by using the
+<strong>-nameopt</strong> option, which takes a comma-separated list of
+options from the following set. An option may be preceded by a minus
+sign, <code>-</code>, to turn it off. The default value is
+<code>oneline</code>. The first four are the most commonly used.</p>
+<h1>OPTIONS</h1>
+<h2>Name Format Option Arguments</h2>
+<p>The DN output format can be fine tuned with the following flags.</p>
+<dl>
+<dt>compat</dt>
+<dd>
+<p>Display the name using an old format from previous OpenSSL
+versions.</p>
+</dd>
+<dt>RFC2253</dt>
+<dd>
+<p>Display the name using the format defined in RFC 2253. It is
+equivalent to <strong>esc_2253</strong>, <strong>esc_ctrl</strong>,
+<strong>esc_msb</strong>, <strong>utf8</strong>,
+<strong>dump_nostr</strong>, <strong>dump_unknown</strong>,
+<strong>dump_der</strong>, <strong>sep_comma_plus</strong>,
+<strong>dn_rev</strong> and <strong>sname</strong>.</p>
+</dd>
+<dt>oneline</dt>
+<dd>
+<p>Display the name in one line, using a format that is more readable
+RFC 2253. It is equivalent to <strong>esc_2253</strong>,
+<strong>esc_ctrl</strong>, <strong>esc_msb</strong>,
+<strong>utf8</strong>, <strong>dump_nostr</strong>,
+<strong>dump_der</strong>, <strong>use_quote</strong>,
+<strong>sep_comma_plus_space</strong>, <strong>space_eq</strong> and
+<strong>sname</strong> options.</p>
+</dd>
+<dt>multiline</dt>
+<dd>
+<p>Display the name using multiple lines. It is equivalent to
+<strong>esc_ctrl</strong>, <strong>esc_msb</strong>,
+<strong>sep_multiline</strong>, <strong>space_eq</strong>,
+<strong>lname</strong> and <strong>align</strong>.</p>
+</dd>
+<dt>esc_2253</dt>
+<dd>
+<p>Escape the special characters in a field, as required by RFC 2253.
+That is, any of the characters <code>,+"&lt;&gt;;</code>, <code>#</code>
+at the beginning of a string and leading or trailing spaces.</p>
+</dd>
+<dt>esc_2254</dt>
+<dd>
+<p>Escape the special characters in a field as required by RFC 2254 in a
+field. That is, the <strong>NUL</strong> character and of
+<code>()*</code>.</p>
+</dd>
+<dt>esc_ctrl</dt>
+<dd>
+<p>Escape non-printable ASCII characters, codes less than 0x20 (space)
+or greater than 0x7F (DELETE). They are displayed using RFC 2253
+<code>\XX</code> notation where <strong>XX</strong> are the two hex
+digits representing the character value.</p>
+</dd>
+<dt>esc_msb</dt>
+<dd>
+<p>Escape any characters with the most significant bit set, that is with
+values larger than 127, as described in <strong>esc_ctrl</strong>.</p>
+</dd>
+<dt>use_quote</dt>
+<dd>
+<p>Escapes some characters by surrounding the entire string with
+quotation marks, <code>"</code>. Without this option, individual special
+characters are preceded with a backslash character, <code>\</code>.</p>
+</dd>
+<dt>utf8</dt>
+<dd>
+<p>Convert all strings to UTF-8 format first as required by RFC 2253. If
+the output device is UTF-8 compatible, then using this option (and not
+setting <strong>esc_msb</strong>) may give the correct display of
+multibyte characters. If this option is not set, then multibyte
+characters larger than 0xFF will be output as <code>\UXXXX</code> for 16
+bits or <code>\WXXXXXXXX</code> for 32 bits. In addition, any
+UTF8Strings will be converted to their character form first.</p>
+</dd>
+<dt>ignore_type</dt>
+<dd>
+<p>This option does not attempt to interpret multibyte characters in any
+way. That is, the content octets are merely dumped as though one octet
+represents each character. This is useful for diagnostic purposes but
+will result in rather odd looking output.</p>
+</dd>
+<dt>show_type</dt>
+<dd>
+<p>Display the type of the ASN1 character string before the value, such
+as <code>BMPSTRING: Hello World</code>.</p>
+</dd>
+<dt>dump_der</dt>
+<dd>
+<p>Any fields that would be output in hex format are displayed using the
+DER encoding of the field. If not set, just the content octets are
+displayed. Either way, the <strong>#XXXX...</strong> format of RFC 2253
+is used.</p>
+</dd>
+<dt>dump_nostr</dt>
+<dd>
+<p>Dump non-character strings, such as ASN.1 <strong>OCTET
+STRING</strong>. If this option is not set, then non character string
+types will be displayed as though each content octet represents a single
+character.</p>
+</dd>
+<dt>dump_all</dt>
+<dd>
+<p>Dump all fields. When this used with <strong>dump_der</strong>, this
+allows the DER encoding of the structure to be unambiguously
+determined.</p>
+</dd>
+<dt>dump_unknown</dt>
+<dd>
+<p>Dump any field whose OID is not recognised by OpenSSL.</p>
+</dd>
+<dt>sep_comma_plus, sep_comma_plus_space, sep_semi_plus_space,
+sep_multiline</dt>
+<dd>
+<p>Specify the field separators. The first word is used between the
+Relative Distinguished Names (RDNs) and the second is between multiple
+Attribute Value Assertions (AVAs). Multiple AVAs are very rare and their
+use is discouraged. The options ending in space additionally place a
+space after the separator to make it more readable. The
+<strong>sep_multiline</strong> starts each field on its own line, and
+uses plus space for the AVA separator. It also indents the fields by
+four characters. The default value is
+<strong>sep_comma_plus_space</strong>.</p>
+</dd>
+<dt>dn_rev</dt>
+<dd>
+<p>Reverse the fields of the DN as required by RFC 2253. This also
+reverses the order of multiple AVAs in a field, but this is permissible
+as there is no ordering on values.</p>
+</dd>
+<dt>nofname, sname, lname, oid</dt>
+<dd>
+<p>Specify how the field name is displayed. <strong>nofname</strong>
+does not display the field at all. <strong>sname</strong> uses the short
+name form (CN for commonName for example). <strong>lname</strong> uses
+the long form. <strong>oid</strong> represents the OID in numerical form
+and is useful for diagnostic purpose.</p>
+</dd>
+<dt>align</dt>
+<dd>
+<p>Align field values for a more readable output. Only usable with
+<strong>sep_multiline</strong>.</p>
+</dd>
+<dt>space_eq</dt>
+<dd>
+<p>Places spaces round the equal sign, <code>=</code>, character which
+follows the field name.</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2020 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

@@ -1,0 +1,35 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::DropSite - Receive side of Drag &amp; Drop abstraction</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::DropSite qw(...); $widget-&gt;DropSite(-entercommand =&gt;
+..., -dropcommand =&gt; ..., -motioncommand =&gt; ..., -dropcommand
+=&gt; ..., );</p>
+<h1>DESCRIPTION</h1>
+<p><code>DropSite</code> creates an object which represents a site on
+which things may be Dropped.</p>
+<p>A DropSite provides the following methods:</p>
+<dl>
+<dt>$site-&gt;Enter($token,$event)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$site-&gt;Leave($token,$event)</dt>
+<dd>
+
+</dd>
+<dt>$site-&gt;Motion($token,$event)</dt>
+<dd>
+
+</dd>
+<dt>$site-&gt;Drop($token,$event)</dt>
+<dd>
+
+</dd>
+</dl>

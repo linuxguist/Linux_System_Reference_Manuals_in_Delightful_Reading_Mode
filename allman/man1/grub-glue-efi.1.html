@@ -1,0 +1,54 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-glue-efi - generate a fat binary for EFI</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-glue-efi</strong> [<em>OPTION</em>...]
+[<em>OPTIONS</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>grub-glue-efi processes ia32 and amd64 EFI images and glues them
+according to Apple format.</p>
+<p>Glue 32-bit and 64-bit binary into Apple universal one.</p>
+<dl>
+<dt><strong>-3</strong>, <strong>--input32</strong>=<em>FILE</em></dt>
+<dd>
+<p>set input filename for 32-bit part.</p>
+</dd>
+<dt><strong>-6</strong>, <strong>--input64</strong>=<em>FILE</em></dt>
+<dd>
+<p>set input filename for 64-bit part.</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--output</strong>=<em>FILE</em></dt>
+<dd>
+<p>set output filename. Default is STDOUT</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p>The full documentation for <strong>grub-glue-efi</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-glue-efi</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-glue-efi</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

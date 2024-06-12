@@ -1,0 +1,57 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>discover.conf — configuration file format for discover(1)</p>
+<h1>Description</h1>
+<p><strong>Discover</strong> looks for configuration files in a
+configuration directory, containing a number of files. These define the
+system buses that should be scanned by default, those that should never
+be scanned, and the URLs for hardware data files beyond the local copy
+provided with the software.</p>
+<p>The file format is XML; the <em>DTD</em> is provided with the
+<strong>Discover</strong> software, and can be used for informational or
+validation purposes.</p>
+<h1>Examples</h1>
+<p><strong>Establishing default buses to scan</strong></p>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt; 
+ 
+&lt;!DOCTYPE conffile SYSTEM &quot;conffile.dtd&quot;&gt; 
+ 
+&lt;conffile&gt; 
+&lt;busscan scan=&quot;default&quot;&gt; 
+&lt;bus name=&quot;ata&quot;/&gt; 
+&lt;bus name=&quot;pci&quot;/&gt; 
+&lt;bus name=&quot;pcmcia&quot;/&gt; 
+&lt;bus name=&quot;scsi&quot;/&gt; 
+&lt;bus name=&quot;usb&quot;/&gt; 
+&lt;/busscan&gt; 
+&lt;/conffile&gt; </code></pre>
+<p><strong>A more complex example</strong></p>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt; 
+ 
+&lt;!DOCTYPE conffile SYSTEM &quot;conffile.dtd&quot;&gt; 
+ 
+&lt;conffile&gt; 
+&lt;busscan scan=&quot;default&quot;&gt; 
+&lt;bus name=&quot;ata&quot;/&gt; 
+&lt;bus name=&quot;pci&quot;/&gt; 
+&lt;bus name=&quot;pcmcia&quot;/&gt; 
+&lt;bus name=&quot;usb&quot;/&gt; 
+&lt;/busscan&gt; 
+&lt;!-- My ancient SCSI card locks up when probed --&gt; 
+&lt;busscan scan=&quot;never&quot;&gt; 
+&lt;bus name=&quot;scsi&quot;/&gt; 
+&lt;/busscan&gt; 
+&lt;data-sources&gt; 
+&lt;data-source url=&quot;http://www.example.com/discover/xfree86.xml&quot; 
+label=&quot;Updated XFree86 hardware information&quot;&gt; 
+&lt;/data-sources&gt; 
+&lt;/conffile&gt; </code></pre>
+<h1>Authors</h1>
+<p>Josh Bressers, John R. Daily, and G. Branden Robinson developed the
+current implementation of <strong>Discover</strong> for Progeny Linux
+Systems.</p>
+<p>The Linux implementation of the system-dependent interfaces is
+derived from <strong>detect</strong>, by MandrakeSoft SA.</p>
+<h1>See Also</h1>
+<p>discover(1)</p>

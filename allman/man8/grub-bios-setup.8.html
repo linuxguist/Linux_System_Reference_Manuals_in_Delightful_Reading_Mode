@@ -1,0 +1,82 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-bios-setup - set up a device to boot using GRUB</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-bios-setup</strong> [<em>OPTION</em>...]
+<em>DEVICE</em></p>
+<h1>DESCRIPTION</h1>
+<p>Set up images to boot from DEVICE.</p>
+<p>You should not normally run this program directly. Use grub-install
+instead.</p>
+<dl>
+<dt><strong>-a</strong>, <strong>--allow-floppy</strong></dt>
+<dd>
+<p>make the drive also bootable as floppy (default for fdX devices). May
+break on some BIOSes.</p>
+</dd>
+<dt><strong>-b</strong>,
+<strong>--boot-image</strong>=<em>FILE</em></dt>
+<dd>
+<p>use FILE as the boot image [default=boot.img]</p>
+</dd>
+<dt><strong>-c</strong>,
+<strong>--core-image</strong>=<em>FILE</em></dt>
+<dd>
+<p>use FILE as the core image [default=core.img]</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>use GRUB files in the directory DIR [default=/boot/grub]</p>
+</dd>
+<dt><strong>-f</strong>, <strong>--force</strong></dt>
+<dd>
+<p>install even if problems are detected</p>
+</dd>
+<dt><strong>-m</strong>,
+<strong>--device-map</strong>=<em>FILE</em></dt>
+<dd>
+<p>use FILE as the device map [default=/boot/grub/device.map]</p>
+</dd>
+<dt><strong>--no-rs-codes</strong></dt>
+<dd>
+<p>Do not apply any reed-solomon codes when embedding core.img. This
+option is only available on x86 BIOS targets.</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--skip-fs-probe</strong></dt>
+<dd>
+<p>do not probe for filesystems in DEVICE</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<p>DEVICE must be an OS device (e.g. <em>/dev/sda</em>).</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-install</strong>(8), <strong>grub-mkimage</strong>(1),
+<strong>grub-mkrescue</strong>(1)</p>
+<p>The full documentation for <strong>grub-bios-setup</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-bios-setup</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-bios-setup</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

@@ -1,0 +1,109 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Mail::Send - Simple electronic mail interface</p>
+<h1>SYNOPSIS</h1>
+<p>require Mail::Send; $msg = Mail::Send-&gt;new; $msg =
+Mail::Send-&gt;new(Subject =&gt; example, To =&gt; timbo);
+$msg-&gt;to(user@host); $msg-&gt;to(user@host, user2@example.com);
+$msg-&gt;subject(example subject); $msg-&gt;cc(user@host);
+$msg-&gt;bcc(someone@else); $msg-&gt;set($header, @values);
+$msg-&gt;add($header, @values); $msg-&gt;delete($header); # Launch
+mailer and set headers. The filehandle returned # by open() is an
+instance of the Mail::Mailer class. # Arguments to the open() method are
+passed to the Mail::Mailer # constructor. $fh = $msg-&gt;open; # some
+default mailer $fh = $msg-&gt;open(sendmail); # explicit print $fh "Body
+of message"; $fh-&gt;close # complete the message and send it or die
+"couldnt send whole message: $!\n";</p>
+<h1>DESCRIPTION</h1>
+<p>Mail::Send creates e-mail messages without using the Mail::Header
+knowledge, which means that all escaping and folding must be done by
+you! Also: do not forget to escape leading dots. Simplicity has its
+price.</p>
+<p>When you have time, take a look at Mail::Transport which is part of
+the MailBox suite.</p>
+<h1>METHODS</h1>
+<h2>Constructors</h2>
+<dl>
+<dt>Mail::Send-&gt;new(PAIRS)</dt>
+<dd>
+<p>A list of header fields (provided as key-value PAIRS) can be used to
+initialize the object, limited to the few provided as method:
+<code>to</code>, <code>subject</code>, <code>cc</code>, and
+<code>bcc</code>. For other header fields, use
+<strong>add()</strong>.</p>
+</dd>
+</dl>
+<h2>Header fields</h2>
+<dl>
+<dt>$obj-&gt;add($fieldname, @values)</dt>
+<dd>
+<p>Add values to the list of defined values for the
+<code>$fieldname</code>.</p>
+</dd>
+<dt>$obj-&gt;bcc(@values)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$obj-&gt;cc(@values)</dt>
+<dd>
+
+</dd>
+<dt>$obj-&gt;delete($fieldname)</dt>
+<dd>
+
+</dd>
+<dt>$obj-&gt;set($fieldname, @values)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The <code>@values</code> will replace the old values for the
+<code>$fieldname</code>. Returned is the LIST of values after
+modification.</p>
+<dl>
+<dt>$obj-&gt;subject(@values)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$obj-&gt;to(@values)</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Sending</h2>
+<dl>
+<dt>$obj-&gt;open(%options)</dt>
+<dd>
+<p>The <code>%options</code> are used to initiate a mailer object via
+<strong>Mail::Mailer::new()</strong>. Then
+<strong>Mail::Mailer::open()</strong> is called with the knowledge
+collected in this <code>Mail::Send</code> object. Be warned: this module
+implements raw smtp, which means that you have to escape lines which
+start with a dot, by adding one in front.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>This module is part of the MailTools distribution,
+<em>http://perl.overmeer.net/mailtools/</em>.</p>
+<h1>AUTHORS</h1>
+<p>The MailTools bundle was developed by Graham Barr. Later, Mark
+Overmeer took over maintenance without commitment to further
+development.</p>
+<p>Mail::Cap by Gisle Aas &lt;aas@oslonett.no&gt;. Mail::Field::AddrList
+by Peter Orbaek &lt;poe@cit.dk&gt;. Mail::Mailer and Mail::Send by Tim
+Bunce &lt;Tim.Bunce@ig.co.uk&gt;. For other contributors see
+ChangeLog.</p>
+<h1>LICENSE</h1>
+<p>Copyrights 1995-2000 Graham Barr &lt;gbarr@pobox.com&gt; and
+2001-2017 Mark Overmeer &lt;perl@overmeer.net&gt;.</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself. See
+<em>http://www.perl.com/perl/misc/Artistic.html</em></p>

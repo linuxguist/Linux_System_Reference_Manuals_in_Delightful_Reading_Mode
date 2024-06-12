@@ -1,0 +1,70 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>prezip, preunzip, precat - prefix delta compressor for Aspell</p>
+<h1>SYNOPSIS</h1>
+<p>precat [-dzhLV] [-cfksSq] [file ...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>prezip</strong> is a a prefix delta compressor. It is
+<em>not</em> a general purpose compressor and should only be used on
+sorted word lists or other similar text files. It will likely
+<em>increase</em> the size of binary data.</p>
+<p>If invoked as <strong>prezip,</strong> the default action is to
+compress. If invoked as <strong>preunzip,</strong> the default action is
+to decompress. If invoked as <strong>precat,</strong> the default action
+is to decompress to stdout.</p>
+<p>If no file names are given then <strong>prezip</strong> will compress
+or decompress from the standard input to the standard output. Short
+flags can be combined so that "-c <strong>-s</strong>" is the same as
+"-cs".</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-h</strong> <strong>--help</strong></dt>
+<dd>
+<p>display help</p>
+</dd>
+<dt><strong>-d</strong> <strong>--decompress</strong></dt>
+<dd>
+<p>force decompression</p>
+</dd>
+<dt><strong>-z</strong> <strong>--compress</strong></dt>
+<dd>
+<p>dorce compression</p>
+</dd>
+<dt><strong>-L</strong> <strong>--license</strong></dt>
+<dd>
+<p>display software license</p>
+</dd>
+<dt><strong>-V</strong> <strong>--version</strong></dt>
+<dd>
+<p>display version</p>
+</dd>
+<dt><strong>-c</strong> <strong>--stdout</strong></dt>
+<dd>
+<p>decompress to standard output</p>
+</dd>
+<dt><strong>-f</strong> <strong>--force</strong></dt>
+<dd>
+<p>force</p>
+</dd>
+<dt><strong>-k</strong> <strong>--keep</strong></dt>
+<dd>
+<p>keep input files</p>
+</dd>
+<dt><strong>-s</strong> <strong>--sort</strong></dt>
+<dd>
+<p>sort and remove duplicates before compressing</p>
+</dd>
+<dt><strong>-S</strong> <strong>--nocwl</strong></dt>
+<dd>
+<p>do not rename .wl suffix to .cwl (use .wl.pz instead)</p>
+</dd>
+<dt><strong>-q</strong> <strong>--quiet</strong></dt>
+<dd>
+<p>suppress all warnings</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>This manual page was written by Brian Nelson &lt;pyro@debian.org&gt;
+based on the output of help2man. Aspell is Copyright © 2002 Kevin
+Atkinson.</p>

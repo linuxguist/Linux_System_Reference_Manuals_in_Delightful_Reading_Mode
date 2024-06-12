@@ -1,0 +1,49 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-sysv-generator - Unit generator for SysV init scripts</p>
+<h1>SYNOPSIS</h1>
+<p>/lib/systemd/system-generators/systemd-sysv-generator</p>
+<h1>DESCRIPTION</h1>
+<p>systemd-sysv-generator is a generator that creates wrapper .service
+units for <strong>SysV init</strong>[1] scripts in /etc/init.d/* at boot
+and when configuration of the system manager is reloaded. This allows
+<strong>systemd</strong>(1) to support them similarly to native
+units.</p>
+<p><strong>LSB headers</strong>[2] in SysV init scripts are interpreted,
+and the ordering specified in the header is turned into dependencies
+between the generated unit and other units. The LSB facilities
+"$remote_fs", "$network", "$named", "$portmap", "$time" are supported
+and will be turned into dependencies on specific native systemd targets.
+See <strong>systemd.special</strong>(7) for more details.</p>
+<p>Note that compatibility is quite comprehensive but not 100%, for more
+details see <strong>Incompatibilities with SysV</strong>[3].</p>
+<p>SysV runlevels have corresponding systemd targets
+(runlevel<em>X</em>.target). The wrapper unit that is generated will be
+wanted by those targets which correspond to runlevels for which the
+script is enabled.</p>
+<p><strong>systemd</strong> does not support SysV scripts as part of
+early boot, so all wrapper units are ordered after basic.target.</p>
+<p>systemd-sysv-generator implements
+<strong>systemd.generator</strong>(7).</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>systemd.service</strong>(5),
+<strong>systemd.target</strong>(5)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>SysV init</p>
+<p>https://savannah.nongnu.org/projects/sysvinit</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>LSB headers</p>
+<p>http://refspecs.linuxbase.org/LSB_3.1.1/LSB-Core-generic/LSB-Core-generic/iniscrptact.html</p>
+</dd>
+<dt> 3.</dt>
+<dd>
+<p>Incompatibilities with SysV</p>
+<p>https://www.freedesktop.org/wiki/Software/systemd/Incompatibilities</p>
+</dd>
+</dl>

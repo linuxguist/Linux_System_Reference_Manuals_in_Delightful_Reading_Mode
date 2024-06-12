@@ -1,0 +1,234 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>im-config - set up input method framework configuration</p>
+<h1>SYNOPSIS</h1>
+<dl>
+<dt><strong>im-config [OPTION]</strong></dt>
+<dd>
+<h1>OPTIONS</h1>
+</dd>
+<dt><strong>-a</strong></dt>
+<dd>
+<p>List all; force to list all possible input method frameworks in menu
+or STDOUT even if any associated packages are not installed on the
+system.</p>
+</dd>
+<dt><strong>-c</strong></dt>
+<dd>
+<p>Use console dialogue.</p>
+</dd>
+<dt><strong>-x</strong></dt>
+<dd>
+<p>Use X dialogue with zenity.</p>
+</dd>
+<dt><strong>-s</strong></dt>
+<dd>
+<p>No action; perform a simulation of events that would occur but do not
+actually change configuration files.</p>
+</dd>
+<dt><strong>-l</strong></dt>
+<dd>
+<p>List all available input method frameworks to STDOUT. Unless
+<strong>-a</strong> is used, list only ones with associated packages
+installed.</p>
+</dd>
+<dt><strong>-m</strong></dt>
+<dd>
+<p>List configuration values to STDOUT:</p>
+<p>·</p>
+<p>active configuration (system)</p>
+<p>·</p>
+<p>active configuration (user)</p>
+<p>·</p>
+<p>automatic configuration for the current locale</p>
+<p>·</p>
+<p>override configuration for the current locale</p>
+<p>·</p>
+<p>automatic configuration for most locales</p>
+<p>If the active configuration is <strong>custom</strong>, the user made
+a custom configuration and im-config should not change it.</p>
+</dd>
+<dt><strong>-n</strong></dt>
+<dd>
+<p><em>&lt;input method name&gt;</em></p>
+<p>Set input method framework to <em>&lt;input method name&gt;</em>.
+This option is for other configuration tool to set the input method.
+Since the default value of <em>&lt;input method name&gt;</em> is "auto"
+or "cjkv", you usually do not need to use this from other configuration
+script.</p>
+<p>Specifying invalid <em>&lt;input method name&gt;</em> causes the
+error exit. Updating the configuration file which was not updated by
+<strong>im-config</strong> also causes the error exit.</p>
+<p>When this <em>&lt;input method name&gt;</em> is "none" then do not
+activate any IM from <strong>im-config</strong> and use desktop
+default.</p>
+<p>When this <em>&lt;input method name&gt;</em> is "REMOVE" then it
+always removes the configuration file even if it was not updated by
+<strong>im-config</strong>.</p>
+</dd>
+<dt><strong>-o</strong></dt>
+<dd>
+<p><em>&lt;input method name&gt;</em></p>
+<p>Print the localized description of the input method <em>&lt;input
+method name&gt;</em> to STDOUT.</p>
+</dd>
+</dl>
+<p>The <strong>-l</strong>, <strong>-m</strong>, <strong>-n</strong>,
+and <strong>-o</strong> options are meant to be API for other programs
+to control the im-config.</p>
+<h1>DESCRIPTION</h1>
+<p>This manual page very briefly documents <strong>im-config</strong>
+and the configuration of the input method.</p>
+<p><strong>im-config</strong> provides the framework to configure the
+input method framework on GUI system (Wayland or original X Window) with
+its GUI or console terminal dialogue. If this is invoked without option,
+this lists available input methods as its choice while marking automatic
+choice with trailing @-mark. The listing is ordered by the priority of
+the input method framework. The input method framework with the highest
+priority comes first. The availability of the input method frameworks
+are judged by the installation of the input method framework packages.
+After you make a choice for the input method framework, this displays a
+guidance for associated input method engine packages which enables to
+input non-latin characters specific to the need of some languages to be
+installed.</p>
+<p>The activation of input method engines are out of scope for
+<strong>im-config</strong>. You need to activate them using the
+mechanism offered by the deployed input method framework. For GNOME
+Desktop which normally uses ibus as its input method framework, activate
+input method engines by "Setting" -&gt; "Keyboard" -&gt; "Input Sources"
+and click "+"-sign. For other Desktop environments, you should see
+something like a small tray icon for the input method framework which
+can be used to activate input method engines.</p>
+<p>If only a set of required input method packages along with the
+im-config package is installed, you do not need to use this command.
+Such a installation works well in its default and there is no need to
+use this command. When you wish to have multiple input method frameworks
+installed and wish to switch among them, you need to use this
+command.</p>
+<p>If you have no idea for what package to install,
+<strong>im-config</strong> invoked with both <strong>-a</strong> and
+<strong>-s</strong> is a good start.</p>
+<p>This input method is the essential mechanism for Japanese, Chinese
+and Korean (CJK) languages to enter their non-ASCII native characters.
+This is also useful to support specialized keyboard bindings for other
+non-European languages such as Indic and other Asian languages.</p>
+<p>Input method frameworks such as IBus, fcitx5, and uim support not
+only one of these CJK languages but support almost all languages
+simultaneously by dynamically switching keyboard modes with GUI on the
+fly.</p>
+<p>The im-config package installs a hook script
+<strong>/etc/X11/Xsession.d/70im-config_launch</strong>. At session
+start it sources this file as a POSIX shell code. Then this hook script
+tries to source the user configuration file
+<strong>~/.xinputrc</strong>, if it exists. Otherwise, this hook script
+sources the system configuration file
+<strong>/etc/X11/xinit/xinputrc</strong>.</p>
+<p>The im-config package also installs another hook script
+<strong>/etc/profile.d/im-config_wayland.sh</strong> and a desktop file
+<strong>/usr/share/applications/im-config.desktop</strong>. When a
+desktop system starts under wayland, it uses these files instead. Then
+this hook script and the desktop file tries to source the user
+configuration file <strong>~/.xinputrc</strong>, if it exists.
+Otherwise, this hook script sources the system configuration file
+<strong>/etc/X11/xinit/xinputrc</strong>.</p>
+<p><strong>im-config</strong> invoked from a user account updates the
+user configuration file <strong>~/.xinputrc</strong>.
+<strong>im-config</strong> invoked from the root account updates the
+system configuration file <strong>~/etc/X11/xinit/xinputrc</strong>. The
+essential contents of generated files are:</p>
+<p><strong>run_im <em>&lt;input</em> method name&gt;</strong></p>
+<p>When these files are sourced, the <strong>run_im</strong> shell
+function instructs to source the initialization code for the
+corresponding input method. This initialization code is defined in the
+<em>&lt;2 digits number&gt;</em>_<em>&lt;input method</em>
+name&gt;.<strong>rc</strong> file in
+<strong>/usr/share/im-config/data</strong>.</p>
+<p>The im-config hook script,
+<strong>/etc/X11/Xsession.d/70im-config_launch</strong>, exports
+following variables to programs: $XMODIFIERS, $GTK_IM_MODULE,
+$QT_IM_MODULE, and $CLUTTER_IM_MODULE.</p>
+<p>The im-config hook script,
+<strong>/etc/X11/Xsession.d/70im-config_launch</strong>, also set
+$STARTUP to use <strong>/usr/bin/im-launch</strong> for starting
+required daemons.</p>
+<p>If you wish to create a custom configuration beyond what
+<strong>im-config</strong> can do for you, please copy one of these
+initialization code files into <strong>~/.xinputrc</strong> or
+<strong>/etc/X11/xinit/xinputrc</strong> and edit it to suite your need.
+For example, <strong>02_cjkv.rc</strong> tells how input method can be
+customized for each locale. This script should be written to set
+environment variables if "$IM_CONFIG_PHASE" = 1 and to start daemon
+programs if "$IM_CONFIG_PHASE" = 2 .</p>
+<p>Please note that this <em>&lt;2 digits number&gt;</em> part of these
+configuration files may change for every new releases of the im-config
+package.</p>
+<p>When a user makes manual changes to <strong>~/.xinputrc</strong> or
+<strong>/etc/X11/xinit/xinputrc</strong> without using
+<strong>im-config</strong>, <strong>im-config</strong> will detect it
+using a md5sum hush value embedded in the shell comment and will not
+overwrite such files. You must erase them manually if you wish to
+replace them with ones created by <strong>im-config</strong>.</p>
+<p>The <em>&lt;2 digits number&gt;</em>_<em>&lt;input method
+name&gt;</em>.<strong>conf</strong> files in
+<strong>/usr/share/im-config/data</strong> provide the UI data for
+<strong>im-config</strong> and the heuristic logic of selecting
+desirable input method under the auto mode. The smaller number of the
+<em>&lt;2 digits number&gt;</em> indicates the higher priority of
+<em>&lt;input method name&gt;</em>.</p>
+<p>These <em>&lt;2 digits number&gt;</em>_<em>&lt;input method
+name&gt;</em>.<strong>conf</strong> files define few variables and
+functions. The value of <strong>IM_CONFIG_SHORT</strong> is the short
+description of the input method for the menu. The value of
+<strong>IM_CONFIG_LONG</strong> is the long description of the input
+method explaining its package dependency. The
+<strong>package_menu</strong> shell function defines as a function to
+return true if any associated input method packages are installed to
+activate its menu entry. The <strong>package_auto</strong> shell
+function defines as a function to return true if the sufficient input
+method packages are installed for the auto mode. These definitions use
+the <strong>package_status</strong> shell function which takes package
+name as its argument and returns true if it is installed properly.</p>
+<p>The menu lists input methods with the <em>&lt;2 digits
+number&gt;</em> between <strong>00</strong> and <strong>89</strong>. The
+auto mode considers its input method candidate from <em>&lt;2</em>
+digits number&gt; between <strong>10</strong> and <strong>79</strong> in
+this order. The usage convention of <em>&lt;2 digits number&gt;</em>
+is:</p>
+<dl>
+<dt><strong>00-09:</strong></dt>
+<dd>
+<p>Input Method choice mode (default/auto/cjkv/REMOVE)</p>
+</dd>
+<dt><strong>10-49:</strong></dt>
+<dd>
+<p>Input Method supporting multiple languages.(auto ready)</p>
+</dd>
+<dt><strong>50-79:</strong></dt>
+<dd>
+<p>Input Method supporting limited languages. (auto ready)</p>
+</dd>
+<dt><strong>80-89:</strong></dt>
+<dd>
+<p>Input Method (deprecated one) (not for auto)</p>
+</dd>
+<dt><strong>90-99:</strong></dt>
+<dd>
+<p>Used internally by <strong>im-config</strong> (not for auto)</p>
+</dd>
+</dl>
+<p>This structure ensures to have different input methods to be
+installed side-by-side with minimal user configurations.</p>
+<h1>TROUBLESHOOT</h1>
+<p>If you have any problem, see the first part of
+<strong>~/.xsession-errors</strong> and look for the cause. If you are
+running <strong>im-config</strong> while Debian (sid) system is
+undergoing a major library transition, you may need to manually set up
+<strong>~/.xinputrc</strong> with adjusted library version number etc.
+Please file a bug report to the im-config package using reportbug(1)
+describing your resolution experience.</p>
+<h1>SEE ALSO</h1>
+<p><strong>/usr/share/doc/im-config/README.Debian.gz</strong></p>
+<h1>AUTHOR</h1>
+<p>This manual page was written by Osamu Aoki &lt;osamu@debian.org&gt;,
+for the Debian GNU/Linux system (but may be used by others).</p>

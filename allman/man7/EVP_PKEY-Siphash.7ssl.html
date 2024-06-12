@@ -1,0 +1,81 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_PKEY-HMAC, EVP_KEYMGMT-HMAC, EVP_PKEY-Siphash,
+EVP_KEYMGMT-Siphash, EVP_PKEY-Poly1305, EVP_KEYMGMT-Poly1305,
+EVP_PKEY-CMAC, EVP_KEYMGMT-CMAC - EVP_PKEY legacy MAC keytypes and
+algorithm support</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>HMAC</strong> and <strong>CMAC</strong> key types are
+implemented in OpenSSL's default and FIPS providers. Additionally the
+<strong>Siphash</strong> and <strong>Poly1305</strong> key types are
+implemented in the default provider. Performing MAC operations via an
+EVP_PKEY is considered legacy and are only available for backwards
+compatibility purposes and for a restricted set of algorithms. The
+preferred way of performing MAC operations is via the EVP_MAC APIs. See
+<strong>EVP_MAC_init</strong> (3).</p>
+<p>For further details on using EVP_PKEY based MAC keys see
+<strong>EVP_SIGNATURE-HMAC</strong> (7),
+<strong>EVP_SIGNATURE-Siphash</strong> (7),
+<strong>EVP_SIGNATURE-Poly1305</strong> (7) or
+<strong>EVP_SIGNATURE-CMAC</strong> (7).</p>
+<h2>Common MAC parameters</h2>
+<p>All the <strong>MAC</strong> keytypes support the following
+parameters.</p>
+<dl>
+<dt>"priv" (OSSL_PKEY_PARAM_PRIV_KEY) &lt;octet string&gt;</dt>
+<dd>
+<p>The MAC key value.</p>
+</dd>
+<dt>"properties" (OSSL_PKEY_PARAM_PROPERTIES) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>A property query string to be used when any algorithms are
+fetched.</p>
+</dd>
+</dl>
+<h2>CMAC parameters</h2>
+<p>As well as the parameters described above, the <strong>CMAC</strong>
+keytype additionally supports the following parameters.</p>
+<dl>
+<dt>"cipher" (OSSL_PKEY_PARAM_CIPHER) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>The name of a cipher to be used when generating the MAC.</p>
+</dd>
+<dt>"engine" (OSSL_PKEY_PARAM_ENGINE) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>The name of an engine to be used for the specified cipher (if
+any).</p>
+</dd>
+</dl>
+<h2>Common MAC key generation parameters</h2>
+<p>MAC key generation is unusual in that no new key is actually
+generated. Instead a new provider side key object is created with the
+supplied raw key value. This is done for backwards compatibility with
+previous versions of OpenSSL.</p>
+<dl>
+<dt>"priv" (OSSL_PKEY_PARAM_PRIV_KEY) &lt;octet string&gt;</dt>
+<dd>
+<p>The MAC key value.</p>
+</dd>
+</dl>
+<h2>CMAC key generation parameters</h2>
+<p>In addition to the common MAC key generation parameters, the CMAC key
+generation additionally recognises the following.</p>
+<dl>
+<dt>"cipher" (OSSL_PKEY_PARAM_CIPHER) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>The name of a cipher to be used when generating the MAC.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_KEYMGMT</strong> (3), <strong>EVP_PKEY</strong> (3),
+<strong>provider-keymgmt</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

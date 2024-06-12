@@ -1,0 +1,26 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lwp-mirror - Simple mirror utility</p>
+<h1>SYNOPSIS</h1>
+<p>lwp-mirror [-v] [-t timeout] &lt;url&gt; &lt;local file&gt;</p>
+<h1>DESCRIPTION</h1>
+<p>This program can be used to mirror a document from a WWW server. The
+document is only transferred if the remote copy is newer than the local
+copy. If the local copy is newer nothing happens.</p>
+<p>Use the <code>-v</code> option to print the version number of this
+program.</p>
+<p>The timeout value specified with the <code>-t</code> option. The
+timeout value is the time that the program will wait for response from
+the remote server before it fails. The default unit for the timeout
+value is seconds. You might append m or h to the timeout value to make
+it minutes or hours, respectively.</p>
+<p>Because this program is implemented using the LWP library, it only
+supports the protocols that LWP supports.</p>
+<h1>SEE ALSO</h1>
+<p>lwp-request, LWP</p>
+<h1>AUTHOR</h1>
+<p>Gisle Aas &lt;gisle@aas.no&gt;</p>

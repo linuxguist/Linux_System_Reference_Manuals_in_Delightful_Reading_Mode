@@ -1,0 +1,56 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lsirq - utility to display kernel interrupt information</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lsirq</strong> [options]</p>
+<h1>DESCRIPTION</h1>
+<p>Display kernel interrupt counter information.</p>
+<p>The default output is subject to change. So whenever possible, you
+should avoid using default outputs in your scripts. Always explicitly
+define expected columns by using <strong>--output</strong>.</p>
+<h1>OPTIONS</h1>
+<p><strong>-n</strong>, <strong>--noheadings</strong></p>
+<blockquote>
+<p>Don’t print headings.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Specify which output columns to print. Use <strong>--help</strong> to
+get a list of all supported columns. The default list of columns may be
+extended if list is specified in the format <em>+list</em>.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--sort</strong> <em>column</em></p>
+<blockquote>
+<p>Specify sort criteria by column name. See <strong>--help</strong>
+output to get column names.</p>
+</blockquote>
+<p><strong>-J</strong>, <strong>--json</strong></p>
+<blockquote>
+<p>Use JSON output format.</p>
+</blockquote>
+<p><strong>-P</strong>, <strong>--pairs</strong></p>
+<blockquote>
+<p>Produce output in the form of key="value" pairs. All potentially
+unsafe characters are hex-escaped (\x&lt;code&gt;).</p>
+</blockquote>
+<p><strong>-S</strong>, <strong>--softirq</strong></p>
+<blockquote>
+<p>Show softirqs information.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>lsirq</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

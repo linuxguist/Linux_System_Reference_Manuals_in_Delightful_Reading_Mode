@@ -1,0 +1,27 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Time::Zone -- miscellaneous timezone manipulations routines</p>
+<h1>SYNOPSIS</h1>
+<p>use Time::Zone; print tz2zone(); print tz2zone($ENV{TZ}); print
+tz2zone($ENV{TZ}, time()); print tz2zone($ENV{TZ}, undef, $isdst);
+$offset = tz_local_offset(); $offset = tz_offset($TZ);</p>
+<h1>DESCRIPTION</h1>
+<p>This is a collection of miscellaneous timezone manipulation
+routines.</p>
+<p><code>tz2zone()</code> parses the TZ environment variable and returns
+a timezone string suitable for inclusion in
+<strong>date</strong> (1)-like output. It opionally takes a timezone
+string, a time, and a is-dst flag.</p>
+<p><code>tz_local_offset()</code> determins the offset from GMT time in
+seconds. It only does the calculation once.</p>
+<p><code>tz_offset()</code> determines the offset from GMT in seconds of
+a specified timezone.</p>
+<p><code>tz_name()</code> determines the name of the timezone based on
+its offset</p>
+<h1>AUTHORS</h1>
+<p>Graham Barr &lt;gbarr@pobox.com&gt; David Muir Sharnoff
+&lt;muir@idiom.com&gt; Paul Foley &lt;paul@ascent.com&gt;</p>

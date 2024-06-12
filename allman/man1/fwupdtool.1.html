@@ -1,0 +1,27 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>fwupdtool</strong> — standalone firmware update utility</p>
+<h1>SYNOPSIS</h1>
+<p><strong>fwupdtool</strong> [CMD]</p>
+<h1>DESCRIPTION</h1>
+<p>This tool allows an administrator to use fwupd plugins directly
+without using the daemon process, which may be faster or easier to use
+when creating or debugging specific plugins. For most end-users,
+<strong>fwupdmgr</strong> is a more suitable program to use in almost
+all cases.</p>
+<p>Additionally <strong>fwupdtool</strong> can be used to convert
+firmware from various different formats, or to modify the images
+contained inside the container firmware file. For example, you can
+convert DFU or Intel HEX firmware into the vendor-specific format.</p>
+<h1>OPTIONS</h1>
+<p>The fwupdtool command takes various options depending on the action.
+Run <strong>fwupdtool --help</strong> for the full list. Note that some
+runtimes failures can be ignored using <strong>--force</strong>.</p>
+<h1>EXIT STATUS</h1>
+<p>Commands that successfully execute will return “0”, but commands that
+have no actions but successfully execute will return “2”.</p>
+<h1>BUGS</h1>
+<p>See GitHub Issues: &lt;https://github.com/fwupd/fwupd/issues&gt;</p>
+<h1>SEE ALSO</h1>
+<p>fwupdmgr(1)</p>

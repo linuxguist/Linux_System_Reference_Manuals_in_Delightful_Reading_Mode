@@ -1,0 +1,80 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-xdg-autostart-generator - User unit generator for XDG
+autostart files</p>
+<h1>SYNOPSIS</h1>
+<p>/usr/lib/systemd/user-generators/systemd-xdg-autostart-generator</p>
+<h1>DESCRIPTION</h1>
+<p>systemd-xdg-autostart-generator is a generator that creates .service
+units for <strong>XDG autostart</strong>[1] files. This permits desktop
+environments to delegate startup of these applications to
+<strong>systemd</strong>(1) .</p>
+<p>Units created by systemd-xdg-autostart-generator can be started by
+the desktop environment using "xdg-desktop-autostart.target". See
+<strong>systemd.special</strong>(7) for more details.</p>
+<p>XDG autostart may be conditionalized using both standardized and
+non-standardized keys. In order to handle these, the generator may
+create one or more <em>ExecCondition=</em> entries. For non-standardized
+keys, well-known helper binaries provided by Desktop Environments are
+used. All external helpers <em>must</em> detect their corresponding
+desktop environment and <em>must</em> return success when run in a
+different environment. This is important as all <em>ExecCondition=</em>
+directives must succeed for an application to be started.</p>
+<p><br />
+<strong>Table 1. Special XDG desktop file entries that are
+processed</strong></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Entry</td>
+<td style="text-align: left;">Handling</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Hidden=</em>,
+<em>X-systemd-skip=</em></td>
+<td style="text-align: left;">No service will be generated if set to
+true</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>OnlyShowIn=</em>,
+<em>NotShowIn=</em></td>
+<td style="text-align: left;"><em>ExecCondition=</em> using
+systemd-xdg-autostart-condition</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>TryExec=</em></td>
+<td style="text-align: left;">No service will be generated if the binary
+does not exist or cannot be executed</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>AutostartCondition=</em> (GNOME
+extension)</td>
+<td style="text-align: left;"><em>ExecCondition=</em> using
+gnome-systemd-autostart-condition</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>X-GNOME-Autostart-Phase=</em></td>
+<td style="text-align: left;">No service will be generated if set to any
+value</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>X-KDE-autostart-condition=</em></td>
+<td style="text-align: left;"><em>ExecCondition=</em> using
+kde-systemd-start-condition</td>
+</tr>
+</tbody>
+</table>
+<p>systemd-xdg-autostart-generator implements
+<strong>systemd.generator</strong>(7).</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>systemd.service</strong>(5),
+<strong>systemd.target</strong>(5)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>XDG autostart</p>
+<p>https://specifications.freedesktop.org/autostart-spec/autostart-spec-latest.html</p>
+</dd>
+</dl>

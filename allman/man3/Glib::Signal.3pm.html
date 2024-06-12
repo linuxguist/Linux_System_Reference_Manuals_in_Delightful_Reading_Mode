@@ -1,0 +1,70 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::Signal - Object customization and general purpose
+notification</p>
+<h1>DESCRIPTION</h1>
+<p>This page describes some functions related to signals in Glib. Since
+most things you can do with signals are tied to Glib::Object instances,
+the majority of the signal functions are documented there.</p>
+<h2>Thread safety</h2>
+<p>Some libraries, most notably GStreamer, sometimes invoke signal
+handlers from a foreign thread that has no Perl interpreter associated
+with it. When this happens, we have no choice but to hand the
+marshalling over to the main loop which in turn later wakes up the main
+thread and lets it handle the request. We cannot invoke the signal
+handler from the foreign thread since the Perl interpreter may not be
+used concurrently.</p>
+<p>The downside to this approach is that the foreign thread is blocked
+until the main thread has finished executing the signal handler. This
+might lead to deadlocks. It might help in this case to wrap the crucial
+parts of the signal handler inside a Glib::Idle callback so that the
+signal handler can return directly.</p>
+<h1>METHODS</h1>
+<h2>integer = Glib-&gt;<strong>install_exception_handler</strong>
+($func, $data=undef)</h2>
+<ul>
+<li><p><code>$func</code> (subroutine)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+</ul>
+<p>Install a subroutine to be executed when a signal emission traps an
+exception (a croak or die). <em><code>$func</code></em> should return
+boolean (true if the handler should remain installed) and expect to
+receive a single scalar. This scalar will be a private copy of $@ which
+the handler can mangle to its heart's content.</p>
+<p>Returns an identifier that may be used with
+<code>remove_exception_handler</code>.</p>
+<p>See <code>gperl_install_exception_handler()</code> in
+Glib::xsapi.</p>
+<h2>Glib-&gt;<strong>remove_exception_handler</strong> ($tag)</h2>
+<ul>
+<li><p><code>$tag</code> (integer)</p></li>
+</ul>
+<p>Remove the exception handler identified by
+<em><code>$tag</code></em>, as returned by
+<code>install_exception_handler</code>. If <em><code>$tag</code></em>
+cannot be found, this does nothing.</p>
+<p>WARNING: Do not call this function from within an exception handler.
+If you want to remove your handler during its execution just have it
+return false.</p>
+<p>See <code>gperl_remove_exception_handler()</code> in Glib::xsapi.</p>
+<h1>ENUMS AND FLAGS</h1>
+<h2>flags Glib::SignalFlags</h2>
+<ul>
+<li><p>'run-first' / 'G_SIGNAL_RUN_FIRST'</p></li>
+<li><p>'run-last' / 'G_SIGNAL_RUN_LAST'</p></li>
+<li><p>'run-cleanup' / 'G_SIGNAL_RUN_CLEANUP'</p></li>
+<li><p>'no-recurse' / 'G_SIGNAL_NO_RECURSE'</p></li>
+<li><p>'detailed' / 'G_SIGNAL_DETAILED'</p></li>
+<li><p>'action' / 'G_SIGNAL_ACTION'</p></li>
+<li><p>'no-hooks' / 'G_SIGNAL_NO_HOOKS'</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Glib, Glib::Object</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

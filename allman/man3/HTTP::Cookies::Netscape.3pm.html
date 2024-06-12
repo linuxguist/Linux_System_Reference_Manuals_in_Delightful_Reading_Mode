@@ -1,0 +1,32 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTTP::Cookies::Netscape - Access to Netscape cookies files</p>
+<h1>VERSION</h1>
+<p>version 6.10</p>
+<h1>SYNOPSIS</h1>
+<p>use LWP; use HTTP::Cookies::Netscape; $cookie_jar =
+HTTP::Cookies::Netscape-&gt;new( file =&gt; "c:/program
+files/netscape/users/ZombieCharity/cookies.txt", ); my $browser =
+LWP::UserAgent-&gt;new; $browser-&gt;cookie_jar( $cookie_jar );</p>
+<h1>DESCRIPTION</h1>
+<p>This is a subclass of <code>HTTP::Cookies</code> that reads (and
+optionally writes) Netscape/Mozilla cookie files.</p>
+<p>See the documentation for HTTP::Cookies.</p>
+<h1>CAVEATS</h1>
+<p>Please note that the Netscape/Mozilla cookie file format can't store
+all the information available in the Set-Cookie2 headers, so you will
+probably lose some information if you save in this format.</p>
+<p>At time of writing, this module seems to work fine with Mozilla
+Phoenix/Firebird.</p>
+<h1>SEE ALSO</h1>
+<p>HTTP::Cookies::Microsoft</p>
+<h1>AUTHOR</h1>
+<p>Gisle Aas &lt;gisle@activestate.com&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2002 by Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

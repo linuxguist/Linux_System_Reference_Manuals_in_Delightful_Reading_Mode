@@ -1,0 +1,231 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>limits.conf - configuration file for the pam_limits module</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>pam_limits.so</em> module applies ulimit limits, nice
+priority and number of simultaneous login sessions limit to user login
+sessions. This description of the configuration file syntax applies to
+the /etc/security/limits.conf file and *.conf files in the
+/etc/security/limits.d directory.</p>
+<p>The syntax of the lines is as follows:</p>
+<p><em>&lt;domain&gt;</em> <em>&lt;type&gt;</em> <em>&lt;item&gt;</em>
+<em>&lt;value&gt;</em></p>
+<p>The fields listed above should be filled as follows:</p>
+<p><strong>&lt;domain&gt;</strong></p>
+<blockquote>
+<blockquote>
+<p>·</p>
+<p>a username</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>a groupname, with <strong>@group</strong> syntax. This should not be
+confused with netgroups.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>the wildcard <strong>*</strong>, for default entry.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>the wildcard <strong>%</strong>, for maxlogins limit only, can also
+be used with <strong>%group</strong> syntax. If the <strong>%</strong>
+wildcard is used alone it is identical to using <strong>*</strong> with
+maxsyslogins limit. With a group specified after <strong>%</strong> it
+limits the total number of logins of all users that are member of the
+group.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>an uid range specified as
+<em>&lt;min_uid&gt;</em><strong>:</strong><em>&lt;max_uid&gt;</em>. If
+min_uid is omitted, the match is exact for the max_uid. If max_uid is
+omitted, all uids greater than or equal min_uid match.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>a gid range specified as
+<strong>@</strong><em>&lt;min_gid&gt;</em><strong>:</strong><em>&lt;max_gid&gt;</em>.
+If min_gid is omitted, the match is exact for the max_gid. If max_gid is
+omitted, all gids greater than or equal min_gid match. For the exact
+match all groups including the users supplementary groups are examined.
+For the range matches only the users primary group is examined.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>a gid specified as <strong>%:</strong><em>&lt;gid&gt;</em> applicable
+to maxlogins limit only. It limits the total number of logins of all
+users that are member of the group with the specified gid.</p>
+</blockquote>
+<p><strong>NOTE:</strong> group and wildcard limits are not applied to
+the root user. To set a limit for the root user, this field must contain
+the literal username <strong>root</strong>.</p>
+</blockquote>
+<p><strong>&lt;type&gt;</strong></p>
+<blockquote>
+<p><strong>hard</strong></p>
+<blockquote>
+<p>for enforcing <strong>hard</strong> resource limits. These limits are
+set by the superuser and enforced by the Kernel. The user cannot raise
+his requirement of system resources above such values.</p>
+</blockquote>
+<p><strong>soft</strong></p>
+<blockquote>
+<p>for enforcing <strong>soft</strong> resource limits. These limits are
+ones that the user can move up or down within the permitted range by any
+pre-existing <strong>hard</strong> limits. The values specified with
+this token can be thought of as <em>default</em> values, for normal
+system usage.</p>
+</blockquote>
+<p><strong>-</strong></p>
+<blockquote>
+<p>for enforcing both <strong>soft</strong> and <strong>hard</strong>
+resource limits together.</p>
+<p>Note, if you specify a type of - but neglect to supply the item and
+value fields then the module will never enforce any limits on the
+specified user/group etc. .</p>
+</blockquote>
+</blockquote>
+<p><strong>&lt;item&gt;</strong></p>
+<blockquote>
+<p><strong>core</strong></p>
+<blockquote>
+<p>limits the core file size (KB)</p>
+</blockquote>
+<p><strong>data</strong></p>
+<blockquote>
+<p>maximum data size (KB)</p>
+</blockquote>
+<p><strong>fsize</strong></p>
+<blockquote>
+<p>maximum filesize (KB)</p>
+</blockquote>
+<p><strong>memlock</strong></p>
+<blockquote>
+<p>maximum locked-in-memory address space (KB)</p>
+</blockquote>
+<p><strong>nofile</strong></p>
+<blockquote>
+<p>maximum number of open file descriptors</p>
+</blockquote>
+<p><strong>rss</strong></p>
+<blockquote>
+<p>maximum resident set size (KB) (Ignored in Linux 2.4.30 and
+higher)</p>
+</blockquote>
+<p><strong>stack</strong></p>
+<blockquote>
+<p>maximum stack size (KB)</p>
+</blockquote>
+<p><strong>cpu</strong></p>
+<blockquote>
+<p>maximum CPU time (minutes)</p>
+</blockquote>
+<p><strong>nproc</strong></p>
+<blockquote>
+<p>maximum number of processes</p>
+</blockquote>
+<p><strong>as</strong></p>
+<blockquote>
+<p>address space limit (KB)</p>
+</blockquote>
+<p><strong>maxlogins</strong></p>
+<blockquote>
+<p>maximum number of logins for this user (this limit does not apply to
+user with <em>uid=0</em>)</p>
+</blockquote>
+<p><strong>maxsyslogins</strong></p>
+<blockquote>
+<p>maximum number of all logins on system; user is not allowed to log-in
+if total number of all user logins is greater than specified number
+(this limit does not apply to user with <em>uid=0</em>)</p>
+</blockquote>
+<p><strong>nonewprivs</strong></p>
+<blockquote>
+<p>value of 0 or 1; if set to 1 disables acquiring new privileges by
+invoking prctl(PR_SET_NO_NEW_PRIVS)</p>
+</blockquote>
+<p><strong>priority</strong></p>
+<blockquote>
+<p>the priority to run user process with (negative values boost process
+priority)</p>
+</blockquote>
+<p><strong>locks</strong></p>
+<blockquote>
+<p>maximum locked files (Linux 2.4 and higher)</p>
+</blockquote>
+<p><strong>sigpending</strong></p>
+<blockquote>
+<p>maximum number of pending signals (Linux 2.6 and higher)</p>
+</blockquote>
+<p><strong>msgqueue</strong></p>
+<blockquote>
+<p>maximum memory used by POSIX message queues (bytes) (Linux 2.6 and
+higher)</p>
+</blockquote>
+<p><strong>nice</strong></p>
+<blockquote>
+<p>maximum nice priority allowed to raise to (Linux 2.6.12 and higher)
+values: [-20,19]</p>
+</blockquote>
+<p><strong>rtprio</strong></p>
+<blockquote>
+<p>maximum realtime priority allowed for non-privileged processes (Linux
+2.6.12 and higher)</p>
+</blockquote>
+<p><strong>chroot</strong></p>
+<blockquote>
+<p>the directory to chroot the user to</p>
+</blockquote>
+</blockquote>
+<p>All items support the values <em>-1</em>, <em>unlimited</em> or
+<em>infinity</em> indicating no limit, except for
+<strong>priority</strong>, <strong>nice</strong>, and
+<strong>nonewprivs</strong>. If <strong>nofile</strong> is to be set to
+one of these values, it will be set to the contents of
+/proc/sys/fs/nr_open instead (see setrlimit(3)).</p>
+<p>If a hard limit or soft limit of a resource is set to a valid value,
+but outside of the supported range of the local system, the system may
+reject the new limit or unexpected behavior may occur. If the control
+value <em>required</em> is used, the module will reject the login if a
+limit could not be set.</p>
+<p>In general, individual limits have priority over group limits, so if
+you impose no limits for <em>admin</em> group, but one of the members in
+this group have a limits line, the user will have its limits set
+according to this line.</p>
+<p>Also, please note that all limit settings are set <em>per login</em>.
+They are not global, nor are they permanent; existing only for the
+duration of the session. One exception is the <em>maxlogin</em> option,
+this one is system wide. But there is a race, concurrent logins at the
+same time will not always be detect as such but only counted as one.</p>
+<p>In the <em>limits</em> configuration file, the <strong>#</strong>
+character introduces a comment - after which the rest of the line is
+ignored.</p>
+<p>The pam_limits module does report configuration problems found in its
+configuration file and errors via <strong>syslog</strong>(3).</p>
+<h1>EXAMPLES</h1>
+<p>These are some example lines which might be specified in
+/etc/security/limits.conf.</p>
+<blockquote>
+<pre><code>*               soft    core            0
+root            hard    core            100000
+*               hard    nofile          512
+@student        hard    nproc           20
+@faculty        soft    nproc           20
+@faculty        hard    nproc           50
+ftp             hard    nproc           0
+@student        -       maxlogins       4
+@student        -       nonewprivs      1
+:123            hard    cpu             5000
+@500:           soft    cpu             10000
+600:700         hard    locks           10
+    </code></pre>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>pam_limits</strong>(8), <strong>pam.d</strong>(5),
+<strong>pam</strong>(7), <strong>getrlimit</strong>(2),
+<strong>getrlimit</strong>(3p)</p>
+<h1>AUTHOR</h1>
+<p>pam_limits was initially written by Cristian Gafton
+&lt;gafton@redhat.com&gt;</p>

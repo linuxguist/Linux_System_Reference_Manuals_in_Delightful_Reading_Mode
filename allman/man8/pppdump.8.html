@@ -1,0 +1,56 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pppdump - convert PPP record file to readable format</p>
+<h1>SYNOPSIS</h1>
+<p><strong>pppdump</strong> [ <strong>-h</strong> | <strong>-p</strong>
+[ <strong>-d</strong> ]] [ <strong>-r</strong> ] [ <strong>-a</strong> ]
+[ <strong>-m <em>mru</em></strong> ] [ <em>file ...</em> ]</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>pppdump</strong> utility converts the files written using
+the <em>record</em> option of <strong>pppd</strong> into a
+human-readable format. If one or more filenames are specified,
+<strong>pppdump</strong> will read each in turn; otherwise it will read
+its standard input. In each case the result is written to standard
+output.</p>
+<p>The options are as follows:</p>
+<dl>
+<dt><strong>-h</strong></dt>
+<dd>
+<p>Prints the bytes sent and received in hexadecimal. If neither this
+option nor the <strong>-p</strong> option is specified, the bytes are
+printed as the characters themselves, with non-printing and non-ASCII
+characters printed as escape sequences.</p>
+</dd>
+<dt><strong>-p</strong></dt>
+<dd>
+<p>Collects the bytes sent and received into PPP packets, interpreting
+the async HDLC framing and escape characters and checking the FCS (frame
+check sequence) of each packet. The packets are printed as hex values
+and as characters (non-printable characters are printed as `.').</p>
+</dd>
+<dt><strong>-d</strong></dt>
+<dd>
+<p>With the <strong>-p</strong> option, this option causes
+<strong>pppdump</strong> to decompress packets which have been
+compressed with the BSD-Compress or Deflate methods.</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Reverses the direction indicators, so that `sent' is printed for
+bytes or packets received, and `rcvd' is printed for bytes or packets
+sent.</p>
+</dd>
+<dt><strong>-a</strong></dt>
+<dd>
+<p>Prints absolute times.</p>
+</dd>
+<dt><strong>-m <em>mru</em></strong></dt>
+<dd>
+<p>Use <em>mru</em> as the MRU (maximum receive unit) for both
+directions of the link when checking for over-length PPP packets (with
+the <strong>-p</strong> option).</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>pppd(8)</p>

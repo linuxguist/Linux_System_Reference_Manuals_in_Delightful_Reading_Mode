@@ -1,0 +1,593 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>agetty - alternative Linux getty</p>
+<h1>SYNOPSIS</h1>
+<p><strong>agetty</strong> [options] <em>port</em>
+[<em>baud_rate</em>...] [<em>term</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>agetty</strong> opens a tty port, prompts for a login name
+and invokes the /bin/login command. It is normally invoked by
+<strong>init</strong>(8).</p>
+<p><strong>agetty</strong> has several <em>non-standard</em> features
+that are useful for hardwired and for dial-in lines:</p>
+<blockquote>
+<p>·</p>
+<p>Adapts the tty settings to parity bits and to erase, kill,
+end-of-line and uppercase characters when it reads a login name. The
+program can handle 7-bit characters with even, odd, none or space
+parity, and 8-bit characters with no parity. The following special
+characters are recognized: Control-U (kill); DEL and backspace (erase);
+carriage return and line feed (end of line). See also the
+<strong>--erase-chars</strong> and <strong>--kill-chars</strong>
+options.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>Optionally deduces the baud rate from the CONNECT messages produced
+by Hayes(tm)-compatible modems.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>Optionally does not hang up when it is given an already opened line
+(useful for call-back applications).</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>Optionally does not display the contents of the <em>/etc/issue</em>
+file.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>Optionally displays an alternative issue files or directories instead
+of <em>/etc/issue</em> or <em>/etc/issue.d</em>.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>Optionally does not ask for a login name.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>Optionally invokes a non-standard login program instead of
+<em>/bin/login</em>.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>Optionally turns on hardware flow control.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>Optionally forces the line to be local with no need for carrier
+detect.</p>
+</blockquote>
+<p>This program does not use the <em>/etc/gettydefs</em> (System V) or
+<em>/etc/gettytab</em> (SunOS 4) files.</p>
+<h1>ARGUMENTS</h1>
+<p><em>port</em></p>
+<blockquote>
+<p>A path name relative to the <em>/dev</em> directory. If a "-" is
+specified, <strong>agetty</strong> assumes that its standard input is
+already connected to a tty port and that a connection to a remote user
+has already been established.</p>
+<p>Under System V, a "-" <em>port</em> argument should be preceded by a
+"--".</p>
+</blockquote>
+<p><em>baud_rate</em>,...</p>
+<blockquote>
+<p>A comma-separated list of one or more baud rates. Each time
+<strong>agetty</strong> receives a BREAK character it advances through
+the list, which is treated as if it were circular.</p>
+<p>Baud rates should be specified in descending order, so that the null
+character (Ctrl-@) can also be used for baud-rate switching.</p>
+<p>This argument is optional and unnecessary for <strong>virtual
+terminals</strong>.</p>
+<p>The default for <strong>serial terminals</strong> is keep the current
+baud rate (see <strong>--keep-baud</strong>) and if unsuccessful then
+default to '9600'.</p>
+</blockquote>
+<p><em>term</em></p>
+<blockquote>
+<p>The value to be used for the <strong>TERM</strong> environment
+variable. This overrides whatever <strong>init</strong>(1) may have set,
+and is inherited by login and the shell.</p>
+<p>The default is 'vt100', or 'linux' for Linux on a virtual terminal,
+or 'hurd' for GNU Hurd on a virtual terminal.</p>
+</blockquote>
+<h1>OPTIONS</h1>
+<p><strong>-8</strong>, <strong>--8bits</strong></p>
+<blockquote>
+<p>Assume that the tty is 8-bit clean, hence disable parity
+detection.</p>
+</blockquote>
+<p><strong>-a</strong>, <strong>--autologin</strong>
+<em>username</em></p>
+<blockquote>
+<p>Automatically log in the specified user without asking for a username
+or password. Using this option causes an <strong>-f</strong>
+<em>username</em> option and argument to be added to the
+<strong>/bin/login</strong> command line. See
+<strong>--login-options</strong>, which can be used to modify this
+option’s behavior.</p>
+<p>Note that <strong>--autologin</strong> may affect the way in which
+<strong>getty</strong> initializes the serial line, because on
+auto-login <strong>agetty</strong> does not read from the line and it
+has no opportunity optimize the line setting.</p>
+</blockquote>
+<p><strong>-c</strong>, <strong>--noreset</strong></p>
+<blockquote>
+<p>Do not reset terminal cflags (control modes). See
+<strong>termios</strong>(3) for more details.</p>
+</blockquote>
+<p><strong>-E</strong>, <strong>--remote</strong></p>
+<blockquote>
+<p>Typically the <strong>login</strong>(1) command is given a remote
+hostname when called by something such as <strong>telnetd</strong>(8).
+This option allows <strong>agetty</strong> to pass what it is using for
+a hostname to <strong>login</strong>(1) for use in
+<strong>utmp</strong>(5). See <strong>--host</strong>,
+<strong>login</strong>(1), and <strong>utmp</strong>(5).</p>
+<p>If the <strong>--host</strong> <em>fakehost</em> option is given,
+then an <strong>-h</strong> <em>fakehost</em> option and argument are
+added to the <em>/bin/login</em> command line.</p>
+<p>If the <strong>--nohostname</strong> option is given, then an
+<strong>-H</strong> option is added to the <strong>/bin/login</strong>
+command line.</p>
+<p>See <strong>--login-options</strong>.</p>
+</blockquote>
+<p><strong>-f</strong>, <strong>--issue-file</strong> <em>path</em></p>
+<blockquote>
+<p>Specifies a ":" delimited list of files and directories to be
+displayed instead of <em>/etc/issue</em> (or other). All specified files
+and directories are displayed, missing or empty files are silently
+ignored. If the specified path is a directory then display all files
+with <em>.issue</em> file extension in version-sort order from the
+directory. This allows custom messages to be displayed on different
+terminals. The <strong>--noissue</strong> option will override this
+option.</p>
+</blockquote>
+<p><strong>--show-issue</strong></p>
+<blockquote>
+<p>Display the current issue file (or other) on the current terminal and
+exit. Use this option to review the current setting, it is not designed
+for any other purpose. Note that output may use some default or
+incomplete information as proper output depends on terminal and
+<strong>agetty</strong> command line.</p>
+</blockquote>
+<p><strong>-h, --flow-control</strong></p>
+<blockquote>
+<p>Enable hardware (RTS/CTS) flow control. It is left up to the
+application to disable software (XON/XOFF) flow protocol where
+appropriate.</p>
+</blockquote>
+<p><strong>-H</strong>, <strong>--host</strong> <em>fakehost</em></p>
+<blockquote>
+<p>Write the specified <em>fakehost</em> into the utmp file. Normally,
+no login host is given, since <strong>agetty</strong> is used for local
+hardwired connections and consoles. However, this option can be useful
+for identifying terminal concentrators and the like.</p>
+</blockquote>
+<p><strong>-i</strong>, <strong>--noissue</strong></p>
+<blockquote>
+<p>Do not display the contents of <em>/etc/issue</em> (or other) before
+writing the login prompt. Terminals or communications hardware may
+become confused when receiving lots of text at the wrong baud rate;
+dial-up scripts may fail if the login prompt is preceded by too much
+text.</p>
+</blockquote>
+<p><strong>-I</strong>, <strong>--init-string</strong>
+<em>initstring</em></p>
+<blockquote>
+<p>Set an initial string to be sent to the tty or modem before sending
+anything else. This may be used to initialize a modem. Non-printable
+characters may be sent by writing their octal code preceded by a
+backslash (\). For example, to send a linefeed character (ASCII 10,
+octal 012), write \12.</p>
+</blockquote>
+<p><strong>-J</strong>, <strong>--noclear</strong></p>
+<blockquote>
+<p>Do not clear the screen before prompting for the login name. By
+default the screen is cleared.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--login-program</strong>
+<em>login_program</em></p>
+<blockquote>
+<p>Invoke the specified <em>login_program</em> instead of /bin/login.
+This allows the use of a non-standard login program. Such a program
+could, for example, ask for a dial-up password or use a different
+password file. See <strong>--login-options</strong>.</p>
+</blockquote>
+<p><strong>-L</strong>,
+<strong>--local-line</strong>[=<em>mode</em>]</p>
+<blockquote>
+<p>Control the CLOCAL line flag. The optional <em>mode</em> argument is
+<strong>auto</strong>, <strong>always</strong> or
+<strong>never</strong>. If the <em>mode</em> argument is omitted, then
+the default is <strong>always</strong>. If the
+<strong>--local-line</strong> option is not given at all, then the
+default is <strong>auto</strong>.</p>
+<p><em>always</em></p>
+<blockquote>
+<p>Forces the line to be a local line with no need for carrier detect.
+This can be useful when you have a locally attached terminal where the
+serial line does not set the carrier-detect signal.</p>
+</blockquote>
+<p><em>never</em></p>
+<blockquote>
+<p>Explicitly clears the CLOCAL flag from the line setting and the
+carrier-detect signal is expected on the line.</p>
+</blockquote>
+<p><em>auto</em></p>
+<blockquote>
+<p>The <strong>agetty</strong> default. Does not modify the CLOCAL
+setting and follows the setting enabled by the kernel.</p>
+</blockquote>
+</blockquote>
+<p><strong>-m</strong>, <strong>--extract-baud</strong></p>
+<blockquote>
+<p>Try to extract the baud rate from the CONNECT status message produced
+by Hayes(tm)-compatible modems. These status messages are of the form:
+"&lt;junk&gt;&lt;speed&gt;&lt;junk&gt;". <strong>agetty</strong> assumes
+that the modem emits its status message at the same speed as specified
+with (the first) <em>baud_rate</em> value on the command line.</p>
+<p>Since the <strong>--extract-baud</strong> feature may fail on
+heavily-loaded systems, you still should enable BREAK processing by
+enumerating all expected baud rates on the command line.</p>
+</blockquote>
+<p><strong>--list-speeds</strong></p>
+<blockquote>
+<p>Display supported baud rates. These are determined at compilation
+time.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--skip-login</strong></p>
+<blockquote>
+<p>Do not prompt the user for a login name. This can be used in
+connection with the <strong>--login-program</strong> option to invoke a
+non-standard login process such as a BBS system. Note that with the
+<strong>--skip-login</strong> option, <strong>agetty</strong> gets no
+input from the user who logs in and therefore will not be able to figure
+out parity, character size, and newline processing of the connection. It
+defaults to space parity, 7 bit characters, and ASCII CR (13)
+end-of-line character. Beware that the program that
+<strong>agetty</strong> starts (usually /bin/login) is run as root.</p>
+</blockquote>
+<p><strong>-N</strong>, <strong>--nonewline</strong></p>
+<blockquote>
+<p>Do not print a newline before writing out <em>/etc/issue</em>.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--login-options</strong>
+<em>login_options</em></p>
+<blockquote>
+<p>Options and arguments that are passed to <strong>login</strong>(1).
+Where \u is replaced by the login name. For example:</p>
+<p><strong>--login-options '-h darkstar -- \u'</strong></p>
+<p>See <strong>--autologin</strong>, <strong>--login-program</strong>
+and <strong>--remote</strong>.</p>
+<p>Please read the <strong>SECURITY NOTICE</strong> below before using
+this option.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--login-pause</strong></p>
+<blockquote>
+<p>Wait for any key before dropping to the login prompt. Can be combined
+with <strong>--autologin</strong> to save memory by lazily spawning
+shells.</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--chroot</strong> <em>directory</em></p>
+<blockquote>
+<p>Change root to the specified directory.</p>
+</blockquote>
+<p><strong>-R</strong>, <strong>--hangup</strong></p>
+<blockquote>
+<p>Call <strong>vhangup</strong>(2) to do a virtual hangup of the
+specified terminal.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--keep-baud</strong></p>
+<blockquote>
+<p>Try to keep the existing baud rate. The baud rates from the command
+line are used when <strong>agetty</strong> receives a BREAK character.
+If another baud rates specified then the original baud rate is also
+saved to the end of the wanted baud rates list. This can be used to
+return to the original baud rate after unexpected BREAKs.</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--timeout</strong> <em>timeout</em></p>
+<blockquote>
+<p>Terminate if no user name could be read within <em>timeout</em>
+seconds. Use of this option with hardwired terminal lines is not
+recommended.</p>
+</blockquote>
+<p><strong>-U</strong>, <strong>--detect-case</strong></p>
+<blockquote>
+<p>Turn on support for detecting an uppercase-only terminal. This
+setting will detect a login name containing only capitals as indicating
+an uppercase-only terminal and turn on some upper-to-lower case
+conversions. Note that this has no support for any Unicode
+characters.</p>
+</blockquote>
+<p><strong>-w</strong>, <strong>--wait-cr</strong></p>
+<blockquote>
+<p>Wait for the user or the modem to send a carriage-return or a
+linefeed character before sending the <em>/etc/issue</em> file (or
+others) and the login prompt. This is useful with the
+<strong>--init-string</strong> option.</p>
+</blockquote>
+<p><strong>--nohints</strong></p>
+<blockquote>
+<p>Do not print hints about Num, Caps and Scroll Locks.</p>
+</blockquote>
+<p><strong>--nohostname</strong></p>
+<blockquote>
+<p>By default the hostname will be printed. With this option enabled, no
+hostname at all will be shown.</p>
+</blockquote>
+<p><strong>--long-hostname</strong></p>
+<blockquote>
+<p>By default the hostname is only printed until the first dot. With
+this option enabled, the fully qualified hostname by
+<strong>gethostname</strong>(3P) or (if not found) by
+<strong>getaddrinfo</strong>(3) is shown.</p>
+</blockquote>
+<p><strong>--erase-chars</strong> <em>string</em></p>
+<blockquote>
+<p>This option specifies additional characters that should be
+interpreted as a backspace ("ignore the previous character") when the
+user types the login name. The default additional 'erase' has been '#',
+but since util-linux 2.23 no additional erase characters are enabled by
+default.</p>
+</blockquote>
+<p><strong>--kill-chars</strong> <em>string</em></p>
+<blockquote>
+<p>This option specifies additional characters that should be
+interpreted as a kill ("ignore all previous characters") when the user
+types the login name. The default additional 'kill' has been '@', but
+since util-linux 2.23 no additional kill characters are enabled by
+default.</p>
+</blockquote>
+<p><strong>--chdir</strong> <em>directory</em></p>
+<blockquote>
+<p>Change directory before the login.</p>
+</blockquote>
+<p><strong>--delay</strong> <em>number</em></p>
+<blockquote>
+<p>Sleep seconds before open tty.</p>
+</blockquote>
+<p><strong>--nice</strong> <em>number</em></p>
+<blockquote>
+<p>Run login with this priority.</p>
+</blockquote>
+<p><strong>--reload</strong></p>
+<blockquote>
+<p>Ask all running <strong>agetty</strong> instances to reload and
+update their displayed prompts, if the user has not yet commenced
+logging in. After doing so the command will exit. This feature might be
+unsupported on systems without Linux <strong>inotify</strong>(7).</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXAMPLE</h1>
+<p>This section shows examples for the process field of an entry in the
+<em>/etc/inittab</em> file. You’ll have to prepend appropriate values
+for the other fields. See <strong>inittab</strong>(5) for more
+details.</p>
+<p>For a hardwired line or a console tty:</p>
+<blockquote>
+<p><strong>/sbin/agetty 9600 ttyS1</strong><br />
+</p>
+</blockquote>
+<p>For a directly connected terminal without proper carrier-detect
+wiring (try this if your terminal just sleeps instead of giving you a
+password: prompt):</p>
+<blockquote>
+<p><strong>/sbin/agetty --local-line 9600 ttyS1 vt100</strong><br />
+</p>
+</blockquote>
+<p>For an old-style dial-in line with a 9600/2400/1200 baud modem:</p>
+<blockquote>
+<p><strong>/sbin/agetty --extract-baud --timeout 60 ttyS1
+9600,2400,1200</strong><br />
+</p>
+</blockquote>
+<p>For a Hayes modem with a fixed 115200 bps interface to the machine
+(the example init string turns off modem echo and result codes, makes
+modem/computer DCD track modem/modem DCD, makes a DTR drop cause a
+disconnection, and turns on auto-answer after 1 ring):</p>
+<blockquote>
+<p><strong>/sbin/agetty --wait-cr --init-string
+'ATE0Q1&amp;D2&amp;C1S0=1\015' 115200 ttyS1</strong><br />
+</p>
+</blockquote>
+<h1>SECURITY NOTICE</h1>
+<p>If you use the <strong>--login-program</strong> and
+<strong>--login-options</strong> options, be aware that a malicious user
+may try to enter lognames with embedded options, which then get passed
+to the used login program. <strong>agetty</strong> does check for a
+leading "-" and makes sure the logname gets passed as one parameter (so
+embedded spaces will not create yet another parameter), but depending on
+how the login binary parses the command line that might not be
+sufficient. Check that the used login program cannot be abused this
+way.</p>
+<p>Some programs use "--" to indicate that the rest of the command line
+should not be interpreted as options. Use this feature if available by
+passing "--" before the username gets passed by \u.</p>
+<h1>ISSUE FILES</h1>
+<p>The default issue file is <em>/etc/issue</em>. If the file exists,
+then <strong>agetty</strong> also checks for <em>/etc/issue.d</em>
+directory. The directory is optional extension to the default issue file
+and content of the directory is printed after <em>/etc/issue</em>
+content. If the <em>/etc/issue</em> does not exist, then the directory
+is ignored. All files <strong>with .issue extension</strong> from the
+directory are printed in version-sort order. The directory can be used
+to maintain 3rd-party messages independently on the primary system
+<em>/etc/issue</em> file.</p>
+<p>Since version 2.35 additional locations for issue file and directory
+are supported. If the default <em>/etc/issue</em> does not exist, then
+<strong>agetty</strong> checks for <em>/run/issue</em> and
+<em>/run/issue.d</em>, thereafter for <em>/usr/lib/issue</em> and
+<em>/usr/lib/issue.d</em>. The directory <em>/etc</em> is expected for
+host specific configuration, <em>/run</em> is expected for generated
+stuff and <em>/usr/lib</em> for static distribution maintained
+configuration.</p>
+<p>The default path maybe overridden by <strong>--issue-file</strong>
+option. In this case specified path has to be file or directory and all
+the default issue file and directory locations are ignored.</p>
+<p>The issue file feature can be completely disabled by
+<strong>--noissue</strong> option.</p>
+<p>It is possible to review the current issue file by <strong>agetty
+--show-issue</strong> on the current terminal.</p>
+<p>The issue files may contain certain escape codes to display the
+system name, date, time et cetera. All escape codes consist of a
+backslash (\) immediately followed by one of the characters listed
+below.</p>
+<p>4 or 4{<em>interface</em>}</p>
+<blockquote>
+<p>Insert the IPv4 address of the specified network interface (for
+example: \4{eth0}). If the <em>interface</em> argument is not specified,
+then select the first fully configured (UP, non-LOCALBACK, RUNNING)
+interface. If no configured interface is found, fall back to the IP
+address of the machine’s hostname.</p>
+</blockquote>
+<p>6 or 6{<em>interface</em>}</p>
+<blockquote>
+<p>The same as \4 but for IPv6.</p>
+</blockquote>
+<p>b</p>
+<blockquote>
+<p>Insert the baudrate of the current line.</p>
+</blockquote>
+<p>d</p>
+<blockquote>
+<p>Insert the current date.</p>
+</blockquote>
+<p>e or e{<em>name</em>}</p>
+<blockquote>
+<p>Translate the human-readable <em>name</em> to an escape sequence and
+insert it (for example: \e{red}Alert text.\e{reset}). If the
+<em>name</em> argument is not specified, then insert \033. The currently
+supported names are: black, blink, blue, bold, brown, cyan, darkgray,
+gray, green, halfbright, lightblue, lightcyan, lightgray, lightgreen,
+lightmagenta, lightred, magenta, red, reset, reverse, yellow and white.
+All unknown names are silently ignored.</p>
+</blockquote>
+<p>s</p>
+<blockquote>
+<p>Insert the system name (the name of the operating system). Same as
+'uname -s'. See also the \S escape code.</p>
+</blockquote>
+<p>S or S{VARIABLE}</p>
+<blockquote>
+<p>Insert the VARIABLE data from <em>/etc/os-release</em>. If this file
+does not exist then fall back to <em>/usr/lib/os-release</em>. If the
+VARIABLE argument is not specified, then use PRETTY_NAME from the file
+or the system name (see \s). This escape code can be used to keep
+<em>/etc/issue</em> distribution and release independent. Note that
+\S{ANSI_COLOR} is converted to the real terminal escape sequence.</p>
+</blockquote>
+<p>l</p>
+<blockquote>
+<p>Insert the name of the current tty line.</p>
+</blockquote>
+<p>m</p>
+<blockquote>
+<p>Insert the architecture identifier of the machine. Same as
+<strong>uname -m</strong>.</p>
+</blockquote>
+<p>n</p>
+<blockquote>
+<p>Insert the nodename of the machine, also known as the hostname. Same
+as <strong>uname -n</strong>.</p>
+</blockquote>
+<p>o</p>
+<blockquote>
+<p>Insert the NIS domainname of the machine. Same as <strong>hostname
+-d</strong>.</p>
+</blockquote>
+<p>O</p>
+<blockquote>
+<p>Insert the DNS domainname of the machine.</p>
+</blockquote>
+<p>r</p>
+<blockquote>
+<p>Insert the release number of the OS. Same as <strong>uname
+-r</strong>.</p>
+</blockquote>
+<p>t</p>
+<blockquote>
+<p>Insert the current time.</p>
+</blockquote>
+<p>u</p>
+<blockquote>
+<p>Insert the number of current users logged in.</p>
+</blockquote>
+<p>U</p>
+<blockquote>
+<p>Insert the string "1 user" or "&lt;n&gt; users" where &lt;n&gt; is
+the number of current users logged in.</p>
+</blockquote>
+<p>v</p>
+<blockquote>
+<p>Insert the version of the OS, that is, the build-date and such.</p>
+</blockquote>
+<p>An example. On my system, the following <em>/etc/issue</em> file:</p>
+<blockquote>
+<pre><code>This is \n.\o (\s \m \r) \t</code></pre>
+</blockquote>
+<p>displays as:</p>
+<blockquote>
+<pre><code>This is thingol.orcan.dk (Linux i386 1.1.9) 18:29:30</code></pre>
+</blockquote>
+<h1>FILES</h1>
+<p><em>/var/run/utmp</em></p>
+<blockquote>
+<p>the system status file.</p>
+</blockquote>
+<p><em>/etc/issue</em></p>
+<blockquote>
+<p>printed before the login prompt.</p>
+</blockquote>
+<p><em>/etc/os-release /usr/lib/os-release</em></p>
+<blockquote>
+<p>operating system identification data.</p>
+</blockquote>
+<p><em>/dev/console</em></p>
+<blockquote>
+<p>problem reports (if <strong>syslog</strong>(3) is not used).</p>
+</blockquote>
+<p><em>/etc/inittab</em></p>
+<blockquote>
+<p><strong>init</strong>(8) configuration file for SysV-style init
+daemon.</p>
+</blockquote>
+<h1>BUGS</h1>
+<p>The baud-rate detection feature (the <strong>--extract-baud</strong>
+option) requires that <strong>agetty</strong> be scheduled soon enough
+after completion of a dial-in call (within 30 ms with modems that talk
+at 2400 baud). For robustness, always use the
+<strong>--extract-baud</strong> option in combination with a multiple
+baud rate command-line argument, so that BREAK processing is
+enabled.</p>
+<p>The text in the <em>/etc/issue</em> file (or other) and the login
+prompt are always output with 7-bit characters and space parity.</p>
+<p>The baud-rate detection feature (the <strong>--extract-baud</strong>
+option) requires that the modem emits its status message <em>after</em>
+raising the DCD line.</p>
+<h1>DIAGNOSTICS</h1>
+<p>Depending on how the program was configured, all diagnostics are
+written to the console device or reported via the
+<strong>syslog</strong>(3) facility. Error messages are produced if the
+<em>port</em> argument does not specify a terminal device; if there is
+no utmp entry for the current process (System V only); and so on.</p>
+<h1>AUTHORS</h1>
+<p>The original <strong>agetty</strong> for serial terminals was written
+by</p>
+<p>and ported to Linux by</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>agetty</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

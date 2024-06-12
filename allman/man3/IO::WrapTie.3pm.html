@@ -1,0 +1,205 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>IO::WrapTie - wrap tieable objects in IO::Handle interface</p>
+<p>This is currently Alpha code, released for comments. Please give me
+your feedback!</p>
+<h1>SYNOPSIS</h1>
+<p>First of all, you'll need <strong>tie()</strong>, so:</p>
+<p>require 5.004;</p>
+<p><em>Function interface (experimental).</em> Use this with any
+existing class...</p>
+<p>use IO::WrapTie; use FooHandle; ### implements TIEHANDLE interface
+### Suppose we want a "FooHandle-&gt;new(&amp;FOO_RDWR, 2)". ### We can
+instead say... $FH = wraptie(FooHandle, &amp;FOO_RDWR, 2); ### Now we
+can use... print $FH "Hello, "; ### traditional operator syntax...
+$FH-&gt;print("world!\n"); ### ...and OO syntax as well!</p>
+<p><em>OO interface (preferred).</em> You can inherit from the
+IO::WrapTie::Slave mixin to get a nifty <code>new_tie()</code>
+constructor...</p>
+<p>#------------------------------ package FooHandle; ### a class which
+can TIEHANDLE use IO::WrapTie; @ISA = qw(IO::WrapTie::Slave); ###
+inherit new_tie() ... #------------------------------ package main; $FH
+= FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2); ### $FH is an
+IO::WrapTie::Master print $FH "Hello, "; ### traditional operator syntax
+$FH-&gt;print("world!\n"); ### OO syntax</p>
+<p>See IO::Scalar as an example. It also shows you how to create classes
+which work both with and without 5.004.</p>
+<h1>DESCRIPTION</h1>
+<p>Suppose you have a class <code>FooHandle</code>, where...</p>
+<ul>
+<li><p><strong>FooHandle does not inherit from IO::Handle;</strong> that
+is, it performs filehandle-like I/O, but to something other than an
+underlying file descriptor. Good examples are IO::Scalar (for printing
+to a string) and IO::Lines (for printing to an array of lines).</p></li>
+<li><p><strong>FooHandle implements the TIEHANDLE interface</strong>
+(see perltie); that is, it provides methods TIEHANDLE, GETC, PRINT,
+PRINTF, READ, and READLINE.</p></li>
+<li><p><strong>FooHandle implements the traditional OO
+interface</strong> of FileHandle and IO::Handle; i.e., it contains
+methods like <strong>getline()</strong>, <strong>read()</strong>,
+<strong>print()</strong>, <strong>seek()</strong>,
+<strong>tell()</strong>, <strong>eof()</strong>, etc.</p></li>
+</ul>
+<p>Normally, users of your class would have two options:</p>
+<ul>
+<li><p><strong>Use only OO syntax,</strong> and forsake named I/O
+operators like 'print'.</p></li>
+<li><p><strong>Use with tie,</strong> and forsake treating it as a
+first-class object (i.e., class-specific methods can only be invoked
+through the underlying object via <strong>tied()</strong>... giving the
+object a split personality).</p></li>
+</ul>
+<p>But now with IO::WrapTie, you can say:</p>
+<p>$WT = wraptie(FooHandle, &amp;FOO_RDWR, 2); $WT-&gt;print("Hello,
+world\n"); ### OO syntax print $WT "Yes!\n"; ### Named operator syntax
+too! $WT-&gt;weird_stuff; ### Other methods!</p>
+<p>And if you're authoring a class like FooHandle, just have it inherit
+from <code>IO::WrapTie::Slave</code> and that first line becomes even
+prettier:</p>
+<p>$WT = FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2);</p>
+<p><strong>The bottom line:</strong> now, almost any class can look and
+work exactly like an IO::Handle... and be used both with OO and non-OO
+filehandle syntax.</p>
+<h1>HOW IT ALL WORKS</h1>
+<h2>The data structures</h2>
+<p>Consider this example code, using classes in this distribution:</p>
+<p>use IO::Scalar; use IO::WrapTie; $WT = wraptie(IO::Scalar,\$s); print
+$WT "Hello, "; $WT-&gt;print("world!\n");</p>
+<p>In it, the <strong>wraptie()</strong> function creates a data
+structure as follows:</p>
+<p>* $WT is a blessed reference to a tied filehandle $WT glob; that glob
+is tied to the "Slave" object. | * You would do all your i/o with $WT
+directly. | | | ,---isa--&gt; IO::WrapTie::Master &gt;--isa--&gt;
+IO::Handle V / .-------------. | | | | * Perl i/o operators work on the
+tied object, | "Master" | invoking the TIEHANDLE methods. | | * Method
+invocations are delegated to the tied | | slave. `------------- |
+tied(*$WT) | .---isa--&gt; IO::WrapTie::Slave V / .-------------. | | |
+"Slave" | * Instance of FileHandle-like class which doesnt | | actually
+use file descriptors, like IO::Scalar. | IO::Scalar | * The slave can be
+any kind of object. | | * Must implement the TIEHANDLE interface.
+`-------------</p>
+<p><em>NOTE:</em> just as an IO::Handle is really just a blessed
+reference to a <em>traditional</em> filehandle glob... so also, an
+IO::WrapTie::Master is really just a blessed reference to a filehandle
+glob <em>which has been tied to some slave class.</em></p>
+<h2>How <strong>wraptie()</strong> works</h2>
+<ol type="1">
+<li><p>The call to function <code>wraptie(SLAVECLASS, TIEARGS...)</code>
+is passed onto <code>IO::WrapTie::Master::new()</code>. Note that class
+IO::WrapTie::Master is a subclass of IO::Handle.</p></li>
+<li><p>The <code>IO::WrapTie::Master::new</code> method creates a new
+IO::Handle object, reblessed into class IO::WrapTie::Master. This object
+is the <em>master</em>, which will be returned from the constructor. At
+the same time...</p></li>
+<li><p>The <code>new</code> method also creates the <em>slave</em>: this
+is an instance of SLAVECLASS which is created by tying the master's
+IO::Handle to SLAVECLASS via
+<code>tie(HANDLE, SLAVECLASS, TIEARGS...)</code>. This call to
+<code>tie()</code> creates the slave in the following manner:</p></li>
+<li><p>Class SLAVECLASS is sent the message
+<code>TIEHANDLE(TIEARGS...)</code>; it will usually delegate this to
+<code>SLAVECLASS::new(TIEARGS...)</code>, resulting in a new instance of
+SLAVECLASS being created and returned.</p></li>
+<li><p>Once both master and slave have been created, the master is
+returned to the caller.</p></li>
+</ol>
+<h2>How I/O operators work (on the master)</h2>
+<p>Consider using an i/o operator on the master:</p>
+<p>print $WT "Hello, world!\n";</p>
+<p>Since the master ($WT) is really a [blessed] reference to a glob, the
+normal Perl i/o operators like <code>print</code> may be used on it.
+They will just operate on the symbol part of the glob.</p>
+<p>Since the glob is tied to the slave, the slave's PRINT method (part
+of the TIEHANDLE interface) will be automatically invoked.</p>
+<p>If the slave is an IO::Scalar, that means IO::Scalar::PRINT will be
+invoked, and that method happens to delegate to the <code>print()</code>
+method of the same class. So the <em>real</em> work is ultimately done
+by <strong>IO::Scalar::print()</strong>.</p>
+<h2>How methods work (on the master)</h2>
+<p>Consider using a method on the master:</p>
+<p>$WT-&gt;print("Hello, world!\n");</p>
+<p>Since the master ($WT) is blessed into the class IO::WrapTie::Master,
+Perl first attempts to find a <code>print()</code> method there. Failing
+that, Perl next attempts to find a <code>print()</code> method in the
+superclass, IO::Handle. It just so happens that there <em>is</em> such a
+method; that method merely invokes the <code>print</code> i/o operator
+on the self object... and for that, see above!</p>
+<p>But let's suppose we're dealing with a method which <em>isn't</em>
+part of IO::Handle... for example:</p>
+<p>my $sref = $WT-&gt;sref;</p>
+<p>In this case, the intuitive behavior is to have the master delegate
+the method invocation to the slave (now do you see where the
+designations come from?). This is indeed what happens:
+IO::WrapTie::Master contains an AUTOLOAD method which performs the
+delegation.</p>
+<p>So: when <code>sref()</code> can't be found in IO::Handle, the
+AUTOLOAD method of IO::WrapTie::Master is invoked, and the standard
+behavior of delegating the method to the underlying slave (here, an
+IO::Scalar) is done.</p>
+<p>Sometimes, to get this to work properly, you may need to create a
+subclass of IO::WrapTie::Master which is an effective master for
+<em>your</em> class, and do the delegation there.</p>
+<h1>NOTES</h1>
+<p><strong>Why not simply use the object's OO interface?</strong>
+Because that means forsaking the use of named operators like
+<strong>print()</strong>, and you may need to pass the object to a
+subroutine which will attempt to use those operators:</p>
+<p>$O = FooHandle-&gt;new(&amp;FOO_RDWR, 2); $O-&gt;print("Hello,
+world\n"); ### OO syntax is okay, BUT.... sub nope { print $_[0]
+"Nope!\n" } X nope($O); ### ERROR!!! (not a glob ref)</p>
+<p><strong>Why not simply use tie()?</strong> Because (1) you have to
+use <strong>tied()</strong> to invoke methods in the object's public
+interface (yuck), and (2) you may need to pass the tied symbol to
+another subroutine which will attempt to treat it in an OO-way... and
+that will break it:</p>
+<p>tie *T, FooHandle, &amp;FOO_RDWR, 2; print T "Hello, world\n"; ###
+Operator is okay, BUT... tied(*T)-&gt;other_stuff; ### yuck! AND... sub
+nope { shift-&gt;print("Nope!\n") } X nope(\*T); ### ERROR!!! (method
+"print" on unblessed ref)</p>
+<p><strong>Why a master and slave?</strong> Why not simply write
+FooHandle to inherit from IO::Handle? I tried this, with an
+implementation similar to that of IO::Socket. The problem is that
+<em>the whole point is to use this with objects</em> that don't have an
+underlying file/socket descriptor.. Subclassing IO::Handle will work
+fine for the OO stuff, and fine with named operators <em>if</em> you
+<strong>tie()</strong>... but if you just attempt to say:</p>
+<p>$IO = FooHandle-&gt;new(&amp;FOO_RDWR, 2); print $IO "Hello!\n";</p>
+<p>you get a warning from Perl like:</p>
+<p>Filehandle GEN001 never opened</p>
+<p>because it's trying to do system-level i/o on an (unopened) file
+descriptor. To avoid this, you apparently have to <strong>tie()</strong>
+the handle... which brings us right back to where we started! At least
+the IO::WrapTie mixin lets us say:</p>
+<p>$IO = FooHandle-&gt;new_tie(&amp;FOO_RDWR, 2); print $IO
+"Hello!\n";</p>
+<p>and so is not <em>too</em> bad. <code>:-)</code></p>
+<h1>WARNINGS</h1>
+<p>Remember: this stuff is for doing FileHandle-like i/o on things
+<em>without underlying file descriptors</em>. If you have an underlying
+file descriptor, you're better off just inheriting from IO::Handle.</p>
+<p><strong>Be aware that new_tie() always returns an instance of
+a</strong> kind of IO::WrapTie::Master... it does <strong>not</strong>
+return an instance of the i/o class you're tying to!</p>
+<p>Invoking some methods on the master object causes AUTOLOAD to
+delegate them to the slave object... so it <em>looks</em> like you're
+manipulating a FooHandle object directly, but you're not.</p>
+<p>I have not explored all the ramifications of this use of
+<strong>tie()</strong>. <em>Here there be dragons</em>.</p>
+<h1>VERSION</h1>
+<p><code>$Id:</code> WrapTie.pm,v 1.2 2005/02/10 21:21:53 dfs Exp $</p>
+<h1>AUTHOR</h1>
+<dl>
+<dt>Primary Maintainer</dt>
+<dd>
+<p>Dianne Skoll (<em>dfs@roaringpenguin.com</em>).</p>
+</dd>
+<dt>Original Author</dt>
+<dd>
+<p>Eryq (<em>eryq@zeegee.com</em>). President, ZeeGee Software Inc
+(<em>http://www.zeegee.com</em>).</p>
+</dd>
+</dl>

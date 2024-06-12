@@ -1,0 +1,77 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>findfs - find a filesystem by label or UUID</p>
+<h1>SYNOPSIS</h1>
+<p><strong>findfs</strong> <strong>NAME</strong>=<em>value</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>findfs</strong> will search the block devices in the system
+looking for a filesystem or partition with specified tag. The currently
+supported tags are:</p>
+<p><strong>LABEL</strong>=<em>&lt;label&gt;</em></p>
+<blockquote>
+<p>Specifies filesystem label.</p>
+</blockquote>
+<p><strong>UUID</strong>=<em>&lt;uuid&gt;</em></p>
+<blockquote>
+<p>Specifies filesystem UUID.</p>
+</blockquote>
+<p><strong>PARTUUID</strong>=<em>&lt;uuid&gt;</em></p>
+<blockquote>
+<p>Specifies partition UUID. This partition identifier is supported for
+example for GUID Partition Table (GPT) partition tables.</p>
+</blockquote>
+<p><strong>PARTLABEL</strong>=<em>&lt;label&gt;</em></p>
+<blockquote>
+<p>Specifies partition label (name). The partition labels are supported
+for example for GUID Partition Table (GPT) or MAC partition tables.</p>
+</blockquote>
+<p>If the filesystem or partition is found, the device name will be
+printed on stdout.</p>
+<p>The complete overview about filesystems and partitions you can get
+for example by</p>
+<blockquote>
+<p><strong>lsblk --fs</strong></p>
+<p><strong>partx --show &lt;disk&gt;</strong></p>
+<p><strong>blkid</strong><br />
+</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>0</strong></p>
+<blockquote>
+<p>success</p>
+</blockquote>
+<p><strong>1</strong></p>
+<blockquote>
+<p>label or uuid cannot be found</p>
+</blockquote>
+<p><strong>2</strong></p>
+<blockquote>
+<p>usage error, wrong number of arguments or unknown option</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p>LIBBLKID_DEBUG=all</p>
+<blockquote>
+<p>enables libblkid debug output.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<p><strong>findfs</strong> was originally written by</p>
+<p>and re-written for the util-linux package by</p>
+<h1>SEE ALSO</h1>
+<p><strong>blkid</strong>(8), <strong>lsblk</strong>(8),
+<strong>partx</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>findfs</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

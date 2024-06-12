@@ -1,0 +1,163 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ldattach - attach a line discipline to a serial line</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ldattach</strong> [<strong>-1278denoVh</strong>]
+[<strong>-i</strong> <em>iflag</em>] [<strong>-s</strong>
+<em>speed</em>] <em>ldisc device</em></p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>ldattach</strong> daemon opens the specified
+<em>device</em> file (which should refer to a serial device) and
+attaches the line discipline <em>ldisc</em> to it for processing of the
+sent and/or received data. It then goes into the background keeping the
+device open so that the line discipline stays loaded.</p>
+<p>The line discipline <em>ldisc</em> may be specified either by name or
+by number.</p>
+<p>In order to detach the line discipline, <strong>kill</strong>(1) the
+<strong>ldattach</strong> process.</p>
+<p>With no arguments, <strong>ldattach</strong> prints usage
+information.</p>
+<h1>LINE DISCIPLINES</h1>
+<p>Depending on the kernel release, the following line disciplines are
+supported:</p>
+<p><strong>TTY</strong>(<strong>0</strong>)</p>
+<blockquote>
+<p>The default line discipline, providing transparent operation (raw
+mode) as well as the habitual terminal line editing capabilities (cooked
+mode).</p>
+</blockquote>
+<p><strong>SLIP</strong>(<strong>1</strong>)</p>
+<blockquote>
+<p>Serial Line IP (SLIP) protocol processor for transmitting TCP/IP
+packets over serial lines.</p>
+</blockquote>
+<p><strong>MOUSE</strong>(<strong>2</strong>)</p>
+<blockquote>
+<p>Device driver for RS232 connected pointing devices (serial mice).</p>
+</blockquote>
+<p><strong>PPP</strong>(<strong>3</strong>)</p>
+<blockquote>
+<p>Point to Point Protocol (PPP) processor for transmitting network
+packets over serial lines.</p>
+</blockquote>
+<p><strong>STRIP</strong>(<strong>4</strong>);
+<strong>AX25</strong>(<strong>5</strong>);
+<strong>X25</strong>(<strong>6</strong>)</p>
+<blockquote>
+<p>Line driver for transmitting X.25 packets over asynchronous serial
+lines.</p>
+</blockquote>
+<p><strong>6PACK</strong>(<strong>7</strong>);
+<strong>R3964</strong>(<strong>9</strong>)</p>
+<blockquote>
+<p>Driver for Simatic R3964 module.</p>
+</blockquote>
+<p><strong>IRDA</strong>(<strong>11</strong>)</p>
+<blockquote>
+<p>Linux IrDa (infrared data transmission) driver - see
+&lt;http://irda.sourceforge.net/&gt;</p>
+</blockquote>
+<p><strong>HDLC</strong>(<strong>13</strong>)</p>
+<blockquote>
+<p>Synchronous HDLC driver.</p>
+</blockquote>
+<p><strong>SYNC_PPP</strong>(<strong>14</strong>)</p>
+<blockquote>
+<p>Synchronous PPP driver.</p>
+</blockquote>
+<p><strong>HCI</strong>(<strong>15</strong>)</p>
+<blockquote>
+<p>Bluetooth HCI UART driver.</p>
+</blockquote>
+<p><strong>GIGASET_M101</strong>(<strong>16</strong>)</p>
+<blockquote>
+<p>Driver for Siemens Gigaset M101 serial DECT adapter.</p>
+</blockquote>
+<p><strong>PPS</strong>(<strong>18</strong>)</p>
+<blockquote>
+<p>Driver for serial line Pulse Per Second (PPS) source.</p>
+</blockquote>
+<p><strong>GSM0710</strong>(<strong>21</strong>)</p>
+<blockquote>
+<p>Driver for GSM 07.10 multiplexing protocol modem (CMUX).</p>
+</blockquote>
+<h1>OPTIONS</h1>
+<p><strong>-1</strong>, <strong>--onestopbit</strong></p>
+<blockquote>
+<p>Set the number of stop bits of the serial line to one.</p>
+</blockquote>
+<p><strong>-2</strong>, <strong>--twostopbits</strong></p>
+<blockquote>
+<p>Set the number of stop bits of the serial line to two.</p>
+</blockquote>
+<p><strong>-7</strong>, <strong>--sevenbits</strong></p>
+<blockquote>
+<p>Set the character size of the serial line to 7 bits.</p>
+</blockquote>
+<p><strong>-8</strong>, <strong>--eightbits</strong></p>
+<blockquote>
+<p>Set the character size of the serial line to 8 bits.</p>
+</blockquote>
+<p><strong>-d</strong>, <strong>--debug</strong></p>
+<blockquote>
+<p>Keep <strong>ldattach</strong> in the foreground so that it can be
+interrupted or debugged, and to print verbose messages about its
+progress to standard error output.</p>
+</blockquote>
+<p><strong>-e</strong>, <strong>--evenparity</strong></p>
+<blockquote>
+<p>Set the parity of the serial line to even.</p>
+</blockquote>
+<p><strong>-i</strong>, <strong>--iflag</strong> <em>value</em>...</p>
+<blockquote>
+<p>Set the specified bits in the c_iflag word of the serial line. The
+given <em>value</em> may be a number or a symbolic name. If
+<em>value</em> is prefixed by a minus sign, the specified bits are
+cleared instead. Several comma-separated values may be given in order to
+set and clear multiple bits.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--noparity</strong></p>
+<blockquote>
+<p>Set the parity of the serial line to none.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--oddparity</strong></p>
+<blockquote>
+<p>Set the parity of the serial line to odd.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--speed</strong> <em>value</em></p>
+<blockquote>
+<p>Set the speed (the baud rate) of the serial line to the specified
+<em>value</em>.</p>
+</blockquote>
+<p><strong>-c</strong>, <strong>--intro-command</strong>
+<em>string</em></p>
+<blockquote>
+<p>Define an intro command that is sent through the serial line before
+the invocation of <strong>ldattach</strong>. E.g. in conjunction with
+line discipline GSM0710, the command 'AT+CMUX=0\r' is commonly suitable
+to switch the modem into the CMUX mode.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--pause</strong> <em>value</em></p>
+<blockquote>
+<p>Sleep for <em>value</em> seconds before the invocation of
+<strong>ldattach</strong>. Default is one second.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>inputattach</strong>(1), <strong>ttys</strong>(4)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>ldattach</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

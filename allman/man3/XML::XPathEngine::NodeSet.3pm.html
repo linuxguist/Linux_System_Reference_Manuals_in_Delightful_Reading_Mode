@@ -1,0 +1,50 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>XML::XPathEngine::NodeSet - a list of XML document nodes</p>
+<h1>DESCRIPTION</h1>
+<p>An XML::XPathEngine::NodeSet object contains an ordered list of
+nodes. The nodes each take the same format as described in
+XML::XPathEngine::XMLParser.</p>
+<h1>SYNOPSIS</h1>
+<p>my $results = $xp-&gt;find(//someelement); if
+(!$results-&gt;isa(XML::XPathEngine::NodeSet)) { print "Found
+$results\n"; exit; } foreach my $context ($results-&gt;get_nodelist) {
+my $newresults = $xp-&gt;find(./other/element, $context); ... }</p>
+<h1>API</h1>
+<h2><strong>new()</strong></h2>
+<p>You will almost never have to create a new NodeSet object, as it is
+all done for you by XPath.</p>
+<h2><strong>get_nodelist()</strong></h2>
+<p>Returns a list of nodes. See XML::XPathEngine::XMLParser for the
+format of the nodes.</p>
+<h2><strong>string_value()</strong></h2>
+<p>Returns the string-value of the first node in the list. See the XPath
+specification for what string-value means.</p>
+<h2><strong>string_values()</strong></h2>
+<p>Returns a list of the string-values of all the nodes in the list.</p>
+<h2><strong>to_literal()</strong></h2>
+<p>Returns the concatenation of all the string-values of all the nodes
+in the list.</p>
+<h2>get_node($pos)</h2>
+<p>Returns the node at <code>$pos</code>. The node position in XPath is
+based at 1, not 0.</p>
+<h2><strong>size()</strong></h2>
+<p>Returns the number of nodes in the NodeSet.</p>
+<h2><strong>pop()</strong></h2>
+<p>Equivalent to perl's pop function.</p>
+<h2>push(@nodes)</h2>
+<p>Equivalent to perl's push function.</p>
+<h2>append($nodeset)</h2>
+<p>Given a nodeset, appends the list of nodes in <code>$nodeset</code>
+to the end of the current list.</p>
+<h2><strong>shift()</strong></h2>
+<p>Equivalent to perl's shift function.</p>
+<h2>unshift(@nodes)</h2>
+<p>Equivalent to perl's unshift function.</p>
+<h2>prepend($nodeset)</h2>
+<p>Given a nodeset, prepends the list of nodes in <code>$nodeset</code>
+to the front of the current list.</p>

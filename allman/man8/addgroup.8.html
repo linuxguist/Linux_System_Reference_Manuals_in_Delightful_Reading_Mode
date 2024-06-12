@@ -1,0 +1,425 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>adduser, addgroup - add or manipulate users or groups</p>
+<h1>SYNOPSIS</h1>
+<p><strong>adduser</strong> [ <strong>--add-extra-groups</strong> ] [
+<strong>--allow-all-names</strong> ] [
+<strong>--allow-bad-names</strong> ] [ <strong>--comment</strong>
+comment ] [ <strong>--conf</strong> file ] [ <strong>--debug</strong> ]
+[ <strong>--disabled-login</strong> ] [
+<strong>--disabled-password</strong> ] [ <strong>--firstgid</strong> id
+] [ <strong>--firstuid</strong> id ] [ <strong>--gid</strong> id ] [
+<strong>--home</strong> dir ] [ <strong>--ingroup</strong> group ] [
+<strong>--lastgid</strong> id ] [ <strong>--lastuid</strong> id ] [
+<strong>--no-create-home</strong> ] [ <strong>--shell</strong> shell ] [
+<strong>--quiet</strong> ] [ <strong>--uid</strong> id ] [
+<strong>--verbose</strong> ] <strong>user</strong>
+<strong>adduser</strong> <strong>--system</strong> [
+<strong>--comment</strong> comment ] [ <strong>--conf</strong> file ] [
+<strong>--debug</strong> ] [ <strong>--gid</strong> id ] [
+<strong>--group</strong> ] [ <strong>--home</strong> dir ] [
+<strong>--ingroup</strong> group ] [ <strong>--no-create-home</strong> ]
+[ <strong>--shell</strong> shell ] [ <strong>--uid</strong> id ] [
+<strong>--quiet</strong> ] [ <strong>--verbose</strong> ]
+<strong>user</strong> <strong>adduser</strong> <strong>--group</strong>
+[ <strong>--conf</strong> file ] [ <strong>--debug</strong> ] [
+<strong>--firstgid</strong> id ] [ <strong>--gid</strong> ID ] [
+<strong>--lastgid</strong> id ] [ <strong>--quiet</strong> ] [
+<strong>--verbose</strong> ] <strong>group</strong>
+<strong>addgroup</strong> [ <strong>--conf</strong> file ] [
+<strong>--debug</strong> ] [ <strong>--firstgid</strong> id ] [
+<strong>--gid</strong> ID ] [ <strong>--lastgid</strong> id ] [
+<strong>--quiet</strong> ] [ <strong>--verbose</strong> ]
+<strong>group</strong> <strong>addgroup</strong>
+<strong>--system</strong> [ <strong>--gid</strong> id ] [
+<strong>--conf</strong> file ] [ <strong>--quiet</strong> ] [
+<strong>--verbose</strong> ] <strong>group</strong>
+<strong>adduser</strong> [ <strong>--conf</strong> file ] [
+<strong>--debug</strong> ] [ <strong>--quiet</strong> ] [
+<strong>--verbose</strong> ] <strong>user</strong>
+<strong>group</strong> <strong>adduser</strong> <strong>--help</strong>
+<strong>adduser</strong> <strong>--version</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>adduser</strong> and <strong>addgroup</strong> add users and
+groups to the system according to command line options and configuration
+information in <em>/etc/adduser.conf</em>. They are friendlier front
+ends to the low level tools like <strong>useradd</strong>,
+<strong>groupadd</strong> and <strong>usermod</strong> programs, by
+default choosing Debian policy conformant UID and GID values, creating a
+home directory with skeletal configuration, running a custom script, and
+other features.</p>
+<p><strong>adduser</strong> and <strong>addgroup</strong> are intended
+as a policy layer, making it easier for package maintainers and local
+administrators to create local system accounts in the way Debian expects
+them to be created, taking the burden to adapt to the probably changing
+specifications of Debian policy. <strong>adduser --system</strong> takes
+special attention on just needing a single call in the package
+maintainer scripts without any conditional wrappers, error suppression
+or other scaffolding.</p>
+<p><strong>adduser</strong> honors the distinction between
+<em>dynamically allocated system users and groups</em> and
+<em>dynamically allocated user accounts</em> that is documented in
+Debian Policy, Chapter 9.2.2.</p>
+<p>For a full list and explanations of all options, see the OPTIONS
+section.</p>
+<p><strong>adduser</strong> and <strong>addgroup</strong> can be run in
+one of five modes:</p>
+<h2>Add a normal user</h2>
+<p>If called with one non-option argument and without the
+<strong>--system</strong> or <strong>--group</strong> options,
+<strong>adduser</strong> will add a normal user, that means a
+<em>dynamically allocated user account</em> in the sense of Debian
+Policy. This is commonly referred to in <strong>adduser</strong> as a
+<em>non-system user.</em></p>
+<p><strong>adduser</strong> will choose the first available UID from the
+range specified by <strong>FIRST_UID</strong> and
+<strong>LAST_UID</strong> in the configuration file. The range may be
+overridden with the <strong>--firstuid</strong> and
+<strong>--lastuid</strong> options. Finally, the UID can be set fully
+manually with the <strong>--uid</strong> option.</p>
+<p>By default, each user is given a corresponding group with the same
+name. This is commonly called <em>Usergroups</em> and allows group
+writable directories to be easily maintained by placing the appropriate
+users in the new group, setting the set-group-ID bit in the directory,
+and ensuring that all users use a umask of 002.</p>
+<p>For a usergroup, <strong>adduser</strong> will choose the first
+available GID from the range specified by <strong>FIRST_GID</strong> and
+<strong>LAST_GID</strong> in the configuration file. The range may be
+overridden with the <strong>--firstgid</strong> and
+<strong>--lastgid</strong> options. Finally, the GID can be set fully
+manually with the <strong>--gid</strong> option.</p>
+<p>The interaction between <strong>USERS_GID</strong>,
+<strong>USERS_GROUP</strong>, and <strong>USERGROUPS</strong> is
+explained in detail in <strong>adduser.conf</strong>(5).</p>
+<p>Users' primary groups can also be overridden from the command line
+with the <strong>--gid</strong> or <strong>--ingroup</strong> options to
+set the group by id or name, respectively. Also, users can be added to
+one or more supplemental groups defined as <strong>EXTRA_GROUPS</strong>
+in the configuration file either by setting
+<strong>ADD_EXTRA_GROUPS</strong> to 1 in the configuration file, or by
+passing <strong>--add-extra-groups</strong> on the command line.</p>
+<p><strong>adduser</strong> will copy files from <em>/etc/skel</em> into
+the home directory and prompt for the comment field and a password if
+those functions have not been turned off / overridden from the command
+line.</p>
+<p>UID, comment, home directory and shell might be pre-determined with
+the <strong>UID_POOL</strong> and <strong>GID_POOL</strong> option,
+documented in <strong>adduser.conf</strong>(5).</p>
+<h2>Add a system user</h2>
+<p>If called with one non-option argument and the
+<strong>--system</strong> option, <strong>adduser</strong> will add a
+<em>dynamically allocated system user,</em> often abbreviated as
+<em>system user</em> in the context of the <strong>adduser</strong>
+package.</p>
+<p><strong>adduser</strong> will choose the first available UID from the
+range specified by <strong>FIRST_SYSTEM_UID</strong> and
+<strong>LAST_SYSTEM_UID</strong> in the configuration file. This can be
+overridden with the <strong>--uid</strong> option.</p>
+<p>By default, system users are placed in the <strong>nogroup</strong>
+group. To place the new system user in an already existing group, use
+the <strong>--gid</strong> or <strong>--ingroup</strong> options. If the
+<strong>--group</strong> is given and the identically named group does
+not already exist, it is created with the same ID.</p>
+<p>If no home directory is specified, the default home directory for a
+new system user is <em>/nonexistent</em>. This directory should never
+exist on any Debian system, and <strong>adduser</strong> will never
+create it automatically.</p>
+<p>Unless a shell is explicitly set with the <strong>--shell</strong>
+option, the new system user will have the shell set to
+<em>/usr/sbin/nologin</em>. <strong>adduser --system</strong> does not
+set a password for the new account. Skeletal configuration files are not
+copied.</p>
+<p>Other options will behave as for the creation of a normal user. The
+files referenced by <strong>UID_POOL</strong> and
+<strong>GID_POOL</strong> do also work.</p>
+<h2>Add a group</h2>
+<p>If <strong>adduser</strong> is called with the
+<strong>--group</strong> option and without the
+<strong>--system</strong> option, or <strong>addgroup</strong> is called
+respectively, a user group will be added.</p>
+<p>A <em>dynamically allocated system group,</em> often abbreviated as
+<em>system group</em> in the context of the <strong>adduser</strong>
+package, will be created if <strong>adduser</strong> is called with the
+<strong>--system</strong> option.</p>
+<p>A GID will be chosen from the respective range specified for GIDs in
+the configuration file (<strong>FIRST_GID</strong>,
+<strong>LAST_GID</strong>, <strong>FIRST_SYSTEM_GID</strong>,
+<strong>LAST_SYSTEM_GID</strong>). To override that mechanism, you can
+give the GID using the <strong>--gid</strong> option.</p>
+<p>For non-system groups, the range specified in the configuration file
+may be overridden with the <strong>--firstgid</strong> and
+<strong>--lastgid</strong> options.</p>
+<p>The group is created with no members.</p>
+<h2>Add an existing user to an existing group</h2>
+<p>If called with two non-option arguments, <strong>adduser</strong>
+will add an existing user to an existing group.</p>
+<h1>OPTIONS</h1>
+<p>Different modes of <strong>adduser</strong> allow different options.
+If no valid modes are listed for a option, it is accepted in all
+modes.</p>
+<p>Short versions for certain options may exist for historical reasons.
+They are going to stay supported, but are removed from the
+documentation. Users are advised to migrate to the long version of
+options.</p>
+<dl>
+<dt><strong>--add-extra-groups</strong></dt>
+<dd>
+<p>Add new user to extra groups defined in the configuration files'
+<strong>EXTRA_GROUPS</strong> setting. The old spelling
+<strong>--add_extra_groups</strong> is deprecated and will be supported
+in Debian bookworm only. Valid Modes: <strong>adduser</strong>,
+<strong>adduser --system</strong>.</p>
+</dd>
+<dt><strong>--allow-all-names</strong></dt>
+<dd>
+<p>Allow any user- and groupname which is supported by the underlying
+<strong>useradd</strong>(8), including names containing non-ASCII
+characters. See VALID NAMES in <strong>adduser.conf</strong>(5). Valid
+Modes: <strong>adduser</strong>, <strong>adduser --system</strong>,
+<strong>addgroup</strong>, <strong>addgroup --system</strong>.</p>
+</dd>
+<dt><strong>--allow-bad-names</strong></dt>
+<dd>
+<p>Disable <strong>NAME_REGEX</strong> and
+<strong>SYS_NAME_REGEX</strong> check of names. Only a weaker check for
+validity of the name is applied. See VALID NAMES in
+<strong>adduser.conf</strong>(5). Valid Modes: <strong>adduser</strong>,
+<strong>adduser --system</strong>, <strong>addgroup</strong>,
+<strong>addgroup --system</strong>.</p>
+</dd>
+<dt><strong>--comment</strong><em> comment </em></dt>
+<dd>
+<p>Set the comment field for the new entry generated.
+<strong>adduser</strong> will not ask for the information if this option
+is given. This field is also known under the name GECOS field and
+contains information that is used by the <strong>finger</strong>(1)
+command. This used to be the <strong>--gecos</strong> option, which is
+deprecated and will be removed after Debian bookworm. Valid Modes:
+<strong>adduser</strong>, <strong>adduser --system</strong>.</p>
+</dd>
+<dt><strong>--conf</strong><em> file </em></dt>
+<dd>
+<p>Use <em>file</em> instead of <em>/etc/adduser.conf</em>. Multiple
+<strong>--conf</strong> options can be given.</p>
+</dd>
+<dt><strong>--debug</strong></dt>
+<dd>
+<p>Activate debugging code.</p>
+</dd>
+<dt><strong>--disabled-login</strong><br />
+<strong>--disabled-password</strong></dt>
+<dd>
+<p>Do not run <strong>passwd</strong>(1) to set a password. In most
+situations, logins are still possible though (for example using SSH keys
+or through PAM) for reasons that are beyond <strong>adduser</strong>'s
+scope. <strong>--disabled-login</strong> will additionally set the shell
+to <em>/usr/sbin/nologin</em>. Valid Mode: <strong>adduser</strong>.</p>
+</dd>
+<dt><strong>--firstuid</strong><em> ID </em><br />
+<strong>--lastuid</strong><em> ID </em><br />
+<strong>--firstgid</strong><em> ID </em><br />
+<strong>--lastgid</strong><em> ID </em></dt>
+<dd>
+<p>Override the first UID / last UID / first GID / last GID in the range
+that the uid is chosen from (<strong>FIRST_UID</strong>,
+<strong>LAST_UID</strong>, <strong>FIRST_GID</strong> and
+<strong>LAST_GID</strong>, <strong>FIRST_SYSTEM_UID</strong>,
+<strong>LAST_SYSTEM_UID</strong>, <strong>FIRST_SYSTEM_GID</strong> and
+<strong>LAST_SYSTEM_GID</strong> in the configuration file). If a group
+is created as a usergroup, <strong>--firstgid</strong> and
+<strong>--lastgid</strong> are ignored. The group gets the same ID as
+the user. Valid Modes: <strong>adduser</strong>, <strong>adduser
+--system</strong>, for <strong>--firstgid</strong> and
+<strong>--lastgid</strong> also <strong>addgroup</strong>.</p>
+</dd>
+<dt><strong>--force-badname</strong><br />
+<strong>--allow-badname</strong></dt>
+<dd>
+<p>These are the deprecated forms of <strong>--allow-bad-names</strong>.
+It will be removed during the release cycle of the Debian release after
+<em>bookworm</em>.</p>
+</dd>
+<dt><strong>--gid</strong><em> ID </em></dt>
+<dd>
+<p>When creating a group, this option sets the group ID number of the
+new group to <em>GID</em>. When creating a user, this option sets the
+primary group ID number of the new user to <em>GID</em>. Valid Modes:
+<strong>adduser</strong>, <strong>adduser --system</strong>,
+<strong>addgroup</strong>, <strong>addgroup --system</strong>.</p>
+</dd>
+<dt><strong>--group</strong></dt>
+<dd>
+<p>Using this option in <strong>adduser --system</strong> indicates that
+the new user should get an identically named group as its primary group.
+If that identically named group is not already present, it is created.
+If not combined with <strong>--system</strong>, a group with the given
+name is created. The latter is the default action if the program is
+invoked as <strong>addgroup</strong>. Valid Modes: <strong>adduser
+--system</strong>, <strong>addgroup</strong>, <strong>addgroup
+--system</strong>.</p>
+</dd>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>Display brief instructions.</p>
+</dd>
+<dt><strong>--home</strong><em> dir </em></dt>
+<dd>
+<p>Use <em>dir</em> as the user's home directory, rather than the
+default specified by the configuration file (or <em>/nonexistent</em> if
+<strong>adduser --system</strong> is used). If the directory does not
+exist, it is created. Valid Modes: <strong>adduser</strong>,
+<strong>adduser --system</strong>.</p>
+</dd>
+<dt><strong>--ingroup</strong><em> GROUP </em></dt>
+<dd>
+<p>When creating a user, this option sets the primary group ID number of
+the new user to the GID of the named group. Unlike with the
+<strong>--gid</strong> option, the group is specified here by name
+rather than by numeric ID number. The group must already exist. Valid
+Modes: <strong>adduser</strong>, <strong>adduser --system</strong>.</p>
+</dd>
+<dt><strong>--lastuid</strong><em> ID </em><br />
+<strong>--lastgid</strong><em> ID </em></dt>
+<dd>
+<p>Override the last UID / last GID. See
+<strong>--firstuid</strong>.</p>
+</dd>
+<dt><strong>--no-create-home</strong></dt>
+<dd>
+<p>Do not create a home directory for the new user. Note that the
+pathname for the new user's home directory will still be entered in the
+appropriate field in the <em>/etc/passwd</em> file. The use of this
+option does not imply that this field should be empty. Rather, it
+indicates to <strong>adduser</strong> that some other mechanism will be
+responsible for initializing the new user's home directory. Valid Modes:
+<strong>adduser</strong>, <strong>adduser --system</strong>.</p>
+</dd>
+<dt><strong>--quiet</strong></dt>
+<dd>
+<p>Suppress informational messages, only show warnings and errors.</p>
+</dd>
+<dt><strong>--shell</strong><em> shell </em></dt>
+<dd>
+<p>Use <em>shell</em> as the user's login shell, rather than the default
+specified by the configuration file (or <em>/usr/sbin/nologin</em> if
+<strong>adduser --system</strong> is used). Valid Modes:
+<strong>adduser</strong>, <strong>adduser --system</strong>.</p>
+</dd>
+<dt><strong>--system</strong></dt>
+<dd>
+<p>Nomally, <strong>adduser</strong> creates <em>dynamically allocated
+user accounts and groups</em> as defined in Debian Policy, Chapter
+9.2.2. With this option, <strong>adduser</strong> creates a
+<em>dynamically allocated system user and group</em> and changes its
+mode respectively. Valid Modes: <strong>adduser</strong>,
+<strong>addgroup</strong>.</p>
+</dd>
+<dt><strong>--uid</strong><em> ID </em></dt>
+<dd>
+<p>Force the new userid to be the given number. <strong>adduser</strong>
+will fail if the userid is already taken. Valid Modes:
+<strong>adduser</strong>, <strong>adduser --system</strong>.</p>
+</dd>
+<dt><strong>--verbose</strong></dt>
+<dd>
+<p>Be more verbose.</p>
+</dd>
+<dt><strong>-v</strong> , <strong>--version</strong></dt>
+<dd>
+<p>Display version and copyright information.</p>
+</dd>
+</dl>
+<h1>EXIT VALUES</h1>
+<dl>
+<dt><strong>0</strong></dt>
+<dd>
+<p>Success: The user or group exists as specified. This can have 2
+causes: The user or group was created by this call to
+<strong>adduser</strong> or the user or group was already present on the
+system as specified before <strong>adduser</strong> was invoked. If
+<strong>adduser --system</strong> is invoked for a user already existing
+as a system user, it will also return 0.</p>
+</dd>
+<dt><strong>1</strong></dt>
+<dd>
+<p>Creating the non-system user or group failed because it was already
+present. The username or groupname was rejected because of a mismatch
+with the configured regular expressions, see
+<strong>adduser.conf</strong>(5). <strong>adduser</strong> has been
+aborted by a signal.</p>
+</dd>
+</dl>
+<p>Or for many other yet undocumented reasons which are printed to
+console then. You may then consider to remove <strong>--quiet</strong>
+to make <strong>adduser</strong> more verbose.</p>
+<h1>SECURITY</h1>
+<p><strong>adduser</strong> needs root privileges and offers, via the
+<strong>--conf</strong> command line option to use different
+configuration files. Do not use <strong>sudo</strong>(8) or similar
+tools to give partial privileges to <strong>adduser</strong> with
+restricted command line parameters. This is easy to circumvent and might
+allow users to create arbitrary accounts. If you want this, consider
+writing your own wrapper script and giving privileges to execute that
+script.</p>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/adduser.conf</em></dt>
+<dd>
+<p>Default configuration file for <strong>adduser</strong>(8) and
+<strong>addgroup</strong>(8)</p>
+</dd>
+<dt><em>/usr/local/sbin/adduser.local</em></dt>
+<dd>
+<p>Optional custom add-ons, see <strong>adduser.local</strong>(8)</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>Unfortunately, the term <em>system account</em> suffers from double
+use in Debian. It both means an account for the actual Debian system,
+distinguishing itself from an <em>application account</em> which might
+exist in the user database of some application running on Debian. A
+<em>system account</em> in this definition has the potential to log in
+to the actual system, has a UID, can be member in system groups, can own
+files and processes. Debian Policy, au contraire, in its Chapter 9.2.2,
+makes a distinguishment of <em>dynamically allocated system users and
+groups</em> and <em>dynamically allocated user accounts</em>, meaning in
+both cases special instances of <em>system accounts</em>. Care must be
+taken to not confuse this terminology. Since <strong>adduser</strong>
+and <strong>deluser</strong>(8) never address <em>application
+accounts</em> and everything in this package concerns <em>system
+accounts</em> here, the usage of the terms <em>user account</em> and
+<em>system account</em> is actually not ambiguous in the context of this
+package. For clarity, this document uses the definition <em>local system
+account or group</em> if the distinction to <em>application
+accounts</em> or accounts managed in a directory service is needed.</p>
+<p><strong>adduser</strong> used to have the vision to be the universal
+front end to the various directory services for creation and deletion of
+regular and system accounts in Debian since the 1990ies. This vision has
+been abandoned as of 2022. The rationale behind this includes: that in
+practice, a small server system is not going to have write access to an
+enterprise-wide directory service anyway, that locally installed
+packages are hard to manage with centrally controlled system accounts,
+that enterprise directory services have their own management processes
+anyway and that the personpower of the <strong>adduser</strong> team is
+unlikely to be ever strong enough to write and maintain support for the
+plethora of directory services that need support.</p>
+<p><strong>adduser</strong> will constrict itself to being a policy
+layer for the management of local system accounts, using the tools from
+the <strong>password</strong> package for the actual work.</p>
+<h1>BUGS</h1>
+<p>Inconsistent use of terminology around the term <em>system
+account</em> in docs and code is a bug. Please report this and allow us
+to improve our docs.</p>
+<p><strong>adduser</strong> takes special attention to be directly
+usable in Debian maintainer scripts without conditional wrappers, error
+suppression and other scaffolding. The only thing that the package
+maintainer should need to code is a check for the presence of the
+executable in the postrm script. The <strong>adduser</strong>
+maintainers consider the need for additional scaffolding a bug and
+encourage their fellow Debian package maintainers to file bugs against
+the <strong>adduser</strong> package in this case.</p>
+<h1>SEE ALSO</h1>
+<p><strong>adduser.conf</strong>(5), <strong>deluser</strong>(8),
+<strong>groupadd</strong>(8), <strong>useradd</strong>(8),
+<strong>usermod</strong>(8), Debian Policy 9.2.2.</p>

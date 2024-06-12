@@ -1,0 +1,4 @@
+s/<h1>Directory Tree<\/h1>/<style>::selection { background: orange; color: black; } ::-moz-selection { background: orange; color: black; }<\/style><html style="background-color: violet;"><h1 style="background-color: aquamarine;color: black;font-size: 20px;">Linux System Reference Help Manuals in Delightful Reading Mode - Use Ctrl+F \/ Cmd+F to Search For Your Required Manual & Click on its Link. Also, a short description of each command is available here : <a href='https:\/\/linuxguist.github.io\/Linux_System_Reference_Manuals_in_Delightful_Reading_Mode\/allman\/indexer.html'>Command Index<\/a><\/h1>/;
+s/<p class="VERSION">/<p class="VERSION" style="display: none;">/;
+s/<a href=/<a target="_blank" href=/;
+s/<title>Directory Tree<\/title>/<title>Linux System Reference Help Manuals in Delightful Reading Mode<\/title>/;

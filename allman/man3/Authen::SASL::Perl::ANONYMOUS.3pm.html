@@ -1,0 +1,37 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Authen::SASL::Perl::ANONYMOUS - Anonymous Authentication class</p>
+<h1>SYNOPSIS</h1>
+<p>use Authen::SASL qw(Perl); $sasl = Authen::SASL-&gt;new( mechanism
+=&gt; ANONYMOUS, callback =&gt; { authname =&gt; $mailaddress }, );</p>
+<h1>DESCRIPTION</h1>
+<p>This method implements the client part of the ANONYMOUS SASL
+algorithm, as described in RFC 2245 resp. in IETF Draft
+draft-ietf-sasl-anon-XX.txt.</p>
+<h2>CALLBACK</h2>
+<p>The callbacks used are:</p>
+<dl>
+<dt>authname</dt>
+<dd>
+<p>email address or UTF-8 encoded string to be used as trace information
+for the server</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>Authen::SASL, Authen::SASL::Perl</p>
+<h1>AUTHORS</h1>
+<p>Software written by Graham Barr &lt;gbarr@pobox.com&gt;,
+documentation written by Peter Marschall &lt;peter@adpm.de&gt;.</p>
+<p>Please report any bugs, or post any suggestions, to the perl-ldap
+mailing list &lt;perl-ldap@perl.org&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 2002-2004 Graham Barr. All rights reserved. This
+program is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.</p>
+<p>Documentation Copyright (c) 2004 Peter Marschall. All rights
+reserved. This documentation is distributed, and may be redistributed,
+under the same terms as Perl itself.</p>

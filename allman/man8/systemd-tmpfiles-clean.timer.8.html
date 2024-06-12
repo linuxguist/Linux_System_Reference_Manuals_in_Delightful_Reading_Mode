@@ -1,0 +1,365 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-tmpfiles, systemd-tmpfiles-setup.service,
+systemd-tmpfiles-setup-dev.service, systemd-tmpfiles-clean.service,
+systemd-tmpfiles-clean.timer - Creates, deletes and cleans up volatile
+and temporary files and directories</p>
+<h1>SYNOPSIS</h1>
+<p><strong>systemd-tmpfiles</strong> [OPTIONS...]
+[<em>CONFIGFILE</em>...]</p>
+<p>System units:</p>
+<pre><code>systemd-tmpfiles-setup.service
+systemd-tmpfiles-setup-dev.service
+systemd-tmpfiles-clean.service
+systemd-tmpfiles-clean.timer</code></pre>
+<p>User units:</p>
+<pre><code>systemd-tmpfiles-setup.service
+systemd-tmpfiles-clean.service
+systemd-tmpfiles-clean.timer</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>systemd-tmpfiles</strong> creates, deletes, and cleans up
+volatile and temporary files and directories, using the configuration
+file format and location specified in <strong>tmpfiles.d</strong>(5). It
+must be invoked with one or more options <strong>--create</strong>,
+<strong>--remove</strong>, and <strong>--clean</strong>, to select the
+respective subset of operations.</p>
+<p>By default, directives from all configuration files are applied. When
+invoked with <strong>--replace=</strong><em>PATH</em>, arguments
+specified on the command line are used instead of the configuration file
+<em>PATH</em>. Otherwise, if one or more absolute filenames are passed
+on the command line, only the directives in these files are applied. If
+"-" is specified instead of a filename, directives are read from
+standard input. If only the basename of a configuration file is
+specified, all configuration directories as specified in
+<strong>tmpfiles.d</strong>(5) are searched for a matching file and the
+file found that has the highest priority is executed.</p>
+<p>System services (systemd-tmpfiles-setup.service,
+systemd-tmpfiles-setup-dev.service, systemd-tmpfiles-clean.service)
+invoke <strong>systemd-tmpfiles</strong> to create system files and to
+perform system wide cleanup. Those services read
+administrator-controlled configuration files in tmpfiles.d/ directories.
+User services (systemd-tmpfiles-setup.service,
+systemd-tmpfiles-clean.service) also invoke
+<strong>systemd-tmpfiles</strong>, but it reads a separate set of files,
+which includes user-controlled files under ~/.config/user-tmpfiles.d/
+and ~/.local/share/user-tmpfiles.d/, and administrator-controlled files
+under /usr/share/user-tmpfiles.d/. Users may use this to create and
+clean up files under their control, but the system instance performs
+global cleanup and is not influenced by user configuration. Note that
+this means a time-based cleanup configured in the system instance, such
+as the one typically configured for /tmp/, will thus also affect files
+created by the user instance if they are placed in /tmp/, even if the
+user instances time-based cleanup is turned off.</p>
+<p>To re-apply settings after configuration has been modified, simply
+restart systemd-tmpfiles-clean.service, which will apply any settings
+which can be safely executed at runtime. To debug
+<strong>systemd-tmpfiles</strong>, it may be useful to invoke it
+directly from the command line with increased log level (see
+<em>$SYSTEMD_LOG_LEVEL</em> below).</p>
+<h1>OPTIONS</h1>
+<p>The following options are understood:</p>
+<p><strong>--create</strong></p>
+<blockquote>
+<p>If this option is passed, all files and directories marked with
+<em>f</em>, <em>F</em>, <em>w</em>, <em>d</em>, <em>D</em>, <em>v</em>,
+<em>p</em>, <em>L</em>, <em>c</em>, <em>b</em>, <em>m</em> in the
+configuration files are created or written to. Files and directories
+marked with <em>z</em>, <em>Z</em>, <em>t</em>, <em>T</em>, <em>a</em>,
+and <em>A</em> have their ownership, access mode and security labels
+set.</p>
+</blockquote>
+<p><strong>--clean</strong></p>
+<blockquote>
+<p>If this option is passed, all files and directories with an age
+parameter configured will be cleaned up.</p>
+</blockquote>
+<p><strong>--remove</strong></p>
+<blockquote>
+<p>If this option is passed, the contents of directories marked with
+<em>D</em> or <em>R</em>, and files or directories themselves marked
+with <em>r</em> or <em>R</em> are removed.</p>
+</blockquote>
+<p><strong>--user</strong></p>
+<blockquote>
+<p>Execute "user" configuration, i.e. tmpfiles.d files in user
+configuration directories.</p>
+</blockquote>
+<p><strong>--boot</strong></p>
+<blockquote>
+<p>Also execute lines with an exclamation mark. Lines that are not safe
+to be executed on a running system may be marked in this way.
+<strong>systemd-tmpfiles</strong> is executed in early boot with
+<strong>--boot</strong> specified and will execute those lines. When
+invoked again later, it should be called without
+<strong>--boot</strong>.</p>
+</blockquote>
+<p><strong>--prefix=</strong><em>path</em></p>
+<blockquote>
+<p>Only apply rules with paths that start with the specified prefix.
+This option can be specified multiple times.</p>
+</blockquote>
+<p><strong>--exclude-prefix=</strong><em>path</em></p>
+<blockquote>
+<p>Ignore rules with paths that start with the specified prefix. This
+option can be specified multiple times.</p>
+</blockquote>
+<p><strong>-E</strong></p>
+<blockquote>
+<p>A shortcut for "--exclude-prefix=/dev --exclude-prefix=/proc
+--exclude-prefix=/run --exclude-prefix=/sys", i.e. exclude the
+hierarchies typically backed by virtual or memory file systems. This is
+useful in combination with <strong>--root=</strong>, if the specified
+directory tree contains an OS tree without these virtual/memory file
+systems mounted in, as it is typically not desirable to create any files
+and directories below these subdirectories if they are supposed to be
+overmounted during runtime.</p>
+</blockquote>
+<p><strong>--root=</strong><em>root</em></p>
+<blockquote>
+<p>Takes a directory path as an argument. All paths will be prefixed
+with the given alternate <em>root</em> path, including config search
+paths.</p>
+<p>When this option is used, the libc Name Service Switch (NSS) is
+bypassed for resolving users and groups. Instead the files /etc/passwd
+and /etc/group inside the alternate root are read directly. This means
+that users/groups not listed in these files will not be resolved, i.e.
+LDAP NIS and other complex databases are not considered.</p>
+<p>Consider combining this with <strong>-E</strong> to ensure the
+invocation does not create files or directories below mount points in
+the OS image operated on that are typically overmounted during
+runtime.</p>
+</blockquote>
+<p><strong>--image=</strong><em>image</em></p>
+<blockquote>
+<p>Takes a path to a disk image file or block device node. If specified
+all operations are applied to file system in the indicated disk image.
+This is similar to <strong>--root=</strong> but operates on file systems
+stored in disk images or block devices. The disk image should either
+contain just a file system or a set of file systems within a GPT
+partition table, following the <strong>Discoverable Partitions
+Specification</strong>[1]. For further information on supported disk
+images, see <strong>systemd-nspawn</strong>(1)s switch of the same
+name.</p>
+<p>Implies <strong>-E</strong>.</p>
+</blockquote>
+<p><strong>--replace=</strong><em>PATH</em></p>
+<blockquote>
+<p>When this option is given, one or more positional arguments must be
+specified. All configuration files found in the directories listed in
+<strong>tmpfiles.d</strong>(5) will be read, and the configuration given
+on the command line will be handled instead of and with the same
+priority as the configuration file <em>PATH</em>.</p>
+<p>This option is intended to be used when package installation scripts
+are running and files belonging to that package are not yet available on
+disk, so their contents must be given on the command line, but the admin
+configuration might already exist and should be given higher
+priority.</p>
+</blockquote>
+<p><strong>--cat-config</strong></p>
+<blockquote>
+<p>Copy the contents of config files to standard output. Before each
+file, the filename is printed as a comment.</p>
+</blockquote>
+<p><strong>--no-pager</strong></p>
+<blockquote>
+<p>Do not pipe output into a pager.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Print a short help text and exit.</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Print a short version string and exit.</p>
+</blockquote>
+<p>It is possible to combine <strong>--create</strong>,
+<strong>--clean</strong>, and <strong>--remove</strong> in one
+invocation (in which case removal and cleanup are executed before
+creation of new files). For example, during boot the following command
+line is executed to ensure that all temporary and volatile directories
+are removed and created according to the configuration file:</p>
+<blockquote>
+<pre><code>systemd-tmpfiles --remove --create</code></pre>
+</blockquote>
+<h1>CREDENTIALS</h1>
+<p><strong>systemd-tmpfiles</strong> supports the service credentials
+logic as implemented by <em>LoadCredential=</em>/<em>SetCredential=</em>
+(see <strong>systemd.exec</strong>(1) for details). The following
+credentials are used when passed in:</p>
+<p>"tmpfiles.extra"</p>
+<blockquote>
+<p>The contents of this credential may contain additional lines to
+operate on. The credential contents should follow the same format as any
+other tmpfiles.d/ drop-in configuration file. If this credential is
+passed it is processed after all of the drop-in files read from the file
+system. The lines in the credential can hence augment existing lines of
+the OS, but not override them.</p>
+</blockquote>
+<p>Note that by default the systemd-tmpfiles-setup.service unit file
+(and related unit files) is set up to inherit the "tmpfiles.extra"
+credential from the service manager.</p>
+<h1>ENVIRONMENT</h1>
+<p><em>$SYSTEMD_LOG_LEVEL</em></p>
+<blockquote>
+<p>The maximum log level of emitted messages (messages with a higher log
+level, i.e. less important ones, will be suppressed). Either one of (in
+order of decreasing importance) <strong>emerg</strong>,
+<strong>alert</strong>, <strong>crit</strong>, <strong>err</strong>,
+<strong>warning</strong>, <strong>notice</strong>,
+<strong>info</strong>, <strong>debug</strong>, or an integer in the
+range 0...7. See <strong>syslog</strong>(3) for more information.</p>
+</blockquote>
+<p><em>$SYSTEMD_LOG_COLOR</em></p>
+<blockquote>
+<p>A boolean. If true, messages written to the tty will be colored
+according to priority.</p>
+<p>This setting is only useful when messages are written directly to the
+terminal, because <strong>journalctl</strong>(1) and other tools that
+display logs will color messages based on the log level on their
+own.</p>
+</blockquote>
+<p><em>$SYSTEMD_LOG_TIME</em></p>
+<blockquote>
+<p>A boolean. If true, console log messages will be prefixed with a
+timestamp.</p>
+<p>This setting is only useful when messages are written directly to the
+terminal or a file, because <strong>journalctl</strong>(1) and other
+tools that display logs will attach timestamps based on the entry
+metadata on their own.</p>
+</blockquote>
+<p><em>$SYSTEMD_LOG_LOCATION</em></p>
+<blockquote>
+<p>A boolean. If true, messages will be prefixed with a filename and
+line number in the source code where the message originates.</p>
+<p>Note that the log location is often attached as metadata to journal
+entries anyway. Including it directly in the message text can
+nevertheless be convenient when debugging programs.</p>
+</blockquote>
+<p><em>$SYSTEMD_LOG_TARGET</em></p>
+<blockquote>
+<p>The destination for log messages. One of <strong>console</strong>
+(log to the attached tty), <strong>console-prefixed</strong> (log to the
+attached tty but with prefixes encoding the log level and "facility",
+see <strong>syslog</strong>(3), <strong>kmsg</strong> (log to the kernel
+circular log buffer), <strong>journal</strong> (log to the journal),
+<strong>journal-or-kmsg</strong> (log to the journal if available, and
+to kmsg otherwise), <strong>auto</strong> (determine the appropriate log
+target automatically, the default), <strong>null</strong> (disable log
+output).</p>
+</blockquote>
+<p><em>$SYSTEMD_PAGER</em></p>
+<blockquote>
+<p>Pager to use when <strong>--no-pager</strong> is not given; overrides
+<em>$PAGER</em>. If neither <em>$SYSTEMD_PAGER</em> nor <em>$PAGER</em>
+are set, a set of well-known pager implementations are tried in turn,
+including <strong>less</strong>(1) and <strong>more</strong>(1), until
+one is found. If no pager implementation is discovered no pager is
+invoked. Setting this environment variable to an empty string or the
+value "cat" is equivalent to passing <strong>--no-pager</strong>.</p>
+<p>Note: if <em>$SYSTEMD_PAGERSECURE</em> is not set,
+<em>$SYSTEMD_PAGER</em> (as well as <em>$PAGER</em>) will be silently
+ignored.</p>
+</blockquote>
+<p><em>$SYSTEMD_LESS</em></p>
+<blockquote>
+<p>Override the options passed to <strong>less</strong> (by default
+"FRSXMK").</p>
+<p>Users might want to change two options in particular:</p>
+<p><strong>K</strong></p>
+<blockquote>
+<p>This option instructs the pager to exit immediately when Ctrl+C is
+pressed. To allow <strong>less</strong> to handle Ctrl+C itself to
+switch back to the pager command prompt, unset this option.</p>
+<p>If the value of <em>$SYSTEMD_LESS</em> does not include "K", and the
+pager that is invoked is <strong>less</strong>, Ctrl+C will be ignored
+by the executable, and needs to be handled by the pager.</p>
+</blockquote>
+<p><strong>X</strong></p>
+<blockquote>
+<p>This option instructs the pager to not send termcap initialization
+and deinitialization strings to the terminal. It is set by default to
+allow command output to remain visible in the terminal even after the
+pager exits. Nevertheless, this prevents some pager functionality from
+working, in particular paged output cannot be scrolled with the
+mouse.</p>
+</blockquote>
+<p>See <strong>less</strong>(1) for more discussion.</p>
+</blockquote>
+<p><em>$SYSTEMD_LESSCHARSET</em></p>
+<blockquote>
+<p>Override the charset passed to <strong>less</strong> (by default
+"utf-8", if the invoking terminal is determined to be UTF-8
+compatible).</p>
+</blockquote>
+<p><em>$SYSTEMD_PAGERSECURE</em></p>
+<blockquote>
+<p>Takes a boolean argument. When true, the "secure" mode of the pager
+is enabled; if false, disabled. If <em>$SYSTEMD_PAGERSECURE</em> is not
+set at all, secure mode is enabled if the effective UID is not the same
+as the owner of the login session, see <strong>geteuid</strong>(2) and
+<strong>sd_pid_get_owner_uid</strong>(3). In secure mode,
+<strong>LESSSECURE=1</strong> will be set when invoking the pager, and
+the pager shall disable commands that open or create new files or start
+new subprocesses. When <em>$SYSTEMD_PAGERSECURE</em> is not set at all,
+pagers which are not known to implement secure mode will not be used.
+(Currently only <strong>less</strong>(1) implements secure mode.)</p>
+<p>Note: when commands are invoked with elevated privileges, for example
+under <strong>sudo</strong>(8) or <strong>pkexec</strong>(1), care must
+be taken to ensure that unintended interactive features are not enabled.
+"Secure" mode for the pager may be enabled automatically as describe
+above. Setting <em>SYSTEMD_PAGERSECURE=0</em> or not removing it from
+the inherited environment allows the user to invoke arbitrary commands.
+Note that if the <em>$SYSTEMD_PAGER</em> or <em>$PAGER</em> variables
+are to be honoured, <em>$SYSTEMD_PAGERSECURE</em> must be set too. It
+might be reasonable to completely disable the pager using
+<strong>--no-pager</strong> instead.</p>
+</blockquote>
+<p><em>$SYSTEMD_COLORS</em></p>
+<blockquote>
+<p>Takes a boolean argument. When true, <strong>systemd</strong> and
+related utilities will use colors in their output, otherwise the output
+will be monochrome. Additionally, the variable can take one of the
+following special values: "16", "256" to restrict the use of colors to
+the base 16 or 256 ANSI colors, respectively. This can be specified to
+override the automatic decision based on <em>$TERM</em> and what the
+console is connected to.</p>
+</blockquote>
+<p><em>$SYSTEMD_URLIFY</em></p>
+<blockquote>
+<p>The value must be a boolean. Controls whether clickable links should
+be generated in the output for terminal emulators supporting this. This
+can be specified to override the decision that <strong>systemd</strong>
+makes based on <em>$TERM</em> and other conditions.</p>
+</blockquote>
+<h1>UNPRIVILEGED --CLEANUP OPERATION</h1>
+<p><strong>systemd-tmpfiles</strong> tries to avoid changing the access
+and modification times on the directories it accesses, which requires
+<strong>CAP_FOWNER</strong> privileges. When running as non-root,
+directories which are checked for files to clean up will have their
+access time bumped, which might prevent their cleanup.</p>
+<h1>EXIT STATUS</h1>
+<p>On success, 0 is returned. If the configuration was syntactically
+invalid (syntax errors, missing arguments, ...), so some lines had to be
+ignored, but no other errors occurred, <strong>65</strong> is returned
+(<strong>EX_DATAERR</strong> from /usr/include/sysexits.h). If the
+configuration was syntactically valid, but could not be executed (lack
+of permissions, creation of files in missing directories, invalid
+contents when writing to /sys/ values, ...), <strong>73</strong> is
+returned (<strong>EX_CANTCREAT</strong> from /usr/include/sysexits.h).
+Otherwise, <strong>1</strong> is returned (<strong>EXIT_FAILURE</strong>
+from /usr/include/stdlib.h).</p>
+<p>Note: when creating items, if the target already exists, but is of
+the wrong type or otherwise does not match the requested state, and
+forced operation has not been requested with "+", a message is emitted,
+but the failure is otherwise ignored.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>tmpfiles.d</strong>(5)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>Discoverable Partitions Specification</p>
+<p>https://systemd.io/DISCOVERABLE_PARTITIONS</p>
+</dd>
+</dl>

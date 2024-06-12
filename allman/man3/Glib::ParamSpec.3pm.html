@@ -1,0 +1,336 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::ParamSpec - encapsulates metadate needed to specify
+parameters</p>
+<h1>DESCRIPTION</h1>
+<p>Glib::ParamSpec encapsulates the metadata required to specify
+parameters. You will see these most often when creating new Glib::Object
+types; see <code>Glib::Type-&gt;register</code> and
+Glib::Object::Subclass.</p>
+<p>Parameter specifications allow you to provide limits for validation
+as well as nicknames and blurbs to document the parameters. Blurbs show
+up in reference documentation such as this page or the gtk+ C API
+reference; i'm not really sure where the nicknames get used. The Perl
+bindings for the most part ignore the difference between dashes and
+underscores in the paramspec names, which typically find use as the
+actual keys for object parameters.</p>
+<p>It's worth noting that Glib offers various sizes of integer and
+floating point values, while Perl really only deals with full integers
+and double precision floating point values. The size distinction is
+important for the underlying C libraries.</p>
+<h1>HIERARCHY</h1>
+<p>Glib::ParamSpec</p>
+<h1>METHODS</h1>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>IV</strong> ($name, $nick,
+$blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (integer)</p></li>
+<li><p><code>$maximum</code> (integer)</p></li>
+<li><p><code>$default_value</code> (integer)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>UV</strong> ($name, $nick,
+$blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (unsigned)</p></li>
+<li><p><code>$maximum</code> (unsigned)</p></li>
+<li><p><code>$default_value</code> (unsigned)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>string = $pspec-&gt;<strong>get_blurb</strong></h2>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>boolean</strong> ($name,
+$nick, $blurb, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$default_value</code> (boolean)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>boxed</strong> ($name,
+$nick, $blurb, $package, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$package</code> (string) name of the class, derived from
+Glib::Boxed, of the objects this property will hold.</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>char</strong> ($name, $nick,
+$blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (integer)</p></li>
+<li><p><code>$maximum</code> (integer)</p></li>
+<li><p><code>$default_value</code> (integer)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>scalar = $pspec-&gt;<strong>get_default_value</strong></h2>
+<p>(This is the C level <code>g_param_value_set_default</code>
+function.)</p>
+<p>Note that on a <code>Glib::Param::Unichar</code> the return is a
+single-char string. This is the same as the constructor
+<code>Glib::ParamSpec-&gt;unichar</code>, but it's not the same as
+<code>Glib::Object</code> <code>get_property</code> /
+<code>set_property</code>, so an <code>ord()</code> conversion is needed
+if passing the default value to a unichar <code>set_property</code>.</p>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>double</strong> ($name,
+$nick, $blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (double)</p></li>
+<li><p><code>$maximum</code> (double)</p></li>
+<li><p><code>$default_value</code> (double)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>enum</strong> ($name, $nick,
+$blurb, $enum_type, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$enum_type</code> (string)</p></li>
+<li><p><code>$default_value</code> (scalar)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>flags</strong> ($name,
+$nick, $blurb, $flags_type, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$flags_type</code> (string)</p></li>
+<li><p><code>$default_value</code> (scalar)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramflags = $pspec-&gt;<strong>get_flags</strong></h2>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>float</strong> ($name,
+$nick, $blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (double)</p></li>
+<li><p><code>$maximum</code> (double)</p></li>
+<li><p><code>$default_value</code> (double)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>gtype</strong> ($name,
+$nick, $blurb, $is_a_type, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$is_a_type</code> (string or undef) The name of a class
+whose subtypes are allowed as values of the property. Use
+<code>undef</code> to allow any type.</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<p>Since: glib 2.10</p>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>int</strong> ($name, $nick,
+$blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (integer)</p></li>
+<li><p><code>$maximum</code> (integer)</p></li>
+<li><p><code>$default_value</code> (integer)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>int64</strong> ($name,
+$nick, $blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (64 bit integer)</p></li>
+<li><p><code>$maximum</code> (64 bit integer)</p></li>
+<li><p><code>$default_value</code> (64 bit integer)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>long</strong> ($name, $nick,
+$blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (integer)</p></li>
+<li><p><code>$maximum</code> (integer)</p></li>
+<li><p><code>$default_value</code> (integer)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>string = $paramspec-&gt;<strong>get_name</strong></h2>
+<p>Dashes in the name are converted to underscores.</p>
+<h2>string = $pspec-&gt;<strong>get_nick</strong></h2>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>object</strong> ($name,
+$nick, $blurb, $package, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$package</code> (string) name of the class, derived from
+Glib::Object, of the objects this property will hold.</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>override</strong> ($name,
+$overridden)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$overridden</code> (Glib::ParamSpec)</p></li>
+</ul>
+<p>Since: glib 2.4</p>
+<h2>string = $pspec-&gt;<strong>get_owner_type</strong></h2>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>param_spec</strong> ($name,
+$nick, $blurb, $package, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$package</code> (string) name of the class, derived from
+Glib::ParamSpec, of the objects this property will hold.</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec or undef =
+$pspec-&gt;<strong>get_redirect_target</strong></h2>
+<p>Since: glib 2.4</p>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>scalar</strong> ($name,
+$nick, $blurb, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<p>ParamSpec to be used for any generic perl scalar, including
+references to complex objects.</p>
+<p>Currently <code>Gtk2::Builder</code> cannot set object properties of
+this type (there's no hooks for property value parsing, as of Gtk 2.20),
+so prefer the builtin types if buildable support for an object matters.
+A <code>boxed</code> of <code>Glib::Strv</code> can give an array of
+strings. A signal handler callback can do most of what a coderef
+might.</p>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>string</strong> ($name,
+$nick, $blurb, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$default_value</code> (string or undef)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>uchar</strong> ($name,
+$nick, $blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (unsigned)</p></li>
+<li><p><code>$maximum</code> (unsigned)</p></li>
+<li><p><code>$default_value</code> (unsigned)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>uint</strong> ($name, $nick,
+$blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (unsigned)</p></li>
+<li><p><code>$maximum</code> (unsigned)</p></li>
+<li><p><code>$default_value</code> (unsigned)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>uint64</strong> ($name,
+$nick, $blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (64 bit unsigned)</p></li>
+<li><p><code>$maximum</code> (64 bit unsigned)</p></li>
+<li><p><code>$default_value</code> (64 bit unsigned)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>ulong</strong> ($name,
+$nick, $blurb, $minimum, $maximum, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$minimum</code> (unsigned)</p></li>
+<li><p><code>$maximum</code> (unsigned)</p></li>
+<li><p><code>$default_value</code> (unsigned)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>paramspec = Glib::ParamSpec-&gt;<strong>unichar</strong> ($name,
+$nick, $blurb, $default_value, $flags)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$nick</code> (string)</p></li>
+<li><p><code>$blurb</code> (string)</p></li>
+<li><p><code>$default_value</code> (character)</p></li>
+<li><p><code>$flags</code> (Glib::ParamFlags)</p></li>
+</ul>
+<h2>string = $pspec-&gt;<strong>get_value_type</strong></h2>
+<h2>bool = $paramspec-&gt;<strong>value_validate</strong> ($value)</h2>
+<h2>(bool, newval) = $paramspec-&gt;<strong>value_validate</strong>
+($value)</h2>
+<ul>
+<li><p><code>$value</code> (scalar)</p></li>
+</ul>
+<p>In scalar context return true if <code>$value</code> must be modified
+to be valid for <code>$paramspec</code>, or false if it's valid already.
+In array context return also a new value which is <code>$value</code>
+made valid.</p>
+<p><code>$value</code> must be the right type for
+<code>$paramspec</code> (with usual stringizing, numizing, etc).
+<code>value_validate</code> checks the further restrictions such as
+minimum and maximum for a numeric type or allowed characters in a
+string. The made valid return is then for instance clamped to the
+min/max, or offending chars replaced by a substitutor.</p>
+<h2>integer = $pspec-&gt;<strong>values_cmp</strong> ($value1,
+$value2)</h2>
+<ul>
+<li><p><code>$value1</code> (scalar)</p></li>
+<li><p><code>$value2</code> (scalar)</p></li>
+</ul>
+<p>Compares <em>value1</em> with <em>value2</em> according to
+<em>pspec</em>, and returns -1, 0 or +1, if value1 is found to be less
+than, equal to or greater than value2, respectively.</p>
+<h1>ENUMS AND FLAGS</h1>
+<h2>flags Glib::ParamFlags</h2>
+<ul>
+<li><p>'readable' / 'G_PARAM_READABLE'</p></li>
+<li><p>'writable' / 'G_PARAM_WRITABLE'</p></li>
+<li><p>'construct' / 'G_PARAM_CONSTRUCT'</p></li>
+<li><p>'construct-only' / 'G_PARAM_CONSTRUCT_ONLY'</p></li>
+<li><p>'lax-validation' / 'G_PARAM_LAX_VALIDATION'</p></li>
+<li><p>'private' / 'G_PARAM_PRIVATE'</p></li>
+<li><p>'static-name' / 'G_PARAM_STATIC_NAME'</p></li>
+<li><p>'static-nick' / 'G_PARAM_STATIC_NICK'</p></li>
+<li><p>'static-blurb' / 'G_PARAM_STATIC_BLURB'</p></li>
+<li><p>'explicit-notify' / 'G_PARAM_EXPLICIT_NOTIFY'</p></li>
+<li><p>'deprecated' / 'G_PARAM_DEPRECATED'</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Glib</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

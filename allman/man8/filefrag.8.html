@@ -1,0 +1,77 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>filefrag - report on file fragmentation</p>
+<h1>SYNOPSIS</h1>
+<p><strong>filefrag</strong> [ <strong>-b</strong><em>blocksize</em> ] [
+<strong>-BeEkPsvVxX</strong> ] [ <em>files...</em> ]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>filefrag</strong> reports on how badly fragmented a
+particular file might be. It makes allowances for indirect blocks for
+ext2 and ext3 file systems, but can be used on files for any file
+system.</p>
+<p>The <strong>filefrag</strong> program initially attempts to get the
+extent information using FIEMAP ioctl which is more efficient and
+faster. If FIEMAP is not supported then filefrag will fall back to using
+FIBMAP.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-B</strong></dt>
+<dd>
+<p>Force the use of the older FIBMAP ioctl instead of the FIEMAP ioctl
+for testing purposes.</p>
+</dd>
+<dt><strong>-b</strong><em>blocksize</em></dt>
+<dd>
+<p>Use <em>blocksize</em> in bytes, or with [KMG] suffix, up to 1GB for
+output instead of the file system blocksize. For compatibility with
+earlier versions of <strong>filefrag</strong>, if <em>blocksize</em> is
+unspecified it defaults to 1024 bytes. Since <em>blocksize</em> is an
+optional argument, it must be added without any space after
+<strong>-b</strong>.</p>
+</dd>
+<dt><strong>-e</strong></dt>
+<dd>
+<p>Print output in extent format, even for block-mapped files.</p>
+</dd>
+<dt><strong>-E</strong></dt>
+<dd>
+<p>Display the contents of ext4's extent status cache. This feature is
+not supported on all kernels, and is only supported on ext4 file
+systems.</p>
+</dd>
+<dt><strong>-k</strong></dt>
+<dd>
+<p>Use 1024-byte blocksize for output (identical to '-b1024').</p>
+</dd>
+<dt><strong>-P</strong></dt>
+<dd>
+<p>Pre-load the ext4 extent status cache for the file. This is not
+supported on all kernels, and is only supported on ext4 file
+systems.</p>
+</dd>
+<dt><strong>-s</strong></dt>
+<dd>
+<p>Sync the file before requesting the mapping.</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>Be verbose when checking for file fragmentation.</p>
+</dd>
+<dt><strong>-V</strong></dt>
+<dd>
+<p>Print version number of program and library. If given twice, also
+print the FIEMAP flags that are understood by the current version.</p>
+</dd>
+<dt><strong>-x</strong></dt>
+<dd>
+<p>Display mapping of extended attributes.</p>
+</dd>
+<dt><strong>-X</strong></dt>
+<dd>
+<p>Display extent block numbers in hexadecimal format.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p><strong>filefrag</strong> was written by Theodore Ts'o
+&lt;tytso@mit.edu&gt;.</p>

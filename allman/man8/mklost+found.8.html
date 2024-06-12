@@ -1,0 +1,31 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mklost+found - create a lost+found directory on a mounted Linux
+second extended file system</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mklost+found</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>mklost+found</strong> is used to create a <em>lost+found</em>
+directory in the current working directory on a Linux second extended
+file system. There is normally a <em>lost+found</em> directory in the
+root directory of each file system.</p>
+<p><strong>mklost+found</strong> pre-allocates disk blocks to the
+<em>lost+found</em> directory so that when <strong>e2fsck</strong>(8) is
+being run to recover a file system, it does not need to allocate blocks
+in the file system to store a large number of unlinked files. This
+ensures that <strong>e2fsck</strong> will not have to allocate data
+blocks in the file system during recovery.</p>
+<h1>OPTIONS</h1>
+<p>There are none.</p>
+<h1>AUTHOR</h1>
+<p><strong>mklost+found</strong> has been written by Remy Card
+&lt;Remy.Card@linux.org&gt;. It is currently being maintained by
+Theodore Ts'o &lt;tytso@alum.mit.edu&gt;.</p>
+<h1>BUGS</h1>
+<p>There are none :-)</p>
+<h1>AVAILABILITY</h1>
+<p><strong>mklost+found</strong> is part of the e2fsprogs package and is
+available from http://e2fsprogs.sourceforge.net.</p>
+<h1>SEE ALSO</h1>
+<p><strong>e2fsck</strong>(8), <strong>mke2fs</strong>(8)</p>

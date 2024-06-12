@@ -1,0 +1,429 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>rygel.conf - Rygel configuration file</p>
+<h1>SYNOPSIS</h1>
+<p><strong>$XDG_CONFIG_DIR/rygel.conf</strong></p>
+<p><strong>/etc/rygel.conf</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>rygel</strong> reads its configuration values from the file
+$XDG_CONFIG_DIR/rygel.conf or a file given on command line with the
+<strong>--config</strong> option. If that file does not exist it uses
+the file /etc/rygel.conf.</p>
+<p>Most of the options may be overriden by commandline arguments or
+envronment variables. See <strong>rygel</strong>(1) for details on
+those.</p>
+<h1>GENERAL DIRECTIVES</h1>
+<p>Lists in the configuration files are separated by a semicolon
+(<strong>;</strong>). Boolean values may be either <strong>true</strong>
+or <strong>false</strong>.</p>
+<p><strong>ipv6</strong></p>
+<blockquote>
+<p>Set to <strong>false</strong> to disable binding to IPv6
+addresses</p>
+</blockquote>
+<p><strong>interface=</strong><em>INTERFACE</em></p>
+<blockquote>
+<p>Semicolon separated list separated of the network interfaces rygel
+should listen on. May be an IP, an interface name or on Linux even the
+ESSID of a wireless network.</p>
+</blockquote>
+<p><strong>port=</strong><em>PORT</em></p>
+<blockquote>
+<p>Set the listen-port.</p>
+</blockquote>
+<p><strong>enable-transcoding</strong></p>
+<blockquote>
+<p>Set to <strong>true</strong> to enable transcoding in general.</p>
+</blockquote>
+<p><strong>log-level=</strong><em>DOMAIN</em><strong>:</strong><em>LEVEL</em><strong>[,</strong><em>DOMAIN</em><strong>:</strong><em>LEVEL</em><strong>,...]</strong></p>
+<blockquote>
+<p>Comma-separated list of <em>DOMAIN</em>:<em>LEVEL</em> pairs,
+allowing to set the log level individually for each domain, where
+<em>DOMAIN</em> is eiher <strong>"*"</strong>, "<strong>rygel</strong>"
+or the name of a plugin. Allowed log levels are 1=error, 2=critical,
+3=warning, 4=message/info, 5=debug. Note that on recent versions of GLib
+(&gt;= 2.36) it is required to set the environment variable
+<strong>G_MESSAGES_DEBUG</strong> to <strong>all</strong> to get any
+debug output.</p>
+</blockquote>
+<p><strong>plugin-path=</strong><em>PATH</em></p>
+<blockquote>
+<p>Set the plugin search path.</p>
+</blockquote>
+<p><strong>engine-path=</strong><em>PATH</em></p>
+<blockquote>
+<p>Set the engine search path.</p>
+</blockquote>
+<p><strong>media-engine=</strong><em>ENGINE</em></p>
+<blockquote>
+<p>Name of the loadable module to use as media engine back-end.</p>
+</blockquote>
+<p><strong>allow-upload</strong></p>
+<blockquote>
+<p>Allow uploading of media files via UPnP.</p>
+</blockquote>
+<p><strong>allow-deletion</strong></p>
+<blockquote>
+<p>Allow remote media file deletion via UPnP.</p>
+</blockquote>
+<p><strong>video-upload-folder</strong></p>
+<blockquote>
+<p>If <strong>allow-upload</strong> is <strong>true</strong>, use this
+folder to store uploaded videos. It defaults to
+<strong>@VIDEOS@</strong> which expands to the default directory for
+video files (usually <strong>$HOME</strong>/Videos).</p>
+</blockquote>
+<p><strong>music-upload-folder</strong></p>
+<blockquote>
+<p>If <strong>allow-upload</strong> is <strong>true</strong>, use this
+folder to store uploaded music files. It defaults to
+<strong>@MUSIC@</strong> which expands to the default directory for
+music files (usually <strong>$HOME</strong>/Music).</p>
+</blockquote>
+<p><strong>picture-upload-folder</strong></p>
+<blockquote>
+<p>If <strong>allow-upload</strong> is <strong>true</strong>, use this
+folder to store uploaded pictures. It defaults to
+<strong>@PICTURES@</strong> which expands to the default directory for
+picture files (usually <strong>$HOME</strong>/Pictures).</p>
+</blockquote>
+<p><strong>force-downgrade-for</strong></p>
+<blockquote>
+<p>Semicolon-separated list of device user-agents (or parts thereof)
+which need a forced downgrade to <strong>MediaServer:1</strong> and/or
+<strong>ContentDirectory:1</strong>.</p>
+<blockquote>
+<p><br />
+</p>
+<p><strong>Warning</strong></p>
+<p><br />
+Only use this parameter if you know what yourre doing or are being told
+to do so; overriding the default value might cause incompatibilites. If
+you find that adding your device here enables its usage with Rygel,
+please <strong>file an IOP bug</strong>[1] so we can include it into the
+default configuration.</p>
+</blockquote>
+</blockquote>
+<p><strong>acl-fallback-policy</strong></p>
+<blockquote>
+<p>This is the default policy that is used if no access control provider
+is found on the D-Bus. Use <strong>true</strong> to allow access from
+every peer, <strong>false</strong> to deny all access. If it is not
+specified, the default fall-back policy is <strong>true</strong>.</p>
+</blockquote>
+<h1>DATABASE SETTINGS</h1>
+<p>The settings in the [Database]section are for the database support
+library.</p>
+<p><strong>debug</strong></p>
+<blockquote>
+<p>Set to <strong>true</strong> to show the SQL statements used.</p>
+</blockquote>
+<h1>GSTREAMER MEDIA ENGINE SETTINGS</h1>
+<p>The settings in the [GstMediaEngine] section are specific to the
+GStreamer media engine, which is the default media engine. See the
+media-engine setting. These following options are available for the
+<strong>GStreamer</strong>[2] media engine.</p>
+<p><strong>transcoders</strong></p>
+<blockquote>
+<p>A semicolon-separated list of the active transcoders. This setting
+has no effect if <strong>enable-transcoding</strong> is set to false.
+Possible values are: lpcm,mp3,mp2ts,aac,avc or wmv. Its default value is
+lpcm;mp3;mp2ts;aac;wmv.</p>
+</blockquote>
+<h1>PLUGIN-SPECIFIC SETTINGS</h1>
+<p>Sections for plugins are denoted with <strong>[PluginName]</strong>
+and can contain options specific to a plugin (see below) as well these
+common options:</p>
+<p><strong>title</strong>=<em>TITLE</em></p>
+<blockquote>
+<p>Title of the device implemented by this plugin. There are some
+variables which will be replaced by rygel. <em>@REALNAME@</em> will be
+subsituted by the users real name, <em>@USERNAME@</em> by the users
+login id and <em>@HOSTNAME@</em> by the name of the machine rygel runs
+on.</p>
+</blockquote>
+<p><strong>enabled</strong></p>
+<blockquote>
+<p>You can individually enable or disable plugins by setting this to
+<strong>true</strong> or <strong>false</strong>.</p>
+</blockquote>
+<p><strong>energy-management</strong></p>
+<blockquote>
+<p>Set to <strong>true</strong> to if you would like the UPnP device to
+contain a EnergyManagement service. Note that additional configuration
+is required, see EnergyManagement settings.</p>
+</blockquote>
+<p><strong>diagnostics</strong></p>
+<blockquote>
+<p>Set to <strong>true</strong> if you would like the UPnP device to
+contain a BasicManagement:2 service that allows running tools like ping,
+nslookup and traceroute remotely.</p>
+</blockquote>
+<p><strong>server-name</strong></p>
+<blockquote>
+<p>A string that will be sent as the "Server:" header in a HTTP
+response.</p>
+</blockquote>
+<h1>ENERGYMANAGEMENT SETTINGS</h1>
+<p>The settings in <strong>[EnergyManagement-IFACENAME]</strong>
+sections specify the settings that relate to EnergyManagement services
+on this interface. Example:
+<strong>[EnergyManagement-eth0].</strong></p>
+<p><strong>mode-on-suspend</strong></p>
+<blockquote>
+<p>The NetworkInterfaceMode that should be used when suspended. Default
+is "Unimplemented", other valid values are "IP-up-Periodic”,
+"IP-down-no-Wake", "IP-down-with-WakeOn", "IP-down-with-WakeAuto",
+"IP-down-with-WakeOnAuto".</p>
+</blockquote>
+<p><strong>supported-transport</strong></p>
+<blockquote>
+<p>Optional WakeSupportedTransport that the service should advertize.
+Valid values are "UDP-Broadcast", "UDP-Unicast", "TCP-Unicast",
+"Other".</p>
+</blockquote>
+<p><strong>password</strong></p>
+<blockquote>
+<p>Optional hexadecimal password that will be used to build the
+WakeOnPattern.</p>
+</blockquote>
+<h1>TRACKER PLUGIN</h1>
+<p>The tracker plugin uses the centralized database of meta information
+from the tracker project. See the <strong>tracker project
+website</strong>[3] for more information about tracker.</p>
+<p><strong>share-pictures</strong></p>
+<blockquote>
+<p>Enable or disable sharing of all pictures in the Tracker
+database.</p>
+</blockquote>
+<p><strong>share-videos</strong></p>
+<blockquote>
+<p>Enable or disable sharing of all videos in the Tracker database.</p>
+</blockquote>
+<p><strong>share-music</strong></p>
+<blockquote>
+<p>Enable or disable sharing of all music in the Tracker database.</p>
+</blockquote>
+<h1>MEDIAEXPORT PLUGIN</h1>
+<p>The MediaExport plugin is an alternative to the tracker-backed media
+export. It extracts meta-data by itself and stores it in a
+<strong>SQLite</strong>[4] database in
+$XDG_CACHE_DIR/rygel/media-export.db on UNIX platforms.</p>
+<blockquote>
+<p><br />
+</p>
+<p><strong>Note</strong></p>
+<p><br />
+</p>
+<p>If both plugins, Tracker as well as MediaExport are enabled,
+MediaExport will disable itself in favour of the Tracker plugin.</p>
+</blockquote>
+<p>There are several options supported by this plugin:</p>
+<p><strong>uris</strong></p>
+<blockquote>
+<p>A list of URIS to expose via UPnP. May be files, folders or anything
+supported by GVFS. If left emtpy it defaults to export the users music,
+video and picture folders as defined per XDG special user directories
+spec. These default folders can be referenced by
+<strong>@MUSIC@</strong>, <strong>@PICTURES@</strong> and
+<strong>@VIDEOS@</strong>. Locations can be entered as either fully
+escaped URIS or normal paths.</p>
+<blockquote>
+<p><br />
+</p>
+<p><strong>Note</strong></p>
+<p><br />
+If you enter a normal path that contains whitespace there is no need to
+escape them with either a backslash or putting the string in quotes.</p>
+</blockquote>
+<blockquote>
+<p><br />
+</p>
+<p><strong>Note</strong></p>
+<p><br />
+It is strongly advised against using an exported folder as a target for
+downloads when <strong>extract-metadata</strong> is enabled. Rygel will
+most likely ignore the files then because they will fail to extract.</p>
+</blockquote>
+<p><strong>Example 1. Possible values for uris</strong></p>
+<p><strong>uris=@MUSIC@;/home/user/My
+Pictures;file:///home/user/My%20Videos</strong></p>
+</blockquote>
+<p><strong>extract-metadata</strong></p>
+<blockquote>
+<p>Set to <strong>false</strong> if you do not care about duration or
+any other meta-data like artist. This speeds up the initial crawl of the
+media a lot. Use it to quickly share some files via UPnP. Make sure to
+define an <strong>include-filter</strong>, otherwise you will end up
+with a lot of files exposed which the client cannot display anyway.</p>
+</blockquote>
+<p><strong>monitor-changes</strong></p>
+<blockquote>
+<p>Set to <strong>false</strong> if you dont want to have new files
+picked up automatically by rygel.</p>
+</blockquote>
+<p><strong>monitor-grace-timeout</strong></p>
+<blockquote>
+<p>Time in seconds to wait after a new file has been detected before
+trying to extract meta-data from it. Useful if youre downloading to a
+directory watched by rygel. Default is 5 seconds.</p>
+</blockquote>
+<p><strong>virtual-folders</strong></p>
+<blockquote>
+<p>Set to <strong>false</strong> if you dont need the virtual folder
+hierarchy.</p>
+</blockquote>
+<h1>PLAYBIN PLUGIN</h1>
+<p>The Playbin plugin implements a media renderer (Digtal Media
+Renderer, DMR in DLNA terms). This plugin was known as GstRenderer.</p>
+<p>It is highly recommended to leave the sink choice to playbin. If,
+however, the default choices dont work for you they can be reconfigured
+as follows</p>
+<p><strong>audio-sink</strong></p>
+<blockquote>
+<p>Definition of the audio sink to use. Can be a single element or a
+partial pipeline definition in gst-launchs syntax</p>
+</blockquote>
+<p><strong>video-sink</strong></p>
+<blockquote>
+<p>Definition of the video sink to use. Can be a single element or a
+partial pipeline definition in gst-launchs syntax</p>
+</blockquote>
+<h1>LIGHTMEDIASCANNER PLUGIN</h1>
+<p>The LightMediaScanner plugin exports the contents of the
+<strong>lightmediascanner daemon</strong>[5]</p>
+<p>This plugin does not have any special options.</p>
+<h1>GSTLAUNCH PLUGIN</h1>
+<p>The GstLaunch plugin allows to expose GStreamer pipelines using the
+same syntax as the gst-launch utilty. You can configure several items in
+this plugins.</p>
+<p><strong>launch-items</strong></p>
+<blockquote>
+<p>A list of of identifiers for the pipelines to be exposed.</p>
+</blockquote>
+<p><strong>identifier-title</strong></p>
+<blockquote>
+<p>Title of the device represented by this pipeline. Identifier is the
+identifier as set in launch-items</p>
+</blockquote>
+<p><strong>identifier-mime</strong></p>
+<blockquote>
+<p>Mime-type of the pipeline.</p>
+</blockquote>
+<p><strong>identifier-launch</strong></p>
+<blockquote>
+<p>Definition of the pipeline in gst-launch syntax. For some examples on
+writing pipelines see <strong>gst-launch</strong>(1).</p>
+</blockquote>
+<p><strong>identifier-dlnaprofile</strong></p>
+<blockquote>
+<p>DLNA profile for the stream.</p>
+</blockquote>
+<p>An example configuration is available in the distributed
+configuration file /etc/rygel.conf.</p>
+<h1>EXTERNAL</h1>
+<p>The External plugin is an consumer of the <strong>MediaServer2 DBus
+interface specification</strong>[6]. This allows external programs to
+share their data via UPnP by implementing this DBus specification. The
+plugin picks up any implementation of this interface on the session bus
+and exposes the presented media via UPnP. Known implementors of this
+spec are <strong>gnome-dvb-daemon</strong>[7],
+<strong>Rhythmbox</strong>[8] and <strong>Grilo</strong>[9] via the
+grilo-ms2 project.</p>
+<p>You can disable the whole functionality by setting
+<strong>enabled=false</strong> in the <strong>[External]</strong>
+section of the configuration file.</p>
+<p>Individual peers may be enabled or disabled by creating sections
+corresponding to the D-Bus names of the peer:</p>
+<blockquote>
+<pre><code>[org.gnome.UPnP.MediaServer2.Rhythmbox]
+enabled=false</code></pre>
+</blockquote>
+<p>This plugin has no additional options.</p>
+<h1>MPRIS</h1>
+<p>The MPRIS plugin is a consumer of the <strong>MPRIS2 DBus interface
+specification</strong>[10]. The implementation conforms to version 2.0
+of the standard.</p>
+<p>rygel exposes media players that implement the provider side of this
+DBus specification as DLNA Digital Media Renderers (DMR) similar to the
+Playbin plugin. This means that you can easily turn your media player
+into a DMR by implementing this DBus specification.</p>
+<p>Players that implement this spec and are known to work with rygel are
+<strong>Banshee</strong>[11], <strong>Rhythmbox</strong>[8] and
+<strong>GNOME Videos (previously known as Totem)</strong>[12]</p>
+<p>You can disable the whole functionality by setting
+<strong>enabled=false</strong> in the <strong>[MRPIS]</strong> section
+of the configuration file.</p>
+<p>The configuration of this plugin is special. Plugin configuration is
+not done on the plugin but rather per peer that is found providing the
+MPRIS2 interface. See the following example to set the title for Banshee
+on MPRIS:</p>
+<blockquote>
+<pre><code>[org.mpris.MediaPlayer2.banshee]
+title=@REALNAME@s Banshee on @HOSTNAME@</code></pre>
+</blockquote>
+<p>This plugin has no additional options.</p>
+<h1>SEE ALSO</h1>
+<p><strong>rygel</strong>(1), <strong>gst-launch</strong>(1)</p>
+<h1>AUTHOR</h1>
+<p><strong>Jens Georg</strong> &lt;mail@jensge.org&gt;</p>
+<blockquote>
+<p>Wrote this manpage.</p>
+</blockquote>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>file an IOP bug</p>
+<p>https://gitlab.gnome.org/GNOME/rygel/issues/new/?issuable_template=IOP</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>GStreamer</p>
+<p>http://gstreamer.freedesktop.org</p>
+</dd>
+<dt> 3.</dt>
+<dd>
+<p>tracker project website</p>
+<p>https://wiki.gnome.org/Projects/Tracker</p>
+</dd>
+<dt> 4.</dt>
+<dd>
+<p>SQLite</p>
+<p>http://sqlite.org</p>
+</dd>
+<dt> 5.</dt>
+<dd>
+<p>lightmediascanner daemon</p>
+<p>https://github.com/profusion/lightmediascanner</p>
+</dd>
+<dt> 6.</dt>
+<dd>
+<p>MediaServer2 DBus interface specification</p>
+<p>https://wiki.gnome.org/Projects/Rygel/MediaServer2Spec</p>
+</dd>
+<dt> 7.</dt>
+<dd>
+<p>gnome-dvb-daemon</p>
+<p>https://wiki.gnome.org/Projects/DVBDaemon</p>
+</dd>
+<dt> 8.</dt>
+<dd>
+<p>Rhythmbox</p>
+<p>http://www.rhythmbox.org</p>
+</dd>
+<dt> 9.</dt>
+<dd>
+<p>Grilo</p>
+<p>https://wiki.gnome.org/Projects/Grilo</p>
+</dd>
+</dl>
+<ol start="10" type="1">
+<li><p>MPRIS2 DBus interface specification</p>
+<p>https://specifications.freedesktop.org/mpris-spec/latest/</p></li>
+<li><p>Banshee</p>
+<p>http://banshee.fm</p></li>
+<li><p>GNOME Videos (previously known as Totem)</p>
+<p>https://wiki.gnome.org/Apps/Videos</p></li>
+</ol>

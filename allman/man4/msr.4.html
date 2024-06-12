@@ -1,0 +1,23 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>msr - x86 CPU MSR access device</p>
+<h1>DESCRIPTION</h1>
+<p><em>/dev/cpu/CPUNUM/msr</em> provides an interface to read and write
+the model-specific registers (MSRs) of an x86 CPU. <em>CPUNUM</em> is
+the number of the CPU to access as listed in <em>/proc/cpuinfo</em>.</p>
+<p>The register access is done by opening the file and seeking to the
+MSR number as offset in the file, and then reading or writing in chunks
+of 8 bytes. An I/O transfer of more than 8 bytes means multiple reads or
+writes of the same register.</p>
+<p>This file is protected so that it can be read and written only by the
+user <em>root</em>, or members of the group <em>root</em>.</p>
+<h1>NOTES</h1>
+<p>The <em>msr</em> driver is not auto-loaded. On modular kernels you
+might need to use the following command to load it explicitly before
+use:</p>
+<pre><code>$ modprobe msr</code></pre>
+<h1>SEE ALSO</h1>
+<p>Intel Corporation Intel 64 and IA-32 Architectures Software
+Developer's Manual Volume 3B Appendix B, for an overview of the Intel
+CPU MSRs.</p>

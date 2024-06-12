@@ -1,0 +1,39 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>fstab-decode - run a command with fstab-encoded arguments</p>
+<h1>SYNOPSIS</h1>
+<p><strong>fstab-decode</strong> <em>COMMAND</em> [<em>ARGUMENT</em>
+. . .]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>fstab-decode</strong> decodes escapes (such as newline
+characters and other whitespace) in the specified <em>ARGUMENT</em>s and
+uses them to run <em>COMMAND</em>. The argument escaping uses the same
+rules as path escaping in <em>/etc/fstab</em>, <em>/etc/mtab</em> and
+<em>/proc/mtab</em>.</p>
+<p>In essence <strong>fstab-decode</strong> can be used anytime we want
+to pass multiple parameters to a command as a list of command line
+arguments. It turns output like this:</p>
+<pre><code>/root
+/mnt/remote-disk
+/home
+
+Into one long list of parameters, &quot;/root /mnt/remote-disk /home&quot;. This
+can be useful when trying to work with multiple filesystems at once. For
+instance, we can use it to unmount multiple NFS shares. This program also
+removes whitespace and other characters which might cause programs such
+as mount(8) or umount(8) to fail.
+</code></pre>
+<h1>EXIT STATUS</h1>
+<p><strong>fstab-decode</strong> exits with status 127 if
+<em>COMMAND</em> can't be run. Otherwise it exits with the status
+returned by <em>COMMAND</em>.</p>
+<h1>EXAMPLES</h1>
+<p>The following example reads <em>fstab</em>, finds all instances of
+VFAT filesystems and prints their mount points (argument 2 in the
+<em>fstab</em> file). <strong>fstab-decode</strong> then runs the
+specified program, <strong>umount</strong>(8), and passes it the list of
+VFAT mountpoints. This unmounts all VFAT partitions.</p>
+<pre><code>fstab-decode umount $(awk &#39;$3 == &quot;vfat&quot; { print $2 }&#39; /etc/fstab)</code></pre>
+<h1>SEE ALSO</h1>
+<p><strong>fstab</strong>(5)</p>

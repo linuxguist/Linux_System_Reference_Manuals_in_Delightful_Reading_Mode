@@ -1,0 +1,128 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-srp - maintain SRP password file</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl srp</strong> [<strong>-help</strong>]
+[<strong>-verbose</strong>] [<strong>-add</strong>]
+[<strong>-modify</strong>] [<strong>-delete</strong>]
+[<strong>-list</strong>] [<strong>-name</strong> <em>section</em>]
+[<strong>-srpvfile</strong> <em>file</em>] [<strong>-gn</strong>
+<em>identifier</em>] [<strong>-userinfo</strong> <em>text</em>]
+[<strong>-passin</strong> <em>arg</em>] [<strong>-passout</strong>
+<em>arg</em>] [<strong>-engine</strong> <em>id</em>]
+[<strong>-rand</strong> <em>files</em>] [<strong>-writerand</strong>
+<em>file</em>] [<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>] [<strong>-config</strong>
+<em>configfile</em>] [<em>user</em> ...]</p>
+<h1>DESCRIPTION</h1>
+<p>This command is deprecated. It is used to maintain an SRP (secure
+remote password) file. At most one of the <strong>-add</strong>,
+<strong>-modify</strong>, <strong>-delete</strong>, and
+<strong>-list</strong> options can be specified. These options take zero
+or more usernames as parameters and perform the appropriate operation on
+the SRP file. For <strong>-list</strong>, if no <em>user</em> is given
+then all users are displayed.</p>
+<p>The configuration file to use, and the section within the file, can
+be specified with the <strong>-config</strong> and
+<strong>-name</strong> flags, respectively.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Display an option summary.</p>
+</dd>
+<dt>-verbose</dt>
+<dd>
+<p>Generate verbose output while processing.</p>
+</dd>
+<dt>-add</dt>
+<dd>
+<p>Add a user and SRP verifier.</p>
+</dd>
+<dt>-modify</dt>
+<dd>
+<p>Modify the SRP verifier of an existing user.</p>
+</dd>
+<dt>-delete</dt>
+<dd>
+<p>Delete user from verifier file.</p>
+</dd>
+<dt>-list</dt>
+<dd>
+<p>List users.</p>
+</dd>
+<dt>-name</dt>
+<dd>
+<p>The particular SRP definition to use.</p>
+</dd>
+<dt>-srpvfile file</dt>
+<dd>
+<p>If the config file is not specified, <strong>-srpvfile</strong> can
+be used to specify the file to operate on.</p>
+</dd>
+<dt>-gn</dt>
+<dd>
+<p>Specifies the <strong>g</strong> and <strong>N</strong> values, using
+one of the strengths defined in IETF RFC 5054.</p>
+</dd>
+<dt>-userinfo</dt>
+<dd>
+<p>specifies additional information to add when adding or modifying a
+user.</p>
+</dd>
+<dt>-passin arg, -passout arg</dt>
+<dd>
+<p>The password source for the input and output file. For more
+information about the format of <strong>arg</strong> see
+<strong>openssl-passphrase-options</strong> (1).</p>
+</dd>
+<dt>-engine id</dt>
+<dd>
+<p>See Engine Options in <strong>openssl</strong> (1). This option is
+deprecated.</p>
+</dd>
+<dt>-rand files, -writerand file</dt>
+<dd>
+<p>See Random State Options in <strong>openssl</strong> (1) for
+details.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<dl>
+<dt>-config configfile</dt>
+<dd>
+<p>See Configuration Option in <strong>openssl</strong> (1).
+[<strong>-rand</strong> <em>files</em>] [<strong>-writerand</strong>
+<em>file</em>]</p>
+</dd>
+</dl>
+<h1>HISTORY</h1>
+<p>The <strong>-engine</strong> option was deprecated in OpenSSL
+3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2017-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

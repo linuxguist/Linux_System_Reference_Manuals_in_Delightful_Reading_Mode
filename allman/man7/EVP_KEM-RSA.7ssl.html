@@ -1,0 +1,52 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_KEM-RSA - EVP_KEM RSA keytype and algorithm support</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>RSA</strong> keytype and its parameters are described in
+<strong>EVP_PKEY-RSA</strong> (7). See
+<strong>EVP_PKEY_encapsulate</strong> (3) and
+<strong>EVP_PKEY_decapsulate</strong> (3) for more info.</p>
+<h2>RSA KEM parameters</h2>
+<dl>
+<dt>"operation" (OSSL_KEM_PARAM_OPERATION) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>The OpenSSL RSA Key Encapsulation Mechanism only currently supports
+the following operation</p>
+<dl>
+<dt>"RSASVE"</dt>
+<dd>
+<p>The encapsulate function simply generates a secret using random bytes
+and then encrypts the secret using the RSA public key (with no padding).
+The decapsulate function recovers the secret using the RSA private
+key.</p>
+</dd>
+</dl>
+<p>This can be set using <strong>EVP_PKEY_CTX_set_kem_op()</strong>.</p>
+</dd>
+</dl>
+<h1>CONFORMING TO</h1>
+<dl>
+<dt>SP800-56Br2</dt>
+<dd>
+<p>Section 7.2.1.2 RSASVE Generate Operation (RSASVE.GENERATE). Section
+7.2.1.3 RSASVE Recovery Operation (RSASVE.RECOVER).</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY_CTX_set_kem_op</strong> (3),
+<strong>EVP_PKEY_encapsulate</strong> (3),
+<strong>EVP_PKEY_decapsulate</strong> (3)
+<strong>EVP_KEYMGMT</strong> (3), <strong>EVP_PKEY</strong> (3),
+<strong>provider-keymgmt</strong> (7)</p>
+<h1>HISTORY</h1>
+<p>This functionality was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

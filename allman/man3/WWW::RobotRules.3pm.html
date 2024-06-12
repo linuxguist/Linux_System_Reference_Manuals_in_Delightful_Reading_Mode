@@ -1,0 +1,114 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>WWW::RobotRules - database of robots.txt-derived permissions</p>
+<h1>SYNOPSIS</h1>
+<p>use WWW::RobotRules; my $rules =
+WWW::RobotRules-&gt;new(MOMspider/1.0); use LWP::Simple qw(get); { my
+$url = "http://some.place/robots.txt"; my $robots_txt = get $url;
+$rules-&gt;parse($url, $robots_txt) if defined $robots_txt; } { my $url
+= "http://some.other.place/robots.txt"; my $robots_txt = get $url;
+$rules-&gt;parse($url, $robots_txt) if defined $robots_txt; } # Now we
+can check if a URL is valid for those servers # whose "robots.txt" files
+weve gotten and parsed: if($rules-&gt;allowed($url)) { $c = get $url;
+... }</p>
+<h1>DESCRIPTION</h1>
+<p>This module parses <em>/robots.txt</em> files as specified in A
+Standard for Robot Exclusion, at
+&lt;http://www.robotstxt.org/wc/norobots.html&gt; Webmasters can use the
+<em>/robots.txt</em> file to forbid conforming robots from accessing
+parts of their web site.</p>
+<p>The parsed files are kept in a WWW::RobotRules object, and this
+object provides methods to check if access to a given URL is prohibited.
+The same WWW::RobotRules object can be used for one or more parsed
+<em>/robots.txt</em> files on any number of hosts.</p>
+<p>The following methods are provided:</p>
+<dl>
+<dt>$rules = WWW::RobotRules-&gt;new($robot_name)</dt>
+<dd>
+<p>This is the constructor for WWW::RobotRules objects. The first
+argument given to <em>new()</em> is the name of the robot.</p>
+</dd>
+<dt>$rules-&gt;parse($robot_txt_url, $content, $fresh_until)</dt>
+<dd>
+<p>The <em>parse()</em> method takes as arguments the URL that was used
+to retrieve the <em>/robots.txt</em> file, and the contents of the
+file.</p>
+</dd>
+<dt>$rules-&gt;allowed($uri)</dt>
+<dd>
+<p>Returns TRUE if this robot is allowed to retrieve this URL.</p>
+</dd>
+<dt>$rules-&gt;agent([$name])</dt>
+<dd>
+<p>Get/set the agent name. NOTE: Changing the agent name will clear the
+robots.txt rules and expire times out of the cache.</p>
+</dd>
+</dl>
+<h1>ROBOTS.TXT</h1>
+<p>The format and semantics of the /robots.txt file are as follows (this
+is an edited abstract of
+&lt;http://www.robotstxt.org/wc/norobots.html&gt;):</p>
+<p>The file consists of one or more records separated by one or more
+blank lines. Each record contains lines of the form</p>
+<p>&lt;field-name&gt;: &lt;value&gt;</p>
+<p>The field name is case insensitive. Text after the '#' character on a
+line is ignored during parsing. This is used for comments. The following
+&lt;field-names&gt; can be used:</p>
+<dl>
+<dt>User-Agent</dt>
+<dd>
+<p>The value of this field is the name of the robot the record is
+describing access policy for. If more than one <em>User-Agent</em> field
+is present the record describes an identical access policy for more than
+one robot. At least one field needs to be present per record. If the
+value is '*', the record describes the default access policy for any
+robot that has not not matched any of the other records. The
+<em>User-Agent</em> fields must occur before the <em>Disallow</em>
+fields. If a record contains a <em>User-Agent</em> field after a
+<em>Disallow</em> field, that constitutes a malformed record. This
+parser will assume that a blank line should have been placed before that
+<em>User-Agent</em> field, and will break the record into two. All the
+fields before the <em>User-Agent</em> field will constitute a record,
+and the <em>User-Agent</em> field will be the first field in a new
+record.</p>
+</dd>
+<dt>Disallow</dt>
+<dd>
+<p>The value of this field specifies a partial URL that is not to be
+visited. This can be a full path, or a partial path; any URL that starts
+with this value will not be retrieved</p>
+</dd>
+</dl>
+<p>Unrecognized records are ignored.</p>
+<h1>ROBOTS.TXT EXAMPLES</h1>
+<p>The following example /robots.txt file specifies that no robots
+should visit any URL starting with /cyberworld/map/ or /tmp/:</p>
+<p>User-agent: * Disallow: /cyberworld/map/ # This is an infinite
+virtual URL space Disallow: /tmp/ # these will soon disappear</p>
+<p>This example /robots.txt file specifies that no robots should visit
+any URL starting with /cyberworld/map/, except the robot called
+cybermapper:</p>
+<p>User-agent: * Disallow: /cyberworld/map/ # This is an infinite
+virtual URL space # Cybermapper knows where to go. User-agent:
+cybermapper Disallow:</p>
+<p>This example indicates that no robots should visit this site
+further:</p>
+<p># go away User-agent: * Disallow: /</p>
+<p>This is an example of a malformed robots.txt file.</p>
+<p># robots.txt for ancientcastle.example.com # Ive locked myself away.
+User-agent: * Disallow: / # The castle is your home now, so you can go
+anywhere you like. User-agent: Belle Disallow: /west-wing/ # except the
+west wing! # Its good to be the Prince... User-agent: Beast
+Disallow:</p>
+<p>This file is missing the required blank lines between records.
+However, the intention is clear.</p>
+<h1>SEE ALSO</h1>
+<p>LWP::RobotUA, WWW::RobotRules::AnyDBM_File</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1995-2009, Gisle Aas Copyright 1995, Martijn Koster</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

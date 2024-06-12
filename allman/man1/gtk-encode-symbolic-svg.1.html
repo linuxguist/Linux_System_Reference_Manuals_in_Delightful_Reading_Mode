@@ -1,0 +1,22 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gtk-encode-symbolic-svg - Symbolic icon conversion utility</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gtk-encode-symbolic-svg</strong> [OPTION...] <em>PATH</em>
+<em>WIDTH</em>x<em>HEIGHT</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>gtk-encode-symbolic-svg</strong> converts symbolic svg icons
+into specially prepared png files. GTK+ can load and recolor these pngs,
+just like original svgs, but loading them is much faster.</p>
+<p><em>PATH</em> is the name of a symbolic svg file,
+<em>WIDTH</em>x<em>HEIGHT</em> are the desired dimensions for the
+generated png file.</p>
+<p>To distinguish them from ordinary pngs, the generated files have the
+extension .symbolic.png.</p>
+<h1>OPTIONS</h1>
+<p>-o <em>DIRECTORY</em>, --output <em>DIRECTORY</em></p>
+<blockquote>
+<p>Write png files to <em>DIRECTORY</em> instead of the current working
+directory.</p>
+</blockquote>

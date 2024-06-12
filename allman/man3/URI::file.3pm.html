@@ -1,0 +1,145 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>URI::file - URI that maps to local file names</p>
+<h1>SYNOPSIS</h1>
+<p>use URI::file; $u1 = URI-&gt;new("file:/foo/bar"); $u2 =
+URI-&gt;new("foo/bar", "file"); $u3 = URI::file-&gt;new($path); $u4 =
+URI::file-&gt;new("c:\\windows\\", "win32"); $u1-&gt;file;
+$u1-&gt;file("mac");</p>
+<h1>DESCRIPTION</h1>
+<p>The <code>URI::file</code> class supports <code>URI</code> objects
+belonging to the <em>file</em> URI scheme. This scheme allows us to map
+the conventional file names found on various computer systems to the URI
+name space, see RFC 8089
+&lt;https://www.rfc-editor.org/rfc/rfc8089.html&gt;.</p>
+<p>If you simply want to construct <em>file</em> URI objects from URI
+strings, use the normal <code>URI</code> constructor. If you want to
+construct <em>file</em> URI objects from the actual file names used by
+various systems, then use one of the following <code>URI::file</code>
+constructors:</p>
+<dl>
+<dt>$u = URI::file-&gt;new( $filename, [$os] )</dt>
+<dd>
+<p>Maps a file name to the <em>file:</em> URI name space, creates a URI
+object and returns it. The <code>$filename</code> is interpreted as
+belonging to the indicated operating system ($os), which defaults to the
+value of the $^O variable. The <code>$filename</code> can be either
+absolute or relative, and the corresponding type of URI object for
+<code>$os</code> is returned.</p>
+</dd>
+<dt>$u = URI::file-&gt;new_abs( $filename, [$os] )</dt>
+<dd>
+<p>Same as URI::file-&gt;new, but makes sure that the URI returned
+represents an absolute file name. If the <code>$filename</code> argument
+is relative, then the name is resolved relative to the current
+directory, i.e. this constructor is really the same as:
+URI::file-&gt;new($filename)-&gt;abs(URI::file-&gt;cwd);</p>
+</dd>
+<dt>$u = URI::file-&gt;cwd</dt>
+<dd>
+<p>Returns a <em>file</em> URI that represents the current working
+directory. See Cwd.</p>
+</dd>
+</dl>
+<p>The following methods are supported for <em>file</em> URI (in
+addition to the common and generic methods described in URI):</p>
+<dl>
+<dt>$u-&gt;file( [$os] )</dt>
+<dd>
+<p>Returns a file name. It maps from the URI name space to the file name
+space of the indicated operating system. It might return
+<code>undef</code> if the name can not be represented in the indicated
+file system.</p>
+</dd>
+<dt>$u-&gt;dir( [$os] )</dt>
+<dd>
+<p>Some systems use a different form for names of directories than for
+plain files. Use this method if you know you want to use the name for a
+directory.</p>
+</dd>
+</dl>
+<p>The <code>URI::file</code> module can be used to map generic file
+names to names suitable for the current system. As such, it can work as
+a nice replacement for the <code>File::Spec</code> module. For instance,
+the following code translates the UNIX-style file name
+<em>Foo/Bar.pm</em> to a name suitable for the local system:</p>
+<p>$file = URI::file-&gt;new("Foo/Bar.pm", "unix")-&gt;file; die "Cant
+map filename Foo/Bar.pm for $^O" unless defined $file; open(FILE, $file)
+|| die "Cant open $file: $!"; # do something with FILE</p>
+<h1>MAPPING NOTES</h1>
+<p>Most computer systems today have hierarchically organized file
+systems. Mapping the names used in these systems to the generic URI
+syntax allows us to work with relative file URIs that behave as they
+should when resolved using the generic algorithm for URIs (specified in
+RFC 3986 &lt;https://www.rfc-editor.org/rfc/rfc3986.html&gt;). Mapping a
+file name to the generic URI syntax involves mapping the path separator
+character to / and encoding any reserved characters that appear in the
+path segments of the file name. If path segments consisting of the
+strings . or .. have a different meaning than what is specified for
+generic URIs, then these must be encoded as well.</p>
+<p>If the file system has device, volume or drive specifications as the
+root of the name space, then it makes sense to map them to the authority
+field of the generic URI syntax. This makes sure that relative URIs can
+not be resolved above them, i.e. generally how relative file names work
+in those systems.</p>
+<p>Another common use of the authority field is to encode the host on
+which this file name is valid. The host name localhost is special and
+generally has the same meaning as a missing or empty authority field.
+This use is in conflict with using it as a device specification, but can
+often be resolved for device specifications having characters not legal
+in plain host names.</p>
+<p>File name to URI mapping in normally not one-to-one. There are
+usually many URIs that map to any given file name. For instance, an
+authority of localhost maps the same as a URI with a missing or empty
+authority.</p>
+<p>Example 1: The Mac classic (Mac OS 9 and earlier) used : as path
+separator, but not in the same way as a generic URI. :foo was a relative
+name. foo:bar was an absolute name. Also, path segments could contain
+the / character as well as the literal . or ... So the mapping looks
+like this:</p>
+<p>Mac classic URI ---------- ------------------- :foo:bar &lt;==&gt;
+foo/bar : &lt;==&gt; ./ ::foo:bar &lt;==&gt; ../foo/bar ::: &lt;==&gt;
+../../ foo:bar &lt;==&gt; file:/foo/bar foo:bar: &lt;==&gt;
+file:/foo/bar/ .. &lt;==&gt; %2E%2E &lt;undef&gt; &lt;== / foo/ &lt;==
+file:/foo%2F ./foo.txt &lt;== file:/.%2Ffoo.txt</p>
+<p>Note that if you want a relative URL, you *must* begin the path with
+a :. Any path that begins with [^:] is treated as absolute.</p>
+<p>Example 2: The UNIX file system is easy to map, as it uses the same
+path separator as URIs, has a single root, and segments of . and .. have
+the same meaning. URIs that have the character \0 or / as part of any
+path segment can not be turned into valid UNIX file names.</p>
+<p>UNIX URI ---------- ------------------ foo/bar &lt;==&gt; foo/bar
+/foo/bar &lt;==&gt; file:/foo/bar /foo/bar &lt;==
+file://localhost/foo/bar file: ==&gt; ./file: &lt;undef&gt; &lt;==
+file:/fo%00/bar / &lt;==&gt; file:/</p>
+<h1>CONFIGURATION VARIABLES</h1>
+<p>The following configuration variables influence how the class and its
+methods behave:</p>
+<dl>
+<dt>%URI::file::OS_CLASS</dt>
+<dd>
+<p>This hash maps OS identifiers to implementation classes. You might
+want to add or modify this if you want to plug in your own file handler
+class. Normally the keys should match the $^O values in use. If there is
+no mapping then the Unix implementation is used.</p>
+</dd>
+<dt>$URI::file::DEFAULT_AUTHORITY</dt>
+<dd>
+<p>This determines what authority string to include in absolute file
+URIs. It defaults to ". If you prefer verbose URIs you might set it to
+be localhost". Setting this value to <code>undef</code> forces behaviour
+compatible to URI v1.31 and earlier. In this mode host names in UNC
+paths and drive letters are mapped to the authority component on
+Windows, while we produce authority-less URIs on Unix.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>URI, File::Spec, perlport</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1995-1998,2004 Gisle Aas.</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

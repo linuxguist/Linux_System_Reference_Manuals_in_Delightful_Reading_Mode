@@ -1,0 +1,447 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>config - OpenSSL CONF library configuration files</p>
+<h1>DESCRIPTION</h1>
+<p>This page documents the syntax of OpenSSL configuration files, as
+parsed by <strong>NCONF_load</strong> (3) and related functions. This
+format is used by many of the OpenSSL commands, and to initialize the
+libraries when used by any application.</p>
+<p>The first part describes the general syntax of the configuration
+files, and subsequent sections describe the semantics of individual
+modules. Other modules are described in <strong>fips_config</strong> (5)
+and <strong>x509v3_config</strong> (5). The syntax for defining ASN.1
+values is described in <strong>ASN1_generate_nconf</strong> (3).</p>
+<h1>SYNTAX</h1>
+<p>A configuration file is a series of lines. Blank lines, and
+whitespace between the elements of a line, have no significance. A
+comment starts with a <strong>#</strong> character; the rest of the line
+is ignored. If the <strong>#</strong> is the first non-space character
+in a line, the entire line is ignored.</p>
+<h2>Directives</h2>
+<p>Two directives can be used to control the parsing of configuration
+files: <strong>.include</strong> and <strong>.pragma</strong>.</p>
+<p>For compatibility with older versions of OpenSSL, an equal sign after
+the directive will be ignored. Older versions will treat it as an
+assignment, so care should be taken if the difference in semantics is
+important.</p>
+<p>A file can include other files using the include syntax:</p>
+<p>.include [=] pathname</p>
+<p>If <strong>pathname</strong> is a simple filename, that file is
+included directly at that point. Included files can have
+<strong>.include</strong> statements that specify other files. If
+<strong>pathname</strong> is a directory, all files within that
+directory that have a <code>.cnf</code> or <code>.conf</code> extension
+will be included. (This is only available on systems with POSIX IO
+support.) Any sub-directories found inside the <strong>pathname</strong>
+are <strong>ignored</strong>. Similarly, if a file is opened while
+scanning a directory, and that file has an <strong>.include</strong>
+directive that specifies a directory, that is also ignored.</p>
+<p>As a general rule, the <strong>pathname</strong> should be an
+absolute path; this can be enforced with the <strong>abspath</strong>
+and <strong>includedir</strong> pragmas, described below. The
+environment variable <strong>OPENSSL_CONF_INCLUDE</strong>, if it
+exists, is prepended to all relative pathnames. If the pathname is still
+relative, it is interpreted based on the current working directory.</p>
+<p>To require all file inclusions to name absolute paths, use the
+following directive:</p>
+<p>.pragma [=] abspath:value</p>
+<p>The default behavior, where the <strong>value</strong> is
+<strong>false</strong> or <strong>off</strong>, is to allow relative
+paths. To require all <strong>.include</strong> pathnames to be absolute
+paths, use a <strong>value</strong> of <strong>true</strong> or
+<strong>on</strong>.</p>
+<p>In these files, the dollar sign, <strong>$</strong>, is used to
+reference a variable, as described below. On some platforms, however, it
+is common to treat <strong>$</strong> as a regular character in symbol
+names. Supporting this behavior can be done with the following
+directive:</p>
+<p>.pragma [=] dollarid:value</p>
+<p>The default behavior, where the <strong>value</strong> is
+<strong>false</strong> or <strong>off</strong>, is to treat the
+dollarsign as indicating a variable name; <code>foo$bar</code> is
+interpreted as <code>foo</code> followed by the expansion of the
+variable <code>bar</code>. If <strong>value</strong> is
+<strong>true</strong> or <strong>on</strong>, then <code>foo$bar</code>
+is a single seven-character name and variable expansions must be
+specified using braces or parentheses.</p>
+<p>.pragma [=] includedir:value</p>
+<p>If a relative pathname is specified in the <strong>.include</strong>
+directive, and the <strong>OPENSSL_CONF_INCLUDE</strong> environment
+variable doesn't exist, then the value of the
+<strong>includedir</strong> pragma, if it exists, is prepended to the
+pathname.</p>
+<h2>Settings</h2>
+<p>A configuration file is divided into a number of <em>sections</em>. A
+section begins with the section name in square brackets, and ends when a
+new section starts, or at the end of the file. The section name can
+consist of alphanumeric characters and underscores. Whitespace between
+the name and the brackets is removed.</p>
+<p>The first section of a configuration file is special and is referred
+to as the <strong>default</strong> section. This section is usually
+unnamed and spans from the start of file until the first named section.
+When a name is being looked up, it is first looked up in the current or
+named section, and then the default section if necessary.</p>
+<p>The environment is mapped onto a section called
+<strong>ENV</strong>.</p>
+<p>Within a section are a series of name/value assignments, described in
+more detail below. As a reminder, the square brackets shown in this
+example are required, not optional:</p>
+<p>[ section ] name1 = This is value1 name2 = Another value ... [
+newsection ] name1 = New value1 name3 = Value 3</p>
+<p>The <strong>name</strong> can contain any alphanumeric characters as
+well as a few punctuation symbols such as <strong>.</strong>
+<strong>,</strong> <strong>;</strong> and <strong>_</strong>. Whitespace
+after the name and before the equal sign is ignored.</p>
+<p>If a name is repeated in the same section, then all but the last
+value are ignored. In certain circumstances, such as with Certificate
+DNs, the same field may occur multiple times. In order to support this,
+commands like <strong>openssl-req</strong> (1) ignore any leading text
+that is preceded with a period. For example:</p>
+<p>1.OU = First OU 2.OU = Second OU</p>
+<p>The <strong>value</strong> consists of the string following the
+<strong>=</strong> character until end of line with any leading and
+trailing whitespace removed.</p>
+<p>The value string undergoes variable expansion. The text
+<code>$var</code> or <code>${var}</code> inserts the value of the named
+variable from the current section. To use a value from another section
+use <code>$section::name</code> or <code>${section::name}</code>. By
+using <code>$ENV::name</code>, the value of the specified environment
+variable will be substituted.</p>
+<p>Variables must be defined before their value is referenced, otherwise
+an error is flagged and the file will not load. This can be worked
+around by specifying a default value in the <strong>default</strong>
+section before the variable is used.</p>
+<p>Any name/value settings in an <strong>ENV</strong> section are
+available to the configuration file, but are not propagated to the
+environment.</p>
+<p>It is an error if the value ends up longer than 64k.</p>
+<p>It is possible to escape certain characters by using a single
+<strong>'</strong> or double <strong>"</strong> quote around the value,
+or using a backslash <strong>\</strong> before the character, By making
+the last character of a line a <strong>\</strong> a
+<strong>value</strong> string can be spread across multiple lines. In
+addition the sequences <strong>\n</strong>, <strong>\r</strong>,
+<strong>\b</strong> and <strong>\t</strong> are recognized.</p>
+<p>The expansion and escape rules as described above that apply to
+<strong>value</strong> also apply to the pathname of the
+<strong>.include</strong> directive.</p>
+<h1>OPENSSL LIBRARY CONFIGURATION</h1>
+<p>The sections below use the informal term <em>module</em> to refer to
+a part of the OpenSSL functionality. This is not the same as the formal
+term <em>FIPS module</em>, for example.</p>
+<p>The OpenSSL configuration looks up the value of
+<strong>openssl_conf</strong> in the default section and takes that as
+the name of a section that specifies how to configure any modules in the
+library. It is not an error to leave any module in its default
+configuration. An application can specify a different name by calling
+<strong>CONF_modules_load_file()</strong>, for example, directly.</p>
+<p>OpenSSL also looks up the value of
+<strong>config_diagnostics</strong>. If this exists and has a nonzero
+numeric value, any error suppressing flags passed to
+<strong>CONF_modules_load()</strong> will be ignored. This is useful for
+diagnosing misconfigurations but its use in production requires
+additional consideration. With this option enabled, a configuration
+error will completely prevent access to a service. Without this option
+and in the presence of a configuration error, access will be allowed but
+the desired configuration will <strong>not</strong> be used.</p>
+<p># These must be in the default section config_diagnostics = 1
+openssl_conf = openssl_init [openssl_init] oid_section = oids providers
+= providers alg_section = evp_properties ssl_conf = ssl_configuration
+engines = engines random = random [oids] ... new oids here ...
+[providers] ... provider stuff here ... [evp_properties] ... EVP
+properties here ... [ssl_configuration] ... SSL/TLS configuration
+properties here ... [engines] ... engine properties here ... [random]
+... random properties here ...</p>
+<p>The semantics of each module are described below. The phrase in the
+initialization section refers to the section identified by the
+<strong>openssl_conf</strong> or other name (given as
+<strong>openssl_init</strong> in the example above). The examples below
+assume the configuration above is used to specify the individual
+sections.</p>
+<h2>ASN.1 Object Identifier Configuration</h2>
+<p>The name <strong>oid_section</strong> in the initialization section
+names the section containing name/value pairs of OID's. The name is the
+short name; the value is an optional long name followed by a comma, and
+the numeric value. While some OpenSSL commands have their own section
+for specifying OID's, this section makes them available to all commands
+and applications.</p>
+<p>[oids] shortName = a very long OID name, 1.2.3.4 newoid1 = 1.2.3.4.1
+some_other_oid = 1.2.3.5</p>
+<p>If a full configuration with the above fragment is in the file
+<em>example.cnf</em>, then the following command line:</p>
+<p>OPENSSL_CONF=example.cnf openssl asn1parse -genstr OID:1.2.3.4.1</p>
+<p>will output:</p>
+<p>0:d=0 hl=2 l= 4 prim: OBJECT :newoid1</p>
+<p>showing that the OID newoid1 has been added as 1.2.3.4.1.</p>
+<h2>Provider Configuration</h2>
+<p>The name <strong>providers</strong> in the initialization section
+names the section containing cryptographic provider configuration. The
+name/value assignments in this section each name a provider, and point
+to the configuration section for that provider. The provider-specific
+section is used to specify how to load the module, activate it, and set
+other parameters.</p>
+<p>Within a provider section, the following names have meaning:</p>
+<dl>
+<dt>identity</dt>
+<dd>
+<p>This is used to specify an alternate name, overriding the default
+name specified in the list of providers. For example: [providers] foo =
+foo_provider [foo_provider] identity = my_fips_module</p>
+</dd>
+<dt>module</dt>
+<dd>
+<p>Specifies the pathname of the module (typically a shared library) to
+load.</p>
+</dd>
+<dt>activate</dt>
+<dd>
+<p>If present, the module is activated. The value assigned to this name
+is not significant.</p>
+</dd>
+</dl>
+<p>All parameters in the section as well as sub-sections are made
+available to the provider.</p>
+<p><em>Default provider and its activation</em></p>
+<p>If no providers are activated explicitly, the default one is
+activated implicitly. See <strong>OSSL_PROVIDER-default</strong> (7) for
+more details.</p>
+<p>If you add a section explicitly activating any other provider(s), you
+most probably need to explicitly activate the default provider,
+otherwise it becomes unavailable in openssl. It may make the system
+remotely unavailable.</p>
+<h2>EVP Configuration</h2>
+<p>The name <strong>alg_section</strong> in the initialization section
+names the section containing algorithmic properties when using the
+<strong>EVP</strong> API.</p>
+<p>Within the algorithm properties section, the following names have
+meaning:</p>
+<dl>
+<dt>default_properties</dt>
+<dd>
+<p>The value may be anything that is acceptable as a property query
+string for <strong>EVP_set_default_properties()</strong>.</p>
+</dd>
+<dt>fips_mode (deprecated)</dt>
+<dd>
+<p>The value is a boolean that can be <strong>yes</strong> or
+<strong>no</strong>. If the value is <strong>yes</strong>, this is
+exactly equivalent to: default_properties = fips=yes If the value is
+<strong>no</strong>, nothing happens. Using this name is deprecated, and
+if used, it must be the only name in the section.</p>
+</dd>
+</dl>
+<h2>SSL Configuration</h2>
+<p>The name <strong>ssl_conf</strong> in the initialization section
+names the section containing the list of SSL/TLS configurations. As with
+the providers, each name in this section identifies a section with the
+configuration for that name. For example:</p>
+<p>[ssl_configuration] server = server_tls_config client =
+client_tls_config system_default = tls_system_default
+[server_tls_config] ... configuration for SSL/TLS servers ...
+[client_tls_config] ... configuration for SSL/TLS clients ...</p>
+<p>The configuration name <strong>system_default</strong> has a special
+meaning. If it exists, it is applied whenever an
+<strong>SSL_CTX</strong> object is created. For example, to impose
+system-wide minimum TLS and DTLS protocol versions:</p>
+<p>[tls_system_default] MinProtocol = TLSv1.2 MinProtocol = DTLSv1.2</p>
+<p>The minimum TLS protocol is applied to <strong>SSL_CTX</strong>
+objects that are TLS-based, and the minimum DTLS protocol to those are
+DTLS-based. The same applies also to maximum versions set with
+<strong>MaxProtocol</strong>.</p>
+<p>Each configuration section consists of name/value pairs that are
+parsed by <strong>SSL_CONF_cmd (3)</strong>, which will be called by
+<strong>SSL_CTX_config()</strong> or <strong>SSL_config()</strong>,
+appropriately. Note that any characters before an initial dot in the
+configuration section are ignored, so that the same command can be used
+multiple times. This probably is most useful for loading different key
+types, as shown here:</p>
+<p>[server_tls_config] RSA.Certificate = server-rsa.pem
+ECDSA.Certificate = server-ecdsa.pem</p>
+<h2>Engine Configuration</h2>
+<p>The name <strong>engines</strong> in the initialization section names
+the section containing the list of ENGINE configurations. As with the
+providers, each name in this section identifies an engine with the
+configuration for that engine. The engine-specific section is used to
+specify how to load the engine, activate it, and set other
+parameters.</p>
+<p>Within an engine section, the following names have meaning:</p>
+<dl>
+<dt>engine_id</dt>
+<dd>
+<p>This is used to specify an alternate name, overriding the default
+name specified in the list of engines. If present, it must be first. For
+example: [engines] foo = foo_engine [foo_engine] engine_id = myfoo</p>
+</dd>
+<dt>dynamic_path</dt>
+<dd>
+<p>This loads and adds an ENGINE from the given path. It is equivalent
+to sending the ctrls <strong>SO_PATH</strong> with the path argument
+followed by <strong>LIST_ADD</strong> with value <strong>2</strong> and
+<strong>LOAD</strong> to the dynamic ENGINE. If this is not the required
+behaviour then alternative ctrls can be sent directly to the dynamic
+ENGINE using ctrl commands.</p>
+</dd>
+<dt>init</dt>
+<dd>
+<p>This specifies whether to initialize the ENGINE. If the value is
+<strong>0</strong> the ENGINE will not be initialized, if the value is
+<strong>1</strong> an attempt is made to initialize the ENGINE
+immediately. If the <strong>init</strong> command is not present then an
+attempt will be made to initialize the ENGINE after all commands in its
+section have been processed.</p>
+</dd>
+<dt>default_algorithms</dt>
+<dd>
+<p>This sets the default algorithms an ENGINE will supply using the
+function <strong>ENGINE_set_default_string()</strong>.</p>
+</dd>
+</dl>
+<p>All other names are taken to be the name of a ctrl command that is
+sent to the ENGINE, and the value is the argument passed with the
+command. The special value <strong>EMPTY</strong> means no value is sent
+with the command. For example:</p>
+<p>[engines] foo = foo_engine [foo_engine] dynamic_path =
+/some/path/fooengine.so some_ctrl = some_value default_algorithms = ALL
+other_ctrl = EMPTY</p>
+<h2>Random Configuration</h2>
+<p>The name <strong>random</strong> in the initialization section names
+the section containing the random number generator settings.</p>
+<p>Within the random section, the following names have meaning:</p>
+<dl>
+<dt>random</dt>
+<dd>
+<p>This is used to specify the random bit generator. For example:
+[random] random = CTR-DRBG The available random bit generators are:</p>
+<dl>
+<dt>CTR-DRBG</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>HASH-DRBG</dt>
+<dd>
+
+</dd>
+<dt>HMAC-DRBG</dt>
+<dd>
+
+</dd>
+</dl>
+</dd>
+<dt>cipher</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This specifies what cipher a <strong>CTR-DRBG</strong> random bit
+generator will use. Other random bit generators ignore this name. The
+default value is <strong>AES-256-CTR</strong>.</p>
+<dl>
+<dt>digest</dt>
+<dd>
+<p>This specifies what digest the <strong>HASH-DRBG</strong> or
+<strong>HMAC-DRBG</strong> random bit generators will use. Other random
+bit generators ignore this name.</p>
+</dd>
+<dt>properties</dt>
+<dd>
+<p>This sets the property query used when fetching the random bit
+generator and any underlying algorithms.</p>
+</dd>
+<dt>seed</dt>
+<dd>
+<p>This sets the randomness source that should be used. By default
+<strong>SEED-SRC</strong> will be used outside of the FIPS provider. The
+FIPS provider uses call backs to access the same randomness sources from
+outside the validated boundary.</p>
+</dd>
+<dt>seed_properties</dt>
+<dd>
+<p>This sets the property query used when fetching the randomness
+source.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>This example shows how to use quoting and escaping.</p>
+<p># This is the default section. HOME = /temp configdir =
+$ENV::HOME/config [ section_one ] # Quotes permit leading and trailing
+whitespace any = " any variable name " other = A string that can \ cover
+several lines \ by including \\ characters message = Hello World\n [
+section_two ] greeting = $section_one::message</p>
+<p>This example shows how to expand environment variables safely. In
+this example, the variable <strong>tempfile</strong> is intended to
+refer to a temporary file, and the environment variable
+<strong>TEMP</strong> or <strong>TMP</strong>, if present, specify the
+directory where the file should be put. Since the default section is
+checked if a variable does not exist, it is possible to set
+<strong>TMP</strong> to default to <em>/tmp</em>, and
+<strong>TEMP</strong> to default to <strong>TMP</strong>.</p>
+<p># These two lines must be in the default section. TMP = /tmp TEMP =
+$ENV::TMP # This can be used anywhere tmpfile =
+${ENV::TEMP}/tmp.filename</p>
+<p>This example shows how to enforce FIPS mode for the application
+<em>sample</em>.</p>
+<p>sample = fips_config [fips_config] alg_section = evp_properties
+[evp_properties] default_properties = "fips=yes"</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt>OPENSSL_CONF</dt>
+<dd>
+<p>The path to the config file, or the empty string for none. Ignored in
+set-user-ID and set-group-ID programs.</p>
+</dd>
+<dt>OPENSSL_ENGINES</dt>
+<dd>
+<p>The path to the engines directory. Ignored in set-user-ID and
+set-group-ID programs.</p>
+</dd>
+<dt>OPENSSL_MODULES</dt>
+<dd>
+<p>The path to the directory with OpenSSL modules, such as providers.
+Ignored in set-user-ID and set-group-ID programs.</p>
+</dd>
+<dt>OPENSSL_CONF_INCLUDE</dt>
+<dd>
+<p>The optional path to prepend to all <strong>.include</strong>
+paths.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>There is no way to include characters using the octal
+<strong>\nnn</strong> form. Strings are all null terminated so nulls
+cannot form part of the value.</p>
+<p>The escaping isn't quite right: if you want to use sequences like
+<strong>\n</strong> you can't use any quote escaping on the same
+line.</p>
+<p>The limit that only one directory can be opened and read at a time
+can be considered a bug and should be fixed.</p>
+<h1>HISTORY</h1>
+<p>An undocumented API, <strong>NCONF_WIN32()</strong>, used a slightly
+different set of parsing rules there were intended to be tailored to the
+Microsoft Windows platform. Specifically, the backslash character was
+not an escape character and could be used in pathnames, only the
+double-quote character was recognized, and comments began with a
+semi-colon. This function was deprecated in OpenSSL 3.0; applications
+with configuration files using that syntax will have to be modified.</p>
+<h1>SEE ALSO</h1>
+<p><strong>openssl-x509</strong> (1), <strong>openssl-req</strong> (1),
+<strong>openssl-ca</strong> (1),
+<strong>openssl-fipsinstall</strong> (1),
+<strong>ASN1_generate_nconf</strong> (3),
+<strong>EVP_set_default_properties</strong> (3),
+<strong>CONF_modules_load</strong> (3),
+<strong>CONF_modules_load_file</strong> (3),
+<strong>fips_config</strong> (5), and
+<strong>x509v3_config</strong> (5).</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

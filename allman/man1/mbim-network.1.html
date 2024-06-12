@@ -1,0 +1,104 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mbim-network - Simple network management of MBIM devices</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mbim-network</strong> [<em>OPTIONS</em>] [<em>DEVICE</em>]
+[<em>COMMAND</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Simple network management of MBIM devices</p>
+<h2>Commands:</h2>
+<dl>
+<dt>start</dt>
+<dd>
+<p>Start network connection</p>
+</dd>
+<dt>stop</dt>
+<dd>
+<p>Stop network connection</p>
+</dd>
+<dt>status</dt>
+<dd>
+<p>Query network connection status</p>
+</dd>
+</dl>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>--profile</strong>=<em>[PATH]</em></dt>
+<dd>
+<p>Use the profile in the specified path</p>
+</dd>
+<dt><strong>--help</strong>, <strong>-h</strong></dt>
+<dd>
+<p>Show help options</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Show version</p>
+</dd>
+</dl>
+<p>Notes:</p>
+<blockquote>
+<p>1) [DEVICE] is given as the full path to the cdc-wdm character
+device, e.g.:</p>
+</blockquote>
+<blockquote>
+<p><em>/dev/cdc-wdm0</em></p>
+</blockquote>
+<blockquote>
+<p>2) The mbim-network script requires a profile to work. Unless
+explicitly specified with `--profile', the file is assumed to be
+available in the following path:</p>
+</blockquote>
+<blockquote>
+<p><em>/etc/mbim-network.conf</em></p>
+</blockquote>
+<blockquote>
+<p>3) The APN to use should be configured in the profile, in the
+following way (e.g. assuming APN is called 'internet'):</p>
+</blockquote>
+<blockquote>
+<p>APN=internet</p>
+</blockquote>
+<blockquote>
+<p>4) Optional APN user/password strings may be given in the following
+way:</p>
+</blockquote>
+<blockquote>
+<p>APN_USER=user APN_PASS=password</p>
+</blockquote>
+<blockquote>
+<p>5) If APN user/password is specified, the authentication protocol to
+use (one of PAP, CHAP or MSCHAPV2) must also be specified in the
+following way:</p>
+</blockquote>
+<blockquote>
+<p>APN_AUTH=protocol</p>
+</blockquote>
+<blockquote>
+<p>6) If you want to instruct the mbim-network script to use the
+mbim-proxy setup, you can do so by configuring the following line in the
+profile:</p>
+</blockquote>
+<blockquote>
+<p>PROXY=yes</p>
+</blockquote>
+<blockquote>
+<p>7) Once the mbim-network script reports a successful connection you
+still need to run a DHCP client on the associated WWAN network
+interface.</p>
+</blockquote>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2013-2021 Aleksander Morgado License GPLv2+: GNU GPL
+version 2 or later &lt;http://gnu.org/licenses/gpl-2.0.html&gt;<br />
+This is free software: you are free to change and redistribute it. There
+is NO WARRANTY, to the extent permitted by law.</p>
+<h1>SEE ALSO</h1>
+<p>The full documentation for <strong>mbim-network</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>mbim-network</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info mbim-network</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

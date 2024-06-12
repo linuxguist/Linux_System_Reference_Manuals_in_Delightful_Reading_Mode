@@ -1,0 +1,135 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>spd-say - send text-to-speech output request to speech-dispatcher</p>
+<h1>SYNOPSIS</h1>
+<p><strong>spd-say</strong> [<em>options</em>] <em>"some text"</em></p>
+<h1>DESCRIPTION</h1>
+<p>send text-to-speech output request to speech-dispatcher</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-r</strong>, <strong>--rate</strong></dt>
+<dd>
+<p>Set the rate of the speech (between <strong>-100</strong> and +100,
+default: 0)</p>
+</dd>
+<dt><strong>-p</strong>, <strong>--pitch</strong></dt>
+<dd>
+<p>Set the pitch of the speech (between <strong>-100</strong> and +100,
+default: 0)</p>
+</dd>
+<dt><strong>-R</strong>, <strong>--pitch-range</strong></dt>
+<dd>
+<p>Set the pitch range of the speech (between <strong>-100</strong> and
++100, default: 0)</p>
+</dd>
+<dt><strong>-i</strong>, <strong>--volume</strong></dt>
+<dd>
+<p>Set the volume (intensity) of the speech (between
+<strong>-100</strong> and +100, default: 0)</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--output-module</strong></dt>
+<dd>
+<p>Set the output module</p>
+</dd>
+<dt><strong>-O</strong>, <strong>--list-output-modules</strong></dt>
+<dd>
+<p>Get the list of output modules</p>
+</dd>
+<dt><strong>-I</strong>, <strong>--sound-icon</strong></dt>
+<dd>
+<p>Play the sound icon</p>
+</dd>
+<dt><strong>-l</strong>, <strong>--language</strong></dt>
+<dd>
+<p>Set the language (ISO code)</p>
+</dd>
+<dt><strong>-t</strong>, <strong>--voice-type</strong></dt>
+<dd>
+<p>Set the preferred voice type (male1, male2, male3, female1, female2
+female3, child_male, child_female)</p>
+</dd>
+<dt><strong>-L</strong>, <strong>--list-synthesis-voices</strong></dt>
+<dd>
+<p>Get the list of synthesis voices</p>
+</dd>
+<dt><strong>-y</strong>, <strong>--synthesis-voice</strong></dt>
+<dd>
+<p>Set the synthesis voice</p>
+</dd>
+<dt><strong>-c</strong>, <strong>--character</strong></dt>
+<dd>
+<p>Speak the character</p>
+</dd>
+<dt><strong>-k</strong>, <strong>--key</strong></dt>
+<dd>
+<p>Speak the key</p>
+</dd>
+<dt><strong>-m</strong>, <strong>--punctuation-mode</strong></dt>
+<dd>
+<p>Set the punctuation mode (none, some, most, all)</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--spelling</strong></dt>
+<dd>
+<p>Spell the message</p>
+</dd>
+<dt><strong>-x</strong>, <strong>--ssml</strong></dt>
+<dd>
+<p>Set SSML mode on (default: off)</p>
+</dd>
+<dt><strong>-e</strong>, <strong>--pipe-mode</strong></dt>
+<dd>
+<p>Pipe from stdin to stdout plus Speech Dispatcher</p>
+</dd>
+<dt><strong>-P</strong>, <strong>--priority</strong></dt>
+<dd>
+<p>Set priority of the message (important, message, text, notification,
+progress;default: text)</p>
+</dd>
+<dt><strong>-N</strong>, <strong>--application-name</strong></dt>
+<dd>
+<p>Set the application name used to establish the connection to
+specified string value (default: spd-say)</p>
+</dd>
+<dt><strong>-n</strong>, <strong>--connection-name</strong></dt>
+<dd>
+<p>Set the connection name used to establish the connection to specified
+string value (default: main)</p>
+</dd>
+<dt><strong>-w</strong>, <strong>--wait</strong></dt>
+<dd>
+<p>Wait till the message is spoken or discarded</p>
+</dd>
+<dt><strong>-S</strong>, <strong>--stop</strong></dt>
+<dd>
+<p>Stop speaking the message being spoken</p>
+</dd>
+<dt><strong>-C</strong>, <strong>--cancel</strong></dt>
+<dd>
+<p>Cancel all messages</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version and copyright info</p>
+</dd>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Print this info</p>
+</dd>
+</dl>
+<p>Please report bugs to speechd-discuss@nongnu.org</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2002-2012 Brailcom, o.p.s.<br />
+This is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version. Please see COPYING for more details.</p>
+<h1>SEE ALSO</h1>
+<p>The full documentation for <strong>spd-say</strong> is maintained as
+a Texinfo manual. If the <strong>info</strong> and
+<strong>spd-say</strong> programs are properly installed at your site,
+the command</p>
+<blockquote>
+<p><strong>info spd-say</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

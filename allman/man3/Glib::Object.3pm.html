@@ -1,0 +1,354 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::Object - Bindings for GObject</p>
+<h1>DESCRIPTION</h1>
+<p>GObject is the base object class provided by the gobject library. It
+provides object properties with a notification system, and emittable
+signals.</p>
+<p>Glib::Object is the corresponding Perl object class. Glib::Objects
+are represented by blessed hash references, with a magical connection to
+the underlying C object.</p>
+<h2>get and set</h2>
+<p>Some subclasses of <code>Glib::Object</code> override
+<code>get</code> and <code>set</code> with methods more useful to the
+subclass, for example <code>Gtk2::TreeModel</code> getting and setting
+row contents.</p>
+<p>This is usually done when the subclass has no object properties. Any
+object properties it or a further subclass does have can always be
+accessed with <code>get_property</code> and <code>set_property</code>
+(together with <code>find_property</code> and
+<code>list_properties</code> to enquire about them).</p>
+<p>Generic code for any object subclass can use the names
+<code>get_property</code> and <code>set_property</code> to be sure of
+getting the object properties as such.</p>
+<h1>HIERARCHY</h1>
+<p>Glib::Object</p>
+<h1>METHODS</h1>
+<h2>object = $class-&gt;<strong>new</strong> (...)</h2>
+<ul>
+<li><p>... (list) key/value pairs, property values to set on
+creation</p></li>
+</ul>
+<p>Instantiate a Glib::Object of type <em><code>$class</code></em>. Any
+key/value pairs in <em>...</em> are used to set properties on the new
+object; see <code>set</code>. This is designed to be inherited by
+Perl-derived subclasses (see Glib::Object::Subclass), but you can
+actually use it to create any GObject-derived type.</p>
+<h2>scalar = Glib::Object-&gt;<strong>new_from_pointer</strong>
+($pointer, $noinc=FALSE)</h2>
+<ul>
+<li><p><code>$pointer</code> (unsigned) a C pointer value as an
+integer.</p></li>
+<li><p><code>$noinc</code> (boolean) if true, do not increase the
+GObject's reference count when creating the Perl wrapper. this typically
+means that when the Perl wrapper will own the object. in general you
+don't want to do that, so the default is false.</p></li>
+</ul>
+<p>Create a Perl Glib::Object reference for the C object pointed to by
+<em><code>$pointer</code></em>. You should need this <em>very</em>
+rarely; it's intended to support foreign objects.</p>
+<p>NOTE: the cast from arbitrary integer to GObject may result in a core
+dump without warning, because the type-checking macro
+<strong>G_OBJECT()</strong> attempts to dereference the pointer to find
+a GTypeClass structure, and there is no portable way to validate the
+pointer.</p>
+<h2>unsigned = $object-&gt;<strong>get_data</strong> ($key)</h2>
+<ul>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Fetch the integer stored under the object data key
+<em><code>$key</code></em>. These values do not have types; type
+conversions must be done manually. See <code>set_data</code>.</p>
+<h2>$object-&gt;<strong>set_data</strong> ($key, $data)</h2>
+<ul>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+</ul>
+<p>GObject provides an arbitrary data mechanism that assigns unsigned
+integers to key names. Functionality overlaps with the hash used as the
+Perl object instance, so we strongly recommend you use hash keys for
+your data storage. The GObject data values cannot store type
+information, so they are not safe to use for anything but integer
+values, and you really should use this method only if you know what you
+are doing.</p>
+<h2>pspec or undef =
+$object_or_class_name-&gt;<strong>find_property</strong> ($name)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+</ul>
+<p>Find the definition of object property <em><code>$name</code></em>
+for <em><code>$object_or_class_name</code></em>. Return
+<code>undef</code> if no such property. For the returned data see
+Glib::Object::list_properties.</p>
+<h2>$object-&gt;<strong>freeze_notify</strong></h2>
+<p>Stops emission of notify signals on <em><code>$object</code></em>.
+The signals are queued until <code>thaw_notify</code> is called on
+<em><code>$object</code></em>.</p>
+<h2>$object-&gt;<strong>get</strong> (...)</h2>
+<ul>
+<li><p>... (list) list of property names</p></li>
+</ul>
+<p>Alias for <code>get_property</code> (see get and set above).</p>
+<h2>$object-&gt;<strong>set</strong> (key =&gt; $value, ...)</h2>
+<ul>
+<li><p>... (list) key/value pairs</p></li>
+</ul>
+<p>Alias for <code>set_property</code> (see get and set above).</p>
+<h2>list =
+$object_or_class_name-&gt;<strong>list_properties</strong></h2>
+<p>List all the object properties for
+<em><code>$object_or_class_name</code></em>; returns them as a list of
+hashes, containing these keys:</p>
+<dl>
+<dt>name</dt>
+<dd>
+<p>The name of the property</p>
+</dd>
+<dt>type</dt>
+<dd>
+<p>The type of the property</p>
+</dd>
+<dt>owner_type</dt>
+<dd>
+<p>The type that owns the property</p>
+</dd>
+<dt>descr</dt>
+<dd>
+<p>The description of the property</p>
+</dd>
+<dt>flags</dt>
+<dd>
+<p>The Glib::ParamFlags of the property</p>
+</dd>
+</dl>
+<h2>$object-&gt;<strong>notify</strong> ($property_name)</h2>
+<ul>
+<li><p><code>$property_name</code> (string)</p></li>
+</ul>
+<p>Emits a notify signal for the property
+<em><code>$property</code></em> on <em><code>$object</code></em>.</p>
+<h2>gpointer = $object-&gt;<strong>get_pointer</strong></h2>
+<p>Complement of <code>new_from_pointer</code>.</p>
+<h2>$object-&gt;<strong>get_property</strong> (...)</h2>
+<p>Fetch and return the values for the object properties named in
+<em>...</em>.</p>
+<h2>$object-&gt;<strong>set_property</strong> (key =&gt; $value,
+...)</h2>
+<p>Set object properties.</p>
+<h2>unsigned =
+$object_or_class_name-&gt;<strong>signal_add_emission_hook</strong>
+($detailed_signal, $hook_func, $hook_data=undef)</h2>
+<ul>
+<li><p><code>$detailed_signal</code> (string) of the form
+signal-name::detail</p></li>
+<li><p><code>$hook_func</code> (subroutine)</p></li>
+<li><p><code>$hook_data</code> (scalar)</p></li>
+</ul>
+<p>Add an emission hook for a signal. The hook will be called for any
+emission of that signal, independent of the instance. This is possible
+only for signals which don't have the <code>G_SIGNAL_NO_HOOKS</code>
+flag set.</p>
+<p>The <em><code>$hook_func</code></em> should be reference to a
+subroutine that looks something like this:</p>
+<p>sub emission_hook { my ($invocation_hint, $parameters, $hook_data) =
+@_; # $parameters is a reference to the @_ to be passed to # signal
+handlers, including the instance as $parameters-&gt;[0]. return
+$stay_connected; # boolean }</p>
+<p>This function returns an id that can be used with
+<code>remove_emission_hook</code>.</p>
+<p>Since 1.100.</p>
+<h2>list = $instance-&gt;<strong>signal_chain_from_overridden</strong>
+(...)</h2>
+<ul>
+<li><p>... (list)</p></li>
+</ul>
+<p>Chain up to an overridden class closure; it is only valid to call
+this from a class closure override.</p>
+<p>Translation: because of various details in how GObjects are
+implemented, the way to override a virtual method on a GObject is to
+provide a new class closure, or default handler for a signal. This
+happens when a class is registered with the type system (see
+Glib::Type::register and Glib::Object::Subclass). When called from
+inside such an override, this method runs the overridden class closure.
+This is equivalent to calling <code>$self</code>-&gt;SUPER::$method (@_)
+in normal Perl objects.</p>
+<h2>unsigned = $instance-&gt;<strong>signal_connect</strong>
+($detailed_signal, $callback, $data=undef)</h2>
+<ul>
+<li><p><code>$detailed_signal</code> (string)</p></li>
+<li><p><code>$callback</code> (subroutine)</p></li>
+<li><p><code>$data</code> (scalar) arbitrary data to be passed to each
+invocation of <em>callback</em></p></li>
+</ul>
+<p>Register <em>callback</em> to be called on each emission of
+<em><code>$detailed_signal</code></em>. Returns an identifier that may
+be used to remove this handler with
+<code>$object-&gt;signal_handler_disconnect</code>.</p>
+<h2>unsigned = $instance-&gt;<strong>signal_connect_after</strong>
+($detailed_signal, $callback, $data=undef)</h2>
+<ul>
+<li><p><code>$detailed_signal</code> (string)</p></li>
+<li><p><code>$callback</code> (scalar)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+</ul>
+<p>Like <code>signal_connect</code>, except that
+<em><code>$callback</code></em> will be run after the default
+handler.</p>
+<h2>unsigned = $instance-&gt;<strong>signal_connect_swapped</strong>
+($detailed_signal, $callback, $data=undef)</h2>
+<ul>
+<li><p><code>$detailed_signal</code> (string)</p></li>
+<li><p><code>$callback</code> (scalar)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+</ul>
+<p>Like <code>signal_connect</code>, except that
+<em><code>$data</code></em> and <em><code>$object</code></em> will be
+swapped on invocation of <em><code>$callback</code></em>.</p>
+<h2>retval = $object-&gt;<strong>signal_emit</strong> ($name, ...)</h2>
+<ul>
+<li><p><code>$name</code> (string) the name of the signal</p></li>
+<li><p>... (list) any arguments to pass to handlers.</p></li>
+</ul>
+<p>Emit the signal <em>name</em> on <em><code>$object</code></em>. The
+number and types of additional arguments in <em>...</em> are determined
+by the signal; similarly, the presence and type of return value depends
+on the signal being emitted.</p>
+<h2>$ihint =
+$instance-&gt;<strong>signal_get_invocation_hint</strong></h2>
+<p>Get a reference to a hash describing the innermost signal currently
+active on <code>$instance</code>. Returns undef if no signal emission is
+active. This invocation hint is the same object passed to signal
+emission hooks, and contains these keys:</p>
+<dl>
+<dt>signal_name</dt>
+<dd>
+<p>The name of the signal being emitted.</p>
+</dd>
+<dt>detail</dt>
+<dd>
+<p>The detail passed on for this emission. For example, a
+<code>notify</code> signal will have the property name as the
+detail.</p>
+</dd>
+<dt>run_type</dt>
+<dd>
+<p>The current stage of signal emission, one of run-first, run-last, or
+run-cleanup.</p>
+</dd>
+</dl>
+<h2>$object-&gt;<strong>signal_handler_block</strong> ($handler_id)</h2>
+<ul>
+<li><p><code>$handler_id</code> (unsigned)</p></li>
+</ul>
+<h2>$object-&gt;<strong>signal_handler_disconnect</strong>
+($handler_id)</h2>
+<ul>
+<li><p><code>$handler_id</code> (unsigned)</p></li>
+</ul>
+<h2>boolean = $object-&gt;<strong>signal_handler_is_connected</strong>
+($handler_id)</h2>
+<ul>
+<li><p><code>$handler_id</code> (unsigned)</p></li>
+</ul>
+<h2>$object-&gt;<strong>signal_handler_unblock</strong>
+($handler_id)</h2>
+<ul>
+<li><p><code>$handler_id</code> (unsigned)</p></li>
+</ul>
+<h2>integer =
+$instance-&gt;<strong>signal_handlers_block_by_func</strong> ($func,
+$data=undef)</h2>
+<ul>
+<li><p><code>$func</code> (subroutine) function to block</p></li>
+<li><p><code>$data</code> (scalar) data to match, ignored if
+undef</p></li>
+</ul>
+<h2>integer =
+$instance-&gt;<strong>signal_handlers_disconnect_by_func</strong>
+($func, $data=undef)</h2>
+<ul>
+<li><p><code>$func</code> (subroutine) function to block</p></li>
+<li><p><code>$data</code> (scalar) data to match, ignored if
+undef</p></li>
+</ul>
+<h2>integer =
+$instance-&gt;<strong>signal_handlers_unblock_by_func</strong> ($func,
+$data=undef)</h2>
+<ul>
+<li><p><code>$func</code> (subroutine) function to block</p></li>
+<li><p><code>$data</code> (scalar) data to match, ignored if
+undef</p></li>
+</ul>
+<h2>scalar = $object_or_class_name-&gt;<strong>signal_query</strong>
+($name)</h2>
+<ul>
+<li><p><code>$name</code> (string)</p></li>
+</ul>
+<p>Look up information about the signal <em><code>$name</code></em> on
+the instance type <em><code>$object_or_class_name</code></em>, which may
+be either a Glib::Object or a package name.</p>
+<p>See also <code>Glib::Type::list_signals</code>, which returns the
+same kind of hash refs as this does.</p>
+<p>Since 1.080.</p>
+<h2>$object_or_class_name-&gt;<strong>signal_remove_emission_hook</strong>
+($signal_name, $hook_id)</h2>
+<ul>
+<li><p><code>$signal_name</code> (string)</p></li>
+<li><p><code>$hook_id</code> (unsigned)</p></li>
+</ul>
+<p>Remove a hook that was installed by
+<code>add_emission_hook</code>.</p>
+<p>Since 1.100.</p>
+<h2>$instance-&gt;<strong>signal_stop_emission_by_name</strong>
+($detailed_signal)</h2>
+<ul>
+<li><p><code>$detailed_signal</code> (string)</p></li>
+</ul>
+<h2>$object-&gt;<strong>thaw_notify</strong></h2>
+<p>Reverts the effect of a previous call to <code>freeze_notify</code>.
+This causes all queued notify signals on <em><code>$object</code></em>
+to be emitted.</p>
+<h2>boolean = Glib::Object-&gt;<strong>set_threadsafe</strong>
+($threadsafe)</h2>
+<ul>
+<li><p><code>$threadsafe</code> (boolean)</p></li>
+</ul>
+<p>Enables/disables threadsafe gobject tracking. Returns whether or not
+tracking will be successful and thus whether using perl ithreads will be
+possible.</p>
+<h2>$object-&gt;<strong>tie_properties</strong> ($all=FALSE)</h2>
+<ul>
+<li><p><code>$all</code> (boolean) if FALSE (or omitted) tie only
+properties for this object's class, if TRUE tie the properties of this
+and all parent classes.</p></li>
+</ul>
+<p>A special method available to Glib::Object derivatives, it uses
+perl's tie facilities to associate hash keys with the properties of the
+object. For example:</p>
+<p>$button-&gt;tie_properties; # equivilent to $button-&gt;set (label
+=&gt; Hello World); $button-&gt;{label} = Hello World; print "the label
+is: ".$button-&gt;{label}."\n";</p>
+<p>Attempts to write to read-only properties will croak, reading a
+write-only property will return '[write-only]'.</p>
+<p>Care must be taken when using tie_properties with objects of types
+created with Glib::Object::Subclass as there may be clashes with
+existing hash keys that could cause infinite loops. The solution is to
+use custom property get/set functions to alter the storage locations of
+the properties.</p>
+<h1>SIGNALS</h1>
+<dl>
+<dt>notify (Glib::Object, Glib::ParamSpec)</dt>
+<dd>
+
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>Glib</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

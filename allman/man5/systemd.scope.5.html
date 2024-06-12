@@ -1,0 +1,123 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd.scope - Scope unit configuration</p>
+<h1>SYNOPSIS</h1>
+<p><em>scope</em>.scope</p>
+<h1>DESCRIPTION</h1>
+<p>Scope units are not configured via unit configuration files, but are
+only created programmatically using the bus interfaces of systemd. They
+are named similar to filenames. A unit whose name ends in ".scope"
+refers to a scope unit. Scopes units manage a set of system processes.
+Unlike service units, scope units manage externally created processes,
+and do not fork off processes on its own.</p>
+<p>The main purpose of scope units is grouping worker processes of a
+system service for organization and for managing resources.</p>
+<p><strong>systemd-run</strong> <strong>--scope</strong> may be used to
+easily launch a command in a new scope unit from the command line.</p>
+<p>See the <strong>New Control Group Interfaces</strong>[1] for an
+introduction on how to make use of scope units from programs.</p>
+<p>Note that, unlike service units, scope units have no "main" process:
+all processes in the scope are equivalent. The lifecycle of the scope
+unit is thus not bound to the lifetime of one specific process, but to
+the existence of at least one process in the scope. This also means that
+the exit statuses of these processes are not relevant for the scope unit
+failure state. Scope units may still enter a failure state, for example
+due to resource exhaustion or stop timeouts being reached, but not due
+to programs inside of them terminating uncleanly. Since processes
+managed as scope units generally remain children of the original process
+that forked them off, it is also the job of that process to collect
+their exit statuses and act on them as needed.</p>
+<h1>AUTOMATIC DEPENDENCIES</h1>
+<h2>Implicit Dependencies</h2>
+<p>Implicit dependencies may be added as result of resource control
+parameters as documented in
+<strong>systemd.resource-control</strong>(5).</p>
+<h2>Default Dependencies</h2>
+<p>The following dependencies are added unless
+<em>DefaultDependencies=no</em> is set:</p>
+<blockquote>
+<p>·</p>
+<p>Scope units will automatically have dependencies of type
+<em>Conflicts=</em> and <em>Before=</em> on shutdown.target. These
+ensure that scope units are removed prior to system shutdown. Only scope
+units involved with early boot or late system shutdown should disable
+<em>DefaultDependencies=</em> option.</p>
+</blockquote>
+<h1>OPTIONS</h1>
+<p>Scope files may include a [Unit] section, which is described in
+<strong>systemd.unit</strong>(5).</p>
+<p>Scope files may include a [Scope] section, which carries information
+about the scope and the units it contains. A number of options that may
+be used in this section are shared with other unit types. These options
+are documented in <strong>systemd.kill</strong>(5) and
+<strong>systemd.resource-control</strong>(5). The options specific to
+the [Scope] section of scope units are the following:</p>
+<p><em>OOMPolicy=</em></p>
+<blockquote>
+<p>Configure the out-of-memory (OOM) kernel killer policy. Note that the
+userspace OOM killer <strong>systemd-oomd.service</strong>(8) is a more
+flexible solution that aims to prevent out-of-memory situations for the
+userspace, not just the kernel.</p>
+<p>On Linux, when memory becomes scarce to the point that the kernel has
+trouble allocating memory for itself, it might decide to kill a running
+process in order to free up memory and reduce memory pressure. This
+setting takes one of <strong>continue</strong>, <strong>stop</strong> or
+<strong>kill</strong>. If set to <strong>continue</strong> and a process
+of the service is killed by the OOM killer, this is logged but the unit
+continues running. If set to <strong>stop</strong> the event is logged
+but the unit is terminated cleanly by the service manager. If set to
+<strong>kill</strong> and one of the units processes is killed by the
+OOM killer the kernel is instructed to kill all remaining processes of
+the unit too, by setting the memory.oom.group attribute to
+<strong>1</strong>; also see <strong>kernel
+documentation</strong>[2].</p>
+<p>Defaults to the setting <em>DefaultOOMPolicy=</em> in
+<strong>systemd-system.conf</strong>(5) is set to, except for units
+where <em>Delegate=</em> is turned on, where it defaults to
+<strong>continue</strong>.</p>
+<p>Use the <em>OOMScoreAdjust=</em> setting to configure whether
+processes of the unit shall be considered preferred or less preferred
+candidates for process termination by the Linux OOM killer logic. See
+<strong>systemd.exec</strong>(5) for details.</p>
+<p>This setting also applies to <strong>systemd-oomd</strong>. Similarly
+to the kernel OOM kills, this setting determines the state of the unit
+after <strong>systemd-oomd</strong> kills a cgroup associated with
+it.</p>
+</blockquote>
+<p><em>RuntimeMaxSec=</em></p>
+<blockquote>
+<p>Configures a maximum time for the scope to run. If this is used and
+the scope has been active for longer than the specified time it is
+terminated and put into a failure state. Pass "infinity" (the default)
+to configure no runtime limit.</p>
+</blockquote>
+<p><em>RuntimeRandomizedExtraSec=</em></p>
+<blockquote>
+<p>This option modifies <em>RuntimeMaxSec=</em> by increasing the
+maximum runtime by an evenly distributed duration between 0 and the
+specified value (in seconds). If <em>RuntimeMaxSec=</em> is unspecified,
+then this feature will be disabled.</p>
+</blockquote>
+<p>Check <strong>systemd.unit</strong>(5),
+<strong>systemd.exec</strong>(5), and <strong>systemd.kill</strong>(5)
+for more settings.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>systemd-run</strong>(1),
+<strong>systemd.unit</strong>(5),
+<strong>systemd.resource-control</strong>(5),
+<strong>systemd.service</strong>(5),
+<strong>systemd.directives</strong>(7).</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>New Control Group Interfaces</p>
+<p>https://www.freedesktop.org/wiki/Software/systemd/ControlGroupInterface</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>kernel documentation</p>
+<p>https://docs.kernel.org/admin-guide/cgroup-v2.html</p>
+</dd>
+</dl>

@@ -1,0 +1,138 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>org.freedesktop.timedate1 - The D-Bus interface of
+systemd-timedated</p>
+<h1>INTRODUCTION</h1>
+<p><strong>systemd-timedated.service</strong>(8) is a system service
+that can be used to control the system time and related settings. This
+page describes the D-Bus interface.</p>
+<h1>THE D-BUS API</h1>
+<p>The service exposes the following interfaces on the bus:</p>
+<blockquote>
+<pre><code>node /org/freedesktop/timedate1 {
+  interface org.freedesktop.timedate1 {
+    methods:
+      SetTime(in  x usec_utc,
+              in  b relative,
+              in  b interactive);
+      SetTimezone(in  s timezone,
+                  in  b interactive);
+      SetLocalRTC(in  b local_rtc,
+                  in  b fix_system,
+                  in  b interactive);
+      SetNTP(in  b use_ntp,
+             in  b interactive);
+      ListTimezones(out as timezones);
+    properties:
+      readonly s Timezone = ...;
+      readonly b LocalRTC = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+      readonly b CanNTP = ...;
+      readonly b NTP = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+      readonly b NTPSynchronized = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+      readonly t TimeUSec = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+      readonly t RTCTimeUSec = ...;
+  };
+  interface org.freedesktop.DBus.Peer { ... };
+  interface org.freedesktop.DBus.Introspectable { ... };
+  interface org.freedesktop.DBus.Properties { ... };
+};
+    </code></pre>
+</blockquote>
+<h2>Methods</h2>
+<p>Use <strong>SetTime()</strong> to change the system clock. Pass a
+value of microseconds since the UNIX epoch (1 Jan 1970 UTC). If
+<em>relative</em> is true, the passed usec value will be added to the
+current system time. If it is false, the current system time will be set
+to the passed usec value. If the system time is set with this method,
+the RTC will be updated as well.</p>
+<p>Use <strong>SetTimezone()</strong> to set the system timezone. Pass a
+value like "Europe/Berlin" to set the timezone. Valid timezones are
+listed in /usr/share/zoneinfo/zone.tab. If the RTC is configured to be
+maintained in local time, it will be updated accordingly.</p>
+<p>Use <strong>SetLocalRTC()</strong> to control whether the RTC is in
+local time or UTC. It is strongly recommended to maintain the RTC in
+UTC. However, some OSes (Windows) maintain the RTC in local time, which
+might make it necessary to enable this feature. Note that this might
+create various problems as daylight changes could be missed. If
+<em>fix_system</em> is "true", the time from the RTC is read again and
+the system clock is adjusted according to the new setting. If
+<em>fix_system</em> is "false", the system time is written to the RTC
+taking the new setting into account. Use <em>fix_system=true</em> in
+installers and livecds where the RTC is probably more reliable than the
+system time. Use <em>fix_system=false</em> in configuration UIs that are
+run during normal operation and where the system clock is probably more
+reliable than the RTC.</p>
+<p>Use <strong>SetNTP()</strong> to control whether the system clock is
+synchronized with the network using systemd-timesyncd. This will enable
+and start or disable and stop the chosen time synchronization
+service.</p>
+<p><strong>ListTimezones()</strong> returns a list of time zones known
+on the local system as an array of names ("["Africa/Abidjan",
+"Africa/Accra", ..., "UTC"]").</p>
+<h2>Properties</h2>
+<p><em>Timezone</em> shows the currently configured time zone.
+<em>LocalRTC</em> shows whether the RTC is configured to use UTC
+(false), or the local time zone (true). <em>CanNTP</em> shows whether a
+service to perform time synchronization over the network is available,
+and <em>NTP</em> shows whether such a service is enabled.</p>
+<p><em>NTPSynchronized</em> shows whether the kernel reports the time as
+synchronized (c.f. <strong>adjtimex</strong>(3)). <em>TimeUSec</em> and
+<em>RTCTimeUSec</em> show the current time on the system and in the RTC.
+The purpose of those three properties is to allow remote clients to
+access this information over D-Bus. Local clients can access the
+information directly.</p>
+<p>Whenever the <em>Timezone</em> and <em>LocalRTC</em> settings are
+changed via the daemon, <strong>PropertyChanged</strong> signals are
+sent out to which clients can subscribe.</p>
+<p>Note that this service will not inform you about system time changes.
+Use <strong>timerfd</strong>(3) with <strong>CLOCK_REALTIME</strong> and
+<strong>TFD_TIMER_CANCEL_ON_SET</strong> for that.</p>
+<h2>Security</h2>
+<p>The <em>interactive</em> boolean parameters can be used to control
+whether <strong>polkit</strong>[1] should interactively ask the user for
+authentication credentials if required.</p>
+<p>The polkit action for <strong>SetTimezone()</strong> is
+org.freedesktop.timedate1.set-timezone. For
+<strong>SetLocalRTC()</strong> it is
+org.freedesktop.timedate1.set-local-rtc, for <strong>SetTime()</strong>
+it is org.freedesktop.timedate1.set-time and for
+<strong>SetNTP()</strong> it is org.freedesktop.timedate1.set-ntp.
+<strong>ListTimezones()</strong> does not require any privileges.</p>
+<h1>EXAMPLES</h1>
+<p><strong>Example 1. Introspect org.freedesktop.timedate1 on the
+bus</strong></p>
+<blockquote>
+<pre><code>$ gdbus introspect --system \
+  --dest org.freedesktop.timedate1 \
+  --object-path /org/freedesktop/timedate1
+      </code></pre>
+</blockquote>
+<h1>VERSIONING</h1>
+<p>These D-Bus interfaces follow <strong>the usual interface versioning
+guidelines</strong>[2].</p>
+<h1>SEE ALSO</h1>
+<p><strong>More information on how the system clock and RTC
+interact</strong>[3]</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>polkit</p>
+<p>https://www.freedesktop.org/software/polkit/docs/latest/</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>the usual interface versioning guidelines</p>
+<p>https://0pointer.de/blog/projects/versioning-dbus.html</p>
+</dd>
+<dt> 3.</dt>
+<dd>
+<p>More information on how the system clock and RTC interact</p>
+<p>https://lists.freedesktop.org/archives/systemd-devel/2011-May/002526.html</p>
+</dd>
+</dl>

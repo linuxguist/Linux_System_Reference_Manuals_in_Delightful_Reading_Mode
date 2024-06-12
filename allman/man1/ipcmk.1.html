@@ -1,0 +1,52 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ipcmk - make various IPC resources</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ipcmk</strong> [options]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>ipcmk</strong> allows you to create System V inter-process
+communication (IPC) objects: shared memory segments, message queues, and
+semaphore arrays.</p>
+<h1>OPTIONS</h1>
+<p>Resources can be specified with these options:</p>
+<p><strong>-M</strong>, <strong>--shmem</strong> <em>size</em></p>
+<blockquote>
+<p>Create a shared memory segment of <em>size</em> bytes. The
+<em>size</em> argument may be followed by the multiplicative suffixes
+KiB (=1024), MiB (=1024*1024), and so on for GiB, etc. (the "iB" is
+optional, e.g., "K" has the same meaning as "KiB") or the suffixes KB
+(=1000), MB (=1000*1000), and so on for GB, etc.</p>
+</blockquote>
+<p><strong>-Q</strong>, <strong>--queue</strong></p>
+<blockquote>
+<p>Create a message queue.</p>
+</blockquote>
+<p><strong>-S</strong>, <strong>--semaphore</strong> <em>number</em></p>
+<blockquote>
+<p>Create a semaphore array with <em>number</em> of elements.</p>
+</blockquote>
+<p>Other options are:</p>
+<p><strong>-p</strong>, <strong>--mode</strong> <em>mode</em></p>
+<blockquote>
+<p>Access permissions for the resource. Default is 0644.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>ipcrm</strong>(1), <strong>ipcs</strong>(1),
+<strong>sysvipc</strong>(7)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>ipcmk</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

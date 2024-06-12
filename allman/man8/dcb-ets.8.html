@@ -1,0 +1,155 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dcb-ets - show / manipulate ETS (Enhanced Transmission Selection)
+settings of the DCB (Data Center Bridging) subsystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dcb</strong> [ <em>OPTIONS</em> ] <strong>ets</strong> {
+<em>COMMAND</em> | <em>help</em> }</p>
+<p><strong>dcb ets show dev</strong> DEV [ <strong>willing</strong> ] [
+<strong>ets-cap</strong> ] [ <strong>cbs</strong> ] [
+<strong>tc-tsa</strong> ] [ <strong>reco-tc-tsa</strong> ] [
+<strong>pg-bw</strong> ] [ <strong>tc-bw</strong> ] [
+<strong>reco-tc-bw</strong> ] [ <strong>prio-tc</strong> ] [
+<strong>reco-prio-tc</strong> ]</p>
+<p><strong>dcb ets set dev</strong> DEV [ <strong>willing</strong> {
+<strong>on</strong> | <strong>off</strong> } ] [ {
+<strong>tc-tsa</strong> | <strong>reco-tc-tsa</strong> }
+<strong><em>TSA-MAP</em></strong> ] [ { <strong>pg-bw</strong> |
+<strong>tc-bw</strong> | <strong>reco-tc-bw</strong> }
+<strong><em>BW-MAP</em></strong> ] [ { <strong>prio-tc</strong> |
+<strong>reco-prio-tc</strong> } <strong><em>PRIO-MAP</em></strong> ]</p>
+<p><em>TSA-MAP</em> := [ <em>TSA-MAP</em> ] <em>TSA-MAPPING</em></p>
+<p><em>TSA-MAPPING</em> := { <em>TC</em> | <em><strong>all</strong></em>
+}<em><strong>:</strong></em>{ <em><strong>strict</strong></em> |
+<em><strong>cbs</strong></em> | <em><strong>ets</strong></em> |
+<em><strong>vendor</strong></em> }</p>
+<p><em>BW-MAP</em> := [ <em>BW-MAP</em> ] <em>BW-MAPPING</em></p>
+<p><em>BW-MAPPING</em> := { <em>TC</em> | <em><strong>all</strong></em>
+}<em><strong>:</strong><em>INTEGER</em></em></p>
+<p><em>PRIO-MAP</em> := [ <em>PRIO-MAP</em> ] <em>PRIO-MAPPING</em></p>
+<p><em>PRIO-MAPPING</em> := { <em>PRIO</em> |
+<em><strong>all</strong></em>
+}<em><strong>:</strong><em>TC</em></em></p>
+<p><em>TC</em> := { <em><strong>0</strong></em> ..
+<em><strong>7</strong></em> }</p>
+<p><em>PRIO</em> := { <em><strong>0</strong></em> ..
+<em><strong>7</strong></em> }</p>
+<h1>DESCRIPTION</h1>
+<p><strong>dcb ets</strong> is used to configure Enhanced Transmission
+Selection attributes through Linux DCB (Data Center Bridging) interface.
+ETS permits configuration of mapping of priorities to traffic classes,
+traffic selection algorithm to use per traffic class, bandwidth
+allocation, etc.</p>
+<p>Two DCB TLVs are related to the ETS feature: a configuration and
+recommendation values. Recommendation values are named with a prefix
+<strong>reco-,</strong> while the configuration ones have plain
+names.</p>
+<h1>PARAMETERS</h1>
+<p>For read-write parameters, the following describes only the write
+direction, i.e. as used with the <strong>set</strong> command. For the
+<strong>show</strong> command, the parameter name is to be used as a
+simple keyword without further arguments. This instructs the tool to
+show the value of a given parameter. When no parameters are given, the
+tool shows the complete ETS configuration.</p>
+<dl>
+<dt><strong>ets-cap</strong></dt>
+<dd>
+<p>A read-only property that shows the number of supported ETS traffic
+classes.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>cbs</strong></dt>
+<dd>
+<p>A read-only property that is enabled if the driver and the hardware
+support the CBS Transmission Selection Algorithm.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>willing { <strong>on</strong> | <strong>off</strong>
+}</strong></dt>
+<dd>
+<p>Whether local host should accept configuration from peer TLVs.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>prio-tc <em>PRIO-MAP</em></strong><br />
+<strong>reco-prio-tc <em>PRIO-MAP</em></strong></dt>
+<dd>
+<p><em>PRIO-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are priorities, values are
+traffic classes. For each priority sets a TC where traffic with that
+priority is directed to.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>tc-tsa <em>TSA-MAP</em></strong><br />
+<strong>reco-tc-tsa <em>TSA-MAP</em></strong></dt>
+<dd>
+<p><em>TSA-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are TCs, values are
+Transmission Selection Algorithm (TSA) keywords described below. For
+each TC sets an algorithm used for deciding how traffic queued up at
+this TC is scheduled for transmission. Supported TSAs are:</p>
+<p><strong>strict</strong> - for strict priority, where traffic in
+higher-numbered TCs always takes precedence over traffic in
+lower-numbered TCs.<br />
+<strong>ets</strong> - for Enhanced Traffic Selection, where available
+bandwidth is distributed among the ETS-enabled TCs according to the
+weights set by <strong>tc-bw</strong> and <strong>reco-tc-bw,</strong>
+respectively.<br />
+<strong>cbs</strong> - for Credit Based Shaper, where traffic is
+scheduled in a strict manner up to the limit set by a shaper.<br />
+<strong>vendor</strong> - for vendor-specific traffic selection
+algorithm.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>tc-bw <em>BW-MAP</em></strong><br />
+<strong>reco-tc-bw <em>BW-MAP</em></strong></dt>
+<dd>
+<p><em>BW-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are TCs, values are integers
+representing percent of available bandwidth given to the traffic class
+in question. The value should be 0 for TCs whose TSA is not
+<strong>ets</strong>, and the sum of all values shall be 100. As an
+exception to the standard wording, a configuration with no
+<strong>ets</strong> TCs is permitted to sum up to 0 instead.<br />
+</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>pg-bw <em>BW-MAP</em></strong></dt>
+<dd>
+<p>The precise meaning of <strong>pg-bw</strong> is not standardized,
+but the assumption seems to be that the same scheduling process as on
+the transmit side is applicable on receive side as well, and configures
+receive bandwidth allocation for <strong>ets</strong> ingress traffic
+classes (priority groups).</p>
+</dd>
+</dl>
+<h1>EXAMPLE &amp; USAGE</h1>
+<p>Configure ETS priomap in a one-to-one fashion:</p>
+<p># dcb ets set dev eth0 prio-tc 0:0 1:1 2:2 3:3 4:4 5:5 6:6 7:7</p>
+<p>Set TSA and transmit bandwidth configuration:</p>
+<p># dcb ets set dev eth0 tc-tsa all:strict 0:ets 1:ets 2:ets \<br />
+tc-bw all:0 0:33 1:33 2:34</p>
+<p>Show what was set:</p>
+<p># dcb ets show dev eth0 prio-tc tc-tsa tc-bw<br />
+prio-tc 0:0 1:1 2:2 3:3 4:4 5:5 6:6 7:7<br />
+tc-tsa 0:ets 1:ets 2:ets 3:strict 4:strict 5:strict 6:strict
+7:strict<br />
+tc-bw 0:33 1:33 2:34 3:0 4:0 5:0 6:0 7:0</p>
+<h1>EXIT STATUS</h1>
+<p>Exit status is 0 if command was successful or a positive integer upon
+failure.</p>
+<h1>SEE ALSO</h1>
+<p><strong>dcb</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>Report any bugs to the Network Developers mailing list
+<strong>&lt;netdev@vger.kernel.org&gt;</strong> where the development
+and maintenance is primarily done. You do not have to be subscribed to
+the list to send a message there.</p>
+<h1>AUTHOR</h1>
+<p>Petr Machata &lt;me@pmachata.org&gt;</p>

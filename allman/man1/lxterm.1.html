@@ -1,0 +1,27 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lxterm - locale-sensitive wrapper for xterm</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lxterm</strong> [ <em>xterm-options</em> ]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>lxterm</strong> is a wrapper around the
+<strong>xterm</strong>(1) program that invokes <strong>xterm</strong>,
+<strong>koi8rxterm</strong>(1), or <strong>uxterm</strong>(1) as
+appropriate, based on the user's locale setting. All arguments to
+<strong>lxterm</strong> are passed to <strong>xterm</strong> without
+processing; the <strong>-class</strong>, <strong>-k8</strong>, and
+<strong>-u8</strong> options should not be specified because they are
+used by <strong>koi8rxterm</strong> and <strong>uxterm</strong>. See the
+<strong>xterm</strong> manual page for more information on
+<em>xterm-options</em>.</p>
+<p>The <strong>locale</strong>(1) utility is used to determine the
+character set used by the current locale. If the character set is UTF-8,
+<strong>uxterm</strong> is invoked; if the character set is KOI8-R,
+<strong>koi8rxtem</strong> is invoked; otherwise, ‘plain’
+<strong>xterm</strong> is invoked.</p>
+<h1>AUTHOR</h1>
+<p>Branden Robinson</p>
+<h1>SEE ALSO</h1>
+<p><strong>locale</strong>(1), <strong>koi8rxterm</strong>(1),
+<strong>uxterm</strong>(1), <strong>xterm</strong>(1)</p>

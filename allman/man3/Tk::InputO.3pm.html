@@ -1,0 +1,36 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::InputO - Create and manipulate TIX InputO widgets</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$inputonly</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>InputO</strong>(?<em>options</em>?);</p>
+<h1>STANDARD OPTIONS</h1>
+<p>Only the following three standard options are supported by
+<strong>InputO</strong>:</p>
+<p><strong>cursor</strong> <strong>width</strong>
+<strong>height</strong></p>
+<p>See Tk::options for details of the standard options.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<p><strong>InputO</strong> does not have any widget specific
+options.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>InputO</strong> method creates a new window (given by the
+<code>$widget</code> argument) and makes it into a
+<strong>InputO</strong> widget. Additional options, described above, may
+be specified on the command line or in the option database to configure
+aspects of the <strong>InputO</strong> such as its cursor or width.</p>
+<p><strong>InputO</strong> widgets are not visible to the user. The only
+purpose of <strong>InputO</strong> widgets are to accept inputs from the
+user, which can be done with the <strong>bind</strong> method.</p>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>InputO</strong> method creates a widget object. This
+object supports the <strong>configure</strong> and <strong>cget</strong>
+methods described in Tk::options which can be used to enquire and modify
+the options described above. The widget also inherits all the methods
+provided by the generic Tk::Widget class.</p>
+<h1>BINDINGS</h1>
+<p><strong>InputO</strong> widgets have no default bindings.</p>

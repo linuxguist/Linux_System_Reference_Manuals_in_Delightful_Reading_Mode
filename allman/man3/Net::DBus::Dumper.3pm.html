@@ -1,0 +1,59 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Dumper - Stringify Net::DBus objects suitable for
+printing</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::DBus::Dumper; use Net::DBus; # Dump out info about the bus
+my $bus = Net::DBus-&gt;find; print dbus_dump($bus); # Dump out info
+about a service my $service =
+$bus-&gt;get_service("org.freedesktop.DBus"); print dbus_dump($service);
+# Dump out info about an object my $object =
+$service-&gt;get_object("/org/freedesktop/DBus"); print
+dbus_dump($object);</p>
+<h1>DESCRIPTION</h1>
+<p>This module serves as a debugging aid, providing a means to stringify
+a DBus related object in a form suitable for printing out. It can
+stringify any of the Net::DBus:* objects, generating the following
+information for each</p>
+<dl>
+<dt>Net::DBus</dt>
+<dd>
+<p>A list of services registered with the bus</p>
+</dd>
+<dt>Net::DBus::Service =item Net::DBus::RemoteService</dt>
+<dd>
+<p>The service name</p>
+</dd>
+<dt>Net::DBus::Object =item Net::DBus::RemoteObject</dt>
+<dd>
+<p>The list of all exported methods, and signals, along with their
+parameter and return types.</p>
+</dd>
+</dl>
+<h1>METHODS</h1>
+<dl>
+<dt>my @data = dbus_dump($object);</dt>
+<dd>
+<p>Generates a stringified representation of an object. The object
+passed in as the parameter must be an instance of one of Net::DBus,
+Net::DBus::RemoteService, Net::DBus::Service, Net::DBus::RemoteObject,
+Net::DBus::Object. The stringified representation will be returned as a
+list of strings, with newlines in appropriate places, such that it can
+be passed string to the <code>print</code> method.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>It should print out a list of object paths registered against a
+service, but this only currently works for service implemented in
+Perl</p>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2005-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus, Net::DBus::RemoteService, Net::DBus::Service,
+Net::DBus::RemoteObject, Net::DBus::Object, Data::Dumper.</p>

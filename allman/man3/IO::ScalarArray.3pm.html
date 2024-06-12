@@ -1,0 +1,219 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>IO::ScalarArray - IO:: interface for reading/writing an array of
+scalars</p>
+<h1>SYNOPSIS</h1>
+<p>Perform I/O on strings, using the basic OO interface...</p>
+<p>use IO::ScalarArray; @data = ("My mes", "sage:\n"); ### Open a handle
+on an array, and append to it: $AH = new IO::ScalarArray \@data;
+$AH-&gt;print("Hello"); $AH-&gt;print(", world!\nBye now!\n"); print
+"The array is now: ", @data, "\n"; ### Open a handle on an array, read
+it line-by-line, then close it: $AH = new IO::ScalarArray \@data; while
+(defined($_ = $AH-&gt;getline)) { print "Got line: $_"; } $AH-&gt;close;
+### Open a handle on an array, and slurp in all the lines: $AH = new
+IO::ScalarArray \@data; print "All lines:\n", $AH-&gt;getlines; ### Get
+the current position (either of two ways): $pos = $AH-&gt;getpos;
+$offset = $AH-&gt;tell; ### Set the current position (either of two
+ways): $AH-&gt;setpos($pos); $AH-&gt;seek($offset, 0); ### Open an
+anonymous temporary array: $AH = new IO::ScalarArray; $AH-&gt;print("Hi
+there!"); print "I printed: ", @{$AH-&gt;aref}, "\n"; ### get at
+value</p>
+<p>Don't like OO for your I/O? No problem. Thanks to the magic of an
+invisible <strong>tie()</strong>, the following now works out of the
+box, just as it does with IO::Handle:</p>
+<p>use IO::ScalarArray; @data = ("My mes", "sage:\n"); ### Open a handle
+on an array, and append to it: $AH = new IO::ScalarArray \@data; print
+$AH "Hello"; print $AH ", world!\nBye now!\n"; print "The array is now:
+", @data, "\n"; ### Open a handle on a string, read it line-by-line,
+then close it: $AH = new IO::ScalarArray \@data; while (&lt;$AH&gt;) {
+print "Got line: $_"; } close $AH; ### Open a handle on a string, and
+slurp in all the lines: $AH = new IO::ScalarArray \@data; print "All
+lines:\n", &lt;$AH&gt;; ### Get the current position (WARNING: requires
+5.6): $offset = tell $AH; ### Set the current position (WARNING:
+requires 5.6): seek $AH, $offset, 0; ### Open an anonymous temporary
+scalar: $AH = new IO::ScalarArray; print $AH "Hi there!"; print "I
+printed: ", @{$AH-&gt;aref}, "\n"; ### get at value</p>
+<p>And for you folks with 1.x code out there: the old
+<strong>tie()</strong> style still works, though this is <em>unnecessary
+and deprecated</em>:</p>
+<p>use IO::ScalarArray; ### Writing to a scalar... my @a; tie *OUT,
+IO::ScalarArray, \@a; print OUT "line 1\nline 2\n", "line 3\n"; print
+"Array is now: ", @a, "\n" ### Reading and writing an anonymous
+scalar... tie *OUT, IO::ScalarArray; print OUT "line 1\nline 2\n", "line
+3\n"; tied(OUT)-&gt;seek(0,0); while (&lt;OUT&gt;) { print "Got line: ",
+$_; }</p>
+<h1>DESCRIPTION</h1>
+<p>This class is part of the IO::Stringy distribution; see IO::Stringy
+for change log and general information.</p>
+<p>The IO::ScalarArray class implements objects which behave just like
+IO::Handle (or FileHandle) objects, except that you may use them to
+write to (or read from) arrays of scalars. Logically, an array of
+scalars defines an in-core file whose contents are the concatenation of
+the scalars in the array. The handles created by this class are
+automatically tiehandle'd (though please see WARNINGS for information
+relevant to your Perl version).</p>
+<p>For writing large amounts of data with individual
+<strong>print()</strong> statements, this class is likely to be more
+efficient than IO::Scalar.</p>
+<p>Basically, this:</p>
+<p>my @a; $AH = new IO::ScalarArray \@a; $AH-&gt;print("Hel", "lo, ");
+### OO style $AH-&gt;print("world!\n"); ### ditto</p>
+<p>Or this:</p>
+<p>my @a; $AH = new IO::ScalarArray \@a; print $AH "Hel", "lo, "; ###
+non-OO style print $AH "world!\n"; ### ditto</p>
+<p>Causes <code>@a</code> to be set to the following array of 3
+strings:</p>
+<p>( "Hel" , "lo, " , "world!\n" )</p>
+<p>See IO::Scalar and compare with this class.</p>
+<h1>PUBLIC INTERFACE</h1>
+<h2>Construction</h2>
+<dl>
+<dt>new [ARGS...]</dt>
+<dd>
+<p><em>Class method.</em> Return a new, unattached array handle. If any
+arguments are given, they're sent to <strong>open()</strong>.</p>
+</dd>
+<dt>open [ARRAYREF]</dt>
+<dd>
+<p><em>Instance method.</em> Open the array handle on a new array,
+pointed to by ARRAYREF. If no ARRAYREF is given, a private array is
+created to hold the file data. Returns the self object on success,
+undefined on error.</p>
+</dd>
+<dt>opened</dt>
+<dd>
+<p><em>Instance method.</em> Is the array handle opened on
+something?</p>
+</dd>
+<dt>close</dt>
+<dd>
+<p><em>Instance method.</em> Disassociate the array handle from its
+underlying array. Done automatically on destroy.</p>
+</dd>
+</dl>
+<h2>Input and output</h2>
+<dl>
+<dt>flush</dt>
+<dd>
+<p><em>Instance method.</em> No-op, provided for OO compatibility.</p>
+</dd>
+<dt>fileno</dt>
+<dd>
+<p><em>Instance method.</em> No-op, returns undef</p>
+</dd>
+<dt>getc</dt>
+<dd>
+<p><em>Instance method.</em> Return the next character, or undef if none
+remain. This does a <strong>read</strong> (1), which is somewhat
+costly.</p>
+</dd>
+<dt>getline</dt>
+<dd>
+<p><em>Instance method.</em> Return the next line, or undef on end of
+data. Can safely be called in an array context. Currently, lines are
+delimited by \n.</p>
+</dd>
+<dt>getlines</dt>
+<dd>
+<p><em>Instance method.</em> Get all remaining lines. It will
+<strong>croak()</strong> if accidentally called in a scalar context.</p>
+</dd>
+<dt>print ARGS...</dt>
+<dd>
+<p><em>Instance method.</em> Print ARGS to the underlying array.
+Currently, this always causes a seek to the end of the array and
+generates a new array entry. This may change in the future.</p>
+</dd>
+<dt>read BUF, NBYTES, [OFFSET];</dt>
+<dd>
+<p><em>Instance method.</em> Read some bytes from the array. Returns the
+number of bytes actually read, 0 on end-of-file, undef on error.</p>
+</dd>
+<dt>write BUF, NBYTES, [OFFSET];</dt>
+<dd>
+<p><em>Instance method.</em> Write some bytes into the array.</p>
+</dd>
+</dl>
+<h2>Seeking/telling and other attributes</h2>
+<dl>
+<dt>autoflush</dt>
+<dd>
+<p><em>Instance method.</em> No-op, provided for OO compatibility.</p>
+</dd>
+<dt>binmode</dt>
+<dd>
+<p><em>Instance method.</em> No-op, provided for OO compatibility.</p>
+</dd>
+<dt>clearerr</dt>
+<dd>
+<p><em>Instance method.</em> Clear the error and EOF flags. A no-op.</p>
+</dd>
+<dt>eof</dt>
+<dd>
+<p><em>Instance method.</em> Are we at end of file?</p>
+</dd>
+<dt>seek POS,WHENCE</dt>
+<dd>
+<p><em>Instance method.</em> Seek to a given position in the stream.
+Only a WHENCE of 0 (SEEK_SET) is supported.</p>
+</dd>
+<dt>tell</dt>
+<dd>
+<p><em>Instance method.</em> Return the current position in the stream,
+as a numeric offset.</p>
+</dd>
+<dt>setpos POS</dt>
+<dd>
+<p><em>Instance method.</em> Seek to a given position in the array,
+using the opaque <strong>getpos()</strong> value. Don't expect this to
+be a number.</p>
+</dd>
+<dt>getpos</dt>
+<dd>
+<p><em>Instance method.</em> Return the current position in the array,
+as an opaque value. Don't expect this to be a number.</p>
+</dd>
+<dt>aref</dt>
+<dd>
+<p><em>Instance method.</em> Return a reference to the underlying
+array.</p>
+</dd>
+</dl>
+<h1>WARNINGS</h1>
+<p>Perl's TIEHANDLE spec was incomplete prior to 5.005_57; it was
+missing support for <code>seek()</code>, <code>tell()</code>, and
+<code>eof()</code>. Attempting to use these functions with an
+IO::ScalarArray will not work prior to 5.005_57. IO::ScalarArray will
+not have the relevant methods invoked; and even worse, this kind of bug
+can lie dormant for a while. If you turn warnings on (via
+<code>$^W</code> or <code>perl -w</code>), and you see something like
+this...</p>
+<p>attempt to seek on unopened filehandle</p>
+<p>...then you are probably trying to use one of these functions on an
+IO::ScalarArray with an old Perl. The remedy is to simply use the OO
+version; e.g.:</p>
+<p>$AH-&gt;seek(0,0); ### GOOD: will work on any 5.005 seek($AH,0,0);
+### WARNING: will only work on 5.005_57 and beyond</p>
+<h1>VERSION</h1>
+<p><code>$Id:</code> ScalarArray.pm,v 1.7 2005/02/10 21:21:53 dfs Exp
+$</p>
+<h1>AUTHOR</h1>
+<h2>Primary Maintainer</h2>
+<p>Dianne Skoll (<em>dfs@roaringpenguin.com</em>).</p>
+<h2>Principal author</h2>
+<p>Eryq (<em>eryq@zeegee.com</em>). President, ZeeGee Software Inc
+(<em>http://www.zeegee.com</em>).</p>
+<h2>Other contributors</h2>
+<p>Thanks to the following individuals for their invaluable
+contributions (if I've forgotten or misspelled your name, please email
+me!):</p>
+<p><em>Andy Glew,</em> for suggesting <code>getc()</code>.</p>
+<p><em>Brandon Browning,</em> for suggesting <code>opened()</code>.</p>
+<p><em>Eric L. Brine,</em> for his offset-using <strong>read()</strong>
+and <strong>write()</strong> implementations.</p>
+<p><em>Doug Wilson,</em> for the IO::Handle inheritance and automatic
+tie-ing.</p>

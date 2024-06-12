@@ -1,0 +1,23 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pdf2ps - Ghostscript PDF to PostScript translator</p>
+<h1>SYNOPSIS</h1>
+<p><strong>pdf2ps</strong> [ <em>options</em> ] <em>input.pdf
+[output.ps]</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>pdf2ps</strong> uses <strong>gs</strong>(1) to convert the
+Adobe <strong>Portable Document</strong> Format (PDF) file "input.pdf"
+to <strong>PostScript</strong>(tm) in "output.ps". Normally the output
+is allowed to use PostScript Level 2 (but not PostScript LanguageLevel
+3) constructs; the <strong>-dLanguageLevel=1</strong> option restricts
+the output to Level 1, while <strong>-dLanguageLevel=3</strong> allows
+using LanguageLevel 3 in the output.</p>
+<h1>FILES</h1>
+<p>Run "<strong>gs -h</strong>" to find the location of Ghostscript
+documentation on your system, from which you can get more details.</p>
+<h1>VERSION</h1>
+<p>This document was last revised for Ghostscript version 10.00.0.</p>
+<h1>AUTHOR</h1>
+<p>Artifex Software, Inc. are the primary maintainers of
+Ghostscript.</p>

@@ -1,0 +1,79 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>spd-conf - configure Speech Dispatcher and diagnose problems</p>
+<h1>DESCRIPTION</h1>
+<p>usage: spd-conf [-h] [-u] [-c] [-C] [-d] [-s] [--test-festival]</p>
+<blockquote>
+<p>[--test-espeak] [--test-alsa] [--test-pulse] [-e] [-n] [-D]
+[--version]</p>
+</blockquote>
+<p>A simple tool for basic configuration of Speech Dispatcher and
+problem diagnostics</p>
+<h2>options:</h2>
+<dl>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>show this help message and exit</p>
+</dd>
+<dt><strong>-u</strong>, <strong>--create-user-conf</strong></dt>
+<dd>
+<p>Create Speech Dispatcher configuration for the given user</p>
+</dd>
+<dt><strong>-c</strong>,
+<strong>--config-basic-settings-user</strong></dt>
+<dd>
+<p>Configure basic settings in user configuration</p>
+</dd>
+<dt><strong>-C</strong>,
+<strong>--config-basic-settings-system</strong></dt>
+<dd>
+<p>Configure basic settings in system-wide configuration</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--diagnostics</strong></dt>
+<dd>
+<p>Diagnose problems with the current setup</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--test-spd-say</strong></dt>
+<dd>
+<p>Test connection to Speech Dispatcher using spd-say</p>
+</dd>
+<dt><strong>--test-festival</strong></dt>
+<dd>
+<p>Test whether Festival works as a server</p>
+</dd>
+<dt><strong>--test-espeak</strong></dt>
+<dd>
+<p>Test whether Espeak works as a standalone binary</p>
+</dd>
+<dt><strong>--test-alsa</strong></dt>
+<dd>
+<p>Test ALSA audio output</p>
+</dd>
+<dt><strong>--test-pulse</strong></dt>
+<dd>
+<p>Test Pulse Audio output</p>
+</dd>
+<dt><strong>-e</strong>, <strong>--espeak</strong></dt>
+<dd>
+<p>Use espeak to synthesize messages</p>
+</dd>
+<dt><strong>-n</strong>, <strong>--dont-ask</strong></dt>
+<dd>
+<p>Do not ask any questions, always use default values</p>
+</dd>
+<dt><strong>-D</strong>, <strong>--debug</strong></dt>
+<dd>
+<p>Debug a problem and generate a report</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Print version and copyright info</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2002-2012 Brailcom, o.p.s.<br />
+This is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version. Please see COPYING for more details.</p>

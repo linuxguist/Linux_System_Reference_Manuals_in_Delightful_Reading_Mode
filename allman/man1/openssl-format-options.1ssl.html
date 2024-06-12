@@ -1,0 +1,101 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-format-options - OpenSSL command input and output format
+options</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl</strong> <em>command</em> [ <em>options</em> ... ] [
+<em>parameters</em> ... ]</p>
+<h1>DESCRIPTION</h1>
+<p>Several OpenSSL commands can take input or generate output in a
+variety of formats.</p>
+<p>Since OpenSSL 3.0 keys, single certificates, and CRLs can be read
+from files in any of the <strong>DER</strong>, <strong>PEM</strong> or
+<strong>P12</strong> formats. Specifying their input format is no more
+needed and the openssl commands will automatically try all the possible
+formats. However if the <strong>DER</strong> or <strong>PEM</strong>
+input format is specified it will be enforced.</p>
+<p>In order to access a key via an engine the input format
+<strong>ENGINE</strong> may be used; alternatively the key identifier in
+the &lt;uri&gt; argument of the respective key option may be preceded by
+<code>org.openssl.engine:</code>. See Engine Options in
+<strong>openssl</strong> (1) for an example usage of the latter.</p>
+<h1>OPTIONS</h1>
+<h2>Format Options</h2>
+<p>The options to specify the format are as follows. Refer to the
+individual man page to see which options are accepted.</p>
+<dl>
+<dt>-inform format, -outform format</dt>
+<dd>
+<p>The format of the input or output streams.</p>
+</dd>
+<dt>-keyform format</dt>
+<dd>
+<p>Format of a private key input source.</p>
+</dd>
+<dt>-CRLform format</dt>
+<dd>
+<p>Format of a CRL input source.</p>
+</dd>
+</dl>
+<h2>Format Option Arguments</h2>
+<p>The possible format arguments are described below. Both uppercase and
+lowercase are accepted.</p>
+<p>The list of acceptable format arguments, and the default, is
+described in each command documentation.</p>
+<dl>
+<dt>DER</dt>
+<dd>
+<p>A binary format, encoded or parsed according to Distinguished
+Encoding Rules (DER) of the ASN.1 data language.</p>
+</dd>
+<dt>ENGINE</dt>
+<dd>
+<p>Used to specify that the cryptographic material is in an OpenSSL
+<strong>engine</strong>. An engine must be configured or specified using
+the <strong>-engine</strong> option. A password or PIN may be supplied
+to the engine using the <strong>-passin</strong> option.</p>
+</dd>
+<dt>P12</dt>
+<dd>
+<p>A DER-encoded file containing a PKCS#12 object. It might be necessary
+to provide a decryption password to retrieve the private key.</p>
+</dd>
+<dt>PEM</dt>
+<dd>
+<p>A text format defined in IETF RFC 1421 and IETF RFC 7468. Briefly,
+this is a block of base-64 encoding (defined in IETF RFC 4648), with
+specific lines used to mark the start and end: Text before the BEGIN
+line is ignored. ----- BEGIN object-type -----
+OT43gQKBgQC/2OHZoko6iRlNOAQ/tMVFNq7fL81GivoQ9F1U0Qr+DH3ZfaH8eIkX
+xT0ToMPJUzWAn8pZv0snA0um6SIgvkCuxO84OkANCVbttzXImIsL7pFzfcwV/ERK
+UM6j0ZuSMFOCr/lGPAoOQU0fskidGEHi1/kW+suSr28TqsyYZpwBDQ== ----- END
+object-type ----- Text after the END line is also ignored The
+<em>object-type</em> must match the type of object that is expected. For
+example a <code>BEGIN X509 CERTIFICATE</code> will not match if the
+command is trying to read a private key. The types supported include:
+ANY PRIVATE KEY CERTIFICATE CERTIFICATE REQUEST CMS DH PARAMETERS DSA
+PARAMETERS DSA PUBLIC KEY EC PARAMETERS EC PRIVATE KEY ECDSA PUBLIC KEY
+ENCRYPTED PRIVATE KEY PARAMETERS PKCS #7 SIGNED DATA PKCS7 PRIVATE KEY
+PUBLIC KEY RSA PRIVATE KEY SSL SESSION PARAMETERS TRUSTED CERTIFICATE
+X509 CRL X9.42 DH PARAMETERS The following legacy <em>object-type</em>'s
+are also supported for compatibility with earlier releases: DSA PRIVATE
+KEY NEW CERTIFICATE REQUEST RSA PUBLIC KEY X509 CERTIFICATE</p>
+</dd>
+<dt>SMIME</dt>
+<dd>
+<p>An S/MIME object as described in IETF RFC 8551. Earlier versions were
+known as CMS and are compatible. Note that the parsing is simple and
+might fail to parse some legal data.</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

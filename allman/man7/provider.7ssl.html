@@ -1,0 +1,209 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>provider - OpenSSL operation implementation providers</p>
+<h1>SYNOPSIS</h1>
+<p>#include &lt;openssl/provider.h&gt;</p>
+<h1>DESCRIPTION</h1>
+<h2>General</h2>
+<p>This page contains information useful to provider authors.</p>
+<p>A <em>provider</em>, in OpenSSL terms, is a unit of code that
+provides one or more implementations for various operations for diverse
+algorithms that one might want to perform.</p>
+<p>An <em>operation</em> is something one wants to do, such as
+encryption and decryption, key derivation, MAC calculation, signing and
+verification, etc.</p>
+<p>An <em>algorithm</em> is a named method to perform an operation. Very
+often, the algorithms revolve around cryptographic operations, but may
+also revolve around other types of operation, such as managing certain
+types of objects.</p>
+<p>See <strong>crypto</strong> (7) for further details.</p>
+<h2>Provider</h2>
+<p>A <em>provider</em> offers an initialization function, as a set of
+base functions in the form of an <strong>OSSL_DISPATCH</strong> (3)
+array, and by extension, a set of <strong>OSSL_ALGORITHM</strong> (3)s
+(see <strong>openssl-core.h</strong> (7)). It may be a dynamically
+loadable module, or may be built-in, in OpenSSL libraries or in the
+application. If it's a dynamically loadable module, the initialization
+function must be named <code>OSSL_provider_init</code> and must be
+exported. If it's built-in, the initialization function may have any
+name.</p>
+<p>The initialization function must have the following signature:</p>
+<p>int NAME(const OSSL_CORE_HANDLE *handle, const OSSL_DISPATCH *in,
+const OSSL_DISPATCH **out, void **provctx);</p>
+<p><em>handle</em> is the OpenSSL library object for the provider, and
+works as a handle for everything the OpenSSL libraries need to know
+about the provider. For the provider itself, it is passed to some of the
+functions given in the dispatch array <em>in</em>.</p>
+<p><em>in</em> is a dispatch array of base functions offered by the
+OpenSSL libraries, and the available functions are further described in
+<strong>provider-base</strong> (7).</p>
+<p><em>*out</em> must be assigned a dispatch array of base functions
+that the provider offers to the OpenSSL libraries. The functions that
+may be offered are further described in
+<strong>provider-base</strong> (7), and they are the central means of
+communication between the OpenSSL libraries and the provider.</p>
+<p><em>*provctx</em> should be assigned a provider specific context to
+allow the provider multiple simultaneous uses. This pointer will be
+passed to various operation functions offered by the provider.</p>
+<p>Note that the provider will not be made available for applications to
+use until the initialization function has completed and returned
+successfully.</p>
+<p>One of the functions the provider offers to the OpenSSL libraries is
+the central mechanism for the OpenSSL libraries to get access to
+operation implementations for diverse algorithms. Its referred to with
+the number <strong>OSSL_FUNC_PROVIDER_QUERY_OPERATION</strong> and has
+the following signature:</p>
+<p>const OSSL_ALGORITHM *provider_query_operation(void *provctx, int
+operation_id, const int *no_store);</p>
+<p><em>provctx</em> is the provider specific context that was passed
+back by the initialization function.</p>
+<p><em>operation_id</em> is an operation identity (see Operations
+below).</p>
+<p><em>no_store</em> is a flag back to the OpenSSL libraries which, when
+nonzero, signifies that the OpenSSL libraries will not store a reference
+to the returned data in their internal store of implementations.</p>
+<p>The returned <strong>OSSL_ALGORITHM</strong> (3) is the foundation of
+any OpenSSL library API that uses providers for their implementation,
+most commonly in the <em>fetching</em> type of functions (see ALGORITHM
+FETCHING in <strong>crypto</strong> (7)).</p>
+<h2>Operations</h2>
+<p>Operations are referred to with numbers, via macros with names
+starting with <code>OSSL_OP_</code>.</p>
+<p>With each operation comes a set of defined function types that a
+provider may or may not offer, depending on its needs.</p>
+<p>Currently available operations are:</p>
+<dl>
+<dt>Digests</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>EVP_MD</strong>. The number for this operation is
+<strong>OSSL_OP_DIGEST</strong>. The functions the provider can offer
+are described in <strong>provider-digest</strong> (7).</p>
+</dd>
+<dt>Symmetric ciphers</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>EVP_CIPHER</strong>. The number for this operation is
+<strong>OSSL_OP_CIPHER</strong>. The functions the provider can offer
+are described in <strong>provider-cipher</strong> (7).</p>
+</dd>
+<dt>Message Authentication Code (MAC)</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>EVP_MAC</strong>. The number for this operation is
+<strong>OSSL_OP_MAC</strong>. The functions the provider can offer are
+described in <strong>provider-mac</strong> (7).</p>
+</dd>
+<dt>Key Derivation Function (KDF)</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>EVP_KDF</strong>. The number for this operation is
+<strong>OSSL_OP_KDF</strong>. The functions the provider can offer are
+described in <strong>provider-kdf</strong> (7).</p>
+</dd>
+<dt>Key Exchange</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>EVP_KEYEXCH</strong>. The number for this operation is
+<strong>OSSL_OP_KEYEXCH</strong>. The functions the provider can offer
+are described in <strong>provider-keyexch</strong> (7).</p>
+</dd>
+<dt>Asymmetric Ciphers</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>EVP_ASYM_CIPHER</strong>. The number for this operation is
+<strong>OSSL_OP_ASYM_CIPHER</strong>. The functions the provider can
+offer are described in <strong>provider-asym_cipher</strong> (7).</p>
+</dd>
+<dt>Asymmetric Key Encapsulation</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>EVP_KEM</strong>. The number for this operation is
+<strong>OSSL_OP_KEM</strong>. The functions the provider can offer are
+described in <strong>provider-kem</strong> (7).</p>
+</dd>
+<dt>Encoding</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>OSSL_ENCODER</strong>. The number for this operation is
+<strong>OSSL_OP_ENCODER</strong>. The functions the provider can offer
+are described in <strong>provider-encoder</strong> (7).</p>
+</dd>
+<dt>Decoding</dt>
+<dd>
+<p>In the OpenSSL libraries, the corresponding method object is
+<strong>OSSL_DECODER</strong>. The number for this operation is
+<strong>OSSL_OP_DECODER</strong>. The functions the provider can offer
+are described in <strong>provider-decoder</strong> (7).</p>
+</dd>
+<dt>Random Number Generation</dt>
+<dd>
+<p>The number for this operation is <strong>OSSL_OP_RAND</strong>. The
+functions the provider can offer for random number generation are
+described in <strong>provider-rand</strong> (7).</p>
+</dd>
+<dt>Key Management</dt>
+<dd>
+<p>The number for this operation is <strong>OSSL_OP_KEYMGMT</strong>.
+The functions the provider can offer for key management are described in
+<strong>provider-keymgmt</strong> (7).</p>
+</dd>
+<dt>Signing and Signature Verification</dt>
+<dd>
+<p>The number for this operation is <strong>OSSL_OP_SIGNATURE</strong>.
+The functions the provider can offer for digital signatures are
+described in <strong>provider-signature</strong> (7).</p>
+</dd>
+<dt>Store Management</dt>
+<dd>
+<p>The number for this operation is <strong>OSSL_OP_STORE</strong>. The
+functions the provider can offer for store management are described in
+<strong>provider-storemgmt</strong> (7).</p>
+</dd>
+</dl>
+<p><em>Algorithm naming</em></p>
+<p>Algorithm names are case insensitive. Any particular algorithm can
+have multiple aliases associated with it. The canonical OpenSSL naming
+scheme follows this format:</p>
+<p>ALGNAME[VERSION?][-SUBNAME[VERSION?]?][-SIZE?][-MODE?]</p>
+<p>VERSION is only present if there are multiple versions of an
+algorithm (e.g. MD2, MD4, MD5). It may be omitted if there is only one
+version.</p>
+<p>SUBNAME may be present where multiple algorithms are combined
+together, e.g. MD5-SHA1.</p>
+<p>SIZE is only present if multiple versions of an algorithm exist with
+different sizes (e.g. AES-128-CBC, AES-256-CBC)</p>
+<p>MODE is only present where applicable.</p>
+<p>Other aliases may exist for example where standards bodies or common
+practice use alternative names or names that OpenSSL has used
+historically.</p>
+<h1>OPENSSL PROVIDERS</h1>
+<p>OpenSSL provides a number of its own providers. These are the
+default, base, fips, legacy and null providers. See
+<strong>crypto</strong> (7) for an overview of these providers.</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_DigestInit_ex</strong> (3),
+<strong>EVP_EncryptInit_ex</strong> (3),
+<strong>OSSL_LIB_CTX</strong> (3),
+<strong>EVP_set_default_properties</strong> (3),
+<strong>EVP_MD_fetch</strong> (3),
+<strong>EVP_CIPHER_fetch</strong> (3),
+<strong>EVP_KEYMGMT_fetch</strong> (3),
+<strong>openssl-core.h</strong> (7), <strong>provider-base</strong> (7),
+<strong>provider-digest</strong> (7),
+<strong>provider-cipher</strong> (7),
+<strong>provider-keyexch</strong> (7)</p>
+<h1>HISTORY</h1>
+<p>The concept of providers and everything surrounding them was
+introduced in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2019-2022 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

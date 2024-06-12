@@ -1,0 +1,94 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dconf - Simple tool for manipulating a dconf database</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dconf</strong> read [-d] <em>KEY</em></p>
+<p><strong>dconf</strong> list <em>DIR</em></p>
+<p><strong>dconf</strong> write <em>KEY</em> <em>VALUE</em></p>
+<p><strong>dconf</strong> reset [-f] <em>PATH</em></p>
+<p><strong>dconf</strong> compile <em>OUTPUT</em>
+<em>KEYFILEDIR</em></p>
+<p><strong>dconf</strong> update [<em>DBDIR</em>]</p>
+<p><strong>dconf</strong> watch <em>PATH</em></p>
+<p><strong>dconf</strong> dump <em>DIR</em></p>
+<p><strong>dconf</strong> load [-f] <em>DIR</em></p>
+<p><strong>dconf</strong> help [<em>COMMAND</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>dconf</strong> program can perform various operations on
+a dconf database, such as reading or writing individual values or entire
+directories. This tool operates on dconf directly, without using
+gsettings schema information. Therefore, it cannot perform type and
+consistency checks on values. The <strong>gsettings</strong>(1) utility
+is an alternative if such checks are needed.</p>
+<p>The <em>DIR</em> arguments must be directory paths (starting and
+ending with /), the <em>KEY</em> arguments must be key paths (starting,
+but not ending with /) and the <em>PATH</em> arguments can be either
+directory or key paths.</p>
+<p>The <em>OUTPUT</em> argument must the location to write a (binary)
+dconf database to and the <em>KEYFILEDIR</em> argument must be a .d
+directory containing keyfiles.</p>
+<p><em>VALUE</em> arguments must be in GVariant format, so e.g. a string
+must include explicit quotes: "foo". This format is also used when
+printing out values.</p>
+<p>Note that dconf needs a D-Bus session bus connection to write changes
+to the dconf database.</p>
+<h1>COMMANDS</h1>
+<p><strong>read</strong></p>
+<blockquote>
+<p>Read the value of a key.</p>
+</blockquote>
+<p><strong>list</strong></p>
+<blockquote>
+<p>List the sub-keys and sub-directories of a directory.</p>
+</blockquote>
+<p><strong>write</strong></p>
+<blockquote>
+<p>Write a new value to a key.</p>
+</blockquote>
+<p><strong>reset</strong></p>
+<blockquote>
+<p>Reset a key or an entire directory. For directories,
+<strong>-f</strong> must be specified.</p>
+</blockquote>
+<p><strong>compile</strong></p>
+<blockquote>
+<p>Compile a binary database from keyfiles.</p>
+<p>The result is always in little-endian byte order, so it can be safely
+installed in share. If it is used on a big endian machine, dconf will
+automatically byteswap the contents on read.</p>
+</blockquote>
+<p><strong>update</strong></p>
+<blockquote>
+<p>Update the system dconf databases.</p>
+</blockquote>
+<p><strong>watch</strong></p>
+<blockquote>
+<p>Watch a key or directory for changes.</p>
+</blockquote>
+<p><strong>dump</strong></p>
+<blockquote>
+<p>Dump an entire subpath to stdout. The output is in a keyfile-like
+format, with values in GVariant syntax.</p>
+</blockquote>
+<p><strong>load</strong></p>
+<blockquote>
+<p>Populate a subpath from stdin. The expected format is the same as
+produced by <strong>dump</strong>. Attempting to change non-writable
+keys cancels the load command. To ignore changes to non-writable keys
+instead, use <strong>-f</strong>.</p>
+</blockquote>
+<p><strong>help</strong></p>
+<blockquote>
+<p>Display help and exit. If <em>COMMAND</em> is given, display help for
+this command.</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p><strong>DCONF_PROFILE</strong></p>
+<blockquote>
+<p>This environment variable determines which dconf profile to use. See
+<strong>dconf</strong>(7).</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>dconf</strong>(7), <strong>gsettings</strong>(1),
+<strong>dconf-editor</strong>(1)</p>

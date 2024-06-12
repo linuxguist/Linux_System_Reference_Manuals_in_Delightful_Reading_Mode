@@ -1,0 +1,17 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Tiler - Scrollable frame with sub-widgets arranged into rows</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::Tiler; my $tl = $parent-&gt;Scrolled(Tiler, -columns =&gt; n,
+-rows =&gt; n); my $a = $tl-&gt;Xxxxx(...); my $b = $tl-&gt;Xxxxx(...);
+my $c = $tl-&gt;Xxxxx(...); $tl-&gt;Manage($a,$b,$c);</p>
+<h1>DESCRIPTION</h1>
+<p>Tiler is derived form Tk::Frame. It is a geometry managing widget
+which accepts widgets to manage. It places the widgets in a grid with as
+many widgets as possible in a row. All the slots in the grid are the
+same size, which is determined by the largest managed widget.</p>
+<p>The grid may be scrolled vertically.</p>

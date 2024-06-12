@@ -1,0 +1,125 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>rfcomm - RFCOMM configuration utility</p>
+<h1>SYNOPSIS</h1>
+<p><strong>rfcomm</strong> [<em>OPTIONS</em>] &lt;<em>COMMAND</em>&gt;
+&lt;<em>dev</em>&gt;</p>
+<h1>DESCRIPTION</h1>
+<p><strong>rfcomm(1)</strong> is used to set up, maintain, and inspect
+the RFCOMM configuration of the Bluetooth subsystem in the Linux kernel.
+If no <strong>command</strong> is given, or if the option
+<strong>-a</strong> is used, <strong>rfcomm</strong> prints information
+about the configured RFCOMM devices.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-h</strong></dt>
+<dd>
+<p>Gives a list of possible commands.</p>
+</dd>
+<dt><strong>-a</strong></dt>
+<dd>
+<p>Prints information about all configured RFCOMM devices.</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Switch TTY into raw mode (doesn't work with "bind").</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-i &lt;<em>hciX</em>&gt; |
+&lt;<em>bdaddr</em>&gt;</strong></dt>
+<dd>
+<p>The command is applied to device <em>hciX</em>, which must be the
+name or the address of an installed Bluetooth device. If not specified,
+the command will be use the first available Bluetooth device.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-A</strong></dt>
+<dd>
+<p>Enable authentication</p>
+</dd>
+<dt><strong>-E</strong></dt>
+<dd>
+<p>Enable encryption</p>
+</dd>
+<dt><strong>-S</strong></dt>
+<dd>
+<p>Secure connection</p>
+</dd>
+<dt><strong>-C</strong></dt>
+<dd>
+<p>Become the central of a piconet</p>
+</dd>
+<dt><strong>-L</strong><em> &lt;seconds&gt;</em></dt>
+<dd>
+<p>Set linger timeout</p>
+</dd>
+</dl>
+</blockquote>
+<h1>COMMANDS</h1>
+<blockquote>
+<dl>
+<dt><strong>show &lt;<em>dev</em>&gt;</strong></dt>
+<dd>
+<p>Display the information about the specified device.</p>
+</dd>
+<dt><strong>connect &lt;<em>dev</em>&gt; [<em>bdaddr</em>]
+[<em>channel</em>]</strong></dt>
+<dd>
+<p>Connect the RFCOMM device to the remote Bluetooth device on the
+specified channel. If no channel is specified, it will use the channel
+number <strong>1</strong>. This command can be terminated with the key
+sequence CTRL-C.</p>
+</dd>
+<dt><strong>listen &lt;<em>dev</em>&gt; [<em>channel</em>]
+[<em>cmd</em>]</strong></dt>
+<dd>
+<p>Listen on a specified RFCOMM channel for incoming connections. If no
+channel is specified, it will use the channel number <strong>1</strong>,
+but a channel must be specified before cmd. If cmd is given, it will be
+executed as soon as a client connects. When the child process terminates
+or the client disconnect, the command will terminate. Occurrences of {}
+in cmd will be replaced by the name of the device used by the
+connection. This command can be terminated with the key sequence
+CTRL-C.</p>
+</dd>
+<dt><strong>watch &lt;<em>dev</em>&gt; [<em>channel</em>]
+[<em>cmd</em>]</strong></dt>
+<dd>
+<p>Watch is identical to listen except that when the child process
+terminates or the client disconnect, the command will restart listening
+with the same parameters.</p>
+</dd>
+<dt><strong>bind &lt;<em>dev</em>&gt; [<em>bdaddr</em>]
+[<em>channel</em>]</strong></dt>
+<dd>
+<p>This binds the RFCOMM device to a remote Bluetooth device. The
+command does not establish a connection to the remote device, it only
+creates the binding. The connection will be established right after an
+application tries to open the RFCOMM device. If no channel number is
+specified, it uses the channel number <strong>1</strong>.</p>
+</dd>
+<dt><strong>release &lt;<em>dev</em>&gt;</strong></dt>
+<dd>
+<p>This command releases a defined RFCOMM binding.</p>
+<p>If <strong>all</strong> is specified for the RFCOMM device, then all
+bindings will be removed.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Marcel Holtmann &lt;marcel@holtmann.org&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

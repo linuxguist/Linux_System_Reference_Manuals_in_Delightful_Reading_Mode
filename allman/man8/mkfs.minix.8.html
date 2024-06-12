@@ -1,0 +1,108 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkfs.minix - make a Minix filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkfs.minix</strong> [options] <em>device</em>
+[<em>size-in-blocks</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>mkfs.minix</strong> creates a Linux MINIX filesystem on a
+device (usually a disk partition).</p>
+<p>The <em>device</em> is usually of the following form:</p>
+<blockquote>
+<pre><code>/dev/hda[1-8] (IDE disk 1)
+/dev/hdb[1-8] (IDE disk 2)
+/dev/sda[1-8] (SCSI disk 1)
+/dev/sdb[1-8] (SCSI disk 2)</code></pre>
+</blockquote>
+<p>The device may be a block device or an image file of one, but this is
+not enforced. Expect not much fun on a character device :-).</p>
+<p>The <em>size-in-blocks</em> parameter is the desired size of the file
+system, in blocks. It is present only for backwards compatibility. If
+omitted the size will be determined automatically. Only block counts
+strictly greater than 10 and strictly less than 65536 are allowed.</p>
+<h1>OPTIONS</h1>
+<p><strong>-c</strong>, <strong>--check</strong></p>
+<blockquote>
+<p>Check the device for bad blocks before creating the filesystem. If
+any are found, the count is printed.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--namelength</strong>
+<em>length</em></p>
+<blockquote>
+<p>Specify the maximum length of filenames. Currently, the only
+allowable values are 14 and 30 for file system versions 1 and 2. Version
+3 allows only value 60. The default is 30.</p>
+</blockquote>
+<p><strong>--lock</strong>[=<em>mode</em>]</p>
+<blockquote>
+<p>Use exclusive BSD lock for device or file it operates. The optional
+argument <em>mode</em> can be <strong>yes</strong>, <strong>no</strong>
+(or 1 and 0) or <strong>nonblock</strong>. If the <em>mode</em> argument
+is omitted, it defaults to <strong>yes</strong>. This option overwrites
+environment variable <strong>$LOCK_BLOCK_DEVICE</strong>. The default is
+not to use any lock at all, but it’s recommended to avoid collisions
+with <strong>systemd-udevd</strong>(8) or other tools.</p>
+</blockquote>
+<p><strong>-i</strong>, <strong>--inodes</strong> <em>number</em></p>
+<blockquote>
+<p>Specify the number of inodes for the filesystem.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--badblocks</strong>
+<em>filename</em></p>
+<blockquote>
+<p>Read the list of bad blocks from <em>filename</em>. The file has one
+bad-block number per line. The count of bad blocks read is printed.</p>
+</blockquote>
+<p><strong>-1</strong></p>
+<blockquote>
+<p>Make a Minix version 1 filesystem. This is the default.</p>
+</blockquote>
+<p><strong>-2</strong>, <strong>-v</strong></p>
+<blockquote>
+<p>Make a Minix version 2 filesystem.</p>
+</blockquote>
+<p><strong>-3</strong></p>
+<blockquote>
+<p>Make a Minix version 3 filesystem.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit. The long option cannot be combined with other
+options.</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p>LOCK_BLOCK_DEVICE=&lt;mode&gt;</p>
+<blockquote>
+<p>use exclusive BSD lock. The mode is "1" or "0". See
+<strong>--lock</strong> for more details.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p>The exit status returned by <strong>mkfs.minix</strong> is one of the
+following:</p>
+<p>0</p>
+<blockquote>
+<p>No errors</p>
+</blockquote>
+<p>8</p>
+<blockquote>
+<p>Operational error</p>
+</blockquote>
+<p>16</p>
+<blockquote>
+<p>Usage or syntax error</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>fsck</strong>(8), <strong>mkfs</strong>(8),
+<strong>reboot</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>mkfs.minix</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

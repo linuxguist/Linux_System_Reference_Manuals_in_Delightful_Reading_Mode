@@ -1,0 +1,60 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>goa-daemon - GNOME Online Accounts Daemon</p>
+<h1>SYNOPSIS</h1>
+<p><strong>goa-daemon</strong> [<strong>--help</strong>]
+[<strong>--replace</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>goa-daemon</strong> program provides the
+<em>org.gnome.OnlineAccounts</em> name on the session message bus. Users
+or administrators should never need to start this daemon as it will be
+automatically started by <strong>dbus-daemon</strong>(1) whenever an
+application sends a D-Bus message to the
+<em>org.gnome.OnlineAccounts</em> name on the session bus.</p>
+<h1>CONFIGURATION FILE</h1>
+<p>The <strong>goa-daemon</strong> program stores configuration in the
+$XDG_CONFIG_HOME/goa-1.0/accounts.conf (typically
+~/.config/goa-1.0/accounts.conf) file. The format of this file is
+private and 3rd party programs or libraries should never read it. This
+file does not contain any passwords or secrets.</p>
+<p>See the <strong>XDG Base Directory Specification</strong>[1] for more
+information about $XDG_CONFIG_HOME.</p>
+<h1>SECRETS</h1>
+<p>The <strong>goa-daemon</strong> program stores secrets (such as OAuth
+tokens) in <strong>GNOME Keyring</strong>[2]. The format of the stored
+secrets is private and 3rd party programs or libraries should never
+read, modify or delete these secrets.</p>
+<h1>OPTIONS</h1>
+<p><strong>--replace</strong></p>
+<blockquote>
+<p>Replace existing instance.</p>
+</blockquote>
+<p><strong>--help</strong></p>
+<blockquote>
+<p>Show help options.</p>
+</blockquote>
+<h1>AUTHOR</h1>
+<p>Written by David Zeuthen &lt;zeuthen@gmail.com&gt; with a lot of help
+from many others.</p>
+<h1>BUGS</h1>
+<p>Please send bug reports to either the distribution bug tracker or the
+upstream bug tracker at
+<strong>https://gitlab.gnome.org/GNOME/gnome-online-accounts/issues</strong>.
+There are some debugging tips at
+<strong>https://wiki.gnome.org/Projects/GnomeOnlineAccounts/Debugging</strong></p>
+<h1>SEE ALSO</h1>
+<p><strong>dbus-daemon</strong>(1)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>XDG Base Directory Specification</p>
+<p>http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>GNOME Keyring</p>
+<p>https://live.gnome.org/GnomeKeyring</p>
+</dd>
+</dl>

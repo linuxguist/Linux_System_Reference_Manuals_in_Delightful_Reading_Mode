@@ -1,0 +1,52 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gtk-builder-tool - GtkBuilder file utility</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gtk-builder-tool</strong> [<em>COMMAND</em>]
+[<em>OPTION</em>...] <em>FILE</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>gtk-builder-tool</strong> can perform various operations on
+GtkBuilder .ui files.</p>
+<p>You should always test the modified .ui files produced by
+gtk-builder-tool before using them in production.</p>
+<h1>COMMANDS</h1>
+<p>The following commands are understood:</p>
+<p><strong>validate</strong></p>
+<blockquote>
+<p>Validates the .ui file and report errors to stderr.</p>
+</blockquote>
+<p><strong>simplify</strong></p>
+<blockquote>
+<p>Simplifies the .ui file by removing properties that are set to their
+default values and write the resulting XML to stdout, or back to the
+input file.</p>
+</blockquote>
+<p><strong>enumerate</strong></p>
+<blockquote>
+<p>Lists all the named objects that are created in the .ui file.</p>
+</blockquote>
+<p><strong>preview</strong></p>
+<blockquote>
+<p>Preview the .ui file. This command accepts options to specify the ID
+of an object and a .css file to use.</p>
+</blockquote>
+<h1>SIMPLIFY OPTIONS</h1>
+<p>The <strong>simplify</strong> command accepts the following
+options:</p>
+<p><strong>--replace</strong></p>
+<blockquote>
+<p>Write the content back to the .ui file instead of stdout.</p>
+</blockquote>
+<h1>PREVIEW OPTIONS</h1>
+<p>The <strong>preview</strong> command accepts the following
+options:</p>
+<p><strong>--id=ID</strong></p>
+<blockquote>
+<p>The ID of the object to preview. If not specified, gtk-builder-tool
+will choose a suitable object on its own.</p>
+</blockquote>
+<p><strong>--css=FILE</strong></p>
+<blockquote>
+<p>Load style information from the given .css file.</p>
+</blockquote>

@@ -1,0 +1,204 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-install - install GRUB to a device</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-install</strong> [<em>OPTION</em>...] [<em>OPTION</em>]
+[<em>INSTALL_DEVICE</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Install GRUB on your drive.</p>
+<dl>
+<dt><strong>--compress</strong>=<em>no</em>|xz|gz|lzo</dt>
+<dd>
+<p>compress GRUB files [optional]</p>
+</dd>
+<dt><strong>--disable-shim-lock</strong></dt>
+<dd>
+<p>disable shim_lock verifier</p>
+</dd>
+<dt><strong>--dtb</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed a specific DTB</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>use images and modules under DIR
+[default=/usr/lib/grub/&lt;platform&gt;]</p>
+</dd>
+<dt><strong>--fonts</strong>=<em>FONTS</em></dt>
+<dd>
+<p>install FONTS [default=unicode]</p>
+</dd>
+<dt><strong>--install-modules</strong>=<em>MODULES</em></dt>
+<dd>
+<p>install only MODULES and their dependencies [default=all]</p>
+</dd>
+<dt><strong>-k</strong>, <strong>--pubkey</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed FILE as public key for signature checking</p>
+</dd>
+<dt><strong>--locale-directory</strong>=<em>DIR</em> use translations
+under DIR</dt>
+<dd>
+<p>[default=/usr/share/locale]</p>
+</dd>
+<dt><strong>--locales</strong>=<em>LOCALES</em></dt>
+<dd>
+<p>install only LOCALES [default=all]</p>
+</dd>
+<dt><strong>--modules</strong>=<em>MODULES</em></dt>
+<dd>
+<p>pre-load specified modules MODULES</p>
+</dd>
+<dt><strong>--sbat</strong>=<em>FILE</em></dt>
+<dd>
+<p>SBAT metadata</p>
+</dd>
+<dt><strong>--themes</strong>=<em>THEMES</em></dt>
+<dd>
+<p>install THEMES [default=starfield]</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt><strong>--allow-floppy</strong></dt>
+<dd>
+<p>make the drive also bootable as floppy (default for fdX devices). May
+break on some BIOSes.</p>
+</dd>
+<dt><strong>--boot-directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>install GRUB images under the directory DIR/grub instead of the
+boot/grub directory</p>
+</dd>
+<dt><strong>--bootloader-id</strong>=<em>ID</em></dt>
+<dd>
+<p>the ID of bootloader. This option is only available on EFI and
+Macs.</p>
+</dd>
+<dt><strong>--core-compress</strong>=<em>xz</em>|none|auto</dt>
+<dd>
+<p>choose the compression to use for core image</p>
+</dd>
+<dt><strong>--disk-module</strong>=<em>MODULE</em></dt>
+<dd>
+<p>disk module to use (biosdisk or native). This option is only
+available on BIOS target.</p>
+</dd>
+<dt><strong>--efi-directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>use DIR as the EFI System Partition root.</p>
+</dd>
+<dt><strong>--force</strong></dt>
+<dd>
+<p>install even if problems are detected</p>
+</dd>
+<dt><strong>--force-extra-removable</strong></dt>
+<dd>
+<p>force installation to the removable media path also. This option is
+only available on EFI.</p>
+</dd>
+<dt><strong>--force-file-id</strong></dt>
+<dd>
+<p>use identifier file even if UUID is available</p>
+</dd>
+<dt><strong>--label-bgcolor</strong>=<em>COLOR</em></dt>
+<dd>
+<p>use COLOR for label background</p>
+</dd>
+<dt><strong>--label-color</strong>=<em>COLOR</em></dt>
+<dd>
+<p>use COLOR for label</p>
+</dd>
+<dt><strong>--label-font</strong>=<em>FILE</em></dt>
+<dd>
+<p>use FILE as font for label</p>
+</dd>
+</dl>
+<p><strong>--macppc-directory</strong>=<em>DIR</em> use DIR for PPC MAC
+install.</p>
+<dl>
+<dt><strong>--no-bootsector</strong></dt>
+<dd>
+<p>do not install bootsector</p>
+</dd>
+<dt><strong>--no-nvram</strong></dt>
+<dd>
+<p>don't update the `boot-device'/`Boot*' NVRAM variables. This option
+is only available on EFI and IEEE1275 targets.</p>
+</dd>
+<dt><strong>--no-rs-codes</strong></dt>
+<dd>
+<p>Do not apply any reed-solomon codes when embedding core.img. This
+option is only available on x86 BIOS targets.</p>
+</dd>
+<dt><strong>--no-uefi-secure-boot</strong></dt>
+<dd>
+<p>do not install an image usable with UEFI Secure Boot, even if the
+system was currently started using it. This option is only available on
+EFI.</p>
+</dd>
+<dt><strong>--product-version</strong>=<em>STRING</em></dt>
+<dd>
+<p>use STRING as product version</p>
+</dd>
+<dt><strong>--recheck</strong></dt>
+<dd>
+<p>delete device map if it already exists</p>
+</dd>
+<dt><strong>--removable</strong></dt>
+<dd>
+<p>the installation device is removable. This option is only available
+on EFI.</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--skip-fs-probe</strong></dt>
+<dd>
+<p>do not probe for filesystems in DEVICE</p>
+</dd>
+<dt><strong>--target</strong>=<em>TARGET</em></dt>
+<dd>
+<p>install GRUB for TARGET platform [default=i386-pc]; available
+targets: arm-coreboot, arm-efi, arm-uboot, arm64-efi, i386-coreboot,
+i386-efi, i386-ieee1275, i386-multiboot, i386-pc, i386-qemu, i386-xen,
+i386-xen_pvh, ia64-efi, mips-arc, mips-qemu_mips, mipsel-arc,
+mipsel-loongson, mipsel-qemu_mips, powerpc-ieee1275, riscv32-efi,
+riscv64-efi, sparc64-ieee1275, x86_64-efi, x86_64-xen</p>
+</dd>
+<dt><strong>--uefi-secure-boot</strong></dt>
+<dd>
+<p>install an image usable with UEFI Secure Boot. This option is only
+available on EFI and if the grub-efi-amd64-signed package is
+installed.</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<p>INSTALL_DEVICE must be system device filename. grub-install copies
+GRUB images into boot/grub. On some platforms, it may also install GRUB
+into the boot sector.</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-mkconfig</strong>(8), <strong>grub-mkimage</strong>(1),
+<strong>grub-mkrescue</strong>(1)</p>
+<p>The full documentation for <strong>grub-install</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-install</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-install</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

@@ -1,0 +1,119 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkfontscale - create an index of scalable font files for X</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkfontscale</strong> [ <strong>-b</strong> ] [
+<strong>-s</strong> ] [ <strong>-o</strong> <em>filename</em> ] [
+<strong>-x</strong> <em>suffix</em> ] [ <strong>-a</strong>
+<em>encoding</em> ]  . . . [ <strong>-f</strong> <em>fuzz</em> ] [
+<strong>-l</strong> ] [ <strong>-e</strong> <em>directory</em> ] [
+<strong>-p</strong> <em>prefix</em> ] [ <strong>-r</strong>
+<em>prefix</em> ] [ <strong>-n</strong> <em>prefix</em> ] [ <strong>-u |
+-U</strong> ] [ <strong>-v</strong> ] [ <strong>--</strong> ] [
+<em>directory</em> ]  . . .</p>
+<h1>DESCRIPTION</h1>
+<p>For each directory argument, <em>mkfontscale</em> reads all of the
+scalable font files in the directory. For every font file found, an X11
+font name (XLFD) is generated, and is written together with the file
+name to a file <strong>fonts.scale</strong> in the directory.</p>
+<p>The resulting <strong>fonts.scale</strong> file should be checked and
+possibly manually edited before being used as input for the
+<strong>mkfontdir</strong>(1) program.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-b</strong></dt>
+<dd>
+<p>read bitmap fonts. By default, bitmap fonts are ignored.</p>
+</dd>
+<dt><strong>-s</strong></dt>
+<dd>
+<p>ignore scalable fonts. By default, scalable fonts are read. If
+<strong>-b</strong> is set, this flag has the side effect of enabling
+the reading of <strong>fonts.scale</strong> files.</p>
+</dd>
+<dt><strong>-o</strong><em> filename</em></dt>
+<dd>
+<p>send program output to <em>filename</em>; default is
+<strong>fonts.scale</strong> if bitmap fonts are not being read, and
+<strong>fonts.dir</strong> if they are. If <em>filename</em> is
+relative, it is created in the directory being processed. If it is the
+special value <strong>-</strong>, output is written to standard
+output.</p>
+</dd>
+<dt><strong>-x</strong><em> suffix</em></dt>
+<dd>
+<p>exclude all files with the specified <em>suffix</em>.</p>
+</dd>
+<dt><strong>-a</strong><em> encoding</em></dt>
+<dd>
+<p>add <em>encoding</em> to the list of encodings searched for.</p>
+</dd>
+<dt><strong>-f</strong><em> fuzz</em></dt>
+<dd>
+<p>set the fraction of characters that may be missing in large encodings
+to <em>fuzz</em> percent. Defaults to 2%.</p>
+</dd>
+<dt><strong>-l</strong></dt>
+<dd>
+<p>Write <strong>fonts.dir</strong> files suitable for implementations
+that cannot reencode legacy fonts (BDF and PCF). By default, it is
+assumed that the implementation can reencode Unicode-encoded legacy
+fonts.</p>
+</dd>
+<dt><strong>-e</strong></dt>
+<dd>
+<p>specifies a directory with encoding files. Every such directory is
+scanned for encoding files, the list of which is then written to an
+"encodings.dir" file in every font directory.</p>
+</dd>
+<dt><strong>-p</strong></dt>
+<dd>
+<p>Specifies a prefix that is prepended to the encoding file path names
+when they are written to the "encodings.dir" file. The prefix is
+prepended literally: if a `/' is required between the prefix and the
+path names, it must be supplied explicitly as part of the prefix.</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Keep non-absolute encoding directories in their relative form when
+writing the "encodings.dir" file. The default is to convert relative
+encoding directories to absolute directories by prepending the current
+directory. The positioning of this options is significant, as this
+option only applies to subsequent <strong>-e</strong> options.</p>
+</dd>
+<dt><strong>-n</strong></dt>
+<dd>
+<p>do not scan for fonts, do not write font directory files. This option
+is useful when generating encoding directories only.</p>
+</dd>
+<dt><strong>-u, -U</strong></dt>
+<dd>
+<p>disable (<em>-u</em>) or enable (<em>-U</em>) indexing of ISO 10646:1
+font encodings (default: enabled).</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>print program version and exit.</p>
+</dd>
+<dt><strong>--</strong></dt>
+<dd>
+<p>end of options.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>X(7), Xserver(1), mkfontdir(1), ttmkfdir(1), xfs(1), xset(1)</p>
+<h1>NOTES</h1>
+<p>The format of the <strong>fonts.scale</strong>,
+<strong>fonts.dir</strong> and <strong>encodings.dir</strong> files is
+documented in the mkfontdir(1) manual page.</p>
+<p><strong>Mkfontscale</strong> will overwrite any
+<strong>fonts.scale</strong> file even if it has been hand-edited.</p>
+<p><strong>mkfontscale -b -s -l</strong> is equivalent to
+<strong>mkfontdir</strong>.</p>
+<h1>AUTHOR</h1>
+<p>The version of <strong>mkfontscale</strong> included in this X.Org
+Foundation release was originally written by Juliusz Chroboczek
+&lt;jch@freedesktop.org&gt; for the XFree86 project. The functionality
+of this program was inspired by the <strong>ttmkfdir</strong> utility by
+Joerg Pommnitz.</p>

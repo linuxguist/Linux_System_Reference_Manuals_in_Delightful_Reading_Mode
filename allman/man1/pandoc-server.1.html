@@ -1,0 +1,381 @@
+<h1>SYNOPSIS</h1>
+<p><code>pandoc-server</code> [<em>options</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><code>pandoc-server</code> is a web server that can perform pandoc
+conversions. It can be used either as a running server or as a CGI
+program.</p>
+<p>To use <code>pandoc-server</code> as a CGI program, rename it (or
+symlink it) as <code>pandoc-server.cgi</code>. (Note: if you symlink it,
+you may need to adjust your webserver’s configuration in order to allow
+it to follow symlinks for the CGI script.)</p>
+<p>All pandoc functions are run in the PandocPure monad, which ensures
+that they can do no I/O operations on the server. This should provide a
+high degree of security. This security does, however, impose certain
+limitations:</p>
+<ul>
+<li><p>PDFs cannot be produced.</p></li>
+<li><p>Filters are not supported.</p></li>
+<li><p>Resources cannot be fetched via HTTP.</p></li>
+<li><p>Any images, include files, or other resources needed for the
+document conversion must be explicitly included in the request, via the
+<code>files</code> field (see below under API).</p></li>
+</ul>
+<h1>OPTIONS</h1>
+<dl>
+<dt><code>--port NUM</code></dt>
+<dd>
+<p>HTTP port on which to run the server. Default: 3030.</p>
+</dd>
+<dt><code>--timeout SECONDS</code></dt>
+<dd>
+<p>Timeout in seconds, after which a conversion is killed. Default:
+2.</p>
+<p>When <code>pandoc-server</code> is run as a CGI program, this option
+can be set via the <code>PANDOC_SERVER_TIMEOUT</code> environment
+variable.</p>
+</dd>
+<dt><code>--help</code></dt>
+<dd>
+<p>Print this help.</p>
+</dd>
+<dt><code>--version</code></dt>
+<dd>
+<p>Print version.</p>
+</dd>
+</dl>
+<h1>API</h1>
+<h2>Root endpoint</h2>
+<p>The root (<code>/</code>) endpoint accepts only POST requests.</p>
+<h2>Response</h2>
+<p>It returns a converted document in one of the following formats (in
+order of preference), depending on the <code>Accept</code> header:</p>
+<ul>
+<li><p><code>application/octet-stream</code></p></li>
+<li><p><code>text/plain</code></p></li>
+<li><p><code>application/json</code></p></li>
+</ul>
+<p>If the result is a binary format (e.g., <code>epub</code> or
+<code>docx</code>) and the content is returned as plain text or JSON,
+the binary will be base64 encoded.</p>
+<p>If a JSON response is given, it will have one of the following
+formats. If the conversion is not successful:</p>
+<pre><code>{ &quot;error&quot;: string with the error message }</code></pre>
+<p>If the conversion is successful:</p>
+<pre><code>{ &quot;output&quot;: string with textual or base64-encoded binary output,
+  &quot;base64&quot;: boolean (true means the &quot;output&quot; is base64-encoded),
+  &quot;messages&quot;: array of message objects (see below) }</code></pre>
+<p>Each element of the “messages” array will have the format</p>
+<pre><code>{ &quot;message&quot;: string,
+  &quot;verbosity&quot;: string (either &quot;WARNING&quot; or &quot;INFO&quot;) }</code></pre>
+<h2>Request</h2>
+<p>The body of the POST request should be a JSON object, with the
+following fields. Only the <code>text</code> field is required; all of
+the others can be omitted for default values. When there are several
+string alternatives, the first one given is the default.</p>
+<dl>
+<dt><code>text</code> (string)</dt>
+<dd>
+<p>The document to be converted. Note: if the <code>from</code> format
+is binary (e.g., <code>epub</code> or <code>docx</code>), then
+<code>text</code> should be a base64 encoding of the document.</p>
+</dd>
+<dt><code>from</code> (string, default <code>"markdown"</code>)</dt>
+<dd>
+<p>The input format, possibly with extensions, just as it is specified
+on the pandoc command line.</p>
+</dd>
+<dt><code>to</code> (string, default <code>"html"</code>)</dt>
+<dd>
+<p>The output format, possibly with extensions, just as it is specified
+on the pandoc command line.</p>
+</dd>
+<dt><code>shift-heading-level-by</code> (integer, default 0)</dt>
+<dd>
+<p>Increase or decrease the level of all headings.</p>
+</dd>
+<dt><code>indented-code-classes</code> (array of strings)</dt>
+<dd>
+<p>List of classes to be applied to indented Markdown code blocks.</p>
+</dd>
+<dt><code>default-image-extension</code> (string)</dt>
+<dd>
+<p>Extension to be applied to image sources that lack extensions (e.g.
+<code>".jpg"</code>).</p>
+</dd>
+<dt><code>metadata</code> (JSON map)</dt>
+<dd>
+<p>String-valued metadata.</p>
+</dd>
+<dt><code>tab-stop</code> (integer, default 4)</dt>
+<dd>
+<p>Tab stop (spaces per tab).</p>
+</dd>
+<dt><code>track-changes</code>
+(<code>"accept"|"reject"|"all"</code>)</dt>
+<dd>
+<p>Specifies what to do with insertions, deletions, and comments
+produced by the MS Word “Track Changes” feature. Only affects docx
+input.</p>
+</dd>
+<dt><code>abbreviations</code> (file path)</dt>
+<dd>
+<p>List of strings to be regarded as abbreviations when parsing
+Markdown. See <code>--abbreviations</code> in <code>pandoc(1)</code> for
+details.</p>
+</dd>
+<dt><code>standalone</code> (boolean, default false)</dt>
+<dd>
+<p>If true, causes a standalone document to be produced, using the
+default template or the custom template specified using
+<code>template</code>. If false, a fragment will be produced.</p>
+</dd>
+<dt><code>template</code> (string)</dt>
+<dd>
+<p>String contents of a document template (see Templates in
+<code>pandoc(1)</code> for the format).</p>
+</dd>
+<dt><code>variables</code> (JSON map)</dt>
+<dd>
+<p>Variables to be interpolated in the template. (See Templates in
+<code>pandoc(1)</code>.)</p>
+</dd>
+<dt><code>dpi</code> (integer, default 96)</dt>
+<dd>
+<p>Dots-per-inch to use for conversions between pixels and other
+measurements (for image sizes).</p>
+</dd>
+<dt><code>wrap</code> (<code>"auto"|"preserve"|"none"</code>)</dt>
+<dd>
+<p>Text wrapping option: either <code>"auto"</code> (automatic
+hard-wrapping to fit within a column width), <code>"preserve"</code>
+(insert newlines where they are present in the source), or
+<code>"none"</code> (don’t insert any unnecessary newlines at all).</p>
+</dd>
+<dt><code>columns</code> (integer, default 72)</dt>
+<dd>
+<p>Column width (affects text wrapping and calculation of table column
+widths in plain text formats)</p>
+</dd>
+<dt><code>table-of-contents</code> (boolean, default false)</dt>
+<dd>
+<p>Include a table of contents (in supported formats).</p>
+</dd>
+<dt><code>toc-depth</code> (integer, default 3)</dt>
+<dd>
+<p>Depth of sections to include in the table of contents.</p>
+</dd>
+<dt><code>strip-comments</code> (boolean, default false)</dt>
+<dd>
+<p>Causes HTML comments to be stripped in Markdown or Textile source,
+instead of being passed through to the output format.</p>
+</dd>
+<dt><code>highlight-style</code> (string, leave unset for no
+highlighting)</dt>
+<dd>
+<p>Specify the style to use for syntax highlighting of code. Standard
+styles are <code>"pygments"</code> (the default), <code>"kate"</code>,
+<code>"monochrome"</code>, <code>"breezeDark"</code>,
+<code>"espresso"</code>, <code>"zenburn"</code>, <code>"haddock"</code>,
+and <code>"tango"</code>. Alternatively, the path of a
+<code>.theme</code> with a KDE syntax theme may be used (in this case,
+the relevant file contents must also be included in <code>files</code>,
+see below).</p>
+</dd>
+<dt><code>embed-resources</code></dt>
+<dd>
+<p>Embed images, scripts, styles and other resources in an HTML document
+using <code>data</code> URIs. Note that this will not work unless the
+contents of all external resources are included under
+<code>files</code>.</p>
+</dd>
+<dt><code>html-q-tags</code> (boolean, default false)</dt>
+<dd>
+<p>Use <code>&lt;q&gt;</code> elements in HTML instead of literal
+quotation marks.</p>
+</dd>
+<dt><code>ascii</code> (boolean, default false)</dt>
+<dd>
+<p>Use entities and escapes when possible to avoid non-ASCII characters
+in the output.</p>
+</dd>
+<dt><code>reference-links</code> (boolean, default false)</dt>
+<dd>
+<p>Create reference links rather than inline links in Markdown
+output.</p>
+</dd>
+<dt><code>reference-location</code>
+(<code>"document"|"section"|"block"</code>)</dt>
+<dd>
+<p>Determines whether link references and footnotes are placed at the
+end of the document, the end of the section, or the end of the block
+(e.g. paragraph), in certain formats. (See <code>pandoc(1)</code> under
+<code>--reference-location</code>.)</p>
+</dd>
+<dt><code>setext-headers</code> (boolean, default false)</dt>
+<dd>
+<p>Use Setext (underlined) headings instead of ATX
+(<code>#</code>-prefixed) in Markdown output.</p>
+</dd>
+<dt><code>top-level-division</code>
+(<code>"default"|"part"|"chapter"|"section"</code>)</dt>
+<dd>
+<p>Determines how top-level headings are interpreted in LaTeX, ConTeXt,
+DocBook, and TEI. The <code>"default"</code> value tries to choose the
+best interpretation based on heuristics.</p>
+</dd>
+<dt><code>number-sections</code> (boolean, default false)</dt>
+<dd>
+<p>Automatically number sections (in supported formats).</p>
+</dd>
+<dt><code>number-offset</code> (array of integers)</dt>
+<dd>
+<p>Offsets to be added to each component of the section number. For
+example, <code>[1]</code> will cause the first section to be numbered
+“2” and the first subsection “2.1”; <code>[0,1]</code> will cause the
+first section to be numbered “1” and the first subsection “1.2.”</p>
+</dd>
+<dt><code>html-math-method</code>
+(<code>"plain"|"webtex"|"gladtex"|"mathml"|"mathjax"|"katex"</code>)</dt>
+<dd>
+<p>Determines how math is represented in HTML.</p>
+</dd>
+<dt><code>listings</code> (boolean, default false)</dt>
+<dd>
+<p>Use the <code>listings</code> package to format code in LaTeX
+output.</p>
+</dd>
+<dt><code>incremental</code> (boolean, default false)</dt>
+<dd>
+<p>If true, lists appear incrementally by default in slide shows.</p>
+</dd>
+<dt><code>slide-level</code> (integer)</dt>
+<dd>
+<p>Heading level that deterimes slide divisions in slide shows. The
+default is to pick the highest heading level under which there is body
+text.</p>
+</dd>
+<dt><code>section-divs</code> (boolean, default false)</dt>
+<dd>
+<p>Arrange the document into a hierarchy of nested sections based on the
+headings.</p>
+</dd>
+<dt><code>email-obfuscation</code>
+(<code>"none"|"references"|"javascript"</code>)</dt>
+<dd>
+<p>Determines how email addresses are obfuscated in HTML.</p>
+</dd>
+<dt><code>identifier-prefix</code> (string)</dt>
+<dd>
+<p>Prefix to be added to all automatically-generated identifiers.</p>
+</dd>
+<dt><code>title-prefix</code> (string)</dt>
+<dd>
+<p>Prefix to be added to the title in the HTML header.</p>
+</dd>
+<dt><code>reference-doc</code> (file path)</dt>
+<dd>
+<p>Reference doc to use in creating <code>docx</code> or
+<code>odt</code> or <code>pptx</code>. See <code>pandoc(1)</code> under
+<code>--reference-doc</code> for details. The contents of the file must
+be included under <code>files</code>.</p>
+</dd>
+<dt><code>split-level</code> (integer, default 1)</dt>
+<dd>
+<p>Heading level at which documents are split in EPUB or chunked
+HTML.</p>
+</dd>
+<dt><code>epub-cover-image</code> (file path)</dt>
+<dd>
+<p>Cover image for EPUB. The contents of the file must be included under
+<code>files</code>.</p>
+</dd>
+<dt><code>epub-metadata</code> (file path)</dt>
+<dd>
+<p>Path of file containing Dublin core XML elements to be used for EPUB
+metadata. The contents of the file must be included under
+<code>files</code>.</p>
+</dd>
+<dt><code>epub-subdirectory</code> (string, default “EPUB”)</dt>
+<dd>
+<p>Name of content subdirectory in the EPUB container.</p>
+</dd>
+<dt><code>epub-fonts</code> (array of file paths)</dt>
+<dd>
+<p>Fonts to include in the EPUB. The fonts themselves must be included
+in <code>files</code> (see below).</p>
+</dd>
+<dt><code>ipynb-output</code> (<code>"best"|"all"|"none"</code>)</dt>
+<dd>
+<p>Determines how ipynb output cells are treated. <code>all</code> means
+that all of the data formats included in the original are preserved.
+<code>none</code> means that the contents of data cells are omitted.
+<code>best</code> causes pandoc to try to pick the richest data block in
+each output cell that is compatible with the output format.</p>
+</dd>
+<dt><code>citeproc</code> (boolean, default false)</dt>
+<dd>
+<p>Causes citations to be processed using citeproc. See Citations in
+<code>pandoc(1)</code> for details.</p>
+</dd>
+<dt><code>bibliography</code> (array of file paths)</dt>
+<dd>
+<p>Files containing bibliographic data. The contents of the files must
+be included in <code>files</code>.</p>
+</dd>
+<dt><code>csl</code> (file path)</dt>
+<dd>
+<p>CSL style file. The contents of the file must be included in
+<code>files</code>.</p>
+</dd>
+<dt><code>cite-method</code>
+(<code>"citeproc"|"natbib"|"biblatex"</code>)</dt>
+<dd>
+<p>Determines how citations are formatted in LaTeX output.</p>
+</dd>
+<dt><code>files</code> (JSON mapping of file paths to base64-encoded
+strings)</dt>
+<dd>
+<p>Any files needed for the conversion, including images referred to in
+the document source, should be included here. Binary data must be
+base64-encoded. Textual data may be left as it is, unless it is
+<em>also</em> valid base 64 data, in which case it will be interpreted
+that way.</p>
+</dd>
+</dl>
+<h2><code>/batch</code> endpoint</h2>
+<p>The <code>/batch</code> endpoint behaves like the root endpoint,
+except for these two points:</p>
+<ul>
+<li><p>It accepts a JSON array, each element of which is a JSON object
+like the one expected by the root endpoint.</p></li>
+<li><p>It returns a JSON array of JSON results.</p></li>
+</ul>
+<p>This endpoint can be used to convert a sequence of small snippets in
+one request.</p>
+<h2><code>/version</code> endpoint</h2>
+<p>The <code>/version</code> endpoint accepts a GET request and returns
+the pandoc version as a plain or JSON-encoded string, depending on
+Accept headers.</p>
+<h2><code>/babelmark</code> endpoint</h2>
+<p>The <code>/babelmark</code> endpoint accepts a GET request with the
+following query parameters:</p>
+<ul>
+<li><p><code>text</code> (required string)</p></li>
+<li><p><code>from</code> (optional string, default is
+<code>"markdown"</code>)</p></li>
+<li><p><code>to</code> (optional string, default is
+<code>"html"</code>)</p></li>
+<li><p><code>standalone</code> (optional boolean, default is
+<code>false</code>)</p></li>
+</ul>
+<p>It returns a JSON object with fields <code>html</code> and
+<code>version</code>. This endpoint is designed to support the Babelmark
+website.</p>
+<h1>AUTHORS</h1>
+<p>Copyright 2022 John MacFarlane (jgm@berkeley.edu). Released under the
+GPL, version 2 or greater. This software carries no warranty of any
+kind. (See COPYRIGHT for full copyright and warranty notices.)</p>
+<p>The Pandoc source code may be downloaded from
+&lt;https://hackage.haskell.org/package/pandoc&gt; or
+&lt;https://github.com/jgm/pandoc/releases&gt;. Further documentation is
+available at &lt;https://pandoc.org&gt;.</p>

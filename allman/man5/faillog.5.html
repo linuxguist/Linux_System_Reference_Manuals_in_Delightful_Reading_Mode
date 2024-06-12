@@ -1,0 +1,30 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>faillog - login failure logging file</p>
+<h1>DESCRIPTION</h1>
+<p>/var/log/faillog maintains a count of login failures and the limits
+for each account.</p>
+<p>The file contains fixed length records, indexed by numerical UID.
+Each record contains the count of login failures since the last
+successful login; the maximum number of failures before the account is
+disabled; the line on which the last login failure occurred; the date of
+the last login failure; and the duration (in seconds) during which the
+account will be locked after a failure.</p>
+<p>The structure of the file is:</p>
+<blockquote>
+<pre><code>struct	faillog {
+	short   fail_cnt;
+	short   fail_max;
+	char    fail_line[12];
+	time_t  fail_time;
+	long    fail_locktime;
+};</code></pre>
+</blockquote>
+<h1>FILES</h1>
+<p>/var/log/faillog</p>
+<blockquote>
+<p>Failure logging file.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>faillog</strong>(8)</p>

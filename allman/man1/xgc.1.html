@@ -1,0 +1,81 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xgc - X graphics demo</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xgc</strong> [-<em>toolkitoption</em> ...]</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>xgc</em> program demonstrates various features of the X
+graphics primitives. In X, most of the details about the graphics to be
+generated are stored in a resource called a graphics context (GC). The
+<strong>xgc</strong> program provides a user interface for setting
+various GC components. Pressing the "Run" button causes these results to
+be displayed in the large drawing window on the right. Timing
+information is displayed in the window immediately below.</p>
+<p>The items in the upper left hand window work as follows:</p>
+<p><em>Function</em> - specify the logical function with which
+primitives will drawn. The most usual setting is "set", i.e. simply to
+render pixels without regard to what has been drawn before.</p>
+<p><em>LineStyle</em> - specify whether lines should be drawn solid in
+foreground, dashed in foreground or alternating foreground and
+background.</p>
+<p><em>CapStyle</em> - specify the appearance of the ends of a line.</p>
+<p><em>JoinStyle</em> - specify the appearance of joints between
+consecutive lines drawn within a single graphics primitive.</p>
+<p><em>FillStyle</em> - specify whether lines, text and fill requests
+are solid, tiled with a pixmap or stippled.</p>
+<p><em>FillRule</em> - specifies the rule used to fill polygons. The
+EvenOdd rule means that if areas overlap an odd number of times, they
+are not drawn. Winding rule means that overlapping areas are always
+filled, regardless of how many times they overlap.</p>
+<p><em>ArcMode</em> - specifies the rule for filling of arcs. The
+boundary of the arc is either a Chord or two radii.</p>
+<p><em>planemask</em> - specifies which planes of the drawing window are
+modified. By default, all planes are modified.</p>
+<p><em>dashlist</em> - specifies a pattern to be used when drawing
+dashed lines.</p>
+<p><em>Line Width</em> - specifies the width in pixels of lines to be
+drawn. Zero means to draw using the server's fastest algorithm with a
+line width of one pixel.</p>
+<p><em>Font</em> - specifies the font to be used for text
+primitives.</p>
+<p><em>Foreground</em> and <em>Background</em> - specify the pixel
+values to be applied when drawing primitives. The Foreground value is
+used as the pixel value for set bits in the source in all primitives.
+The Background value is used as the pixel value for unset bits in the
+source when using Copy Plane, drawing lines with LineStyle of DoubleDash
+and filling with FillStyle of OpaqueStippled.</p>
+<p><em>Percentage of Test</em> - scrollbar permits specifying only a
+percentage of the test to be run. The number at the left indicates the
+current setting, which defaults to 100%.</p>
+<p>The window labeled "Test" permits choice of one a number of graphics
+primitive tests, including Points, Segments, Lines, Arcs and Filled
+Arcs, 8-bit Text and Image Text, Rectangles and Filled Rectangles, Image
+draws, as well as Copy Plane and Copy Area.</p>
+<p>The window to the right of this has buttons which permit
+record/playback of the primitives rendered.</p>
+<h1>OPTIONS</h1>
+<p><em>Xgc</em> accepts all of the standard X Toolkit command line
+options.</p>
+<h1>X DEFAULTS</h1>
+<p>This program accepts the usual defaults for toolkit applications.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p>to get the default host and display number.</p>
+</dd>
+<dt><strong>XENVIRONMENT</strong></dt>
+<dd>
+<p>to get the name of a resource file that overrides the global
+resources stored in the RESOURCE_MANAGER property.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>X(7)</p>
+<h1>BUGS</h1>
+<p>This program isn't really finished yet, but it probably never will
+be, since it only demonstrates the original X11 core protocol rendering
+operations, which few modern programs use anymore.</p>
+<h1>AUTHORS</h1>
+<p>Dan Schmidt, MIT</p>

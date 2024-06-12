@@ -1,0 +1,140 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-search - Search for content by type or across all types</p>
+<h1>SYNOPSIS</h1>
+<p><strong>tracker3 search</strong> [<em>options</em>...]
+[[<em>expression1</em>] ...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>tracker3 search</strong> searches all indexed content for
+<em>expression</em>. The resource in which <em>expression</em> matches
+must exist (see <strong>--all</strong> for more information). All
+results are returned in ascending order. In all cases, if no
+<em>expression</em> is given for an argument (like
+<strong>--folders</strong> for example) then ALL items in that category
+are returned instead.</p>
+<p><em>expression</em></p>
+<blockquote>
+<p>One or more terms to search. The default operation is a logical AND.
+For logical OR operations, see -r.</p>
+</blockquote>
+<h1>OPTIONS</h1>
+<p><strong>-f, --files</strong></p>
+<blockquote>
+<p>Search for files of any type matching <em>expression</em>
+(optional).</p>
+</blockquote>
+<p><strong>-s, --folders</strong></p>
+<blockquote>
+<p>Search for folders matching <em>expression</em> (optional).</p>
+</blockquote>
+<p><strong>-m, --music</strong></p>
+<blockquote>
+<p>Search for music files matching <em>expression</em> (optional).</p>
+</blockquote>
+<p><strong>--music-albums</strong></p>
+<blockquote>
+<p>Search for music albums matching <em>expression</em> (optional).</p>
+</blockquote>
+<p><strong>--music-artists</strong></p>
+<blockquote>
+<p>Search for music artists matching <em>expression</em> (optional).</p>
+</blockquote>
+<p><strong>-i, --images</strong></p>
+<blockquote>
+<p>Search for images matching <em>expression</em> (optional).</p>
+</blockquote>
+<p><strong>-v, --videos</strong></p>
+<blockquote>
+<p>Search for videos matching <em>expression</em> (optional).</p>
+</blockquote>
+<p><strong>-t, --documents</strong></p>
+<blockquote>
+<p>Search for documents matching <em>expression</em> (optional).</p>
+</blockquote>
+<p><strong>-e, --emails</strong></p>
+<blockquote>
+<p>Search for emails matching <em>expression</em> (optional). Returns a
+list of subjects for emails found.</p>
+</blockquote>
+<p><strong>-c, --contacts</strong></p>
+<blockquote>
+<p>Search for contacts matching <em>expression</em> (optional). Returns
+a list of names and email addresses found.</p>
+</blockquote>
+<p><strong>--software</strong></p>
+<blockquote>
+<p>Search for software installed matching <em>expression</em>
+(optional). Returns a list of desktop files and application titles
+found.</p>
+</blockquote>
+<p><strong>--software-categories</strong></p>
+<blockquote>
+<p>Search for software categories matching <em>expression</em>
+(optional). Returns a list of urns and their categories (e.g. Settings,
+Video, Utility, etc).</p>
+</blockquote>
+<p><strong>--feeds</strong></p>
+<blockquote>
+<p>Search through RSS feed information matching <em>expression</em>
+(optional). Returns a list of those found.</p>
+</blockquote>
+<p><strong>-b, --bookmarks</strong></p>
+<blockquote>
+<p>Search through bookmarks matching <em>expression</em> (optional).
+Returns a list titles and links for each bookmark found.</p>
+</blockquote>
+<p><strong>-l,
+--limit=&lt;</strong><em>limit</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Limit search to <em>limit</em> results. The default is 10 or 512 with
+--disable-snippets.</p>
+</blockquote>
+<p><strong>-o,
+--offset=&lt;</strong><em>offset</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Offset the search results by <em>offset</em>. For example, start at
+item number 10 in the results. The default is 0.</p>
+</blockquote>
+<p><strong>-r, --or-operator</strong></p>
+<blockquote>
+<p>Use OR for search terms instead of AND (the default)</p>
+</blockquote>
+<p><strong>-d, --detailed</strong></p>
+<blockquote>
+<p>Show the unique URN associated with each search result. This does not
+apply to --music-albums and --music-artists.</p>
+</blockquote>
+<p><strong>-a, --all</strong></p>
+<blockquote>
+<p>Show results which might not be available. This might bebecause a
+removable media is not mounted for example. Without this option,
+resources are only shown if they exist. This option applies to all
+command line switches except</p>
+</blockquote>
+<p><strong>--disable-snippets</strong></p>
+<blockquote>
+<p>Results are shown with snippets. Snippets are context around the word
+that was searched for in the first place. This gives some idea of if the
+resource found is the right one. Snippets require Full Text Search to be
+compile time enabled AND to not be disabled with --disable-fts. Using
+--disable-snippets only shows the resources which matched, no context is
+provided about where the match occurred.</p>
+</blockquote>
+<p><strong>--disable-fts</strong></p>
+<blockquote>
+<p>If Full Text Search (FTS) is available, this option allows it to be
+disabled for one off searches. This returns results slightly using
+particular properties to match the search terms (like "nie:title")
+instead of looking for the search terms amongst ALL properties. It is
+more limiting to do this, but sometimes searching without FTS can yield
+better results if the FTS ranking is off.</p>
+</blockquote>
+<p><strong>--disable-color</strong></p>
+<blockquote>
+<p>This disables any ANSI color use on the command line. By default this
+is enabled to make it easier to see results.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-status</strong>(1),
+<strong>tracker3-tag</strong>(1), <strong>tracker3-info</strong>(1).</p>

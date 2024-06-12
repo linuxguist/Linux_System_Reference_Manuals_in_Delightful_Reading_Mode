@@ -1,0 +1,96 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>notify-send - a program to send desktop notifications</p>
+<h1>SYNOPSIS</h1>
+<p><strong>notify-send</strong> [<em>OPTIONS</em>] {<em>summary</em>}
+[<em>body</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>With <strong>notify-send</strong> you can send desktop notifications
+to the user via a notification daemon from the command line. These
+notifications can be used to inform the user about an event or display
+some form of information without getting in the user’s way.</p>
+<h1>OPTIONS</h1>
+<p><strong>-?</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Show help and exit.</p>
+</blockquote>
+<p><strong>-a</strong>,
+<strong>--app-name</strong>=<em>APP_NAME</em></p>
+<blockquote>
+<p>Specifies the app name for the notification.</p>
+</blockquote>
+<p><strong>-A</strong>,
+<strong>--action</strong>=[<em>NAME</em>=]<em>Text...</em></p>
+<blockquote>
+<p>Specifies the actions to display to the user. Implies
+<strong>--wait</strong> to wait for user input. May be set multiple
+times. The <em>NAME</em> of the action is output to stdout. If
+<em>NAME</em> is not specified, the numerical index of the option is
+used (starting with 1).</p>
+</blockquote>
+<p><strong>-u</strong>, <strong>--urgency</strong>=<em>LEVEL</em></p>
+<blockquote>
+<p>Specifies the urgency level (low, normal, critical).</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--expire-time</strong>=<em>TIME</em></p>
+<blockquote>
+<p>The duration, in milliseconds, for the notification to appear on
+screen.</p>
+<p>Not all implementations use this parameter. GNOME Shell and Notify
+OSD always ignore it, while Plasma ignores it for notifications with the
+critical urgency level.</p>
+</blockquote>
+<p><strong>-i</strong>, <strong>--icon</strong>=<em>ICON</em></p>
+<blockquote>
+<p>Specifies an icon filename or stock icon to display.</p>
+</blockquote>
+<p><strong>-c</strong>,
+<strong>--category</strong>=<em>TYPE</em>[,<em>TYPE</em>...]</p>
+<blockquote>
+<p>Specifies the notification category.</p>
+</blockquote>
+<p><strong>-h</strong>,
+<strong>--hint</strong>=<em>TYPE</em>:<em>NAME</em>:<em>VALUE</em></p>
+<blockquote>
+<p>Specifies basic extra data to pass. Valid types are BOOLEAN, INT,
+DOUBLE, STRING, BYTE and VARIANT.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--print-id</strong></p>
+<blockquote>
+<p>Print the notification ID.</p>
+</blockquote>
+<p><strong>-r</strong>,
+<strong>--replace-id</strong>=<em>REPLACE_ID</em></p>
+<blockquote>
+<p>The ID of the notification to replace.</p>
+</blockquote>
+<p><strong>-w</strong>, <strong>--wait</strong></p>
+<blockquote>
+<p>Wait for the notification to be closed before exiting. If the
+<strong>expire-time</strong> is set, it will be used as the maximum
+waiting time.</p>
+</blockquote>
+<p><strong>-e</strong>, <strong>--transient</strong></p>
+<blockquote>
+<p>Show a transient notification. Transient notifications by-pass the
+servers persistence capability, if any. And so it wont be preserved
+until the user acknowledges it.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p>The Desktop Notification Spec on
+<strong>https://specifications.freedesktop.org/notification-spec/</strong>.</p>
+<h1>AUTHORS</h1>
+<p><strong>Andre Filipe de Assuncao e Brito</strong>
+&lt;decko@noisemakers.org&gt;</p>
+<blockquote>
+<p>Original author</p>
+</blockquote>
+<p><strong>Paul van Tilburg</strong> &lt;paulvt@debian.org&gt;</p>
+<blockquote>
+<p>Original author</p>
+</blockquote>
+<p><strong>Riccardo Setti</strong> &lt;giskard@debian.org&gt;</p>
+<blockquote>
+<p>Original author</p>
+</blockquote>

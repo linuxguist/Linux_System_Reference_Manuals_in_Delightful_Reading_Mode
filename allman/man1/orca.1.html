@@ -1,0 +1,244 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>orca - a scriptable screen reader</p>
+<h1>SYNOPSIS</h1>
+<p><strong>orca</strong> [<em>option...</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>orca</strong> is a screen reader for people with visual
+impairments, it provides alternative access to the desktop by using
+speech synthesis and braille.</p>
+<p><strong>orca</strong> works with applications and toolkits that
+support the Assistive Technology Service Provider Interface (AT-SPI),
+which is the primary assistive technology infrastructure for Linux and
+Solaris. Applications and toolkits supporting the AT-SPI include the
+GNOME Gtk+ toolkit, the Java platform's Swing toolkit, LibreOffice,
+Gecko, and WebKitGtk. AT-SPI support for the KDE Qt toolkit is being
+pursued.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-s, --setup</strong></dt>
+<dd>
+<p>When starting <strong>orca</strong>, initiate the GUI-based
+configuration.</p>
+</dd>
+<dt><strong>-u, --user-prefs-dir=</strong><em>dirname</em></dt>
+<dd>
+<p>When starting <strong>orca</strong>, use <em>dirname</em> as an
+alternate directory for the user preferences.</p>
+</dd>
+<dt><strong>-e,
+--enable=</strong><em>speech|braille|braille-monitor</em></dt>
+<dd>
+<p>When starting <strong>orca</strong>, force the enabling of the
+supplied options.</p>
+</dd>
+<dt><strong>-d,
+--disable=</strong><em>speech|braille|braille-monitor</em></dt>
+<dd>
+<p>When starting <strong>orca</strong>, force the disabling of the
+supplied options.</p>
+</dd>
+<dt><strong>-l, --list-apps</strong></dt>
+<dd>
+<p>Prints the names of all the currently running applications. This is
+used primarily for debugging purposes to see if <strong>orca</strong>
+can talk to the accessibility infrastructure. Note that if
+<strong>orca</strong> is already running, this will not kill the other
+<strong>orca</strong> process. It will just list the currently running
+applications, and you will see <strong>orca</strong> listed twice: once
+for the existing <strong>orca</strong> and once for this instance.</p>
+</dd>
+<dt><strong>--debug</strong></dt>
+<dd>
+<p>Enables debug output for <strong>orca</strong> and sends all debug
+output to a file with a name of the form 'debug-YYYY-MM-DD-HH:MM:SS.out'
+in the current directory. The YYYY-MM-DD-HH:MM:SS portion will be
+replaced with the current date and time.</p>
+</dd>
+<dt><strong>--debug-file=</strong><em>filename</em></dt>
+<dd>
+<p>Enables debug output for <strong>orca</strong> and sends all debug
+output to the given filename.</p>
+</dd>
+<dt><strong>-v, --version</strong></dt>
+<dd>
+<p>outputs <strong>orca</strong> version number and exits.</p>
+</dd>
+<dt><strong>-h, --help</strong></dt>
+<dd>
+<p>displays <strong>orca</strong> help and exits.</p>
+</dd>
+<dt><strong>--replace</strong></dt>
+<dd>
+<p>Replace a currently running <strong>orca</strong> process. By
+default, if <strong>orca</strong> detects an existing
+<strong>orca</strong> process for the same session, it will not start a
+new <strong>orca</strong> process. This option will kill and cleanup
+after any existing <strong>orca</strong> process and then start a new
+<strong>orca</strong> in its place.</p>
+</dd>
+</dl>
+<h1>KEYBOARD SETTINGS</h1>
+<p>Orca provides two keyboard modes, Desktop and Laptop keyboard layout.
+The <strong>Orca_Modifier</strong> key is <strong>Insert</strong> in
+desktop keyboard layout and <strong>Caps_Lock</strong> in laptop
+keyboard layout.</p>
+<p><strong>Orca</strong> uses default GNOME keyboard shortcuts to
+navigate the desktop and interact with various applications. The flat
+review commands provide an alternative method of interaction in certain
+inaccessible applications. It should not be confused with flat review
+functionality provided by other screen readers.</p>
+<h1>Desktop Mode</h1>
+<p><strong>Flat review commands</strong></p>
+<p><strong>Numpad-7</strong> move the flat review cursor to the previous
+line and read it.</p>
+<p><strong>Numpad-8</strong> read the current line.</p>
+<p><strong>Numpad-9</strong> move the flat review cursor to the next
+line and read it.</p>
+<p><strong>Numpad-4</strong> move the flat review cursor to the previous
+word and read it.</p>
+<p><strong>Numpad-5</strong> read the current word.</p>
+<p><strong>Numpad-6</strong> move the flat review cursor to the next
+word and read it.</p>
+<p><strong>Numpad-1</strong> move the flat review cursor to the previous
+character and read it.</p>
+<p><strong>Numpad-2</strong> read the current character.</p>
+<p><strong>Numpad-3</strong> move the flat review cursor to the next
+character and read it.</p>
+<p><strong>Numpad-slash</strong> perform a left mouse click at the
+location of the flat review cursor.</p>
+<p><strong>Numpad-star</strong> perform a right mouse click at the
+location of the flat review cursor.</p>
+<p><strong>Bookmark commands</strong></p>
+<p><strong>Alt+Insert+[1-6]</strong> assign a bookmark to a numbered
+slot. If a bookmark already exists in the slot it will be replaced with
+the new one.</p>
+<p><strong>Insert+[1-6]</strong> go to the position pointed to by the
+bookmark bound to this numbered slot.</p>
+<p><strong>Insert+B and Insert+Shift+B</strong> move between the given
+bookmarks for the given application or page.</p>
+<p><strong>Alt+Insert+B</strong> save the defined bookmarks for the
+current application or page.</p>
+<p><strong>Miscellaneous functions</strong></p>
+<p><strong>Numpad+Plus</strong> 'say all' command; reads from the
+current position of the caret to the end of the document.</p>
+<p><strong>Numpad+Enter</strong> 'Where am I' command; speaks
+information such as the title of the current application window, as well
+as the name of the control that currently has focus.</p>
+<p><strong>Insert+H</strong> enter into orca's 'learn mode'; press
+Escape to exit.</p>
+<p><strong>Insert+Shift+Backslash</strong> toggle live regions
+monitoring on and off.</p>
+<p><strong>Insert+F</strong> speak font and attribute information for
+the current character.</p>
+<p><strong>Insert+Space</strong> Launch the orca Configuration
+dialog.</p>
+<p><strong>Insert+Ctrl+Space</strong> reload user settings and
+reinitialize services as necessary. Also launches the orca Configuration
+dialog for the current application.</p>
+<p><strong>Insert+S</strong> toggle speech on and off.</p>
+<p><strong>Insert+F11</strong> toggle the reading of tables, either by
+single cell or whole row.</p>
+<h1>Laptop Mode</h1>
+<p><strong>Flat review commands</strong></p>
+<p><strong>Caps_Lock+U</strong> move the flat review cursor to the
+previous line and read it. Double-click to move flat review to the top
+of the current window.</p>
+<p><strong>Caps_Lock+I</strong> read the current line. Double-click to
+read the current line along with formatting and capitalization
+details.</p>
+<p><strong>Caps_Lock+O</strong> move the flat review cursor to the next
+line and read it. Double- click to move flat review to the bottom of the
+current window.</p>
+<p><strong>Caps_Lock+J</strong> move the flat review cursor to the
+previous word and read it. Double-click to move flat review to the word
+above the current word.</p>
+<p><strong>Caps_Lock+K</strong> read the current word. Double-click to
+spell the word. Triple-click to hear the word spelled phonetically.</p>
+<p><strong>Caps_Lock+L</strong> move the flat review cursor to the next
+word and read it. Double- click to move flat review to the word below
+the current word.</p>
+<p><strong>Caps_Lock+M</strong> move the flat review cursor to the
+previous character and read it. Double-click to move flat review to the
+end of the current line.</p>
+<p><strong>Caps_Lock+Comma</strong> read the current character.
+Double-click to pronounce the character phonetically if it is a
+letter.</p>
+<p><strong>Caps_Lock+Period</strong> move the flat review cursor to the
+next character and read it.</p>
+<p><strong>Caps_Lock+7</strong> perform a left mouse click at the
+location of the flat review cursor.</p>
+<p><strong>Caps_Lock+8</strong> perform a right mouse click at the
+location of the flat review cursor.</p>
+<p><strong>Bookmark commands</strong></p>
+<p><strong>Alt+Caps_Lock+[1-6]</strong></p>
+<p>add a bookmark to the numbered slot. If a bookmark already exists for
+the slot it will be replaced with the new one.</p>
+<p><strong>Caps_Lock+[1-6]</strong> go to the position pointed to by the
+bookmark bound to this numbered slot.</p>
+<p><strong>Caps_Lock+Band Caps_Lock+Shift+B</strong> move between the
+given bookmarks for the given application or page.</p>
+<p><strong>Alt+Caps_Lock+B</strong> save the defined bookmarks for the
+current application or page.</p>
+<p><strong>Miscellaneous functions</strong></p>
+<p><strong>Caps_Lock+Semicolon</strong> 'Say all' command; reads from
+the current position of the caret to the end of the document.
+<strong>Caps_Lock+Enter</strong> 'Where am I' command; speaks
+information such as the title of the current application window, as well
+as the name of the control that currently has focus.</p>
+<p><strong>Caps_Lock+H</strong> enter learn mode (press Escape to
+exit).</p>
+<p><strong>Caps_Lock+Shift+Backslash</strong> toggle live regions
+monitoring on and off.</p>
+<p><strong>Caps_Lock+F</strong> speak font and attribute information for
+the current character.</p>
+<p><strong>Caps_Lock+Space</strong> launch the orca Configuration
+dialog.</p>
+<p><strong>Caps_Lock+Ctrl+Space</strong> reload user settings and
+reinitialize services as necessary; also launches the orca Configuration
+dialog for the current application.</p>
+<p><strong>Caps_Lock+S</strong> toggle speech on and off.</p>
+<p><strong>Caps_Lock+F11</strong> toggle the reading of tables, either
+by single cell or whole row.</p>
+<h1>FILES</h1>
+<dl>
+<dt><strong>~/.local/share/orca</strong></dt>
+<dd>
+<p><strong>Orca</strong> user preferences directory</p>
+</dd>
+<dt><strong>~/.local/share/orca/user-settings.conf</strong></dt>
+<dd>
+<p><strong>Orca</strong> user preferences configuration file.</p>
+</dd>
+<dt><strong>~/.local/share/orca/orca-customizations.py</strong></dt>
+<dd>
+<p><strong>Orca</strong> user customizations configuration file</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>~/.local/share/orca/orca-scripts</strong></dt>
+<dd>
+<p><strong>Orca</strong> user orca scripts directory</p>
+</dd>
+<dt><strong>~/.local/share/orca/bookmarks</strong></dt>
+<dd>
+<p><strong>Orca</strong> user bookmarks directory</p>
+</dd>
+<dt><strong>~/.local/share/orca/app-settings</strong></dt>
+<dd>
+<p><strong>Orca</strong> user application specific settings
+directory</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p><strong>Orca</strong> originated as a community effort led by the Sun
+Microsystems Inc. Accessibility Program Office and with contributions
+from many community members.</p>
+<h1>SEE ALSO</h1>
+<p>For more information please visit <strong>orca</strong> wiki at <a
+href="http://live.gnome.org/Orca">&lt;http://live.gnome.org/Orca&gt;</a></p>
+<p>The <strong>orca</strong> mailing list</p>
+<p>&lt;http://mail.gnome.org/mailman/listinfo/orca-list&gt; To post a
+message to all <strong>orca</strong> list, send a email to
+orca-list@gnome.org</p>

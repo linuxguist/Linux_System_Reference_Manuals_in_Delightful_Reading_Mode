@@ -1,0 +1,128 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTML::FormatRTF - Format HTML as RTF</p>
+<h1>VERSION</h1>
+<p>version 2.16</p>
+<h1>SYNOPSIS</h1>
+<p>use HTML::FormatRTF; my $out_file = "test.rtf"; open(RTF,
+"&gt;$out_file") or die "Cant write-open $out_file: $!\nAborting"; print
+RTF HTML::FormatRTF-&gt;format_file( test.html, fontname_headings =&gt;
+"Verdana", ); close(RTF);</p>
+<h1>DESCRIPTION</h1>
+<p>HTML::FormatRTF is a class for objects that you use to convert HTML
+to RTF. There is currently no proper support for tables or forms.</p>
+<p>This is a subclass of HTML::Formatter, whose documentation you should
+consult for more information on underlying methods such as
+<code>new</code>, <code>format</code>, <code>format_file</code> etc</p>
+<p>You can specify any of the following parameters in the call to
+<code>new</code>, <code>format_file</code>, or
+<code>format_string</code>:</p>
+<dl>
+<dt>lm</dt>
+<dd>
+<p>Amount of <em>extra</em> indenting to apply to the left margin, in
+twips (<em>tw</em>ent<em>i</em>eths of a <em>p</em>oint). Default is 0.
+So if you wanted the left margin to be an additional half inch larger,
+you'd set <code>lm =&gt; 720</code> (since there's 1440 twips in an
+inch). If you wanted it to be about 1.5cm larger, you'd set
+<code>lw =&gt; 850</code> (since there's about 567 twips in a
+centimeter).</p>
+</dd>
+<dt>rm</dt>
+<dd>
+<p>Amount of <em>extra</em> indenting to apply to the left margin, in
+twips (<em>tw</em>ent<em>i</em>eths of a <em>p</em>oint). Default is
+0.</p>
+</dd>
+<dt>normal_halfpoint_size</dt>
+<dd>
+<p>This is the size of normal text in the document, in
+<em>half</em>-points. The default value is 22, meaning that normal text
+is in 11 point.</p>
+</dd>
+<dt>header_halfpoint_size</dt>
+<dd>
+<p>This is the size of text used in the document's page-header, in
+<em>half</em>-points. The default value is 17, meaning that normal text
+is in 7.5 point. Currently, the header consists just of "p.
+<em>pagenumber</em>" in the upper-right-hand corner, and cannot be
+disabled.</p>
+</dd>
+<dt>head1_halfpoint_size ... head6_halfpoint_size</dt>
+<dd>
+<p>These control the font size of each heading level, in half-twips. For
+example, the default for head3_halfpoint_size is 25, meaning that HTML
+<code>&lt;h3&gt;...&lt;/h3&gt;</code> text will be in 12.5 point text
+(in addition to being underlined and in the heading font).</p>
+</dd>
+<dt>codeblock_halfpoint_size</dt>
+<dd>
+<p>This controls the font size (in half-points) of the text used for
+<code>&lt;pre&gt;...&lt;/pre&gt;</code> text. By default, it is 18,
+meaning 9 point.</p>
+</dd>
+<dt>fontname_body</dt>
+<dd>
+<p>This option controls what font is to be used for the body of the text
+Ω- that is, everything other than heading text and text in pre/code/tt
+elements. The default value is currently Times. Other handy values I can
+suggest using are Georgia or Bookman Old Style.</p>
+</dd>
+<dt>fontname_code</dt>
+<dd>
+<p>This option controls what font is to be used for text in pre/code/tt
+elements. The default value is currently Courier New.</p>
+</dd>
+<dt>fontname_headings</dt>
+<dd>
+<p>This option controls what font name is to be used for headings. You
+can use the same font as fontname_body, but I prefer a sans-serif font,
+so the default value is currently Arial. Also consider Tahoma and
+Verdana.</p>
+</dd>
+<dt>document_language</dt>
+<dd>
+<p>This option controls what Microsoft language number will be specified
+as the language for this document. The current default value is 1033,
+for US English. Consult an RTF reference for other language numbers.</p>
+</dd>
+<dt>hr_width</dt>
+<dd>
+<p>This option controls how many underline characters will be used for
+rendering a &lt;hr&gt; tag. Its default value is currently 50. You can
+usually leave this alone, but under some circumstances you might want to
+use a smaller or larger number.</p>
+</dd>
+<dt>no_prolog</dt>
+<dd>
+<p>If this option is set to a true value, HTML::FormatRTF will make a
+point of <em>not</em> emitting the RTF prolog before the document. By
+default, this is off, meaning that HTML::FormatRTF <em>will</em> emit
+the prolog. This option is of interest only to advanced users.</p>
+</dd>
+<dt>no_trailer</dt>
+<dd>
+<p>If this option is set to a true value, HTML::FormatRTF will make a
+point of <em>not</em> emitting the RTF trailer at the end of the
+document. By default, this is off, meaning that HTML::FormatRTF
+<em>will</em> emit the bit of RTF that ends the document. This option is
+of interest only to advanced users.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>HTML::Formatter, RTF::Writer</p>
+<h1>AUTHORS</h1>
+<ul>
+<li><p>Nigel Metheringham &lt;nigelm@cpan.org&gt;</p></li>
+<li><p>Sean M Burke &lt;sburke@cpan.org&gt;</p></li>
+<li><p>Gisle Aas &lt;gisle@ActiveState.com&gt;</p></li>
+</ul>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2016 by Nigel Metheringham, 2002-2005
+Sean M Burke, 1999-2002 Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

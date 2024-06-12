@@ -1,0 +1,75 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::VariantType - Utilities for dealing with the GVariant type
+system</p>
+<h1>HIERARCHY</h1>
+<p>Glib::Boxed +----Glib::VariantType</p>
+<h1>METHODS</h1>
+<h2>varianttype = Glib::VariantType-&gt;<strong>new</strong>
+($type_string)</h2>
+<ul>
+<li><p><code>$type_string</code> (string)</p></li>
+</ul>
+<h2>varianttype = Glib::VariantType-&gt;<strong>new_array</strong>
+($element)</h2>
+<ul>
+<li><p><code>$element</code> (Glib::VariantType)</p></li>
+</ul>
+<h2>varianttype = Glib::VariantType-&gt;<strong>new_dict_entry</strong>
+($key, $value)</h2>
+<ul>
+<li><p><code>$key</code> (Glib::VariantType)</p></li>
+<li><p><code>$value</code> (Glib::VariantType)</p></li>
+</ul>
+<h2>varianttype = Glib::VariantType-&gt;<strong>new_maybe</strong>
+($element)</h2>
+<ul>
+<li><p><code>$element</code> (Glib::VariantType)</p></li>
+</ul>
+<h2>varianttype = Glib::VariantType-&gt;<strong>new_tuple</strong>
+($items)</h2>
+<ul>
+<li><p><code>$items</code> (scalar)</p></li>
+</ul>
+<h2>varianttype = $type-&gt;<strong>element</strong></h2>
+<h2>boolean = $type1-&gt;<strong>equal</strong> ($type2)</h2>
+<ul>
+<li><p><code>$type2</code> (Glib::VariantType)</p></li>
+</ul>
+<h2>varianttype = $type-&gt;<strong>first</strong></h2>
+<h2>integer = $type-&gt;<strong>hash</strong></h2>
+<h2>boolean = $type-&gt;<strong>is_array</strong></h2>
+<h2>boolean = $type-&gt;<strong>is_basic</strong></h2>
+<h2>boolean = $type-&gt;<strong>is_container</strong></h2>
+<h2>boolean = $type-&gt;<strong>is_definite</strong></h2>
+<h2>boolean = $type-&gt;<strong>is_dict_entry</strong></h2>
+<h2>boolean = $type-&gt;<strong>is_maybe</strong></h2>
+<h2>boolean = $type-&gt;<strong>is_subtype_of</strong> ($supertype)</h2>
+<ul>
+<li><p><code>$supertype</code> (Glib::VariantType)</p></li>
+</ul>
+<h2>boolean = $type-&gt;<strong>is_tuple</strong></h2>
+<h2>boolean = $type-&gt;<strong>is_variant</strong></h2>
+<h2>varianttype = $type-&gt;<strong>key</strong></h2>
+<h2>unsigned = $type-&gt;<strong>n_items</strong></h2>
+<h2>varianttype = $type-&gt;<strong>next</strong></h2>
+<h2>scalar = $type-&gt;<strong>get_string</strong></h2>
+<h2>boolean = Glib::VariantType::string_is_valid ($type_string)</h2>
+<ul>
+<li><p><code>$type_string</code> (string)</p></li>
+</ul>
+<h2>(type_string, rest) = Glib::VariantType::string_scan ($string)</h2>
+<p>Scans the start of <code>$string</code> for a complete type string
+and extracts it. If no type string can be found, an exception is
+thrown.</p>
+<h2>varianttype = $type-&gt;<strong>value</strong></h2>
+<h1>SEE ALSO</h1>
+<p>Glib, Glib::Boxed, Glib::Variant</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

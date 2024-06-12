@@ -1,0 +1,77 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>devlink-lc - devlink line card configuration</p>
+<h1>SYNOPSIS</h1>
+<p><strong>devlink</strong> [ <em>OPTIONS</em> ] <strong>lc</strong> {
+<em>COMMAND</em> | <strong>help</strong> }</p>
+<p><em>OPTIONS</em> := { <strong>-V</strong>[<em>ersion</em>] }</p>
+<p><strong>devlink lc set</strong> <em>DEV</em><strong> lc
+</strong><em>LC_INDEX</em> [<strong> type </strong>{ <em>LC_TYPE</em> |
+<strong>notype</strong> } ]</p>
+<p><strong>devlink lc show</strong> [ <em>DEV</em> [
+<strong>lc</strong><em>"</em><strong>LC_INDEX</strong> ] ]</p>
+<p><strong>devlink lc help</strong></p>
+<h1>DESCRIPTION</h1>
+<h2>devlink lc set - change line card attributes</h2>
+<dl>
+<dt><em>DEV</em></dt>
+<dd>
+<p>Specifies the devlink device to operate on.</p>
+</dd>
+</dl>
+<p>Format is:</p>
+<p>BUS_NAME/BUS_ADDRESS</p>
+<dl>
+<dt><strong>lc</strong><em> LC_INDEX </em></dt>
+<dd>
+<p>Specifies index of a line card slot to set.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>type</strong> { </dt>
+<dd>
+<p><em>LC_TYPE</em> | <strong>notype</strong> } Type of line card to
+provision. Each driver provides a list of supported line card types
+which is shown in the output of <strong>devlink lc show
+</strong>command.</p>
+</dd>
+</dl>
+<h2>devlink lc show - display line card attributes</h2>
+<dl>
+<dt><em>DEV</em></dt>
+<dd>
+<p>Specifies the devlink device to operate on. If this and
+<strong>lc</strong>"<strong>arguments</strong>are<strong>omitted</strong>all<strong>line</strong>cards<strong>of</strong>all<strong>devices</strong>are<strong>listed.</strong></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>lc</strong><em> LC_INDEX </em></dt>
+<dd>
+<p>Specifies index of a line card slot to show.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>devlink lc show</p>
+<blockquote>
+<p>Shows the state of all line cards on the system.</p>
+</blockquote>
+<p>devlink lc show pci/0000:01:00.0 lc 1</p>
+<blockquote>
+<p>Shows the state of line card with index 1.</p>
+</blockquote>
+<p>devlink lc set pci/0000:01:00.0 lc 1 type 16x100G</p>
+<blockquote>
+<p>Sets type of specified line card to type <em>16x100G</em>.</p>
+</blockquote>
+<p>devlink lc set pci/0000:01:00.0 lc 1 notype</p>
+<blockquote>
+<p>Clears provisioning on a line card.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>devlink</strong>(8), <strong>devlink-dev</strong>(8),
+<strong>devlink-port</strong>(8),
+<strong>devlink-monitor</strong>(8),<br />
+</p>
+<h1>AUTHOR</h1>
+<p>Jiri Pirko &lt;jiri@nvidia.com&gt;</p>

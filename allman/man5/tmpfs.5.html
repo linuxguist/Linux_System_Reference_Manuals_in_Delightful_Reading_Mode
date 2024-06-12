@@ -1,0 +1,180 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tmpfs - a virtual memory filesystem</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>tmpfs</strong> facility allows the creation of
+filesystems whose contents reside in virtual memory. Since the files on
+such filesystems typically reside in RAM, file access is extremely
+fast.</p>
+<p>The filesystem is automatically created when mounting a filesystem
+with the type <strong>tmpfs</strong> via a command such as the
+following:</p>
+<pre><code>$ sudo mount -t tmpfs -o size=10M tmpfs /mnt/mytmpfs</code></pre>
+<p>A <strong>tmpfs</strong> filesystem has the following properties:</p>
+<ul>
+<li><p>The filesystem can employ swap space when physical memory
+pressure demands it.</p></li>
+<li><p>The filesystem consumes only as much physical memory and swap
+space as is required to store the current contents of the
+filesystem.</p></li>
+<li><p>During a remount operation (<em>mount -o remount</em>), the
+filesystem size can be changed (without losing the existing contents of
+the filesystem).</p></li>
+</ul>
+<p>If a <strong>tmpfs</strong> filesystem is unmounted, its contents are
+discarded (lost).</p>
+<h2>Mount options</h2>
+<p>The <strong>tmpfs</strong> filesystem supports the following mount
+options:</p>
+<dl>
+<dt><strong>size</strong>=<em>bytes</em></dt>
+<dd>
+<p>Specify an upper limit on the size of the filesystem. The size is
+given in bytes, and rounded up to entire pages.</p>
+<p>The size may have a <strong>k</strong>, <strong>m</strong>, or
+<strong>g</strong> suffix for Ki, Mi, Gi (binary kilo (kibi), binary
+mega (mebi), and binary giga (gibi)).</p>
+<p>The size may also have a % suffix to limit this instance to a
+percentage of physical RAM.</p>
+<p>The default, when neither <strong>size</strong> nor
+<strong>nr_blocks</strong> is specified, is <em>size=50%</em>.</p>
+</dd>
+<dt><strong>nr_blocks</strong>=<em>blocks</em></dt>
+<dd>
+<p>The same as <strong>size</strong>, but in blocks of
+<strong>PAGE_CACHE_SIZE</strong>.</p>
+<p>Blocks may be specified with <strong>k</strong>, <strong>m</strong>,
+or <strong>g</strong> suffixes like <strong>size</strong>, but not a %
+suffix.</p>
+</dd>
+<dt><strong>nr_inodes</strong>=<em>inodes</em></dt>
+<dd>
+<p>The maximum number of inodes for this instance. The default is half
+of the number of your physical RAM pages, or (on a machine with highmem)
+the number of lowmem RAM pages, whichever is smaller.</p>
+<p>Inodes may be specified with <strong>k</strong>, <strong>m</strong>,
+or <strong>g</strong> suffixes like <strong>size</strong>, but not a %
+suffix.</p>
+</dd>
+<dt><strong>mode</strong>=<em>mode</em></dt>
+<dd>
+<p>Set initial permissions of the root directory.</p>
+</dd>
+<dt><strong>gid</strong>=<em>gid</em> (since Linux 2.5.7)</dt>
+<dd>
+<p>Set the initial group ID of the root directory.</p>
+</dd>
+<dt><strong>uid</strong>=<em>uid</em> (since Linux 2.5.7)</dt>
+<dd>
+<p>Set the initial user ID of the root directory.</p>
+</dd>
+<dt><strong>huge</strong>=<em>huge_option</em> (since Linux 4.7.0)</dt>
+<dd>
+<p>Set the huge table memory allocation policy for all files in this
+instance (if <strong>CONFIG_TRANSPARENT_HUGE_PAGECACHE</strong> is
+enabled).</p>
+<p>The <em>huge_option</em> value is one of the following:</p>
+<dl>
+<dt><strong>never</strong></dt>
+<dd>
+<p>Do not allocate huge pages. This is the default.</p>
+</dd>
+<dt><strong>always</strong></dt>
+<dd>
+<p>Attempt to allocate huge pages every time a new page is needed.</p>
+</dd>
+<dt><strong>within_size</strong></dt>
+<dd>
+<p>Only allocate huge page if it will be fully within <em>i_size</em>.
+Also respect <strong>fadvise</strong>(2) and <strong>madvise</strong>(2)
+hints</p>
+</dd>
+<dt><strong>advise</strong></dt>
+<dd>
+<p>Only allocate huge pages if requested with
+<strong>fadvise</strong>(2) or <strong>madvise</strong>(2).</p>
+</dd>
+<dt><strong>deny</strong></dt>
+<dd>
+<p>For use in emergencies, to force the huge option off from all
+mounts.</p>
+</dd>
+<dt><strong>force</strong></dt>
+<dd>
+<p>Force the huge option on for all mounts; useful for testing.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>mpol</strong>=<em>mpol_option</em> (since Linux 2.6.15)</dt>
+<dd>
+<p>Set the NUMA memory allocation policy for all files in this instance
+(if <strong>CONFIG_NUMA</strong> is enabled).</p>
+<p>The <em>mpol_option</em> value is one of the following:</p>
+<dl>
+<dt><strong>default</strong></dt>
+<dd>
+<p>Use the process allocation policy (see
+<strong>set_mempolicy</strong>(2)).</p>
+</dd>
+<dt><strong>prefer</strong>:<em>node</em></dt>
+<dd>
+<p>Preferably allocate memory from the given <em>node</em>.</p>
+</dd>
+<dt><strong>bind</strong>:<em>nodelist</em></dt>
+<dd>
+<p>Allocate memory only from nodes in <em>nodelist</em>.</p>
+</dd>
+<dt><strong>interleave</strong></dt>
+<dd>
+<p>Allocate from each node in turn.</p>
+</dd>
+<dt><strong>interleave</strong>:<em>nodelist</em></dt>
+<dd>
+<p>Allocate from each node of <em>in</em> turn.</p>
+</dd>
+<dt><strong>local</strong></dt>
+<dd>
+<p>Preferably allocate memory from the local node.</p>
+</dd>
+</dl>
+<p>In the above, <em>nodelist</em> is a comma-separated list of decimal
+numbers and ranges that specify NUMA nodes. A range is a pair of
+hyphen-separated decimal numbers, the smallest and largest node numbers
+in the range. For example, <em>mpol=bind:0-3,5,7,9-15</em>.</p>
+</dd>
+</dl>
+<h1>VERSIONS</h1>
+<p>The <strong>tmpfs</strong> facility was added in Linux 2.4, as a
+successor to the older <strong>ramfs</strong> facility, which did not
+provide limit checking or allow for the use of swap space.</p>
+<h1>NOTES</h1>
+<p>In order for user-space tools and applications to create
+<strong>tmpfs</strong> filesystems, the kernel must be configured with
+the <strong>CONFIG_TMPFS</strong> option.</p>
+<p>The <strong>tmpfs</strong> filesystem supports extended attributes
+(see <strong>xattr</strong>(7)), but <em>user</em> extended attributes
+are not permitted.</p>
+<p>An internal shared memory filesystem is used for System V shared
+memory (<strong>shmget</strong>(2)) and shared anonymous mappings
+(<strong>mmap</strong>(2) with the <strong>MAP_SHARED</strong> and
+<strong>MAP_ANONYMOUS</strong> flags). This filesystem is available
+regardless of whether the kernel was configured with the
+<strong>CONFIG_TMPFS</strong> option.</p>
+<p>A <strong>tmpfs</strong> filesystem mounted at <em>/dev/shm</em> is
+used for the implementation of POSIX shared memory
+(<strong>shm_overview</strong>(7)) and POSIX semaphores
+(<strong>sem_overview</strong>(7)).</p>
+<p>The amount of memory consumed by all <strong>tmpfs</strong>
+filesystems is shown in the <em>Shmem</em> field of
+<em>/proc/meminfo</em> and in the <em>shared</em> field displayed by
+<strong>free</strong>(1).</p>
+<p>The <strong>tmpfs</strong> facility was formerly called
+<strong>shmfs</strong>.</p>
+<h1>SEE ALSO</h1>
+<p><strong>df</strong>(1), <strong>du</strong>(1),
+<strong>memfd_create</strong>(2), <strong>mmap</strong>(2),
+<strong>set_mempolicy</strong>(2), <strong>shm_open</strong>(3),
+<strong>mount</strong>(8)</p>
+<p>The kernel source files <em>Documentation/filesystems/tmpfs.txt</em>
+and <em>Documentation/admin-guide/mm/transhuge.rst</em>.</p>

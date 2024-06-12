@@ -1,0 +1,32 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dh_perl_openssl - add dependencies required for OpenSSL modules</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dh_perl_openssl</strong> [<em>debhelper options</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>dh_perl_openssl is a debhelper program that is responsible for adding
+a dependency on perl-openssl-abi-* to the ${perl:Depends} substitution
+variable. Such a dependency is needed for packages that expose the
+OpenSSL binary interface to Perl code, such as pointers to
+<code>SSL_CTX</code> structs.</p>
+<p>A debhelper addon is also provided. This makes it possible to just
+use</p>
+<p>#!/usr/bin/make -f %: dh $@ --with perl_openssl</p>
+<p>for <em>debian/rules</em>.</p>
+<p>Alternatively, since perl-openssl-defaults/4 you can just build
+depend on <strong>dh-sequence-perl-openssl</strong> and omit the
+<code>--with perl_openssl</code> part.</p>
+<h1>SEE ALSO</h1>
+<p><strong>debhelper</strong> (7)</p>
+<p>&lt;http://bugs.debian.org/848113&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>Based on <em>dh_perl_dbi</em> in the <em>libdbi-perl</em> package by
+Angar Buchardt.</p>
+<p>Copyright 2010, Ansgar Burchardt &lt;ansgar@debian.org&gt;</p>
+<p>Copyright 2016, Niko Tyni &lt;ntyni@debian.org&gt;</p>
+<p>This program is free software, you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

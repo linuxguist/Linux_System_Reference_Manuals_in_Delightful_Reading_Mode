@@ -1,0 +1,256 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Binding::Introspector - Handler for object introspection
+data</p>
+<h1>SYNOPSIS</h1>
+<p># Create an object populating with info from an # XML doc containing
+introspection data. my $ins =
+Net::DBus::Binding::Introspector-&gt;new(xml =&gt; $data); # Create an
+object, defining introspection data # programmatically my $ins =
+Net::DBus::Binding::Introspector-&gt;new(object_path =&gt;
+$object-&gt;get_object_path); $ins-&gt;add_method("DoSomething",
+["string"], [], "org.example.MyObject");
+$ins-&gt;add_method("TestSomething", ["int32"], [],
+"org.example.MyObject");</p>
+<h1>DESCRIPTION</h1>
+<p>This class is responsible for managing introspection data, and
+answering questions about it. This is not intended for use by
+application developers, whom should instead consult the higher level API
+in Net::DBus::Exporter.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $ins = Net::DBus::Binding::Introspector-&gt;new(object_path =&gt;
+$object_path, xml =&gt; $xml);</dt>
+<dd>
+<p>Creates a new introspection data manager for the object registered at
+the path specified for the <code>object_path</code> parameter. The
+optional <code>xml</code> parameter can be used to pre-load the manager
+with introspection metadata from an XML document.</p>
+</dd>
+<dt>$ins-&gt;add_interface($name)</dt>
+<dd>
+<p>Register the object as providing an interface with the name
+<code>$name</code></p>
+</dd>
+<dt>my $bool = $ins-&gt;has_interface($name)</dt>
+<dd>
+<p>Return a true value if the object is registered as providing an
+interface with the name <code>$name</code>; returns false otherwise.</p>
+</dd>
+<dt>my @interfaces = $ins-&gt;has_method($name, [$interface])</dt>
+<dd>
+<p>Return a list of all interfaces provided by the object, which contain
+a method called <code>$name</code>. This may be an empty list. The
+optional <code>$interface</code> parameter can restrict the check to
+just that one interface.</p>
+</dd>
+<dt>my $boolean = $ins-&gt;is_method_allowed($name[, $interface])</dt>
+<dd>
+<p>Checks according to whether the remote caller is allowed to invoke
+the method <code>$name</code> on the object associated with this
+introspector. If this object has 'strict exports' enabled, then only
+explicitly exported methods will be allowed. The optional
+<code>$interface</code> parameter can restrict the check to just that
+one interface. Returns a non-zero value if the method should be
+allowed.</p>
+</dd>
+<dt>my @interfaces = $ins-&gt;has_signal($name)</dt>
+<dd>
+<p>Return a list of all interfaces provided by the object, which contain
+a signal called <code>$name</code>. This may be an empty list.</p>
+</dd>
+<dt>my @interfaces = $ins-&gt;has_property($name)</dt>
+<dd>
+<p>Return a list of all interfaces provided by the object, which contain
+a property called <code>$name</code>. This may be an empty list. The
+optional <code>$interface</code> parameter can restrict the check to
+just that one interface.</p>
+</dd>
+<dt>$ins-&gt;add_method($name, $params, $returns, $interface,
+$attributes, $paramnames, $returnnames);</dt>
+<dd>
+<p>Register the object as providing a method called <code>$name</code>
+accepting parameters whose types are declared by <code>$params</code>
+and returning values whose type are declared by <code>$returns</code>.
+The method will be scoped to the interface named by
+<code>$interface</code>. The <code>$attributes</code> parameter is a
+hash reference for annotating the method. The <code>$paramnames</code>
+and <code>$returnames</code> parameters are a list of argument and
+return value names.</p>
+</dd>
+<dt>$ins-&gt;add_signal($name, $params, $interface, $attributes);</dt>
+<dd>
+<p>Register the object as providing a signal called <code>$name</code>
+with parameters whose types are declared by <code>$params</code>. The
+signal will be scoped to the interface named by <code>$interface</code>.
+The <code>$attributes</code> parameter is a hash reference for
+annotating the signal.</p>
+</dd>
+<dt>$ins-&gt;add_property($name, $type, $access, $interface,
+$attributes);</dt>
+<dd>
+<p>Register the object as providing a property called <code>$name</code>
+with a type of <code>$type</code>. The <code>$access</code> parameter
+can be one of <code>read</code>, <code>write</code>, or
+<code>readwrite</code>. The property will be scoped to the interface
+named by <code>$interface</code>. The <code>$attributes</code> parameter
+is a hash reference for annotating the signal.</p>
+</dd>
+<dt>my $boolean = $ins-&gt;is_method_deprecated($name, $interface)</dt>
+<dd>
+<p>Returns a true value if the method called <code>$name</code> in the
+interface <code>$interface</code> is marked as deprecated</p>
+</dd>
+<dt>my $boolean = $ins-&gt;is_signal_deprecated($name, $interface)</dt>
+<dd>
+<p>Returns a true value if the signal called <code>$name</code> in the
+interface <code>$interface</code> is marked as deprecated</p>
+</dd>
+<dt>my $boolean = $ins-&gt;is_property_deprecated($name,
+$interface)</dt>
+<dd>
+<p>Returns a true value if the property called <code>$name</code> in the
+interface <code>$interface</code> is marked as deprecated</p>
+</dd>
+<dt>my $boolean = $ins-&gt;does_method_reply($name, $interface)</dt>
+<dd>
+<p>Returns a true value if the method called <code>$name</code> in the
+interface <code>$interface</code> will generate a reply. Returns a false
+value otherwise.</p>
+</dd>
+<dt>my $boolean = $ins-&gt;method_has_strict_exceptions($name,
+$interface)</dt>
+<dd>
+<p>Returns true if the method called <code>$name</code> in the interface
+<code>$interface</code> has the strict_exceptions attribute; that is any
+exceptions which aren't Net::DBus::Error objects should not be caught
+and allowed to travel up the stack.</p>
+</dd>
+<dt>my @names = $ins-&gt;list_interfaces</dt>
+<dd>
+<p>Returns a list of all interfaces registered as being provided by the
+object.</p>
+</dd>
+<dt>my @names = $ins-&gt;list_methods($interface)</dt>
+<dd>
+<p>Returns a list of all methods registered as being provided by the
+object, within the interface <code>$interface</code>.</p>
+</dd>
+<dt>my @names = $ins-&gt;list_signals($interface)</dt>
+<dd>
+<p>Returns a list of all signals registered as being provided by the
+object, within the interface <code>$interface</code>.</p>
+</dd>
+<dt>my @names = $ins-&gt;list_properties($interface)</dt>
+<dd>
+<p>Returns a list of all properties registered as being provided by the
+object, within the interface <code>$interface</code>.</p>
+</dd>
+<dt>my @paths = $self-&gt;list_children;</dt>
+<dd>
+<p>Returns a list of object paths representing all the children of this
+node.</p>
+</dd>
+<dt>my $path = $ins-&gt;get_object_path</dt>
+<dd>
+<p>Returns the path of the object associated with this introspection
+data</p>
+</dd>
+<dt>my @types = $ins-&gt;get_method_params($interface, $name)</dt>
+<dd>
+<p>Returns a list of declared data types for parameters of the method
+called <code>$name</code> within the interface
+<code>$interface</code>.</p>
+</dd>
+<dt>my @types = $ins-&gt;get_method_param_names($interface, $name)</dt>
+<dd>
+<p>Returns a list of declared names for parameters of the method called
+<code>$name</code> within the interface <code>$interface</code>.</p>
+</dd>
+<dt>my @types = $ins-&gt;get_method_returns($interface, $name)</dt>
+<dd>
+<p>Returns a list of declared data types for return values of the method
+called <code>$name</code> within the interface
+<code>$interface</code>.</p>
+</dd>
+<dt>my @types = $ins-&gt;get_method_return_names($interface, $name)</dt>
+<dd>
+<p>Returns a list of declared names for return values of the method
+called <code>$name</code> within the interface
+<code>$interface</code>.</p>
+</dd>
+<dt>my @types = $ins-&gt;get_signal_params($interface, $name)</dt>
+<dd>
+<p>Returns a list of declared data types for values associated with the
+signal called <code>$name</code> within the interface
+<code>$interface</code>.</p>
+</dd>
+<dt>my @types = $ins-&gt;get_signal_param_names($interface, $name)</dt>
+<dd>
+<p>Returns a list of declared names for values associated with the
+signal called <code>$name</code> within the interface
+<code>$interface</code>.</p>
+</dd>
+<dt>my $type = $ins-&gt;get_property_type($interface, $name)</dt>
+<dd>
+<p>Returns the declared data type for property called <code>$name</code>
+within the interface <code>$interface</code>.</p>
+</dd>
+<dt>my $bool = $ins-&gt;is_property_readable($interface, $name);</dt>
+<dd>
+<p>Returns a true value if the property called <code>$name</code> within
+the interface <code>$interface</code> can have its value read.</p>
+</dd>
+<dt>my $bool = $ins-&gt;is_property_writable($interface, $name);</dt>
+<dd>
+<p>Returns a true value if the property called <code>$name</code> within
+the interface <code>$interface</code> can have its value written to.</p>
+</dd>
+<dt>my $xml = $ins-&gt;format([$obj])</dt>
+<dd>
+<p>Return a string containing an XML document representing the state of
+the introspection data. The optional <code>$obj</code> parameter can be
+an instance of Net::DBus::Object to include object specific information
+in the XML (eg child nodes).</p>
+</dd>
+<dt>my $xml_fragment = $ins-&gt;to_xml</dt>
+<dd>
+<p>Returns a string containing an XML fragment representing the state of
+the introspection data. This is basically the same as the
+<code>format</code> method, but without the leading doctype
+declaration.</p>
+</dd>
+<dt>$type = $ins-&gt;to_xml_type($type)</dt>
+<dd>
+<p>Takes a text-based representation of a data type and returns the
+compact representation used in XML introspection data.</p>
+</dd>
+<dt>$ins-&gt;encode($message, $type, $name, $direction, @args)</dt>
+<dd>
+<p>Append a set of values &lt;@args&gt; to a message object
+<code>$message</code>. The <code>$type</code> parameter is either
+<code>signal</code> or <code>method</code> and <code>$direction</code>
+is either <code>params</code> or <code>returns</code>. The introspection
+data will be queried to obtain the declared data types &amp; the
+argument marshalling accordingly.</p>
+</dd>
+<dt>my @args = $ins-&gt;decode($message, $type, $name, $direction)</dt>
+<dd>
+<p>Unmarshalls the contents of a message object <code>$message</code>.
+The <code>$type</code> parameter is either <code>signal</code> or
+<code>method</code> and <code>$direction</code> is either
+<code>params</code> or <code>returns</code>. The introspection data will
+be queried to obtain the declared data types &amp; the arguments
+unmarshalled accordingly.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2004-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::Exporter, Net::DBus::Binding::Message</p>

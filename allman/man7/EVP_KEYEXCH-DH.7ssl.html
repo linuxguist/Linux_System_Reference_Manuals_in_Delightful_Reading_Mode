@@ -1,0 +1,103 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_KEYEXCH-DH - DH Key Exchange algorithm support</p>
+<h1>DESCRIPTION</h1>
+<p>Key exchange support for the <strong>DH</strong> key type.</p>
+<h2>DH key exchange parameters</h2>
+<dl>
+<dt>"pad" (OSSL_EXCHANGE_PARAM_PAD) &lt;unsigned integer&gt;</dt>
+<dd>
+<p>Sets the padding mode for the associated key exchange ctx. Setting a
+value of 1 will turn padding on. Setting a value of 0 will turn padding
+off. If padding is off then the derived shared secret may be smaller
+than the largest possible secret size. If padding is on then the derived
+shared secret will have its first bytes filled with zeros where
+necessary to make the shared secret the same size as the largest
+possible secret size. The padding mode parameter is ignored (and padding
+implicitly enabled) when the KDF type is set to X942KDF-ASN1
+(<strong>OSSL_KDF_NAME_X942KDF_ASN1</strong>).</p>
+</dd>
+<dt>"kdf-type" (OSSL_EXCHANGE_PARAM_KDF_TYPE) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>See Common Key Exchange parameters in
+<strong>provider-keyexch</strong> (7).</p>
+</dd>
+<dt>"kdf-digest" (OSSL_EXCHANGE_PARAM_KDF_DIGEST) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>See Common Key Exchange parameters in
+<strong>provider-keyexch</strong> (7).</p>
+</dd>
+<dt>"kdf-digest-props" (OSSL_EXCHANGE_PARAM_KDF_DIGEST_PROPS) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>See Common Key Exchange parameters in
+<strong>provider-keyexch</strong> (7).</p>
+</dd>
+<dt>"kdf-outlen" (OSSL_EXCHANGE_PARAM_KDF_OUTLEN) &lt;unsigned
+integer&gt;</dt>
+<dd>
+<p>See Common Key Exchange parameters in
+<strong>provider-keyexch</strong> (7).</p>
+</dd>
+<dt>"kdf-ukm" (OSSL_EXCHANGE_PARAM_KDF_UKM) &lt;octet string&gt;</dt>
+<dd>
+<p>See Common Key Exchange parameters in
+<strong>provider-keyexch</strong> (7).</p>
+</dd>
+<dt>"cekalg" (OSSL_KDF_PARAM_CEK_ALG) &lt;octet string ptr&gt;</dt>
+<dd>
+<p>See KDF Parameters in <strong>provider-kdf</strong> (7).</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>The examples assume a host and peer both generate keys using the same
+named group (or domain parameters). See Examples in
+<strong>EVP_PKEY-DH</strong> (7). Both the host and peer transfer their
+public key to each other.</p>
+<p>To convert the peer's generated key pair to a public key in DER
+format in order to transfer to the host:</p>
+<p>EVP_PKEY *peer_key; /* It is assumed this contains the peers
+generated key */ unsigned char *peer_pub_der = NULL; int
+peer_pub_der_len; peer_pub_der_len = i2d_PUBKEY(peer_key,
+&amp;peer_pub_der); ... OPENSSL_free(peer_pub_der);</p>
+<p>To convert the received peer's public key from DER format on the
+host:</p>
+<p>const unsigned char *pd = peer_pub_der; EVP_PKEY *peer_pub_key =
+d2i_PUBKEY(NULL, &amp;pd, peer_pub_der_len); ...
+EVP_PKEY_free(peer_pub_key);</p>
+<p>To derive a shared secret on the host using the host's key and the
+peer's public key:</p>
+<p>/* It is assumed that the host_key and peer_pub_key are set up */
+void derive_secret(EVP_KEY *host_key, EVP_PKEY *peer_pub_key) { unsigned
+int pad = 1; OSSL_PARAM params[2]; unsigned char *secret = NULL; size_t
+secret_len = 0; EVP_PKEY_CTX *dctx = EVP_PKEY_CTX_new_from_pkey(NULL,
+host_key, NULL); EVP_PKEY_derive_init(dctx); /* Optionally set the
+padding */ params[0] =
+OSSL_PARAM_construct_uint(OSSL_EXCHANGE_PARAM_PAD, &amp;pad); params[1]
+= OSSL_PARAM_construct_end(); EVP_PKEY_CTX_set_params(dctx, params);
+EVP_PKEY_derive_set_peer(dctx, peer_pub_key); /* Get the size by passing
+NULL as the buffer */ EVP_PKEY_derive(dctx, NULL, &amp;secret_len);
+secret = OPENSSL_zalloc(secret_len); EVP_PKEY_derive(dctx, secret,
+&amp;secret_len); ... OPENSSL_clear_free(secret, secret_len);
+EVP_PKEY_CTX_free(dctx); }</p>
+<p>Very similar code can be used by the peer to derive the same shared
+secret using the host's public key and the peer's generated key
+pair.</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY-DH</strong> (7), <strong>EVP_PKEY-FFC</strong> (7),
+<strong>EVP_PKEY</strong> (3), <strong>provider-keyexch</strong> (7),
+<strong>provider-keymgmt</strong> (7),
+<strong>OSSL_PROVIDER-default</strong> (7),
+<strong>OSSL_PROVIDER-FIPS</strong> (7),</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2022 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

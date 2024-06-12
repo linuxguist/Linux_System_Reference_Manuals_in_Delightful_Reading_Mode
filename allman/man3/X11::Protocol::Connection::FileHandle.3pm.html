@@ -1,0 +1,23 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>X11::Protocol::Connection::FileHandle - Perl module base class for
+FileHandle-based X11 connections</p>
+<h1>SYNOPSIS</h1>
+<p>package X11::Protocol::Connection::WeirdFH; use
+X11::Protocol::Connection::FileHandle; @ISA =
+(X11::Protocol::Connection::FileHandle)</p>
+<h1>DESCRIPTION</h1>
+<p>This module defines <strong>get()</strong>, <strong>give()</strong>
+and <strong>fh()</strong> methods common to X11::Protocol::Connection
+types that are based on the FileHandle package. They expect the object
+they are called with to be a reference to a FileHandle.</p>
+<h1>AUTHOR</h1>
+<p>Stephen McCamant &lt;SMCCAM@cpan.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>perl</strong> (1), X11::Protocol,
+X11::Protocol::Connection::INETFH, X11::Protocol::Connection::UNIXFH,
+FileHandle.</p>

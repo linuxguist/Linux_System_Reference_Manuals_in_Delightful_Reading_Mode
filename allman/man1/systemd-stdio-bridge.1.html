@@ -1,0 +1,74 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-stdio-bridge - D-Bus proxy</p>
+<h1>SYNOPSIS</h1>
+<p><strong>systemd-stdio-bridge</strong> [OPTIONS...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>systemd-stdio-bridge</strong> implements a proxy between
+STDIN/STDOUT and a D-Bus bus. It expects to receive an open connection
+via STDIN/STDOUT when started, and will create a new connection to the
+specified bus. It will then forward messages between the two
+connections. This program is suitable for socket activation: the first
+connection may be a pipe or a socket and must be passed as either
+standard input, or as an open file descriptor according to the protocol
+described in <strong>sd_listen_fds</strong>(3). The second connection
+will be made by default to the local system bus, but this can be
+influenced by the <strong>--user</strong>, <strong>--system</strong>,
+<strong>--machine=</strong>, and <strong>--bus-path=</strong> options
+described below.</p>
+<p><strong>sd-bus</strong>(3) uses <strong>systemd-stdio-bridge</strong>
+to forward D-Bus connections over <strong>ssh</strong>(1), or to connect
+to the bus of a different user, see
+<strong>sd_bus_set_address</strong>(3).</p>
+<h1>OPTIONS</h1>
+<p>The following options are understood:</p>
+<p><strong>--user</strong></p>
+<blockquote>
+<p>Talk to the service manager of the calling user, rather than the
+service manager of the system.</p>
+</blockquote>
+<p><strong>--system</strong></p>
+<blockquote>
+<p>Talk to the service manager of the system. This is the implied
+default.</p>
+</blockquote>
+<p><strong>-M</strong>, <strong>--machine=</strong></p>
+<blockquote>
+<p>Execute operation on a local container. Specify a container name to
+connect to, optionally prefixed by a user name to connect as and a
+separating "@" character. If the special string ".host" is used in place
+of the container name, a connection to the local system is made (which
+is useful to connect to a specific users user bus: "--user
+--machine=lennart@.host"). If the "@" syntax is not used, the connection
+is made as root user. If the "@" syntax is used either the left hand
+side or the right hand side may be omitted (but not both) in which case
+the local user name and ".host" are implied.</p>
+</blockquote>
+<p><strong>-p</strong> <em>PATH</em>,
+<strong>--bus-path=</strong><em>PATH</em></p>
+<blockquote>
+<p>Path to the bus address. Default:
+"unix:path=/run/dbus/system_bus_socket"</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Print a short help text and exit.</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Print a short version string and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p>On success, 0 is returned, a non-zero failure code otherwise.</p>
+<h1>SEE ALSO</h1>
+<p><strong>dbus-daemon</strong>(1), <strong>dbus-broker</strong>(1),
+<strong>D-Bus</strong>[1], <strong>systemd</strong>(1)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>D-Bus</p>
+<p>https://www.freedesktop.org/wiki/Software/dbus</p>
+</dd>
+</dl>

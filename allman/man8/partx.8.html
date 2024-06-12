@@ -1,0 +1,194 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>partx - tell the kernel about the presence and numbering of on-disk
+partitions</p>
+<h1>SYNOPSIS</h1>
+<p><strong>partx</strong>
+[<strong>-a</strong>|<strong>-d</strong>|<strong>-P</strong>|<strong>-r</strong>|<strong>-s</strong>|<strong>-u</strong>]
+[<strong>-t</strong> <em>type</em>] [<strong>-n</strong> <em>M</em>:_N_]
+[-] <em>disk</em></p>
+<p><strong>partx</strong>
+[<strong>-a</strong>|<strong>-d</strong>|<strong>-P</strong>|<strong>-r</strong>|<strong>-s</strong>|<strong>-u</strong>]
+[<strong>-t</strong> <em>type</em>] <em>partition</em>
+[<em>disk</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Given a device or disk-image, <strong>partx</strong> tries to parse
+the partition table and list its contents. It can also tell the kernel
+to add or remove partitions from its bookkeeping.</p>
+<p>The <em>disk</em> argument is optional when a <em>partition</em>
+argument is provided. To force scanning a partition as if it were a
+whole disk (for example to list nested subpartitions), use the argument
+"-" (hyphen-minus). For example:</p>
+<blockquote>
+<p>partx --show - /dev/sda3<br />
+</p>
+</blockquote>
+<p>This will see sda3 as a whole-disk rather than as a partition.</p>
+<p><strong>partx is not an fdisk program</strong> - adding and removing
+partitions does not change the disk, it just tells the kernel about the
+presence and numbering of on-disk partitions.</p>
+<h1>OPTIONS</h1>
+<p><strong>-a</strong>, <strong>--add</strong></p>
+<blockquote>
+<p>Add the specified partitions, or read the disk and add all
+partitions.</p>
+</blockquote>
+<p><strong>-b</strong>, <strong>--bytes</strong></p>
+<blockquote>
+<p>Print the sizes in bytes rather than in a human-readable format.</p>
+<p>By default, the unit, sizes are expressed in, is byte, and unit
+prefixes are in power of 2^10 (1024). Abbreviations of symbols are
+exhibited truncated in order to reach a better readability, by
+exhibiting alone the first letter of them; examples: "1 KiB" and "1 MiB"
+are respectively exhibited as "1 K" and "1 M", then omitting on purpose
+the mention "iB", which is part of these abbreviations.</p>
+</blockquote>
+<p><strong>-d</strong>, <strong>--delete</strong></p>
+<blockquote>
+<p>Delete the specified partitions or all partitions. It is not error to
+remove non-existing partitions, so this option is possible to use
+together with large <strong>--nr</strong> ranges without care about the
+current partitions set on the device.</p>
+</blockquote>
+<p><strong>-g</strong>, <strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print a header line with <strong>--show</strong> or
+<strong>--raw</strong>.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--list</strong></p>
+<blockquote>
+<p>List the partitions. Note that all numbers are in 512-byte sectors.
+This output format is DEPRECATED in favour of <strong>--show</strong>.
+Do not use it in newly written scripts.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--nr</strong>
+<em>M</em><strong>:</strong><em>N</em></p>
+<blockquote>
+<p>Specify the range of partitions. For backward compatibility also the
+format <em>M</em><strong>-</strong><em>N</em> is supported. The range
+may contain negative numbers, for example <strong>--nr -1:-1</strong>
+means the last partition, and <strong>--nr -2:-1</strong> means the last
+two partitions. Supported range specifications are:</p>
+<p><em>M</em></p>
+<blockquote>
+<p>Specifies just one partition (e.g. <strong>--nr 3</strong>).</p>
+</blockquote>
+<p><em>M</em><strong>:</strong></p>
+<blockquote>
+<p>Specifies the lower limit only (e.g. <strong>--nr 2:</strong>).</p>
+</blockquote>
+<p><strong>:</strong><em>N</em></p>
+<blockquote>
+<p>Specifies the upper limit only (e.g. <strong>--nr :4</strong>).</p>
+</blockquote>
+<p><em>M</em><strong>:</strong><em>N</em></p>
+<blockquote>
+<p>Specifies the lower and upper limits (e.g. <strong>--nr
+2:4</strong>).</p>
+</blockquote>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Define the output columns to use for <strong>--show</strong>,
+<strong>--pairs</strong> and <strong>--raw</strong> output. If no output
+arrangement is specified, then a default set is used. Use
+<strong>--help</strong> to get <em>list</em> of all supported columns.
+This option cannot be combined with the <strong>--add</strong>,
+<strong>--delete</strong>, <strong>--update</strong> or
+<strong>--list</strong> options.</p>
+</blockquote>
+<p><strong>--output-all</strong></p>
+<blockquote>
+<p>Output all available columns.</p>
+</blockquote>
+<p><strong>-P</strong>, <strong>--pairs</strong></p>
+<blockquote>
+<p>List the partitions using the KEY="value" format.</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--raw</strong></p>
+<blockquote>
+<p>List the partitions using the raw output format.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--show</strong></p>
+<blockquote>
+<p>List the partitions. The output columns can be selected and
+rearranged with the <strong>--output</strong> option. All numbers
+(except SIZE) are in 512-byte sectors.</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--type</strong> <em>type</em></p>
+<blockquote>
+<p>Specify the partition table type.</p>
+</blockquote>
+<p><strong>--list-types</strong></p>
+<blockquote>
+<p>List supported partition types and exit.</p>
+</blockquote>
+<p><strong>-u</strong>, <strong>--update</strong></p>
+<blockquote>
+<p>Update the specified partitions.</p>
+</blockquote>
+<p><strong>-S</strong>, <strong>--sector-size</strong> <em>size</em></p>
+<blockquote>
+<p>Overwrite default sector size.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Verbose mode.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p>LIBBLKID_DEBUG=all</p>
+<blockquote>
+<p>enables libblkid debug output.</p>
+</blockquote>
+<h1>EXAMPLE</h1>
+<p>partx --show /dev/sdb3, partx --show --nr 3 /dev/sdb, partx --show
+/dev/sdb3 /dev/sdb</p>
+<blockquote>
+<p>All three commands list partition 3 of <em>/dev/sdb</em>.</p>
+</blockquote>
+<p>partx --show - /dev/sdb3</p>
+<blockquote>
+<p>Lists all subpartitions on <em>/dev/sdb3</em> (the device is used as
+whole-disk).</p>
+</blockquote>
+<p>partx -o START -g --nr 5 /dev/sdb</p>
+<blockquote>
+<p>Prints the start sector of partition 5 on <em>/dev/sdb</em> without
+header.</p>
+</blockquote>
+<p>partx -o SECTORS,SIZE /dev/sda5 /dev/sda</p>
+<blockquote>
+<p>Lists the length in sectors and human-readable size of partition 5 on
+<em>/dev/sda</em>.</p>
+</blockquote>
+<p>partx --add --nr 3:5 /dev/sdd</p>
+<blockquote>
+<p>Adds all available partitions from 3 to 5 (inclusive) on
+<em>/dev/sdd</em>.</p>
+</blockquote>
+<p>partx -d --nr :-1 /dev/sdd</p>
+<blockquote>
+<p>Removes the last partition on <em>/dev/sdd</em>.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<p>The original version was written by</p>
+<h1>SEE ALSO</h1>
+<p><strong>addpart</strong>(8), <strong>delpart</strong>(8),
+<strong>fdisk</strong>(8), <strong>parted</strong>(8),
+<strong>partprobe</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>partx</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

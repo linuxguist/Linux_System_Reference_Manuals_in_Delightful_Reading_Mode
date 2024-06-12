@@ -1,0 +1,52 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gtk4-broadwayd - The Broadway display server</p>
+<h1>SYNOPSIS</h1>
+<pre><code>gtk4-broadwayd [OPTIONS...] &lt;DISPLAY&gt;
+gtk4-broadwayd --port=PORT --address=ADDRESS &lt;DISPLAY&gt;
+gtk4-broadwayd --unixaddress=ADDRESS &lt;DISPLAY&gt;</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>gtk4-broadwayd</strong> is a display server for the Broadway
+GDK backend. It allows multiple GTK applications to display their
+windows in the same web browser, by connecting to gtk4-broadwayd.</p>
+<p>When using gtk4-broadwayd, specify the display number to use,
+prefixed with a colon, similar to X. The default display number is
+0.</p>
+<blockquote>
+<blockquote>
+<pre><code>gtk4-broadwayd :5</code></pre>
+</blockquote>
+</blockquote>
+<p>Then point your web browser at
+<strong>http://127.0.0.1:8085</strong>.</p>
+<p>Start your applications like this:</p>
+<blockquote>
+<blockquote>
+<pre><code>GDK_BACKEND=broadway BROADWAY_DISPLAY=:5 gtk4-demo</code></pre>
+</blockquote>
+</blockquote>
+<h1>OPTIONS</h1>
+<p><strong>--port PORT</strong></p>
+<blockquote>
+<blockquote>
+<p>Use the given <strong>PORT</strong> for the HTTP connection, instead
+of the default <strong>8080 + (DISPLAY - 1)</strong>.</p>
+</blockquote>
+</blockquote>
+<p><strong>--address ADDRESS</strong></p>
+<blockquote>
+<blockquote>
+<p>Use the given <strong>address</strong> for the HTTP connection,
+instead of the default <strong>http://127.0.0.1</strong>.</p>
+</blockquote>
+</blockquote>
+<p><strong>--unixsocket ADDRESS</strong></p>
+<blockquote>
+<blockquote>
+<p>Use the given <strong>address</strong> as the unix domain socket
+address. This option overrides <strong>--address</strong> and
+<strong>--port</strong>, and it is available only on Unix-like
+systems.</p>
+</blockquote>
+</blockquote>

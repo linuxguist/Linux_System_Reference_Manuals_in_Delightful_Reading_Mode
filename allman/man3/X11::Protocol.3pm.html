@@ -1,0 +1,524 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>X11::Protocol - Perl module for the X Window System Protocol, version
+11</p>
+<h1>SYNOPSIS</h1>
+<p>use X11::Protocol; $x = X11::Protocol-&gt;new(); $win =
+$x-&gt;new_rsrc; $x-&gt;CreateWindow($win, $x-&gt;root, InputOutput,
+$x-&gt;root_depth, CopyFromParent, ($x_coord, $y_coord), $width,
+$height, $border_w); ...</p>
+<h1>DESCRIPTION</h1>
+<p>X11::Protocol is a client-side interface to the X11 Protocol (see
+X(1) for information about X11), allowing perl programs to display
+windows and graphics on X11 servers.</p>
+<p>A full description of the protocol is beyond the scope of this
+documentation; for complete information, see the <em>X Window System
+Protocol, X Version 11</em>, available as Postscript or *roff source
+from <code>ftp://ftp.x.org</code>, or <em>Volume 0: X Protocol Reference
+Manual</em> of O'Reilly &amp; Associates's series of books about X (ISBN
+1-56592-083-X, <code>http://www.oreilly.com</code>), which contains most
+of the same information.</p>
+<h1>DISCLAIMER</h1>
+<p>``The protocol contains many management mechanisms that are not
+intended for normal applications. Not all mechanisms are needed to build
+a particular user interface. It is important to keep in mind that the
+protocol is intended to provide mechanism, not policy.'' Ω- Robert W.
+Scheifler</p>
+<h1>BASIC METHODS</h1>
+<h2>new</h2>
+<p>$x = X11::Protocol-&gt;new(); $x =
+X11::Protocol-&gt;new($display_name); $x =
+X11::Protocol-&gt;new($connection); $x =
+X11::Protocol-&gt;new($display_name, [$auth_type, $auth_data]); $x =
+X11::Protocol-&gt;new($connection, [$auth_type, $auth_data]);</p>
+<p>Open a connection to a server. <code>$display_name</code> should be
+an X display name, of the form 'host:display_num.screen_num'; if no
+arguments are supplied, the contents of the DISPLAY environment variable
+are used. Alternatively, a pre-opened connection, of one of the
+X11::Protocol::Connection classes (see X11::Protocol::Connection,
+X11::Protocol::Connection::FileHandle,
+X11::Protocol::Connection::Socket, X11::Protocol::Connection::UNIXFH,
+X11::Protocol::Connection::INETFH,
+X11::Protocol::Connection::UNIXSocket,
+X11::Protocol::Connection::INETSocket) can be given. The authorization
+data is obtained using X11::Auth or the second argument. If the display
+is specified by <code>$display_name</code>, rather than
+<code>$connection</code>, a <strong>choose_screen()</strong> is also
+performed, defaulting to screen 0 if the '.screen_num' of the display
+name is not present. Returns the new protocol object.</p>
+<h2>new_rsrc</h2>
+<p>$x-&gt;new_rsrc;</p>
+<p>Returns a new resource identifier. A unique resource ID is required
+for every object that the server creates on behalf of the client:
+windows, fonts, cursors, etc. (IDs are chosen by the client instead of
+the server for efficiency Ω- the client doesn't have to wait for the
+server to acknowledge the creation before starting to use the
+object).</p>
+<p>Note that the total number of available resource IDs, while large, is
+finite. Beginning from the establishment of a connection, resource IDs
+are allocated sequentially from a range whose size is server dependent
+(commonly 2**21, about 2 million). If this limit is reached and the
+server does not support the XC_MISC extension, subsequent calls to
+new_rsrc will croak. If the server does support this extension, the
+module will attempt to request a new range of free IDs from the server.
+This should allow the program to continue, but it is an imperfect
+solution, as over time the set of available IDs may fragment, requiring
+increasingly frequent round-trip range requests from the server. For
+long-running programs, the best approach may be to keep track of free
+IDs as resources are destroyed. In the current version, however, no
+special support is provided for this.</p>
+<h2>handle_input</h2>
+<p>$x-&gt;handle_input;</p>
+<p>Get one chunk of information from the server, and do something with
+it. If it's an error, handle it using the protocol object's handler
+('error_handler' Ω- default is kill the program with an explanatory
+message). If it's an event, pass it to the chosen event handler, or put
+it in a queue if the handler is 'queue'. If it's a reply to a request,
+save using the object's 'replies' hash for further processing.</p>
+<h2>atom_name</h2>
+<p>$name = $x-&gt;atom_name($atom);</p>
+<p>Return the string corresponding to the atom <code>$atom</code>. This
+is similar to the GetAtomName request, but caches the result for
+efficiency.</p>
+<h2>atom</h2>
+<p>$atom = $x-&gt;atom($name);</p>
+<p>The inverse operation; Return the (numeric) atom corresponding to
+<code>$name</code>. This is similar to the InternAtom request, but
+caches the result.</p>
+<h2>choose_screen</h2>
+<p>$x-&gt;choose_screen($screen_num);</p>
+<p>Indicate that you prefer to use a particular screen of the display.
+Per-screen information, such as 'root', 'width_in_pixels', and
+'white_pixel' will be made available as</p>
+<p>$x-&gt;{root}</p>
+<p>instead of</p>
+<p>$x-&gt;{screens}[$screen_num]{root}</p>
+<h1>SYMBOLIC CONSTANTS</h1>
+<p>Generally, symbolic constants used by the protocol, like
+'CopyFromParent' or 'PieSlice' are passed to methods as strings, and
+converted into numbers by the module. Their names are the same as those
+in the protocol specification, including capitalization, but with
+hyphens ('-') changed to underscores ('_') to look more perl-ish. If you
+want to do the conversion yourself for some reason, the following
+methods are available:</p>
+<h2>num</h2>
+<p>$num = $x-&gt;num($type, $str)</p>
+<p>Given a string representing a constant and a string specifying what
+type of constant it is, return the corresponding number.
+<code>$type</code> should be a name like 'VisualClass' or 'GCLineStyle'.
+If the name is not recognized, it is returned intact.</p>
+<h2>interp</h2>
+<p>$name = $x-&gt;interp($type, $num)</p>
+<p>The inverse operation; given a number and string specifying its type,
+return a string representing the constant.</p>
+<p>You can disable <strong>interp()</strong> and the module's internal
+interpretation of numbers by setting <code>$x</code>-&gt;{'do_interp'}
+to zero. Of course, this isn't very useful, unless you have you own
+definitions for all the constants.</p>
+<p>Here is a list of available constant types:</p>
+<p>AccessMode, AllowEventsMode, AutoRepeatMode, BackingStore,
+BitGravity, Bool, ChangePropertyMode, CirculateDirection,
+CirculatePlace, Class, ClipRectangleOrdering, CloseDownMode,
+ColormapNotifyState, CoordinateMode, CrossingNotifyDetail,
+CrossingNotifyMode, DeviceEvent, DrawDirection, Error, EventMask,
+Events, FocusDetail, FocusMode, GCArcMode, GCCapStyle, GCFillRule,
+GCFillStyle, GCFunction, GCJoinStyle, GCLineStyle, GCSubwindowMode,
+GrabStatus, HostChangeMode, HostFamily, ImageFormat, InputFocusRevertTo,
+KeyMask, LedMode, MapState, MappingChangeStatus, MappingNotifyRequest,
+PointerEvent, PolyShape, PropertyNotifyState, Request, ScreenSaver,
+ScreenSaverAction, Significance, SizeClass, StackMode, SyncMode,
+VisibilityState, VisualClass, WinGravity</p>
+<h1>SERVER INFORMATION</h1>
+<p>At connection time, the server sends a large amount of information
+about itself to the client. This information is stored in the protocol
+object for future reference. It can be read directly, like</p>
+<p>$x-&gt;{release_number}</p>
+<p>or, for object oriented True Believers, using a method:</p>
+<p>$x-&gt;release_number</p>
+<p>The method method also has a one argument form for setting variables,
+but it isn't really useful for some of the more complex structures.</p>
+<p>Here is an example of what the object's information might look
+like:</p>
+<p>connection =&gt; X11::Connection::UNIXSocket(0x814526fd), byte_order
+=&gt; l, protocol_major_version =&gt; 11, protocol_minor_version =&gt;
+0, authorization_protocol_name =&gt; MIT-MAGIC-COOKIE-1, release_number
+=&gt; 3110, resource_id_base =&gt; 0x1c000002, motion_buffer_size =&gt;
+0, maximum_request_length =&gt; 65535, # units of 4 bytes
+image_byte_order =&gt; LeastSiginificant, bitmap_bit_order =&gt;
+LeastSiginificant, bitmap_scanline_unit =&gt; 32, bitmap_scanline_pad
+=&gt; 32, min_keycode =&gt; 8, max_keycode =&gt; 134, vendor =&gt; The
+XFree86 Project, Inc, pixmap_formats =&gt; {1 =&gt; {bits_per_pixel
+=&gt; 1, scanline_pad =&gt; 32}, 8 =&gt; {bits_per_pixel =&gt; 8,
+scanline_pad =&gt; 32}}, screens =&gt; [{root =&gt; 43, width_in_pixels
+=&gt; 800, height_in_pixels =&gt; 600, width_in_millimeters =&gt; 271,
+height_in_millimeters =&gt; 203, root_depth =&gt; 8, root_visual =&gt;
+34, default_colormap =&gt; 33, white_pixel =&gt; 0, black_pixel =&gt; 1,
+min_installed_maps =&gt; 1, max_installed_maps =&gt; 1, backing_stores
+=&gt; Always, save_unders =&gt; 1, current_input_masks =&gt; 0x58003d,
+allowed_depths =&gt; [{depth =&gt; 1, visuals =&gt; []}, {depth =&gt; 8,
+visuals =&gt; [ {visual_id =&gt; 34, blue_mask =&gt; 0, green_mask =&gt;
+0, red_mask =&gt; 0, class =&gt; PseudoColor, bits_per_rgb_value =&gt;
+6, colormap_entries =&gt; 256}, {visual_id =&gt; 35, blue_mask =&gt;
+0xc0, green_mask =&gt; 0x38, red_mask =&gt; 0x7, class =&gt;
+DirectColor, bits_per_rgb_value =&gt; 6, colormap_entries =&gt; 8},
+...]}]], visuals =&gt; {34 =&gt; {depth =&gt; 8, class =&gt;
+PseudoColor, red_mask =&gt; 0, green_mask =&gt; 0, blue_mask=&gt; 0,
+bits_per_rgb_value =&gt; 6, colormap_entries =&gt; 256}, 35 =&gt; {depth
+=&gt; 8, class =&gt; DirectColor, red_mask =&gt; 0x7, green_mask =&gt;
+0x38, blue_mask=&gt; 0xc0, bits_per_rgb_value =&gt; 6, colormap_entries
+=&gt; 8}, ...} error_handler =&gt;
+&amp;\X11::Protocol::default_error_handler, event_handler =&gt; sub {},
+do_interp =&gt; 1</p>
+<h1>REQUESTS</h1>
+<h2>request</h2>
+<p>$x-&gt;request(CreateWindow, ...); $x-&gt;req(CreateWindow, ...);
+$x-&gt;CreateWindow(...);</p>
+<p>Send a protocol request to the server, and get the reply, if any. For
+names of and information about individual requests, see below and/or the
+protocol reference manual.</p>
+<h2>robust_req</h2>
+<p>$x-&gt;robust_req(CreateWindow, ...);</p>
+<p>Like <strong>request()</strong>, but if the server returns an error,
+return the error information rather than calling the error handler
+(which by default just croaks). If the request succeeds, returns an
+array reference containing whatever <strong>request()</strong> would
+have. Otherwise, returns the error type, the major and minor opcodes of
+the failed request, and the extra error information, if any. Note that
+even if the request normally wouldn't have a reply, this method still
+has to wait for a round-trip time to see whether an error occurred. If
+you're concerned about performance, you should design your error
+handling to be asynchronous.</p>
+<h2>add_reply</h2>
+<p>$x-&gt;add_reply($sequence_num, \$var);</p>
+<p>Add a stub for an expected reply to the object's 'replies' hash. When
+a reply numbered <code>$sequence_num</code> comes, it will be stored in
+<code>$var</code>.</p>
+<h2>delete_reply</h2>
+<p>$x-&gt;delete_reply($sequence_num);</p>
+<p>Delete the entry in 'replies' for the specified reply. (This should
+be done after the reply is received).</p>
+<h2>send</h2>
+<p>$x-&gt;send(CreateWindow, ...);</p>
+<p>Send a request, but do not wait for a reply. You must handle the
+reply, if any, yourself, using <strong>add_reply()</strong>,
+<strong>handle_input()</strong>, <strong>delete_reply()</strong>, and
+<strong>unpack_reply()</strong>, generally in that order.</p>
+<h2>unpack_reply</h2>
+<p>$x-&gt;unpack_reply(GetWindowAttributes, $data);</p>
+<p>Interpret the raw reply data <code>$data</code>, according to the
+reply format for the named request. Returns data in the same format as
+<code>request($request_name, ...)</code>.</p>
+<p>This section includes only a short calling summary for each request;
+for full descriptions, see the protocol standard. Argument order is
+usually the same as listed in the spec, but you generally don't have to
+pass lengths of strings or arrays, since perl keeps track. Symbolic
+constants are generally passed as strings. Most replies are returned as
+lists, but when there are many values, a hash is used. Lists usually
+come last; when there is more than one, each is passed by reference. In
+lists of multi-part structures, each element is a list ref. Parenthesis
+are inserted in arg lists for clarity, but are optional. Requests are
+listed in order by major opcode, so related requests are usually close
+together. Replies follow the '=&gt;'.</p>
+<p>$x-&gt;CreateWindow($wid, $parent, $class, $depth, $visual, ($x, $y),
+$width, $height, $border_width, attribute =&gt; $value, ...)
+$x-&gt;ChangeWindowAttributes($window, attribute =&gt; $value, ...)
+$x-&gt;GetWindowAttributes($window) =&gt; (backing_store =&gt;
+$backing_store, ...)</p>
+<p>This is an example of a return value that is meant to be assigned to
+a hash.</p>
+<p>$x-&gt;DestroyWindow($win) $x-&gt;DestroySubwindows($win)
+$x-&gt;ChangeSaveSet($window, $mode) $x-&gt;ReparentWindow($win,
+$parent, ($x, $y)) $x-&gt;MapWindow($win) $x-&gt;MapSubwindows($win)
+$x-&gt;UnmapWindow($win) $x-&gt;UnmapSubwindows($win)
+$x-&gt;ConfigureWindow($win, attribute =&gt; $value, ...)
+$x-&gt;CirculateWindow($win, $direction)</p>
+<p>Note that this request actually circulates the subwindows of
+<code>$win</code>, not the window itself.</p>
+<p>$x-&gt;GetGeometry($drawable) =&gt; (root =&gt; $root, ...)
+$x-&gt;QueryTree($win) =&gt; ($root, $parent, @kids)
+$x-&gt;InternAtom($name, $only_if_exists) =&gt; $atom
+$x-&gt;GetAtomName($atom) =&gt; $name $x-&gt;ChangeProperty($window,
+$property, $type, $format, $mode, $data) $x-&gt;DeleteProperty($win,
+$atom) $x-&gt;GetProperty($window, $property, $type, $offset, $length,
+$delete) =&gt; ($value, $type, $format, $bytes_after)</p>
+<p>Notice that the value comes first, so you can easily ignore the
+rest.</p>
+<p>$x-&gt;ListProperties($window) =&gt; (@atoms)
+$x-&gt;SetSelectionOwner($selection, $owner, $time)
+$x-&gt;GetSelectionOwner($selection) =&gt; $owner
+$x-&gt;ConvertSelection($selection, $target, $property, $requestor,
+$time) $x-&gt;SendEvent($destination, $propagate, $event_mask,
+$event)</p>
+<p>The <code>$event</code> argument should be the result of a
+<strong>pack_event()</strong> (see EVENTS)</p>
+<p>$x-&gt;GrabPointer($grab_window, $owner_events, $event_mask,
+$pointer_mode, $keyboard_mode, $confine_to, $cursor, $time) =&gt;
+$status $x-&gt;UngrabPointer($time) $x-&gt;GrabButton($modifiers,
+$button, $grab_window, $owner_events, $event_mask, $pointer_mode,
+$keyboard_mode, $confine_to, $cursor) $x-&gt;UngrabButton($modifiers,
+$button, $grab_window) $x-&gt;ChangeActivePointerGrab($event_mask,
+$cursor, $time) $x-&gt;GrabKeyboard($grab_window, $owner_events,
+$pointer_mode, $keyboard_mode, $time) =&gt; $status
+$x-&gt;UngrabKeyboard($time) $x-&gt;GrabKey($key, $modifiers,
+$grab_window, $owner_events, $pointer_mode, $keyboard_mode)
+$x-&gt;UngrabKey($key, $modifiers, $grab_window)
+$x-&gt;AllowEvents($mode, $time) $x-&gt;GrabServer $x-&gt;UngrabServer
+$x-&gt;QueryPointer($window) =&gt; (root =&gt; $root, ...)
+$x-&gt;GetMotionEvents($start, $stop, $window) =&gt; ([$time, ($x, $y)],
+[$time, ($x, $y)], ...) $x-&gt;TranslateCoordinates($src_window,
+$dst_window, $src_x, $src_y) =&gt; ($same_screen, $child, $dst_x,
+$dst_y) $x-&gt;WarpPointer($src_window, $dst_window, $src_x, $src_y,
+$src_width, $src_height, $dst_x, $dst_y) $x-&gt;SetInputFocus($focus,
+$revert_to, $time) $x-&gt;GetInputFocus =&gt; ($focus, $revert_to)
+$x-&gt;QueryKeymap =&gt; $keys</p>
+<p><code>$keys</code> is a bit vector, so you should use
+<strong>vec()</strong> to read it.</p>
+<p>$x-&gt;OpenFont($fid, $name) $x-&gt;CloseFont($font)
+$x-&gt;QueryFont($font) =&gt; (min_char_or_byte2 =&gt;
+$min_char_or_byte2, ..., min_bounds =&gt; [$left_side_bearing,
+$right_side_bearing, $character_width, $ascent, $descent, $attributes],
+..., char_infos =&gt; [[$left_side_bearing, $right_side_bearing,
+$character_width, $ascent, $descent, $attributes], ...], properties
+=&gt; {$prop =&gt; $value, ...} ) $x-&gt;QueryTextExtents($font,
+$string) =&gt; (draw_direction =&gt; $draw_direction, ...)
+$x-&gt;ListFonts($pattern, $max_names) =&gt; @names
+$x-&gt;ListFontsWithInfo($pattern, $max_names) =&gt; ({name =&gt; $name,
+...}, {name =&gt; $name, ...}, ...)</p>
+<p>The information in each hash is the same as the the information
+returned by QueryFont, but without per-character size information. This
+request is special in that it is the only request that can have more
+than one reply. This means you should probably only use
+<strong>request()</strong> with it, not <strong>send()</strong>, as the
+reply counting is complicated. Luckily, you never need this request
+anyway, as its function is completely duplicated by other requests.</p>
+<p>$x-&gt;SetFontPath(@strings) $x-&gt;GetFontPath =&gt; @strings
+$x-&gt;CreatePixmap($pixmap, $drawable, $depth, $width, $height)
+$x-&gt;FreePixmap($pixmap) $x-&gt;CreateGC($cid, $drawable, attribute
+=&gt; $value, ...) $x-&gt;ChangeGC($gc, attribute =&gt; $value, ...)
+$x-&gt;CopyGC($src, $dest, attribute, attribute, ...)
+$x-&gt;SetDashes($gc, $dash_offset, (@dashes))
+$x-&gt;SetClipRectangles($gc, ($clip_x_origin, $clip_y_origin),
+$ordering, [$x, $y, $width, $height], ...) $x-&gt;ClearArea($window,
+($x, $y), $width, $height, $exposures) $x-&gt;CopyArea($src_drawable,
+$dst_drawable, $gc, ($src_x, $src_y), $width, $height, ($dst_x, $dst_y))
+$x-&gt;CopyPlane($src_drawable, $dst_drawable, $gc, ($src_x, $src_y),
+$width, $height, ($dst_x, $dst_y), $bit_plane)
+$x-&gt;PolyPoint($drawable, $gc, $coordinate_mode, ($x, $y), ($x, $y),
+...) $x-&gt;PolyLine($drawable, $gc, $coordinate_mode, ($x, $y), ($x,
+$y), ...) $x-&gt;PolySegment($drawable, $gc, ($x, $y) =&gt; ($x, $y),
+($x, $y) =&gt; ($x, $y), ...) $x-&gt;PolyRectangle($drawable, $gc, [($x,
+$y), $width, $height], ...) $x-&gt;PolyArc($drawable, $gc, [($x, $y),
+$width, $height, $angle1, $angle2], ...) $x-&gt;FillPoly($drawable, $gc,
+$shape, $coordinate_mode, ($x, $y), ...)
+$x-&gt;PolyFillRectangle($drawable, $gc, [($x, $y), $width, $height],
+...) $x-&gt;PolyFillArc($drawable, $gc, [($x, $y), $width, $height,
+$angle1, $angle2], ...) $x-&gt;PutImage($drawable, $gc, $depth, $width,
+$height, ($dst_x, $dst_y), $left_pad, $format, $data)</p>
+<p>Currently, the module has no code to handle the various bitmap
+formats that the server might specify. Therefore, this request will not
+work portably without a lot of work.</p>
+<p>$x-&gt;GetImage($drawable, ($x, $y), $width, $height, $plane_mask,
+$format) $x-&gt;PolyText8($drawable, $gc, ($x, $y), ($font OR [$delta,
+$string]), ...) $x-&gt;PolyText16($drawable, $gc, ($x, $y), ($font OR
+[$delta, $string]), ...) $x-&gt;ImageText8($drawable, $gc, ($x, $y),
+$string) $x-&gt;ImageText16($drawable, $gc, ($x, $y), $string)
+$x-&gt;CreateColormap($mid, $visual, $window, $alloc)
+$x-&gt;FreeColormap($cmap) $x-&gt;CopyColormapAndFree($mid, $src_cmap)
+$x-&gt;InstallColormap($cmap) $x-&gt;UninstallColormap($cmap)
+$x-&gt;ListInstalledColormaps($window) =&gt; @cmaps
+$x-&gt;AllocColor($cmap, ($red, $green, $blue)) =&gt; ($pixel, ($red,
+$green, $blue)) $x-&gt;AllocNamedColor($cmap, $name) =&gt; ($pixel,
+($exact_red, $exact_green, $exact_blue), ($visual_red, $visual_green,
+$visual_blue)) $x-&gt;AllocColorCells($cmap, $colors, $planes,
+$contiguous) =&gt; ([@pixels], [@masks]) $x-&gt;AllocColorPlanes($cmap,
+$colors, ($reds, $greens, $blues), $contiguous) =&gt; (($red_mask,
+$green_mask, $blue_mask), @pixels) $x-&gt;FreeColors($cmap, $plane_mask,
+@pixels) $x-&gt;StoreColors($cmap, [$pixel, $red, $green, $blue,
+$do_mask], ...)</p>
+<p>The 1, 2, and 4 bits in <code>$do_mask</code> are do-red, do-green,
+and do-blue. <code>$do_mask</code> can be omitted, defaulting to 7, the
+usual case Ω- change the whole color.</p>
+<p>$x-&gt;StoreNamedColor($cmap, $pixel, $name, $do_mask)</p>
+<p><code>$do_mask</code> has the same interpretation as above, but is
+mandatory.</p>
+<p>$x-&gt;QueryColors($cmap, @pixels) =&gt; ([$red, $green, $blue], ...)
+$x-&gt;LookupColor($cmap, $name) =&gt; (($exact_red, $exact_green,
+$exact_blue), ($visual_red, $visual_green, $visual_blue))
+$x-&gt;CreateCursor($cid, $source, $mask, ($fore_red, $fore_green,
+$fore_blue), ($back_red, $back_green, $back_blue), ($x, $y))
+$x-&gt;CreateGlyphCursor($cid, $source_font, $mask_font, $source_char,
+$mask_char, ($fore_red, $fore_green, $fore_blue), ($back_red,
+$back_green, $back_blue)) $x-&gt;FreeCursor($cursor)
+$x-&gt;RecolorCursor($cursor, ($fore_red, $fore_green, $fore_blue),
+($back_red, $back_green, $back_blue)) $x-&gt;QueryBestSize($class,
+$drawable, $width, $height) =&gt; ($width, $height)
+$x-&gt;QueryExtension($name) =&gt; ($major_opcode, $first_event,
+$first_error)</p>
+<p>If the extension is not present, an empty list is returned.</p>
+<p>$x-&gt;ListExtensions =&gt; (@names)
+$x-&gt;ChangeKeyboardMapping($first_keycode, $keysysms_per_keycode,
+@keysyms) $x-&gt;GetKeyboardMapping($first_keycode, $count) =&gt;
+($keysysms_per_keycode, [$keysym, ...], [$keysym, ...], ...)
+$x-&gt;ChangeKeyboardControl(attribute =&gt; $value, ...)
+$x-&gt;GetKeyboardControl =&gt; (global_auto_repeat =&gt;
+$global_auto_repeat, ...) $x-&gt;Bell($percent)
+$x-&gt;ChangePointerControl($do_acceleration, $do_threshold,
+$acceleration_numerator, $acceleration_denominator, $threshold)
+$x-&gt;GetPointerControl =&gt; ($acceleration_numerator,
+$acceleration_denominator, $threshold) $x-&gt;SetScreenSaver($timeout,
+$interval, $prefer_blanking, $allow_exposures) $x-&gt;GetScreenSaver
+=&gt; ($timeout, $interval, $prefer_blanking, $allow_exposures)
+$x-&gt;ChangeHosts($mode, $host_family, $host_address) $x-&gt;ListHosts
+=&gt; ($mode, [$family, $host], ...) $x-&gt;SetAccessControl($mode)
+$x-&gt;SetCloseDownMode($mode) $x-&gt;KillClient($resource)
+$x-&gt;RotateProperties($win, $delta, @props)
+$x-&gt;ForceScreenSaver($mode) $x-&gt;SetPointerMapping(@map) =&gt;
+$status $x-&gt;GetPointerMapping =&gt; @map
+$x-&gt;SetModifierMapping(@keycodes) =&gt; $status
+$x-&gt;GetModiferMapping =&gt; @keycodes $x-&gt;NoOperation($length)</p>
+<p><code>$length</code> specifies the length of the entire useless
+request, in four byte units, and is optional.</p>
+<h1>EVENTS</h1>
+<p>To receive events, first set the 'event_mask' attribute on a window
+to indicate what types of events you desire (see pack_event_mask). Then,
+set the protocol object's 'event_handler' to a subroutine reference that
+will handle the events. Alternatively, set 'event_handler' to 'queue',
+and retrieve events using <strong>dequeue_event()</strong> or
+<strong>next_event()</strong>. In both cases, events are returned as a
+hash. For instance, a typical MotionNotify event might look like
+this:</p>
+<p>%event = (name =&gt; MotionNotify, sequence_number =&gt; 12, state
+=&gt; 0, event =&gt; 58720256, root =&gt; 43, child =&gt; None,
+same_screen =&gt; 1, time =&gt; 966080746, detail =&gt; Normal, event_x
+=&gt; 10, event_y =&gt; 3, code =&gt; 6, root_x =&gt; 319, root_y =&gt;
+235)</p>
+<h2>pack_event_mask</h2>
+<p>$mask = $x-&gt;pack_event_mask(ButtonPress, KeyPress, Exposure);</p>
+<p>Make an event mask (suitable as the 'event_mask' of a window) from a
+list of strings specifying event types.</p>
+<h2>unpack_event_mask</h2>
+<p>@event_types = $x-&gt;unpack_event_mask($mask);</p>
+<p>The inverse operation; convert an event mask obtained from the server
+into a list of names of event categories.</p>
+<h2>dequeue_event</h2>
+<p>%event = $x-&gt;dequeue_event;</p>
+<p>If there is an event waiting in the queue, return it.</p>
+<h2>next_event</h2>
+<p>%event = $x-&gt;next_event;</p>
+<p>Like Xlib's <strong>XNextEvent()</strong>, this function is
+equivalent to</p>
+<p>$x-&gt;handle_input until %event = dequeue_event;</p>
+<h2>pack_event</h2>
+<p>$data = $x-&gt;pack_event(%event);</p>
+<p>Given an event in hash form, pack it into a string. This is only
+useful as an argument to <strong>SendEvent()</strong>.</p>
+<h2>unpack_event</h2>
+<p>%event = $x-&gt;unpack_event($data);</p>
+<p>The inverse operation; given the raw data for an event (32 bytes),
+unpack it into hash form. Normally, this is done automatically.</p>
+<h1>EXTENSIONS</h1>
+<p>Protocol extensions add new requests, event types, and error types to
+the protocol. Support for them is compartmentalized in modules in the
+X11::Protocol::Ext:: hierarchy. For an example, see
+X11::Protocol::Ext::SHAPE. You can tell if the module has loaded an
+extension by looking at</p>
+<p>$x-&gt;{ext}{$extension_name}</p>
+<p>If the extension has been initialized, this value will be an array
+reference, [$major_request_number, <code>$first_event_number</code>,
+<code>$first_error_number</code>, <code>$obj</code>], where
+<code>$obj</code> is an object containing information private to the
+extension.</p>
+<h2>init_extension</h2>
+<p>$x-&gt;init_extension($name);</p>
+<p>Initialize an extension: query the server to find the extension's
+request number, then load the corresponding module. Returns 0 if the
+server does not support the named extension, or if no module to
+interface with it exists.</p>
+<h2>init_extensions</h2>
+<p>$x-&gt;init_extensions;</p>
+<p>Initialize protocol extensions. This does a ListExtensions request,
+then calls <strong>init_extension()</strong> for each extension that the
+server supports.</p>
+<h1>WRITING EXTENSIONS</h1>
+<p>Internally, the X11::Protocol module is table driven. All an
+extension has to do is to add new add entries to the protocol object's
+tables. An extension module should <code>use X11::Protocol</code>, and
+should define an <strong>new()</strong> method</p>
+<p>X11::Protocol::Ext::NAME -&gt;new($x, $request_num, $event_num,
+$error_num)</p>
+<p>where <code>$x</code> is the protocol object and
+<code>$request_num</code>, <code>$event_num</code> and
+<code>$error_num</code> are the values returned by
+<strong>QueryExtension()</strong>.</p>
+<p>The <strong>new()</strong> method should add new types of constant
+like</p>
+<p>$x-&gt;{ext_const}{ConstantType} = [Constant, Constant, ...]</p>
+<p>and set up the corresponding name to number translation hashes
+like</p>
+<p>$x-&gt;{ext_const_num}{ConstantType} =
+{make_num_hash($x-&gt;{ext_const}{ConstantType})}</p>
+<p>Event names go in</p>
+<p>$x-&gt;{ext_const}{Events}[$event_number]</p>
+<p>while specifications for event contents go in</p>
+<p>$x-&gt;{ext_event}[$event_number]</p>
+<p>each element of which is either
+<code>[\&amp;unpack_sub, \&amp;pack_sub]</code> or
+<code>[$pack_format, $field, $field, ...]</code>, where each
+<code>$field</code> is <code>name</code>,
+<code>[name, const_type]</code>, or
+<code>[name, [special_name_for_zero,</code> special_name_for_one]],
+where <code>special_name_for_one</code> is optional.</p>
+<p>Finally,</p>
+<p>$x-&gt;{ext_request}{$major_request_number}</p>
+<p>should be an array of arrays, with each array either
+<code>[$name, \&amp;packit]</code> or
+<code>[$name, \&amp;packit, \&amp;unpackit]</code>, and</p>
+<p>$x-&gt;{ext_request_num}{$request_name}</p>
+<p>should be initialized with <code>[$minor_num, $major_num]</code> for
+each request the extension defines. For examples of code that does all
+of this, look at X11::Protocol::Ext::SHAPE.</p>
+<p>X11::Protocol exports several functions that might be useful in
+extensions (note that these are <em>not</em> methods).</p>
+<h2>padding</h2>
+<p>$p = padding $x;</p>
+<p>Given an integer, compute the number need to round it up to a
+multiple of 4. For instance, <code>padding(5)</code> is 3.</p>
+<h2>pad</h2>
+<p>$p = pad $str;</p>
+<p>Given a string, return the number of extra bytes needed to make a
+multiple of 4. Equivalent to <code>padding(length($str))</code>.</p>
+<h2>padded</h2>
+<p>$data = pack(padded($str), $str);</p>
+<p>Return a format string, suitable for <strong>pack()</strong>, for a
+string padded to a multiple of 4 bytes. For instance,
+<code>pack(padded(Hello), Hello)</code> gives
+<code>"Hello\0\0\0"</code>.</p>
+<h2>hexi</h2>
+<p>$str = hexi $n;</p>
+<p>Format a number in hexidecimal, and add a 0x to the front.</p>
+<h2>make_num_hash</h2>
+<p>%hash = make_num_hash([A, B, C]);</p>
+<p>Given a reference to a list of strings, return a hash mapping the
+strings onto numbers representing their position in the list, as used by
+<code>$x-&gt;{ext_const_num}</code>.</p>
+<h1>BUGS</h1>
+<p>This module is too big (~2500 lines), too slow (10 sec to load on a
+slow machine), too inefficient (request args are copied several times),
+and takes up too much memory (3000K for basicwin).</p>
+<p>If you have more than 65535 replies outstanding at once, sequence
+numbers can collide.</p>
+<p>The protocol is too complex.</p>
+<h1>AUTHOR</h1>
+<p>Stephen McCamant &lt;SMCCAM@cpan.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>perl</strong> (1), X(1), X11::Keysyms,
+X11::Protocol::Ext::SHAPE, X11::Protocol::Ext::BIG_REQUESTS,
+X11::Protocol::Ext::XC_MISC, X11::Protocol::Ext::DPMS,
+X11::Protocol::Ext::XFree86_Misc, X11::Auth, <em>X Window System
+Protocol (X Version 11)</em>, <em>Inter-Client Communications
+Conventions Manual</em>, <em>X Logical Font Description
+Conventions</em>.</p>

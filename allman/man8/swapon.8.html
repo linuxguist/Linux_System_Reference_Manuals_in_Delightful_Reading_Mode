@@ -1,0 +1,228 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>swapon, swapoff - enable/disable devices and files for paging and
+swapping</p>
+<h1>SYNOPSIS</h1>
+<p><strong>swapon</strong> [options] [<em>specialfile</em>...]</p>
+<p><strong>swapoff</strong> [<strong>-va</strong>]
+[<em>specialfile</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>swapon</strong> is used to specify devices on which paging
+and swapping are to take place.</p>
+<p>The device or file used is given by the <em>specialfile</em>
+parameter. It may be of the form <strong>-L</strong> <em>label</em> or
+<strong>-U</strong> <em>uuid</em> to indicate a device by label or
+uuid.</p>
+<p>Calls to <strong>swapon</strong> normally occur in the system boot
+scripts making all swap devices available, so that the paging and
+swapping activity is interleaved across several devices and files.</p>
+<p><strong>swapoff</strong> disables swapping on the specified devices
+and files. When the <strong>-a</strong> flag is given, swapping is
+disabled on all known swap devices and files (as found in
+<em>/proc/swaps</em> or <em>/etc/fstab</em>).</p>
+<h1>OPTIONS</h1>
+<p><strong>-a</strong>, <strong>--all</strong></p>
+<blockquote>
+<p>All devices marked as "swap" in <em>/etc/fstab</em> are made
+available, except for those with the "noauto" option. Devices that are
+already being used as swap are silently skipped.</p>
+</blockquote>
+<p><strong>-d</strong>,
+<strong>--discard</strong>[<strong>=</strong><em>policy</em>]</p>
+<blockquote>
+<p>Enable swap discards, if the swap backing device supports the discard
+or trim operation. This may improve performance on some Solid State
+Devices, but often it does not. The option allows one to select between
+two available swap discard policies:</p>
+<p><strong>--discard=once</strong></p>
+<blockquote>
+<p>to perform a single-time discard operation for the whole swap area at
+swapon; or</p>
+</blockquote>
+<p><strong>--discard=pages</strong></p>
+<blockquote>
+<p>to asynchronously discard freed swap pages before they are available
+for reuse.</p>
+</blockquote>
+<p>If no policy is selected, the default behavior is to enable both
+discard types. The <em>/etc/fstab</em> mount options
+<strong>discard</strong>, <strong>discard=once</strong>, or
+<strong>discard=pages</strong> may also be used to enable discard
+flags.</p>
+</blockquote>
+<p><strong>-e</strong>, <strong>--ifexists</strong></p>
+<blockquote>
+<p>Silently skip devices that do not exist. The <em>/etc/fstab</em>
+mount option <strong>nofail</strong> may also be used to skip
+non-existing device.</p>
+</blockquote>
+<p><strong>-f</strong>, <strong>--fixpgsz</strong></p>
+<blockquote>
+<p>Reinitialize (exec mkswap) the swap space if its page size does not
+match that of the current running kernel. <strong>mkswap</strong>(8)
+initializes the whole device and does not check for bad blocks.</p>
+</blockquote>
+<p><strong>-L</strong> <em>label</em></p>
+<blockquote>
+<p>Use the partition that has the specified <em>label</em>. (For this,
+access to <em>/proc/partitions</em> is needed.)</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--options</strong> <em>opts</em></p>
+<blockquote>
+<p>Specify swap options by an <em>fstab</em>-compatible comma-separated
+string. For example:</p>
+<p><strong>swapon -o pri=1,discard=pages,nofail /dev/sda2</strong></p>
+<p>The <em>opts</em> string is evaluated last and overrides all other
+command line options.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--priority</strong>
+<em>priority</em></p>
+<blockquote>
+<p>Specify the priority of the swap device. <em>priority</em> is a value
+between -1 and 32767. Higher numbers indicate higher priority. See
+<strong>swapon</strong>(2) for a full description of swap priorities.
+Add <strong>pri=</strong><em>value</em> to the option field of
+<em>/etc/fstab</em> for use with <strong>swapon -a</strong>. When no
+priority is defined, it defaults to -1.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--summary</strong></p>
+<blockquote>
+<p>Display swap usage summary by device. Equivalent to <strong>cat
+/proc/swaps</strong>. This output format is DEPRECATED in favour of
+<strong>--show</strong> that provides better control on output data.</p>
+</blockquote>
+<p><strong>--show</strong>[<strong>=</strong><em>column</em>...]</p>
+<blockquote>
+<p>Display a definable table of swap areas. See the
+<strong>--help</strong> output for a list of available columns.</p>
+</blockquote>
+<p><strong>--output-all</strong></p>
+<blockquote>
+<p>Output all available columns.</p>
+</blockquote>
+<p><strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print headings when displaying <strong>--show</strong>
+output.</p>
+</blockquote>
+<p><strong>--raw</strong></p>
+<blockquote>
+<p>Display <strong>--show</strong> output without aligning table
+columns.</p>
+</blockquote>
+<p><strong>--bytes</strong></p>
+<blockquote>
+<p>Display swap size in bytes in <strong>--show</strong> output instead
+of in user-friendly units.</p>
+</blockquote>
+<p><strong>-U</strong> <em>uuid</em></p>
+<blockquote>
+<p>Use the partition that has the specified <em>uuid</em>.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Be verbose.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>swapoff</strong> has the following exit status values since
+v2.36:</p>
+<p><strong>0</strong></p>
+<blockquote>
+<p>success</p>
+</blockquote>
+<p><strong>2</strong></p>
+<blockquote>
+<p>system has insufficient memory to stop swapping (OOM)</p>
+</blockquote>
+<p><strong>4</strong></p>
+<blockquote>
+<p><strong>swapoff</strong>(2) syscall failed for another reason</p>
+</blockquote>
+<p><strong>8</strong></p>
+<blockquote>
+<p>non-<strong>swapoff</strong>(2) syscall system error (out of memory,
+...)</p>
+</blockquote>
+<p><strong>16</strong></p>
+<blockquote>
+<p>usage or syntax error</p>
+</blockquote>
+<p><strong>32</strong></p>
+<blockquote>
+<p>all swapoff failed on <strong>--all</strong></p>
+</blockquote>
+<p><strong>64</strong></p>
+<blockquote>
+<p>some swapoff succeeded on <strong>--all</strong></p>
+</blockquote>
+<p>The command <strong>swapoff --all</strong> returns 0 (all succeeded),
+32 (all failed), or 64 (some failed, some succeeded).</p>
+<p>+ The old versions before v2.36 has no documented exit status, 0
+means success in all versions.</p>
+<h1>ENVIRONMENT</h1>
+<p><strong>LIBMOUNT_DEBUG</strong>=all</p>
+<blockquote>
+<p>enables <strong>libmount</strong> debug output.</p>
+</blockquote>
+<p><strong>LIBBLKID_DEBUG</strong>=all</p>
+<blockquote>
+<p>enables <strong>libblkid</strong> debug output.</p>
+</blockquote>
+<h1>FILES</h1>
+<p><em>/dev/sd??</em></p>
+<blockquote>
+<p>standard paging devices</p>
+</blockquote>
+<p><em>/etc/fstab</em></p>
+<blockquote>
+<p>ascii filesystem description table</p>
+</blockquote>
+<h1>NOTES</h1>
+<h2>Files with holes</h2>
+<p>The swap file implementation in the kernel expects to be able to
+write to the file directly, without the assistance of the filesystem.
+This is a problem on files with holes or on copy-on-write files on
+filesystems like Btrfs.</p>
+<p>Commands like <strong>cp</strong>(1) or <strong>truncate</strong>(1)
+create files with holes. These files will be rejected by
+<strong>swapon</strong>.</p>
+<p>Preallocated files created by <strong>fallocate</strong>(1) may be
+interpreted as files with holes too depending of the filesystem.
+Preallocated swap files are supported on XFS since Linux 4.18.</p>
+<p>The most portable solution to create a swap file is to use
+<strong>dd</strong>(1) and <em>/dev/zero</em>.</p>
+<h2>Btrfs</h2>
+<p>Swap files on Btrfs are supported since Linux 5.0 on files with
+<strong>nocow</strong> attribute. See the <strong>btrfs</strong>(5)
+manual page for more details.</p>
+<h2>NFS</h2>
+<p>Swap over <strong>NFS</strong> may not work.</p>
+<h2>Suspend</h2>
+<p><strong>swapon</strong> automatically detects and rewrites a swap
+space signature with old software suspend data (e.g.,
+<strong>S1SUSPEND</strong>, <strong>S2SUSPEND</strong>, ...). The
+problem is that if we don’t do it, then we get data corruption the next
+time an attempt at unsuspending is made.</p>
+<h1>HISTORY</h1>
+<p>The <strong>swapon</strong> command appeared in 4.0BSD.</p>
+<h1>SEE ALSO</h1>
+<p><strong>swapoff</strong>(2), <strong>swapon</strong>(2),
+<strong>fstab</strong>(5), <strong>init</strong>(8),
+<strong>fallocate</strong>(1), <strong>mkswap</strong>(8),
+<strong>mount</strong>(8), <strong>rc</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>swapon</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

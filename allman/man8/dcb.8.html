@@ -1,0 +1,153 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dcb - show / manipulate DCB (Data Center Bridging) settings</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dcb</strong> [ <em>OPTIONS</em> ] { <strong>app</strong> |
+<strong>buffer</strong> | <strong>ets</strong> |
+<strong>maxrate</strong> | <strong>pfc</strong> } { <em>COMMAND</em> |
+<em>help</em> }</p>
+<p><strong>dcb</strong> [ <strong>-force</strong> ] <strong>-batch
+</strong><em>filename</em></p>
+<p><strong>dcb</strong> [ <em>OPTIONS</em> ] <strong>help</strong></p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-n</strong>,<strong> --netns </strong>&lt;NETNS&gt;</dt>
+<dd>
+<p>switches <strong>dcb</strong> to the specified network namespace
+<em>NETNS</em>.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-V</strong>,<strong> --Version</strong></dt>
+<dd>
+<p>Print the version of the <strong>dcb</strong> utility and exit.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-b</strong>,<strong> --batch </strong>&lt;FILENAME&gt;</dt>
+<dd>
+<p>Read commands from provided file or standard input and invoke them.
+First failure will cause termination of dcb.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-f</strong>,<strong> --force</strong></dt>
+<dd>
+<p>Don't terminate dcb on errors in batch mode. If there were any errors
+during execution of the commands, the application return code will be
+non zero.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-i</strong>,<strong> --iec</strong></dt>
+<dd>
+<p>When showing rates, use ISO/IEC 1024-based prefixes (Ki, Mi, Bi)
+instead of the 1000-based ones (K, M, B).</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-j</strong>,<strong> --json</strong></dt>
+<dd>
+<p>Generate JSON output.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-N</strong>,<strong> --Numeric</strong></dt>
+<dd>
+<p>If the subtool in question translates numbers to symbolic names in
+some way, suppress this translation.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-p</strong>,<strong> --pretty</strong></dt>
+<dd>
+<p>When combined with -j generate a pretty JSON output.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-s</strong>,<strong> --statistics</strong></dt>
+<dd>
+<p>If the object in question contains any statistical counters, shown
+them as part of the "show" output.</p>
+</dd>
+</dl>
+<h1>OBJECTS</h1>
+<dl>
+<dt><strong>app</strong></dt>
+<dd>
+<p>- Configuration of application priority table</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>buffer</strong></dt>
+<dd>
+<p>- Configuration of port buffers</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>ets</strong></dt>
+<dd>
+<p>- Configuration of ETS (Enhanced Transmission Selection)</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>maxrate</strong></dt>
+<dd>
+<p>- Configuration of per-TC maximum transmit rate</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>pfc</strong></dt>
+<dd>
+<p>- Configuration of PFC (Priority-based Flow Control)</p>
+</dd>
+</dl>
+<h1>COMMANDS</h1>
+<p>A <em>COMMAND</em> specifies the action to perform on the object. The
+set of possible actions depends on the object type. As a rule, it is
+possible to <strong>show</strong> objects and to invoke topical
+<strong>help,</strong> which prints a list of available commands and
+argument syntax conventions.</p>
+<h1>ARRAY PARAMETERS</h1>
+<p>Like commands, specification of parameters is in the domain of
+individual objects (and their commands) as well. However, much of the
+DCB interface revolves around arrays of fixed size that specify one
+value per some key, such as per traffic class or per priority. There is
+therefore a single syntax for adjusting elements of these arrays. It
+consists of a series of <em>KEY</em><strong>:</strong><em>VALUE</em>
+pairs, where the meaning of the individual keys and values depends on
+the parameter.</p>
+<p>The elements are evaluated in order from left to right, and the
+latter ones override the earlier ones. The elements that are not
+specified on the command line are queried from the kernel and their
+current value is retained.</p>
+<p>As an example, take a made-up parameter tc-juju, which can be set to
+charm traffic in a given TC with either good luck or bad luck.
+<em>KEY</em> can therefore be 0..7 (as is usual for TC numbers in DCB),
+and <em>VALUE</em> either of <strong>none</strong>,
+<strong>good</strong>, and <strong>bad</strong>. An example of changing
+a juju value of TCs 0 and 7, while leaving all other intact, would then
+be:</p>
+<p># dcb foo set dev eth0 tc-juju 0:good 7:bad</p>
+<p>A special key, <strong>all</strong>, is recognized which sets the
+same value to all array elements. This can be combined with the usual
+single-element syntax. E.g. in the following, the juju of all keys is
+set to <strong>none</strong>, except 0 and 7, which have other
+values:</p>
+<p># dcb foo set dev eth0 tc-juju all:none 0:good 7:bad</p>
+<h1>EXIT STATUS</h1>
+<p>Exit status is 0 if command was successful or a positive integer upon
+failure.</p>
+<h1>SEE ALSO</h1>
+<p><strong>dcb-app</strong>(8), <strong>dcb-buffer</strong>(8),
+<strong>dcb-ets</strong>(8), <strong>dcb-maxrate</strong>(8),
+<strong>dcb-pfc</strong>(8)<br />
+</p>
+<h1>REPORTING BUGS</h1>
+<p>Report any bugs to the Network Developers mailing list
+<strong>&lt;netdev@vger.kernel.org&gt;</strong> where the development
+and maintenance is primarily done. You do not have to be subscribed to
+the list to send a message there.</p>
+<h1>AUTHOR</h1>
+<p>Petr Machata &lt;me@pmachata.org&gt;</p>

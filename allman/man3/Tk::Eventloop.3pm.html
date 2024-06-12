@@ -1,0 +1,29 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Event - ToolKit for Events</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::Event; Tk::Event-&gt;fileevent(\*FH, readable =&gt;
+callback); Tk::Event-&gt;lineavail(\*FH, callback); use
+Tk::Event::Signal qw(INT); $SIG{INT} = callback; use Tk::Event::process;
+Tk::Event-&gt;proc($pid, callback); QueueEvent(callback [,
+position])</p>
+<h1>DESCRIPTION</h1>
+<p>That is better than nothing but still hard to use. Most scripts want
+higher level result (a line, a block of data etc.)</p>
+<p>So it has occured to me that we could use new-ish TIEHANDLE thus:</p>
+<p>my $obj = tie SOMEHANDLE,Tk::Event::IO; while (&lt;SOMEHANDLE&gt;) {
+}</p>
+<p>Then the READLINE routine registers a callback and looks something
+like:</p>
+<p>sub READLINE { my $obj = shift; Event-&gt;io(*$obj,readable,sub {
+sysread(*$obj,${*$obj},1,length(${*$obj}) }); my $pos; while (($pos =
+index(${*$obj},$/) &lt; 0) { DoOneEvent(); }
+Event-&gt;io(*$obj,readable,); # unregister $pos += length($/); my
+$result = substr(${*$obj},0,$pos); substr(${*$obj},0,$pos) = ; return
+$result; }</p>
+<p>This is using the scalar part of the glob representing the _inner_ IO
+as a buffer in which to accumulate chars.</p>

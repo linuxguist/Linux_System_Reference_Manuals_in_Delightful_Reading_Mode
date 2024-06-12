@@ -1,0 +1,105 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sdptool - control and interrogate SDP servers</p>
+<h1>SYNOPSIS</h1>
+<p><strong>sdptool</strong> [<em>OPTIONS</em>] [<em>COMMAND</em>
+[<em>PARAMETERS</em>]]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>sdptool(1)</strong> provides the interface for performing SDP
+queries on Bluetooth devices, and administering a local SDP
+database.</p>
+<h1>COMMANDS</h1>
+<p>The following commands are available. In all cases
+<strong>bdaddr</strong> specifies the device to search or browse. If
+<em>local</em> is used for <strong>bdaddr</strong>, then the local SDP
+database is searched.</p>
+<p>Services are identified and manipulated with a 4-byte
+<strong>record_handle</strong> (NOT the service name). To find a
+service's <strong>record_handle</strong>, look for the "Service
+RecHandle" line in the <strong>search</strong> or
+<strong>browse</strong> results</p>
+<blockquote>
+<dl>
+<dt><strong>search [--bdaddr bdaddr] [--tree] [--raw] [--xml]
+service_name</strong></dt>
+<dd>
+<p>Search for services..</p>
+<p>Known service names are <strong>DID</strong>, <strong>SP</strong>,
+<strong>DUN</strong>, <strong>LAN</strong>, <strong>FAX</strong>,
+<strong>OPUSH</strong>, <strong>FTP</strong>, <strong>HS</strong>,
+<strong>HF</strong>, <strong>HFAG</strong>, <strong>SAP</strong>,
+<strong>NAP</strong>, <strong>GN</strong>, <strong>PANU</strong>,
+<strong>HCRP</strong>, <strong>HID</strong>, <strong>CIP</strong>,
+<strong>A2SRC</strong>, <strong>A2SNK</strong>, <strong>AVRCT</strong>,
+<strong>AVRTG</strong>, <strong>UDIUE</strong>, <strong>UDITE</strong>
+and <strong>SYNCML</strong>.</p>
+</dd>
+<dt><strong>browse [--tree] [--raw] [--xml] [bdaddr]</strong></dt>
+<dd>
+<p>Browse all available services on the device specified by a Bluetooth
+address as a parameter.</p>
+</dd>
+<dt><strong>records [--tree] [--raw] [--xml] bdaddr</strong></dt>
+<dd>
+<p>Retrieve all possible service records.</p>
+</dd>
+<dt><strong>add [ --handle=N --channel=N ]</strong></dt>
+<dd>
+<p>Add a service to the local SDP database.</p>
+<p>You can specify a handle for this record using the
+<strong>--handle</strong> option.</p>
+<p>You can specify a channel to add the service on using the
+<strong>--channel</strong> option.</p>
+<p>NOTE: Local adapters configuration will not be updated and this
+command should be used only for SDP testing.</p>
+</dd>
+<dt><strong>del record_handle</strong></dt>
+<dd>
+<p>Remove a service from the local SDP database.</p>
+<p>NOTE: Local adapters configuration will not be updated and this
+command should be used only for SDP testing.</p>
+</dd>
+<dt><strong>get [--tree] [--raw] [--xml] [--bdaddr bdaddr]
+record_handle</strong></dt>
+<dd>
+<p>Retrieve a service from the local SDP database.</p>
+</dd>
+<dt><strong>setattr record_handle attrib_id attrib_value</strong></dt>
+<dd>
+<p>Set or add an attribute to an SDP record.</p>
+</dd>
+<dt><strong>setseq record_handle attrib_id attrib_values</strong></dt>
+<dd>
+<p>Set or add an attribute sequence to an SDP record.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>Displays help on using sdptool.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>EXAMPLES</h1>
+<blockquote>
+<blockquote>
+<pre><code>$ sdptool browse 00:80:98:24:15:6D
+$ sdptool browse local
+$ sdptool add DUN
+$ sdptool del 0x10000</code></pre>
+</blockquote>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;, Edd Dumbill
+&lt;ejad@debian.org&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

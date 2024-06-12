@@ -1,0 +1,31 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gtk-query-immodules-2.0 - Input method module registration
+utility</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gtk-query-immodules-2.0</strong> [--update-cache]
+[module...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>gtk-query-immodules-2.0</strong> collects information about
+loadable input method modules for GTK+ and writes it to the default
+cache file location, or to stdout.</p>
+<p>If called without arguments, it looks for modules in the GTK+ input
+method module path.</p>
+<p>If called with arguments, it looks for the specified modules. The
+arguments may be absolute or relative paths.</p>
+<p>Normally, the output of <strong>gtk-query-immodules-2.0</strong> is
+written to <em>libdir</em>/gtk-2.0/2.10.0/immodules.cache, where GTK+
+looks for it by default. If it is written to some other location, the
+environment variable <strong>GTK_IM_MODULE_FILE</strong> can be set to
+point GTK+ at the file.</p>
+<h1>OPTIONS</h1>
+<p>--update-cache</p>
+<blockquote>
+<p>Write the output to the default cache location instead of stdout</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p>The environment variable <strong>GTK_PATH</strong> can be used to
+prepend directories to the input method module path.</p>
+<h1>BUGS</h1>
+<p>None known yet.</p>

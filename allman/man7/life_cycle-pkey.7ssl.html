@@ -1,0 +1,191 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>life_cycle-pkey - The PKEY algorithm life-cycle</p>
+<h1>DESCRIPTION</h1>
+<p>All public keys (PKEYs) go through a number of stages in their
+life-cycle:</p>
+<dl>
+<dt>start</dt>
+<dd>
+<p>This state represents the PKEY before it has been allocated. It is
+the starting state for any life-cycle transitions.</p>
+</dd>
+<dt>newed</dt>
+<dd>
+<p>This state represents the PKEY after it has been allocated.</p>
+</dd>
+<dt>decapsulate</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to perform a private
+key decapsulation operation.</p>
+</dd>
+<dt>decrypt</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to decrypt some
+ciphertext.</p>
+</dd>
+<dt>derive</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to derive a shared
+secret.</p>
+</dd>
+<dt>digest sign</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to perform a private
+key signature operation.</p>
+</dd>
+<dt>encapsulate</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to perform a public
+key encapsulation operation.</p>
+</dd>
+<dt>encrypt</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to encrypt some
+plaintext.</p>
+</dd>
+<dt>key generation</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to generate a new
+public/private key.</p>
+</dd>
+<dt>parameter generation</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to generate key
+parameters.</p>
+</dd>
+<dt>verify</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to verify a public
+key signature.</p>
+</dd>
+<dt>verify recover</dt>
+<dd>
+<p>This state represents the PKEY when it is ready to recover a public
+key signature data.</p>
+</dd>
+<dt>freed</dt>
+<dd>
+<p>This state is entered when the PKEY is freed. It is the terminal
+state for all life-cycle transitions.</p>
+</dd>
+</dl>
+<h2>State Transition Diagram</h2>
+<p>The usual life-cycle of a PKEY object is illustrated: +-------------+
+| | | start | | | EVP_PKEY_derive +-------------+ +-------------+
+EVP_PKEY_derive_set_peer | +-------------+ |
+|----------------------------+ | +----------------------------| | |
+derive | | | | EVP_PKEY_verify | verify | |
+|&lt;---------------------------+ | +---------------------------&gt;| |
++-------------+ | +-------------+ ^ | ^ | EVP_PKEY_derive_init |
+EVP_PKEY_verify_init | +---------------------------------------+ |
++---------------------------------------+ | | | +-------------+ | | |
++-------------+ | |----------------------------+ | | |
++----------------------------| | | digest sign | EVP_PKEY_sign | | | | |
+EVP_PKEY_verify_recover | verify | | |&lt;---------------------------+ |
+| | +---------------------------&gt;| recover | +-------------+ | | |
++-------------+ ^ | | | ^ | EVP_PKEY_sign_init | | |
+EVP_PKEY_verify_recover_init | +---------------------------------+ | | |
++---------------------------------+ | | | | | +-------------+ | | | | |
++-------------+ | |----------------------------+ | | | | |
++----------------------------| | | decapsulate | EVP_PKEY_decapsulate |
+| | | | | | EVP_PKEY_decrypt | decrypt | |
+|&lt;---------------------------+ | | v | |
++---------------------------&gt;| | +-------------+ | +-------------+ |
++-------------+ ^ +---| |---+ ^ | EVP_PKEY_decapsulate_init | |
+EVP_PKEY_decrypt_init | +-------------------------------------| newed
+|-------------------------------------+ | | +---| |---+ +-------------+
+| +-------------+ | +-------------+ | |----------------------------+ | |
+| | +----------------------------| | | encapsulate |
+EVP_PKEY_encapsulate | | | | | | EVP_PKEY_encrypt | encrypt | |
+|&lt;---------------------------+ | | | |
++---------------------------&gt;| | +-------------+ | | | |
++-------------+ ^ | | | | ^ | EVP_PKEY_encapsulate_init | | | |
+EVP_PKEY_encrypt_init | +---------------------------------+ | |
++---------------------------------+ | |
++---------------------------------------+
++---------------------------------------+ | EVP_PKEY_paramgen_init
+EVP_PKEY_keygen_init | v v +-------------+ +-------------+ |
+|----------------------------+ +----------------------------| | |
+parameter | | | | key | | generation |&lt;---------------------------+
++---------------------------&gt;| generation | +-------------+
+EVP_PKEY_paramgen EVP_PKEY_keygen +-------------+ EVP_PKEY_gen
+EVP_PKEY_gen</p>
+<p>+ - - - - - + +-----------+ ' ' EVP_PKEY_CTX_free | | ' any state
+'-------------------&gt;| freed | ' ' | | + - - - - - +
++-----------+</p>
+<h2>Formal State Transitions</h2>
+<p>This section defines all of the legal state transitions. This is the
+canonical list. Function Call
+----------------------------------------------------------------------
+Current State
+----------------------------------------------------------------------
+start newed digest verify verify encrypt decrypt derive encapsulate
+decapsulate parameter key freed sign recover generation generation
+EVP_PKEY_CTX_new newed EVP_PKEY_CTX_new_id newed
+EVP_PKEY_CTX_new_from_name newed EVP_PKEY_CTX_new_from_pkey newed
+EVP_PKEY_sign_init digest digest digest digest digest digest digest
+digest digest digest digest sign sign sign sign sign sign sign sign sign
+sign sign EVP_PKEY_sign digest sign EVP_PKEY_verify_init verify verify
+verify verify verify verify verify verify verify verify verify
+EVP_PKEY_verify verify EVP_PKEY_verify_recover_init verify verify verify
+verify verify verify verify verify verify verify verify recover recover
+recover recover recover recover recover recover recover recover recover
+EVP_PKEY_verify_recover verify recover EVP_PKEY_encrypt_init encrypt
+encrypt encrypt encrypt encrypt encrypt encrypt encrypt encrypt encrypt
+encrypt EVP_PKEY_encrypt encrypt EVP_PKEY_decrypt_init decrypt decrypt
+decrypt decrypt decrypt decrypt decrypt decrypt decrypt decrypt decrypt
+EVP_PKEY_decrypt decrypt EVP_PKEY_derive_init derive derive derive
+derive derive derive derive derive derive derive derive
+EVP_PKEY_derive_set_peer derive EVP_PKEY_derive derive
+EVP_PKEY_encapsulate_init encapsulate encapsulate encapsulate
+encapsulate encapsulate encapsulate encapsulate encapsulate encapsulate
+encapsulate encapsulate EVP_PKEY_encapsulate encapsulate
+EVP_PKEY_decapsulate_init decapsulate decapsulate decapsulate
+decapsulate decapsulate decapsulate decapsulate decapsulate decapsulate
+decapsulate decapsulate EVP_PKEY_decapsulate decapsulate
+EVP_PKEY_paramgen_init parameter parameter parameter parameter parameter
+parameter parameter parameter parameter parameter parameter generation
+generation generation generation generation generation generation
+generation generation generation generation EVP_PKEY_paramgen parameter
+generation EVP_PKEY_keygen_init key key key key key key key key key key
+key generation generation generation generation generation generation
+generation generation generation generation generation EVP_PKEY_keygen
+key generation EVP_PKEY_gen parameter key generation generation
+EVP_PKEY_CTX_get_params newed digest verify verify encrypt decrypt
+derive encapsulate decapsulate parameter key sign recover generation
+generation EVP_PKEY_CTX_set_params newed digest verify verify encrypt
+decrypt derive encapsulate decapsulate parameter key sign recover
+generation generation EVP_PKEY_CTX_gettable_params newed digest verify
+verify encrypt decrypt derive encapsulate decapsulate parameter key sign
+recover generation generation EVP_PKEY_CTX_settable_params newed digest
+verify verify encrypt decrypt derive encapsulate decapsulate parameter
+key sign recover generation generation EVP_PKEY_CTX_free freed freed
+freed freed freed freed freed freed freed freed freed freed</p>
+<h1>NOTES</h1>
+<p>At some point the EVP layer will begin enforcing the transitions
+described herein.</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY_new</strong> (3),
+<strong>EVP_PKEY_decapsulate</strong> (3),
+<strong>EVP_PKEY_decrypt</strong> (3),
+<strong>EVP_PKEY_encapsulate</strong> (3),
+<strong>EVP_PKEY_encrypt</strong> (3),
+<strong>EVP_PKEY_derive</strong> (3),
+<strong>EVP_PKEY_keygen</strong> (3),
+<strong>EVP_PKEY_sign</strong> (3),
+<strong>EVP_PKEY_verify</strong> (3),
+<strong>EVP_PKEY_verify_recover</strong> (3)</p>
+<h1>HISTORY</h1>
+<p>The provider PKEY interface was introduced in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2021-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

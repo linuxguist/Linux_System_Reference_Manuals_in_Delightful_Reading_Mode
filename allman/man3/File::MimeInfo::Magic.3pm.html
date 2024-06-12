@@ -1,0 +1,89 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>File::MimeInfo::Magic - Determine file type with magic</p>
+<h1>SYNOPSIS</h1>
+<p>use File::MimeInfo::Magic; my $mime_type = mimetype($file);</p>
+<h1>DESCRIPTION</h1>
+<p>This module inherits from File::MimeInfo, it is transparent to its
+functions but adds support for the freedesktop magic file.</p>
+<p>Magic data is hashed when you need it for the first time. If you want
+to force hashing earlier use the <code>rehash()</code> function.</p>
+<h1>EXPORT</h1>
+<p>The method <code>mimetype</code> is exported by default. The methods
+<code>magic</code>, <code>inodetype</code>, <code>globs</code> and
+<code>describe</code> can be exported on demand.</p>
+<h1>METHODS</h1>
+<p>See also File::MimeInfo for methods that are inherited.</p>
+<dl>
+<dt>"mimetype($file)"</dt>
+<dd>
+<p>Returns a mime-type string for <code>$file</code>, returns undef on
+failure. This method bundles <code>inodetype()</code>,
+<code>globs()</code> and <code>magic()</code>. Magic rules with an
+priority of 80 and higher are checked before <code>globs()</code> is
+called, all other magic rules afterwards. If this doesn't work the file
+is read and the mime-type defaults to 'text/plain' or to
+'application/octet-stream' when the first ten chars of the file match
+ascii control chars (white spaces excluded). If the file doesn't exist
+or isn't readable <code>undef</code> is returned. If <code>$file</code>
+is an object reference only <code>magic</code> and the default method
+are used. See below for details.</p>
+</dd>
+<dt>"magic($file)"</dt>
+<dd>
+<p>Returns a mime-type string for <code>$file</code> based on the magic
+rules, returns undef on failure. <code>$file</code> can be an object
+reference, in that case it is supposed to have a <code>seek()</code> and
+a <code>read()</code> method. This allows you for example to determine
+the mimetype of data in memory by using IO::Scalar. Be aware that when
+using a filehandle or an <code>IO::</code> object you need to set the
+<code>:utf8</code> binmode yourself if appropriate.</p>
+</dd>
+<dt>"rehash()"</dt>
+<dd>
+<p>Rehash the data files. Glob and magic information is preparsed when
+this method is called. If you want to by-pass the XDG basedir system you
+can specify your database directories by setting
+<code>@File::MimeInfo::DIRS</code>. But normally it is better to change
+the XDG basedir environment variables.</p>
+</dd>
+<dt>"default"</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"describe"</dt>
+<dd>
+
+</dd>
+<dt>"extensions"</dt>
+<dd>
+
+</dd>
+<dt>"globs"</dt>
+<dd>
+
+</dd>
+<dt>"inodetype"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These routines are imported from File::MimeInfo.</p>
+<h1>SEE ALSO</h1>
+<p>File::MimeInfo</p>
+<h1>LIMITATIONS</h1>
+<p>Only word sizes of 1, 2 or 4 are supported. Any other word size is
+ignored and will cause a warning.</p>
+<h1>AUTHOR</h1>
+<p>Jaap Karssenberg &lt;pardus@cpan.org&gt; Maintained by Michiel Beijen
+&lt;mb@x14.nl&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 2003, 2012 Jaap G Karssenberg. All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>

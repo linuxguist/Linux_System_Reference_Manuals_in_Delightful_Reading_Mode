@@ -1,0 +1,128 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>ibus</strong> - command line utility for ibus</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ibus</strong> <em>COMMAND</em> [<em>OPTION</em>]...</p>
+<h1>DESCRIPTION</h1>
+<p>IBus is an Intelligent Input Bus. It is a new input framework for
+Linux OS. It provides full featured and user friendly input method user
+interface. It also may help developers to develop input method
+easily.</p>
+<p><strong>ibus</strong> is a command line utility which can restart or
+exit ibus-daemon, get or set the current ibus engine or list the ibus
+engines.</p>
+<p>Homepage: https://github.com/ibus/ibus/wiki</p>
+<h1>COMMAND</h1>
+<dl>
+<dt><strong>help</strong></dt>
+<dd>
+<p>Show the commands list.</p>
+</dd>
+<dt><strong>engine</strong> [<strong>ENGINE_NAME</strong>]</dt>
+<dd>
+<p>Show the curent ibus engine when <strong>ENGINE_NAME</strong> is not
+given. Set <strong>ENGINE_NAME</strong> to the current ibus engine.</p>
+</dd>
+<dt><strong>exit</strong></dt>
+<dd>
+<p>Exit ibus-daemon.</p>
+</dd>
+<dt><strong>list-engine</strong></dt>
+<dd>
+<p>Show ibus engines list.</p>
+</dd>
+<dt><strong>restart</strong>
+[<strong>--type=TYPE|--verbose|--help</strong>]</dt>
+<dd>
+<p>Restart ibus-daemon. This command tries to restart ibus-daemon via
+systemd firstly and directly secondary by default. If
+<strong>--type=systemd</strong> is given, It tries to restart via
+systemd only. If <strong>--type=direct</strong> is given, It tries to
+restart with an IBus API only. GNOME desktop runs ibus-daemon via
+systemd and other desktops run ibus-daemon directly.</p>
+</dd>
+<dt><strong>start</strong>
+[<strong>--type=TYPE|--verbose|--help</strong>]</dt>
+<dd>
+<p>Start ibus-daemon. This command tries to start ibus-daemon via
+systemd firstly and directly secondary by default. If
+<strong>--type=systemd</strong> is given, It tries to start as a
+background process via systemd only. If <strong>--type=direct</strong>
+is given, It tries to start directly only as a foreground process and
+other option arguments of ibus command are sent to ibus-daemon. E.g.
+ibus start <strong>--type=direct</strong> <strong>--xim</strong> &amp;
+GNOME desktop runs ibus-daemon via systemd and other desktops run
+ibus-daemon directly.</p>
+</dd>
+<dt><strong>version</strong></dt>
+<dd>
+<p>Show the ibus version.</p>
+</dd>
+<dt><strong>read-cache</strong>
+[<strong>--system|--file=FILE|--help</strong>]</dt>
+<dd>
+<p>Show the content of the user registry cache if
+<strong>--system</strong> is not given. Show the content of the system
+registry cache if <strong>--system</strong> is given. Show the content
+of the custom registry cache <strong>FILE</strong> if
+<strong>--file=FILE</strong> is given.</p>
+</dd>
+<dt><strong>write-cache</strong>
+[<strong>--system|--file=FILE|--help</strong>]</dt>
+<dd>
+<p>Save the user registry cache if <strong>--system</strong> is not
+given. Save the system registry cache if <strong>--system</strong> is
+given. Save the custom registry cache <strong>FILE</strong> if
+<strong>--file=FILE</strong> is given.</p>
+<p>By default, it reads the component XML files from the standard
+component directory (<em>/usr/share/ibus/component</em>), you can set
+<em>IBUS_COMPONENT_PATH</em> environment variable for custom component
+directories, separated by ':'.</p>
+</dd>
+<dt><strong>address</strong></dt>
+<dd>
+<p>Show the D-Bus address of ibus-daemon.</p>
+</dd>
+<dt><strong>read-config</strong></dt>
+<dd>
+<p>Print the setting values in a gsettings configuration file.</p>
+</dd>
+<dt><strong>reset-config</strong></dt>
+<dd>
+<p>Reset the user setting values to the default ones in a gsettings
+configuration file.</p>
+</dd>
+<dt><strong>watch</strong></dt>
+<dd>
+<p>Under construction.</p>
+</dd>
+<dt><strong>emoji</strong>
+[<strong>--font=FONT|--lang=LANG|--help|--partial-match</strong>]</dt>
+<dd>
+<p>Launch IBus Emojier ( <strong>ibus-emoji (1)</strong> ) and save the
+selected emoji to your clipboard. Can choose an emoji font with
+<strong>--font</strong> option. Can choose a language of emoji
+annotations with <strong>--lang</strong> option. If LANG="en", IBus
+Emojier loads /usr/share/ibus/dicts/emoji-en.dict .
+<strong>--partial-match</strong> option enables to match annotations
+with a partial string. These settings are available with
+<strong>ibus-setup (1)</strong> utility.</p>
+</dd>
+<dt><strong>im-module</strong>
+[<strong>--type=TYPE|--help</strong>]</dt>
+<dd>
+<p>Show an internal im-module value in a virtual GTK application. If
+IBus is installed and configured properly, the output is "ibus". This
+sub-command is useful for some users who build IBus from the source
+codes and check the configurations. Currently the sub-command supports
+GTK applications only and the default is GTK3. If you wish to check a
+GTK4 application, you can specify <strong>--type=gtk4</strong> option
+and you can choose one of "gtk2", "gtk3" and "gtk4".</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>If you find a bug, please report it at
+https://github.com/ibus/ibus/issues</p>
+<h1>SEE ALSO</h1>
+<p><strong>ibus-emoji</strong>(7)</p>

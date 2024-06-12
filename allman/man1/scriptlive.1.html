@@ -1,0 +1,92 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>scriptlive - re-run session typescripts, using timing information</p>
+<h1>SYNOPSIS</h1>
+<p><strong>scriptlive</strong> [options] [<strong>-t</strong>]
+<em>timingfile</em> [<strong>-I</strong>|<strong>-B</strong>]
+<em>typescript</em></p>
+<h1>DESCRIPTION</h1>
+<p>This program re-runs a typescript, using stdin typescript and timing
+information to ensure that input happens in the same rhythm as it
+originally appeared when the script was recorded.</p>
+<p>The <strong>session is executed</strong> in a newly created
+pseudoterminal with the user’s $SHELL (or defaults to
+<em>/bin/bash</em>).</p>
+<p><strong>Be careful!</strong> Do not forget that the typescript may
+contains arbitrary commands. It is recommended to use
+<strong>"scriptreplay --stream in --log-in typescript"</strong> (or with
+<strong>--log-io</strong> instead of <strong>--log-in</strong>) to
+verify the typescript before it is executed by
+<strong>scriptlive</strong>.</p>
+<p>The timing information is what <strong>script</strong>(1) outputs to
+file specified by <strong>--log-timing</strong>. The typescript has to
+contain stdin information and it is what script1 outputs to file
+specified by <strong>--log-in</strong> or <strong>--log-io</strong>.</p>
+<h1>OPTIONS</h1>
+<p><strong>-I</strong>, <strong>--log-in</strong> <em>file</em></p>
+<blockquote>
+<p>File containing <strong>script</strong>'s terminal input.</p>
+</blockquote>
+<p><strong>-B</strong>, <strong>--log-io</strong> <em>file</em></p>
+<blockquote>
+<p>File containing <strong>script</strong>'s terminal output and
+input.</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--timing</strong> <em>file</em></p>
+<blockquote>
+<p>File containing <strong>script</strong>'s timing output. This option
+overrides old-style arguments.</p>
+</blockquote>
+<p><strong>-T</strong>, <strong>--log-timing</strong> <em>file</em></p>
+<blockquote>
+<p>Aliased to <strong>-t</strong>, maintained for compatibility with
+<strong>script</strong>(1) command-line options.</p>
+</blockquote>
+<p><strong>-d</strong>, <strong>--divisor</strong> <em>number</em></p>
+<blockquote>
+<p>Speed up the replay displaying this <em>number</em> of times. The
+argument is a floating-point number. It’s called divisor because it
+divides the timings by this factor. This option overrides old-style
+arguments.</p>
+</blockquote>
+<p><strong>-m</strong>, <strong>--maxdelay</strong> <em>number</em></p>
+<blockquote>
+<p>Set the maximum delay between updates to <em>number</em> of seconds.
+The argument is a floating-point number. This can be used to avoid long
+pauses in the typescript replay.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXAMPLES</h1>
+<blockquote>
+<pre><code>% script --log-timing file.tm --log-in script.in
+Script started, file is script.out
+% date
+&lt;etc, etc&gt;
+% exit
+Script done, file is script.out
+% scriptlive --log-timing file.tm --log-in script.in</code></pre>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2019 Karel Zak</p>
+<p>This is free software; see the source for copying conditions. There
+is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.</p>
+<p>Released under the GNU General Public License version 2 or later.</p>
+<h1>SEE ALSO</h1>
+<p><strong>script</strong>(1), <strong>scriptreplay</strong>(1)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>scriptlive</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

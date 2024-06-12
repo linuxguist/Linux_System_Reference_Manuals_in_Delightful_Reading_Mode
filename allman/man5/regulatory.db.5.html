@@ -1,0 +1,31 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>regulatory.bin, regulatory.db - The Linux wireless regulatory
+database</p>
+<h2></h2>
+<h1>Description</h1>
+<p><strong>regulatory.bin</strong> and <strong>regulatory.db</strong>
+are the files used by the Linux wireless subsystem to keep its
+regulatory database information.</p>
+<p><strong>regulatory.bin</strong> is read by <strong>crda</strong> upon
+the Linux kernel's request for regulatory information for a specific ISO
+/ IEC 3166 alpha2 country code.</p>
+<p><strong>regulatory.db</strong> is a newer, extensible database format
+which (since Linux 4.15) is read by the kernel directly as a firmware
+file.</p>
+<p>The regulatory database is kept in a small binary format for size and
+code efficiency. The <strong>regulatory.bin</strong> file can be parsed
+and read in human format by using the <strong>regdbdump</strong>
+command. The regulatory database files should be updated upon regulatory
+changes or corrections.</p>
+<h1>Upkeeping</h1>
+<p>The regulatory database is maintained by the community as such you
+are encouraged to send any corrections or updates to the linux-wireless
+and wireless-regdb mailing lists:
+<strong>linux-wireless@vger.kernel.org</strong> and
+<strong>wireless-regdb@lists.infradead.org</strong></p>
+<h1>SEE ALSO</h1>
+<p><strong>regdbdump</strong>(8) <strong>crda</strong>(8)
+<strong>iw</strong>(8)</p>
+<p><strong>http://wireless.kernel.org/en/developers/Regulatory/</strong></p>

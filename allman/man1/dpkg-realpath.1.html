@@ -1,0 +1,73 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dpkg-realpath - print the resolved pathname with DPKG_ROOT
+support</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dpkg-realpath</strong> [<em>option</em>...]
+<em>pathname</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>dpkg-realpath</strong> is a tool (since dpkg 1.20.1) to
+resolve a pathname, that takes the <strong>dpkg</strong> (1) root
+directory into account, either implicitly from the
+<strong>DPKG_ROOT</strong> environment variable or from the command-line
+<strong>--root</strong> or <strong>--instdir</strong> options, and
+returns an absolute <em>pathname</em> relative to the root directory.
+The root directory must not be prefixed to the <em>pathname</em> to be
+resolved.</p>
+<p>This is intended to be used by other <strong>dpkg</strong> helpers,
+or by maintainer scripts instead of using <strong>realpath</strong> (1)
+or <strong>readlink</strong> (1) to canonicalize pathnames, as these
+latter commands do not support canonicalization relative to a different
+root than <em>/</em>.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-z, --zero</dt>
+<dd>
+<p>Use a NUL byte to end output lines instead of a new line character
+(since dpkg 1.20.6).</p>
+</dd>
+<dt>--instdir directory</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>--root directory</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Set the root directory to <em>directory</em>, which is the base
+directory that pathnames get canonicalized against. Defaults to
+«<strong>/</strong>» if <strong>DPKG_ROOT</strong> has not been set.</p>
+<dl>
+<dt>-?, --help</dt>
+<dd>
+<p>Show the usage message and exit.</p>
+</dd>
+<dt>--version</dt>
+<dd>
+<p>Show the version and exit.</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt>DPKG_ROOT</dt>
+<dd>
+<p>If set and the <strong>--instdir</strong> or <strong>--root</strong>
+options have not been specified, it will be used as the filesystem root
+directory.</p>
+</dd>
+<dt>DPKG_COLORS</dt>
+<dd>
+<p>Sets the color mode. The currently accepted values are:
+<strong>auto</strong> (default), <strong>always</strong> and
+<strong>never</strong>.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>realpath</strong> (1), <strong>readlink</strong> (1).</p>

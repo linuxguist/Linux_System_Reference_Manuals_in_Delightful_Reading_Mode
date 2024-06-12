@@ -1,0 +1,78 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>IO::Socket::SSL::PublicSuffix - provide access to Mozilla's list of
+effective TLD names</p>
+<h1>SYNOPSIS</h1>
+<p># use builtin default use IO::Socket::SSL::PublicSuffix; $ps =
+IO::Socket::SSL::PublicSuffix-&gt;default; # load from string $ps =
+IO::Socket::SSL::PublicSuffix-&gt;from_string("*.uk\n*"); # load from
+file or file handle $ps =
+IO::Socket::SSL::PublicSuffix-&gt;from_file($filename); $ps =
+IO::Socket::SSL::PublicSuffix-&gt;from_file(\*STDIN); # --- string in
+-&gt; string out # $rest -&gt; whatever.host # $tld -&gt; co.uk my
+($rest,$tld) = $ps-&gt;public_suffix(whatever.host.co.uk); my $tld =
+$ps-&gt;public_suffix(whatever.host.co.uk); # $root_domain -&gt;
+host.co.uk my $root_domain = $ps-&gt;public_suffix(whatever.host.co.uk,
+1); # --- array in -&gt; array out # $rest -&gt; [qw(whatever host)] #
+$tld -&gt; [qw(co uk)] my ($rest,$tld) =
+$ps-&gt;public_suffix([qw(whatever host co uk)]); ---- # To update this
+file with the current list: perl -MIO::Socket::SSL::PublicSuffix -e
+IO::Socket::SSL::PublicSuffix::update_self_from_url()</p>
+<h1>DESCRIPTION</h1>
+<p>This module uses the list of effective top level domain names from
+the mozilla project to determine the public top level domain for a given
+hostname.</p>
+<h2>Method</h2>
+<dl>
+<dt>class-&gt;default(%args)</dt>
+<dd>
+<p>Returns object with builtin default. <code>min_suffix</code> can be
+given in <code>%args</code> to specify the minimal suffix, default is
+1.</p>
+</dd>
+<dt>class-&gt;from_string(string,%args)</dt>
+<dd>
+<p>Returns object with configuration from string. See method
+<code>default</code> for <code>%args</code>.</p>
+</dd>
+<dt>class-&gt;from_file( file name| file handle, %args )</dt>
+<dd>
+<p>Returns object with configuration from file or file handle. See
+method <code>default</code> for <code>%args</code>.</p>
+</dd>
+<dt>$self-&gt;public_suffix( $host|\@host, [ $add ] )</dt>
+<dd>
+<p>In array context the function returns the non-tld part and the tld
+part of the given hostname, in scalar context only the tld part. It adds
+<code>$add</code> parts of the non-tld part to the tld, e.g. with
+<code>$add=1</code> it will return the root domain. If there were no
+explicit matches against the public suffix configuration it will fall
+back to a suffix of length 1. The function accepts a string or an
+array-ref (e.g. host split by <code>.</code>). In the first case it will
+return string(s), in the latter case array-ref(s). International
+hostnames or labels can be in ASCII (IDNA form starting with
+<code>xn--</code>) or unicode. In the latter case an IDNA handling
+library needs to be available. URI is preferred, but Net::IDN:::Encode,
+Net::LibIDN are still supported.</p>
+</dd>
+<dt>($self|class)-&gt;can_idn</dt>
+<dd>
+<p>Returns true if IDN support is available.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<p>http://publicsuffix.org/list/effective_tld_names.dat</p>
+<h1>SEE ALSO</h1>
+<p>Domain::PublicSuffix, Mozilla::PublicSuffix</p>
+<h1>BUGS</h1>
+<p>Q: Why yet another module, we already have
+L&lt;Domain::PublicSuffix&gt; and L&lt;Mozilla::PublicSuffix&gt;. A:
+Because the public suffix data change more often than these modules do,
+IO::Socket::SSL needs this list and it is more easy this way to keep it
+up-to-date.</p>
+<h1>AUTHOR</h1>
+<p>Steffen Ullrich</p>

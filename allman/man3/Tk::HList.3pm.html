@@ -1,0 +1,1202 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::HList - Create and manipulate Tix Hierarchial List widgets</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$hlist</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>HList</strong>(?<em>options</em>?);</p>
+<h1>STANDARD OPTIONS</h1>
+<p><strong>-background</strong> <strong>-borderwidth</strong>
+<strong>-cursor</strong> <strong>-exportselection</strong>
+<strong>-foreground</strong> <strong>-font</strong>
+<strong>-height</strong> <strong>-highlightcolor</strong>
+<strong>-highlightthickness</strong> <strong>-relief</strong>
+<strong>-selectbackground</strong> <strong>-selectforeground</strong>
+<strong>-xscrollcommand</strong> <strong>-yscrollcommand</strong>
+<strong>-width</strong></p>
+<p>See Tk::options for details of the standard options.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Name: browsecmd</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: BrowseCmd</dt>
+<dd>
+
+</dd>
+<dt>Switch: -browsecmd</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a perl/Tk callback to be executed when the user browses
+through the entries in the HList widget.</p>
+<dl>
+<dt>Name: columns</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Columns</dt>
+<dd>
+
+</dd>
+<dt>Switch: -columns</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the number of columns in this HList widget. This option can
+only be set during the creation of the HList widget and cannot be
+changed subsequently.</p>
+<dl>
+<dt>Name: command</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Command</dt>
+<dd>
+
+</dd>
+<dt>Switch: -command</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the perl/Tk callback to be executed when the user invokes a
+list entry in the HList widget. Normally the user invokes a list entry
+by double-clicking it or pressing the Return key.</p>
+<dl>
+<dt>Name: drawBranch</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: DrawBranch</dt>
+<dd>
+
+</dd>
+<dt>Switch: -drawbranch</dt>
+<dd>
+
+</dd>
+</dl>
+<p>A Boolean value to specify whether branch line should be drawn to
+connect list entries to their parents.</p>
+<dl>
+<dt>Name: foreground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Foreground</dt>
+<dd>
+
+</dd>
+<dt>Switch: -foreground</dt>
+<dd>
+
+</dd>
+<dt>Alias: -fg</dt>
+<dd>
+
+</dd>
+</dl>
+<p><strong>[OBSOLETE]</strong> Specifies the default foreground color
+for the list entries.</p>
+<dl>
+<dt>Name: gap</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Gap</dt>
+<dd>
+
+</dd>
+<dt>Switch: -gap</dt>
+<dd>
+
+</dd>
+</dl>
+<p><strong>[OBSOLETE]</strong> The default distance between the
+bitmap/image and the text in list entries.</p>
+<dl>
+<dt>Name: header</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Header</dt>
+<dd>
+
+</dd>
+<dt>Switch: -header</dt>
+<dd>
+
+</dd>
+</dl>
+<p>A Boolean value specifying whether headers should be displayed for
+this HList widget (see the <strong>header</strong> method below).</p>
+<dl>
+<dt>Name: height</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Height</dt>
+<dd>
+
+</dd>
+<dt>Switch: -height</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired height for the window in number of
+characters.</p>
+<dl>
+<dt>Name: indent</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Indent</dt>
+<dd>
+
+</dd>
+<dt>Switch: -indent</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the amount of horizontal indentation between a list entry
+and its children. Must be a valid screen distance value.</p>
+<dl>
+<dt>Name: indicator</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Indicator</dt>
+<dd>
+
+</dd>
+<dt>Switch: -indicator</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies whether the indicators should be displayed inside the HList
+widget. See the <strong>indicator</strong> method below.</p>
+<dl>
+<dt>Name: indicatorCmd</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: IndicatorCmd</dt>
+<dd>
+
+</dd>
+<dt>Switch: -indicatorcmd</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a perl/Tk callback to be executed when the user manipulates
+the indicator of an HList entry. The <strong>-indicatorcmd</strong> is
+triggered when the user press or releases the mouse button over the
+indicator in an HList entry. By default the perl/Tk
+<strong>callback</strong> specified by <strong>-indicatorcmd</strong> is
+executed with two additional arguments, the entryPath of the entry whose
+indicator has been triggered and additional information about the event.
+The additional information is one of the following strings:
+<strong>&lt;Arm&gt;</strong>, <strong>&lt;Disarm&gt;</strong>, and
+<strong>&lt;Activate&gt;</strong>.</p>
+<dl>
+<dt>Name: itemType</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: ItemType</dt>
+<dd>
+
+</dd>
+<dt>Switch: -itemtype</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the default type of display item for this HList widget.
+When you call the <strong>itemCreate</strong>, <strong>add</strong> and
+<strong>addchild</strong> methods, display items of this type will be
+created if the <strong>-itemtype</strong> option is not specified .</p>
+<dl>
+<dt>Name: padX</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Pad</dt>
+<dd>
+
+</dd>
+<dt>Switch: -padx</dt>
+<dd>
+
+</dd>
+</dl>
+<p><strong>[OBSOLETE]</strong> The default horizontal padding for list
+entries.</p>
+<dl>
+<dt>Name: padY</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Pad</dt>
+<dd>
+
+</dd>
+<dt>Switch: -padx</dt>
+<dd>
+
+</dd>
+</dl>
+<p><strong>[OBSOLETE]</strong> The default vertical padding for list
+entries.</p>
+<dl>
+<dt>Name: selectBackground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SelectBackground</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectbackground</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the background color for the selected list entries.</p>
+<dl>
+<dt>Name: selectBorderWidth</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: BorderWidth</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectborderwidth</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a non-negative value indicating the width of the 3-D border
+to draw around selected items. The value may have any of the forms
+acceptable to <strong>Tk_GetPixels</strong>.</p>
+<dl>
+<dt>Name: selectForeground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SelectForeground</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectforeground</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the foreground color for the selected list entries.</p>
+<dl>
+<dt>Name: selectMode</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SelectMode</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectmode</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies one of several styles for manipulating the selection. The
+value of the option may be arbitrary, but the default bindings expect it
+to be either <strong>single</strong>, <strong>browse</strong>,
+<strong>multiple</strong>, or <strong>extended</strong>; the default
+value is <strong>single</strong>.</p>
+<dl>
+<dt>Name: sizeCmd</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SizeCmd</dt>
+<dd>
+
+</dd>
+<dt>Switch: -sizecmd</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a perl/Tk callback to be called whenever the HList widget
+changes its size. This method can be useful to implement ``<em>user
+scroll</em> bars when needed'' features.</p>
+<dl>
+<dt>Name: separator</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Separator</dt>
+<dd>
+
+</dd>
+<dt>Switch: -separator</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the character to used as the separator character when
+intepreting the path-names of list entries. By default the character .
+is used.</p>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+<dt>Switch: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired width for the window in characters.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>HList</strong> method creates a new window (given by the
+<code>$widget</code> argument) and makes it into a HList widget.
+Additional options, described above, may be specified on the command
+line or in the option database to configure aspects of the HList widget
+such as its cursor and relief.</p>
+<p>The HList widget can be used to display any data that have a
+hierarchical structure, for example, file system directory trees. The
+list entries are indented and connected by branch lines according to
+their places in the hierarchy.</p>
+<p>Each list entry is identified by an <strong>entryPath</strong>. The
+entryPath is a sequence of <strong>entry names</strong> separated by the
+separator charactor (specified by the <strong>-separator</strong>
+option). An <strong>entry name</strong> can be any string that does not
+contain the separator charactor, or it can be the a string that contains
+only one separator charactor.</p>
+<p>For example, when . is used as the separator charactor, one.two.three
+is the entryPath for a list entry whose parent is one.two, whose parent
+is one, which is a toplevel entry (has no parents).</p>
+<p>Another examples: .two.three is the entryPath for a list entry whose
+parent is .two, whose parent is ., which is a toplevel entry.</p>
+<h1>DISPLAY ITEMS</h1>
+<p>Each list entry in an HList widget is associated with a
+<strong>display</strong> item. The display item determines what visual
+information should be displayed for this list entry. Please see
+Tk::DItem for a list of all display items. When a list entry is created
+by the <strong>itemCreate</strong>, <strong>add</strong> or
+<strong>addchild</strong> widget methods, the type of its display item
+is determined by the <strong>-itemtype</strong> option passed to these
+methods. If the <strong>-itemtype</strong> is omitted, then by default
+the type specified by this HList widget's <strong>-itemtype</strong>
+option is used.</p>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>HList</strong> method creates a widget object. This
+object supports the <strong>configure</strong> and <strong>cget</strong>
+methods described in Tk::options which can be used to enquire and modify
+the options described above. The widget also inherits all the methods
+provided by the generic Tk::Widget class.</p>
+<p>The following additional methods are available HList widgets:</p>
+<dl>
+<dt>$hlist-&gt;add($entryPath ?,option=&gt;value, ...?)</dt>
+<dd>
+<p>Creates a new list entry with the pathname
+<em><code>$entryPath</code></em>. A list entry must be created after its
+parent is created (unless this entry is a top-level entry, which has no
+parent). See also BUGS below. This method returns the entryPath of the
+newly created list entry. The following configuration options can be
+given to configure the list entry:</p>
+<dl>
+<dt>-at =&gt; position</dt>
+<dd>
+<p>Insert the new list at the position given by <em>position</em>.
+<em>position</em> must be a valid integer. The position
+<strong>0</strong> indicates the first position, <strong>1</strong>
+indicates the second position, and so on.</p>
+</dd>
+<dt>-after =&gt; afterWhich</dt>
+<dd>
+<p>Insert the new list entry after the entry identified by
+<em>afterWhich</em>. <em>afterWhich</em> must be a valid list entry and
+it mush have the same parent as the new list entry</p>
+</dd>
+<dt>-before =&gt; beforeWhich</dt>
+<dd>
+<p>Insert the new list entry before the entry identified by
+<em>beforeWhich</em>. <em>beforeWhich</em> must be a valid list entry
+and it mush have the same parent as the new list entry</p>
+</dd>
+<dt>-data =&gt; string</dt>
+<dd>
+<p>Specifies a string to associate with this list entry. This string can
+be queried by the <strong>info</strong> method. The application
+programmer can use the <strong>-data</strong> option to associate the
+list entry with the data it represents.</p>
+</dd>
+<dt>-itemtype =&gt; type</dt>
+<dd>
+<p>Specifies the type of display item to be display for the new list
+entry. <strong>type</strong> must be a valid display item type.
+Currently the available display item types are
+<strong>imagetext</strong>, <strong>text</strong>, and
+<code>$widget</code>. If this option is not specified, then by default
+the type specified by this HList widget's <strong>-itemtype</strong>
+option is used.</p>
+</dd>
+<dt>-state =&gt; state</dt>
+<dd>
+<p>Specifies whether this entry can be selected or invoked by the user.
+Must be either <strong>normal</strong> or <strong>disabled</strong>.</p>
+</dd>
+</dl>
+<p>The <strong>add</strong> method accepts additional configuration
+options to configure the display item associated with this list entry.
+The set of additional configuration options depends on the type of the
+display item given by the <strong>-itemtype</strong> option. Please see
+Tk::DItem for a list of the configuration options for each of the
+display item types.</p>
+</dd>
+<dt>$hlist-&gt;addchild($parentPath, ?option, value, ..., ?)</dt>
+<dd>
+<p>Adds a new child entry to the children list of the list entry
+identified by <em><code>$parentPath</code></em>. Or, if
+<em><code>$parentPath</code></em> is set to be the empty string, then
+creates a new toplevel entry. The name of the new list entry will be a
+unique name automatically generated by the HList widget. Usually if
+<em><code>$parentPath</code></em> is <strong>foo</strong>, then the
+entryPath of the new entry will be <strong>foo.0</strong>,
+<strong>foo.1</strong>, ... etc. This method returns the entryPath of
+the newly created list entry. <em>option</em> can be any option for the
+<strong>add</strong> method. See also BUGS below.</p>
+</dd>
+<dt>$hlist-&gt;anchorSet($entryPath)</dt>
+<dd>
+<p>Sets the anchor to the list entry identified by
+<em><code>$entryPath</code></em>. The anchor is the end of the selection
+that is fixed while the user is dragging out a selection with the
+mouse.</p>
+</dd>
+<dt>$hlist-&gt;anchorClear</dt>
+<dd>
+<p>Removes the anchor, if any, from this HList widget. This only removes
+the surrounding highlights of the anchor entry and does not affect its
+selection status.</p>
+</dd>
+<dt>$hlist-&gt;columnWidth($col?, -char?, ?width?)</dt>
+<dd>
+<p>Querys or sets the width of a the column <em><code>$col</code></em>
+in the HList widget. The value of <em><code>$col</code></em> is
+zero-based: 0 stands for the first column, 1 stands for the second, and
+so on. If no further parameters are given, returns the current width of
+this column (in number of pixels). Additional parameters can be given to
+set the width of this column:</p>
+<dl>
+<dt>$hlist-&gt;columnWidth($col, '')</dt>
+<dd>
+<p>An empty string indicates that the width of the column should be just
+wide enough to display the widest element in this column. In this case,
+the width of this column may change as a result of the elements in this
+column changing their sizes.</p>
+</dd>
+<dt>$hlist-&gt;columnWidth($col, width)</dt>
+<dd>
+<p><em>width</em> must be in a form accepted by
+<strong>Tk_GetPixels</strong>.</p>
+</dd>
+<dt>$hlist-&gt;columnWidth($col, -char, nChars)</dt>
+<dd>
+<p>The width is set to be the average width occupied by <em>nChars</em>
+number of characters of the font specified by the <strong>-font</strong>
+option of this HList widget.</p>
+</dd>
+</dl>
+</dd>
+<dt>$hlist-&gt;delete(option, $entryPath)</dt>
+<dd>
+<p>Delete one or more list entries. <em>option</em> may be one of the
+following:</p>
+<dl>
+<dt>all</dt>
+<dd>
+<p>Delete all entries in the HList. In this case the
+<em><code>$entryPath</code></em> does not need to be specified.</p>
+</dd>
+<dt>entry</dt>
+<dd>
+<p>Delete the entry specified by <em><code>$entryPath</code></em> and
+all its offsprings, if any.</p>
+</dd>
+<dt>offsprings</dt>
+<dd>
+<p>Delete all the offsprings, if any, of the entry specified by
+<em><code>$entryPath</code></em>. However,
+<em><code>$entryPath</code></em> itself is not deleted.</p>
+</dd>
+<dt>siblings</dt>
+<dd>
+<p>Delete all the list entries that share the same parent with the entry
+specified by <em><code>$entryPath</code></em>. However,
+<em><code>$entryPath</code></em> itself is not deleted.</p>
+</dd>
+</dl>
+</dd>
+<dt>$hlist-&gt;dragsiteSet($entryPath)</dt>
+<dd>
+<p>Sets the dragsite to the list entry identified by
+<em><code>$entryPath</code></em>. The dragsite is used to indicate the
+source of a drag-and-drop action. Currently drag-and-drop functionality
+has not been implemented in Tix yet.</p>
+</dd>
+<dt>$hlist-&gt;dragsiteClear</dt>
+<dd>
+<p>Remove the dragsite, if any, from the this HList widget. This only
+removes the surrounding highlights of the dragsite entry and does not
+affect its selection status.</p>
+</dd>
+<dt>$hlist-&gt;dropsiteSet($entryPath)</dt>
+<dd>
+<p>Sets the dropsite to the list entry identified by
+<em><code>$entryPath</code></em>. The dropsite is used to indicate the
+target of a drag-and-drop action. Currently drag-and-drop functionality
+has not been implemented in Tix yet.</p>
+</dd>
+<dt>$hlist-&gt;dropsiteClear</dt>
+<dd>
+<p>Remove the dropsite, if any, from the this HList widget. This only
+removes the surrounding highlights of the dropsite entry and does not
+affect its selection status.</p>
+</dd>
+<dt>$hlist-&gt;entrycget($entryPath, option)</dt>
+<dd>
+<p>Returns the current value of the configuration option given by
+<em>option</em> for the entry indentfied by
+<em><code>$entryPath</code></em>. <em>Option</em> may have any of the
+values accepted by the <strong>add</strong> method.</p>
+</dd>
+<dt>$hlist-&gt;entryconfigure($entryPath ?,option?, ?value=&gt;option,
+...?)</dt>
+<dd>
+<p>Query or modify the configuration options of the list entry
+indentfied by <em><code>$entryPath</code></em>. If no <em>option</em> is
+specified, returns a list describing all of the available options for
+<em><code>$entryPath</code></em> (see Tk::options for information on the
+format of this list.) If <em>option</em> is specified with no
+<em>value</em>, then the method returns a list describing the one named
+option (this list will be identical to the corresponding sublist of the
+value returned if no <em>option</em> is specified). If one or more
+<em>option-value</em> pairs are specified, then the method modifies the
+given option(s) to have the given value(s); in this case the method
+returns an empty string. <em>Option</em> may have any of the values
+accepted by the <strong>add</strong> or <strong>addchild</strong>
+method. The exact set of options depends on the value of the
+<strong>-itemtype</strong> option passed to the the <strong>add</strong>
+or <strong>addchild</strong> method when this list entry is created.</p>
+</dd>
+<dt>$hlist-&gt;header(option, $col ?,args, ...?)</dt>
+<dd>
+<p>Manipulates the header items of this HList widget. If the
+<strong>-header</strong> option of this HList widget is set to true,
+then a header item is displayed at the top of each column. The
+<em><code>$col</code></em> argument for this method must be a valid
+integer. 0 indicates the first column, 1 the second column, ... and so
+on. This method supports the following options:</p>
+<dl>
+<dt>$hlist-&gt;header(cget, $col, option)</dt>
+<dd>
+<p>If the <em><code>$col</code></em>-th column has a header display
+item, returns the value of the specified <em>option</em> of the header
+item. If the header doesn't exist, returns an error.</p>
+</dd>
+<dt>$hlist-&gt;header(configure, $col, ?option?, ?value, option, value,
+...?)</dt>
+<dd>
+<p>Query or modify the configuration options of the header display item
+of the <em><code>$col</code></em>-th column. The header item must exist,
+or an error will result. If no <em>option</em> is specified, returns a
+list describing all of the available options for the header display item
+(see Tk::options for information on the format of this list.) If
+<em>option</em> is specified with no <em>value</em>, then the method
+returns a list describing the one named option (this list will be
+identical to the corresponding sublist of the value returned if no
+<em>option</em> is specified). If one or more <em>option-value</em>
+pairs are specified, then the method modifies the given option(s) to
+have the given value(s); in this case the method returns an empty
+string. <em>Option</em> may have any of the values accepted by the
+<strong>header create</strong> method. The exact set of options depends
+on the value of the <strong>-itemtype</strong> option passed to the the
+<strong>header</strong> create method when this display item was
+created.</p>
+</dd>
+<dt>$hlist-&gt;header(create, $col, ?-itemtype type? ?option value
+...?</dt>
+<dd>
+<p>Creates a new display item as the header for the
+<em><code>$col</code></em>-th column. See also BUGS below. If an header
+display item already exists for this column, it will be replaced by the
+new item. An optional parameter <em>-itemtype</em> can be used to
+specify what type of display item should be created. If the
+<em>-itemtype</em> is not given, then by default the type specified by
+this HList widget's <strong>-itemtype</strong> option is used.
+Additional parameters, in <em>option-value</em> pairs, can be passed to
+configure the appearance of the display item. Each <em>option-value</em>
+pair must be a valid option for this type of display item or one of the
+following:</p>
+<dl>
+<dt>-borderwidth =&gt; color</dt>
+<dd>
+<p>Specifies the border width of this header item.</p>
+</dd>
+<dt>-headerbackground =&gt; color</dt>
+<dd>
+<p>Specifies the background color of this header item.</p>
+</dd>
+<dt>-relief =&gt; type</dt>
+<dd>
+<p>Specifies the relief type of the border of this header item.</p>
+</dd>
+</dl>
+</dd>
+<dt>$hlist-&gt;header(delete, $col)</dt>
+<dd>
+<p>Deletes the header display item for the <em><code>$col</code></em>-th
+column.</p>
+</dd>
+<dt>$hlist-&gt;header(exists, $col)</dt>
+<dd>
+<p>Return true if an header display item exists for the
+<em><code>$col</code></em>-th column; return false otherwise.</p>
+</dd>
+<dt>$hlist-&gt;header(size, $col)</dt>
+<dd>
+<p>If an header display item exists for the
+<em><code>$col</code></em>-th column , returns its size in pixels in a
+two element list <em>(width, height)</em>; returns an error if the
+header display item does not exist.</p>
+</dd>
+</dl>
+</dd>
+<dt>$hlist-&gt;hide(option ?,$entryPath?)</dt>
+<dd>
+<p>Makes some of entries invisible without deleting them.
+<em>Option</em> can be one of the following:</p>
+<dl>
+<dt>entry</dt>
+<dd>
+<p>Hides the list entry identified by
+<em><code>$entryPath</code></em>.</p>
+</dd>
+</dl>
+<p>Currently only the <strong>entry</strong> option is supported. Other
+options will be added in the next release.</p>
+</dd>
+<dt>$hlist-&gt;indicator(option, $entryPath, ?args, ...?)</dt>
+<dd>
+<p>Manipulates the indicator on the list entries. An indicator is
+usually a small display item (such as an image) that is displayed to the
+left to an entry to indicate the status of the entry. For example, it
+may be used to indicate whether a directory is opened or closed.
+<em>Option</em> can be one of the following:</p>
+<dl>
+<dt>$hlist-&gt;indicator(cget, $entryPath, option)</dt>
+<dd>
+<p>If the list entry given by <em><code>$entryPath</code></em> has an
+indicator, returns the value of the specified <em>option</em> of the
+indicator. If the indicator doesn't exist, returns an error.</p>
+</dd>
+<dt>$hlist-&gt;indicator(configure, $entryPath, ?option?, ?value,
+option, value, ...?)</dt>
+<dd>
+<p>Query or modify the configuration options of the indicator display
+item of the entry specified by <em><code>$entryPath</code></em>. The
+indicator item must exist, or an error will result. If no
+<em>option</em> is specified, returns a list describing all of the
+available options for the indicator display item (see Tk::options for
+information on the format of this list). If <em>option</em> is specified
+with no <em>value</em>, then the method returns a list describing the
+one named option (this list will be identical to the corresponding
+sublist of the value returned if no <em>option</em> is specified). If
+one or more <em>option-value</em> pairs are specified, then the method
+modifies the given option(s) to have the given value(s); in this case
+the method returns an empty string. <em>Option</em> may have any of the
+values accepted by the <strong>indicator create</strong> method. The
+exact set of options depends on the value of the
+<strong>-itemtype</strong> option passed to the the <strong>indicator
+create</strong> method when this display item was created.</p>
+</dd>
+<dt>$hlist-&gt;indicator(create, $entryPath, ?, -itemtype type? ?option
+value ...?)</dt>
+<dd>
+<p>Creates a new display item as the indicator for the entry specified
+by <em><code>$entryPath</code></em>. If an indicator display item
+already exists for this entry, it will be replaced by the new item. An
+optional parameter <em>-itemtype</em> can be used to specify what type
+of display item should be created. If the <em>-itemtype</em> is not
+given, then by default the type specified by this HList widget's
+<strong>-itemtype</strong> option is used. Additional parameters, in
+<em>option-value</em> pairs, can be passed to configure the appearance
+of the display item. Each <em>option-value</em> pair must be a valid
+option for this type of display item.</p>
+</dd>
+<dt>$hlist-&gt;indicator(delete, $entryPath)</dt>
+<dd>
+<p>Deletes the indicator display item for the entry given by
+<em><code>$entryPath</code></em>.</p>
+</dd>
+<dt>$hlist-&gt;indicator(exists, $entryPath)</dt>
+<dd>
+<p>Return true if an indicator display item exists for the entry given
+by <em><code>$entryPath</code></em>; return false otherwise.</p>
+</dd>
+<dt>$hlist-&gt;indicator(size, $entryPath)</dt>
+<dd>
+<p>If an indicator display item exists for the entry given by
+<em><code>$entryPath</code></em>, returns its size in a two element list
+of the form {<em>width height</em>}; returns an error if the indicator
+display item does not exist.</p>
+</dd>
+</dl>
+</dd>
+<dt>$hlist-&gt;info(option, arg, ...)</dt>
+<dd>
+<p>Query information about the HList widget. <em>option</em> can be one
+of the following:</p>
+<dl>
+<dt>$hlist-&gt;info(anchor)</dt>
+<dd>
+<p>Returns the entryPath of the current anchor, if any, of the HList
+widget. If the anchor is not set, returns the empty string.</p>
+</dd>
+<dt>$hlist-&gt;infoBbox($entryPath)</dt>
+<dd>
+<p>Returns a list of four numbers describing the visible bounding box of
+the entry given <em><code>$entryPath</code></em>. The first two elements
+of the list give the x and y coordinates of the upper-left corner of the
+screen area covered by the entry (specified in pixels relative to the
+widget) and the last two elements give the lower-right corner of the
+area, in pixels. If no part of the entry given by index is visible on
+the screen then the result is an empty string; if the entry is partially
+visible, the result gives the only the visible area of the entry.</p>
+</dd>
+<dt>$hlist-&gt;info(children ?,$entryPath?)</dt>
+<dd>
+<p>If <em><code>$entryPath</code></em> is given, returns a list of the
+entryPath's of its children entries. Otherwise returns a list of the
+toplevel entryPath's.</p>
+</dd>
+<dt>$hlist-&gt;info(data ?,$entryPath?)</dt>
+<dd>
+<p>Returns the data associated with
+<em><code>$entryPath</code></em>.</p>
+</dd>
+<dt>$hlist-&gt;info(dragsite)</dt>
+<dd>
+<p>Returns the entryPath of the current dragsite, if any, of the HList
+widget. If the dragsite is not set, returns the empty string.</p>
+</dd>
+<dt>$hlist-&gt;info(dropsite)</dt>
+<dd>
+<p>Returns the entryPath of the current dropsite, if any, of the HList
+widget. If the dropsite is not set, returns the empty string.</p>
+</dd>
+<dt>$hlist-&gt;info(exists, $entryPath)</dt>
+<dd>
+<p>Returns a boolean value indicating whether the list entry
+<em><code>$entryPath</code></em> exists.</p>
+</dd>
+<dt>$hlist-&gt;info(hidden, $entryPath)</dt>
+<dd>
+<p>Returns a boolean value indicating whether the list entry
+<strong><code>$entryPath</code></strong> is hidden or not.</p>
+</dd>
+<dt>$hlist-&gt;info(next, $entryPath)</dt>
+<dd>
+<p>Returns the entryPath of the list entry, if any, immediately below
+this list entry. If this entry is already at the bottom of the HList
+widget, returns an empty string.</p>
+</dd>
+<dt>$hlist-&gt;info(parent, $entryPath)</dt>
+<dd>
+<p>Returns the name of the parent of the list entry identified by
+<em><code>$entryPath</code></em>. If <em>entryPath</em> is a toplevel
+list entry, returns the empty string.</p>
+</dd>
+<dt>$hlist-&gt;info(prev, $entryPath)</dt>
+<dd>
+<p>Returns the entryPath of the list entry, if any, immediately above
+this list entry. If this entry is already at the top of the HList
+widget, returns an empty string.</p>
+</dd>
+<dt>$hlist-&gt;info(selection)</dt>
+<dd>
+<p>Returns a list of selected entries in the HList widget. In scalar
+context, returns an anonymous list of the selected entries. If no
+entries are selected, undef is returned in scalar context, and an empty
+list otherwise.</p>
+</dd>
+</dl>
+</dd>
+<dt>$hlist-&gt;item(option, ?args, ...?)</dt>
+<dd>
+<p>Creates and configures the display items at individual columns the
+entries. The form of additional of arguments depends on the choice of
+<em>option</em>:</p>
+<dl>
+<dt>$hlist-&gt;itemCget($entryPath, $col, option)</dt>
+<dd>
+<p>Returns the current value of the configure <em>option</em> of the
+display item at the column designated by <em><code>$col</code></em> of
+the entry specified by <em><code>$entryPath</code></em>.</p>
+</dd>
+<dt>$hlist-&gt;itemConfigure($entryPath, $col ?,option?, ?value, option,
+value, ...?)</dt>
+<dd>
+<p>Query or modify the configuration options of the display item at the
+column designated by <em><code>$col</code></em> of the entry specified
+by <em><code>$entryPath</code></em>. If no <em>option</em> is specified,
+returns a list describing all of the available options for
+<em><code>$entryPath</code></em> (see Tk::options for information on the
+format of this list). If <em>option</em> is specified with no
+<em>value</em>, then the method returns a list describing the one named
+option (this list will be identical to the corresponding sublist of the
+value returned if no <em>option</em> is specified). If one or more
+<em>option-value</em> pairs are specified, then the method modifies the
+given option(s) to have the given value(s); in this case the method
+returns an empty string. <em>Option</em> may have any of the values
+accepted by the <strong>item</strong> create method. The exact set of
+options depends on the value of the <strong>-itemtype</strong> option
+passed to the the <strong>item</strong> create method when this display
+item was created.</p>
+</dd>
+<dt>$hlist-&gt;itemCreate($entryPath, $col ?,-itemtype=&gt;type?
+?,option value ...?)</dt>
+<dd>
+<p>Creates a new display item at the column designated by
+<em><code>$col</code></em> of the entry specified by
+<em><code>$entryPath</code></em>. An optional parameter
+<em>-itemtype</em> can be used to specify what type of display items
+should be created. If the <em>-itemtype</em> is not specified, then by
+default the type specified by this HList widget's
+<strong>-itemtype</strong> option is used. Additional parameters, in
+<em>option-value</em> pairs, can be passed to configure the appearance
+of the display item. Each <em>option- value</em> pair must be a valid
+option for this type of display item.</p>
+</dd>
+<dt>$hlist-&gt;itemDelete($entryPath, $col)</dt>
+<dd>
+<p>Deletes the display item at the column designated by
+<em><code>$col</code></em> of the entry specified by
+<em><code>$entryPath</code></em>.</p>
+</dd>
+<dt>$hlist-&gt;itemExists($entryPath, $col)</dt>
+<dd>
+<p>Returns true if there is a display item at the column designated by
+<em><code>$col</code></em> of the entry specified by
+<em><code>$entryPath</code></em>; returns false otherwise.</p>
+</dd>
+</dl>
+</dd>
+<dt>$hlist-&gt;nearest(y)</dt>
+<dd>
+<p><em><code>$hlist</code></em>-&gt;<strong>nearest</strong>(<em>y</em>)
+Given a y-coordinate within the HList window, this method returns the
+entryPath of the (visible) HList element nearest to that
+y-coordinate.</p>
+</dd>
+<dt>$hlist-&gt;see($entryPath)</dt>
+<dd>
+<p>Adjust the view in the HList so that the entry given by
+<em><code>$entryPath</code></em> is visible. If the entry is already
+visible then the method has no effect; if the entry is near one edge of
+the window then the HList scrolls to bring the element into view at the
+edge; otherwise the HList widget scrolls to center the entry.</p>
+</dd>
+<dt>$hlist-&gt;selection(option, arg, ...)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$hlist-&gt;selectionOption(arg, ...)</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This method is used to adjust the selection within a HList widget. It
+has several forms, depending on <em>option</em>:</p>
+<blockquote>
+<dl>
+<dt>$hlist-&gt;selectionClear(?from?, ?to?)</dt>
+<dd>
+<p>When no extra arguments are given, deselects all of the list
+entrie(s) in this HList widget. When only <em>from</em> is given, only
+the list entry identified by <em>from</em> is deselected. When both
+<em>from</em> and <em>to</em> are given, deselects all of the list
+entrie(s) between between <em>from</em> and <em>to</em>, inclusive,
+without affecting the selection state of elements outside that
+range.</p>
+</dd>
+<dt>$hlist-&gt;selectionGet</dt>
+<dd>
+<p>This is an alias for the <strong>infoSelection</strong> method.</p>
+</dd>
+<dt>$hlist-&gt;selectionIncludes($entryPath)</dt>
+<dd>
+<p>Returns 1 if the list entry indicated by
+<em><code>$entryPath</code></em> is currently selected; returns 0
+otherwise.</p>
+</dd>
+<dt>$hlist-&gt;selectionSet(from?, to?)</dt>
+<dd>
+<p>Selects all of the list entrie(s) between between <em>from</em> and
+<em>to</em>, inclusive, without affecting the selection state of entries
+outside that range. When only <em>from</em> is given, only the list
+entry identified by <em>from</em> is selected.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+
+</blockquote>
+<dl>
+<dt>$hlist-&gt;show(option ?,$entryPath?)</dt>
+<dd>
+<p>Show the entries that are hidden by the <strong>hide</strong> method,
+<em>option</em> can be one of the following:</p>
+<dl>
+<dt>entry</dt>
+<dd>
+<p>Shows the list entry identified by
+<em><code>$entryPath</code></em>.</p>
+</dd>
+</dl>
+<p>Currently only the <strong>entry</strong> option is supported. Other
+options will be added in future releases.</p>
+</dd>
+<dt>$hlist-&gt;xview(args)</dt>
+<dd>
+<p>This method is used to query and change the horizontal position of
+the information in the widget's window. It can take any of the following
+forms:</p>
+<dl>
+<dt>$hlist-&gt;xview</dt>
+<dd>
+<p>Returns a list containing two elements. Each element is a real
+fraction between 0 and 1; together they describe the horizontal span
+that is visible in the window. For example, if the first element is .2
+and the second element is .6, 20% of the HList entry is off-screen to
+the left, the middle 40% is visible in the window, and 40% of the entry
+is off-screen to the right. These are the same values passed to
+scrollbars via the <strong>-xscrollcommand</strong> option.</p>
+</dd>
+<dt>$hlist-&gt;xview($entryPath)</dt>
+<dd>
+<p>Adjusts the view in the window so that the list entry identified by
+<em><code>$entryPath</code></em> is aligned to the left edge of the
+window.</p>
+</dd>
+<dt>$hlist-&gt;xview(moveto =&gt; fraction)</dt>
+<dd>
+<p>Adjusts the view in the window so that <em>fraction</em> of the total
+width of the HList is off-screen to the left. <em>fraction</em> must be
+a fraction between 0 and 1.</p>
+</dd>
+<dt>$hlist-&gt;xview(scroll =&gt; number, what)</dt>
+<dd>
+<p>This method shifts the view in the window left or right according to
+<em>number</em> and <em>what</em>. <em>Number</em> must be an integer.
+<em>What</em> must be either <strong>units</strong> or
+<strong>pages</strong> or an abbreviation of one of these. If
+<em>what</em> is <strong>units</strong>, the view adjusts left or right
+by <em>number</em> character units (the width of the <strong>0</strong>
+character) on the display; if it is <strong>pages</strong> then the view
+adjusts by <em>number</em> screenfuls. If <em>number</em> is negative
+then characters farther to the left become visible; if it is positive
+then characters farther to the right become visible.</p>
+</dd>
+</dl>
+</dd>
+<dt>$hlist-&gt;yview(?args?)</dt>
+<dd>
+<p>This method is used to query and change the vertical position of the
+entries in the widget's window. It can take any of the following
+forms:</p>
+<dl>
+<dt>$hlist-&gt;yview</dt>
+<dd>
+<p>Returns a list containing two elements, both of which are real
+fractions between 0 and 1. The first element gives the position of the
+list element at the top of the window, relative to the HList as a whole
+(0.5 means it is halfway through the HList, for example). The second
+element gives the position of the list entry just after the last one in
+the window, relative to the HList as a whole. These are the same values
+passed to scrollbars via the <strong>-yscrollcommand</strong>
+option.</p>
+</dd>
+<dt>$hlist-&gt;yview($entryPath)</dt>
+<dd>
+<p>Adjusts the view in the window so that the list entry given by
+<em><code>$entryPath</code></em> is displayed at the top of the
+window.</p>
+</dd>
+<dt>$hlist-&gt;yview(moveto =&gt; fraction)</dt>
+<dd>
+<p>Adjusts the view in the window so that the list entry given by
+<em>fraction</em> appears at the top of the window. <em>Fraction</em> is
+a fraction between 0 and 1; 0 indicates the first entry in the HList,
+0.33 indicates the entry one-third the way through the HList, and so
+on.</p>
+</dd>
+<dt>$hlist-&gt;yview(scroll =&gt; number, what)</dt>
+<dd>
+<p>This method adjust the view in the window up or down according to
+<em>number</em> and <em>what</em>. <em>Number</em> must be an integer.
+<em>What</em> must be either <strong>units</strong> or
+<strong>pages</strong>. If <em>what</em> is <strong>units</strong>, the
+view adjusts up or down by <em>number</em> lines; if it is
+<strong>pages</strong> then the view adjusts by <em>number</em>
+screenfuls. If <em>number</em> is negative then earlier entries become
+visible; if it is positive then later entries become visible.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h1>BINDINGS</h1>
+<dl>
+<dt>[1]</dt>
+<dd>
+<p>If the <strong>-selectmode</strong> is browse, when the user drags
+the mouse pointer over the list entries, the entry under the pointer
+will be highlighted and the <strong>-browsecmd</strong> callback will be
+called with one parameter, the entryPath of the highlighted entry. Only
+one entry can be highlighted at a time. The <strong>-command</strong>
+callback will be called when the user double-clicks on a list entry.</p>
+</dd>
+<dt>[2]</dt>
+<dd>
+<p>If the <strong>-selectmode</strong> is single, the entries will only
+be highlighted by mouse &lt;ButtonRelease-1&gt; events. When a new list
+entry is highlighted, the <strong>-browsecmd</strong> callback will be
+called with one parameter indicating the highlighted list entry. The
+<strong>-command</strong> callback will be called when the user
+double-clicks on a list entry.</p>
+</dd>
+<dt>[3]</dt>
+<dd>
+<p>If the <strong>-selectmode</strong> is multiple, when the user drags
+the mouse pointer over the list entries, all the entries under the
+pointer will be highlighted. However, only a contiguous region of list
+entries can be selected. When the highlighted area is changed, the
+<strong>-browsecmd</strong> callback will be called with an undefined
+parameter. It is the responsibility of the <strong>-browsecmd</strong>
+callback to find out the exact highlighted selection in the HList. The
+<strong>-command</strong> callback will be called when the user
+double-clicks on a list entry.</p>
+</dd>
+<dt>[4]</dt>
+<dd>
+<p>If the <strong>-selectmode</strong> is extended, when the user drags
+the mouse pointer over the list entries, all the entries under the
+pointer will be highlighted. The user can also make disjointed
+selections using &lt;Control-ButtonPress-1&gt;. When the highlighted
+area is changed, the <strong>-browsecmd</strong> callback will be called
+with an undefined parameter. It is the responsibility of the
+<strong>-browsecmd</strong> callback to find out the exact highlighted
+selection in the HList. The <strong>-command</strong> callback will be
+called when the user double-clicks on a list entry.</p>
+</dd>
+<dt>[5]</dt>
+<dd>
+<p><strong>Arrow key bindings:</strong> &lt;Up&gt; arrow key moves the
+anchor point to the item right on top of the current anchor item.
+&lt;Down&gt; arrow key moves the anchor point to the item right below
+the current anchor item. &lt;Left&gt; arrow key moves the anchor to the
+parent item of the current anchor item. &lt;Right&gt; moves the anchor
+to the first child of the current anchor item. If the current anchor
+item does not have any children, moves the anchor to the item right
+below the current anchor item.</p>
+</dd>
+</dl>
+<h1>EXAMPLE</h1>
+<p>This example demonstrates how to use an HList to store a file
+directory structure and respond to the user's browse events:</p>
+<p>use strict; use Tk; use Tk::Label; use Tk::HList; my $mw =
+MainWindow-&gt;new(); my $label = $mw-&gt;Label(-width=&gt;15); my
+$hlist = $mw-&gt;HList( -itemtype =&gt; text, -separator =&gt; /,
+-selectmode =&gt; single, -browsecmd =&gt; sub { my $file = shift;
+$label-&gt;configure(-text=&gt;$file); } ); foreach ( qw(/ /home
+/home/ioi /home/foo /usr /usr/lib) ) { $hlist-&gt;add($_, -text=&gt;$_);
+} $hlist-&gt;pack; $label-&gt;pack; MainLoop;</p>
+<h1>BUGS</h1>
+<p>The fact that the display item at column 0 is implicitly associated
+with the whole entry is probably a design bug. This was done for
+backward compatibility purposes. The result is that there is a large
+overlap between the <strong>item</strong> method and the
+<strong>add</strong>, <strong>addchild</strong>,
+<strong>entrycget</strong> and <strong>entryconfigure</strong> methods.
+Whenever multiple columns exist, the programmer should use ONLY the
+<strong>item</strong> method to create and configure the display items
+in each column; the <strong>add</strong>, <strong>addchild</strong>,
+<strong>entrycget</strong> and <strong>entryconfigure</strong> should be
+used ONLY to create and configure entries.</p>
+<h1>KEYWORDS</h1>
+<p>Hierarchical Listbox</p>
+<h1>SEE ALSO</h1>
+<p>Tk::DItem</p>

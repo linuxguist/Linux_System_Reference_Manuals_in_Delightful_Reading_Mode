@@ -1,0 +1,65 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dcb-maxrate - show / manipulate port maxrate settings of the DCB
+(Data Center Bridging) subsystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dcb</strong> [ <em>OPTIONS</em> ] <strong>maxrate</strong> {
+<em>COMMAND</em> | <em>help</em> }</p>
+<p><strong>dcb maxrate show dev</strong> DEV [
+<strong>tc-maxrate</strong> ]</p>
+<p><strong>dcb maxrate set dev</strong> DEV [
+<strong>tc-maxrate</strong> <strong><em>RATE-MAP</em></strong> ]</p>
+<p><em>RATE-MAP</em> := [ <em>RATE-MAP</em> ] <em>RATE-MAPPING</em></p>
+<p><em>RATE-MAPPING</em> := { <em>TC</em> |
+<em><strong>all</strong></em>
+}<em><strong>:</strong><em>RATE</em></em></p>
+<p><em>TC</em> := { <em><strong>0</strong></em> ..
+<em><strong>7</strong></em> }</p>
+<p><em>RATE</em> := { <em>INTEGER</em>[<em><strong>bit</strong></em>] |
+<em>INTEGER<strong>Kbit</strong></em> |
+<em>INTEGER<strong>Mib</strong></em> | <em>...</em> }</p>
+<h1>DESCRIPTION</h1>
+<p><strong>dcb maxrate</strong> is used to configure and inspect maximum
+rate at which traffic is allowed to egress from a given traffic
+class.</p>
+<h1>PARAMETERS</h1>
+<p>The following describes only the write direction, i.e. as used with
+the <strong>set</strong> command. For the <strong>show</strong> command,
+the parameter name is to be used as a simple keyword without further
+arguments. This instructs the tool to show the value of a given
+parameter. When no parameters are given, the tool shows the complete
+maxrate configuration.</p>
+<dl>
+<dt><strong>tc-maxrate <em>RATE-MAP</em></strong></dt>
+<dd>
+<p><em>RATE-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are TC indices, values are
+traffic rates in bits per second. The rates can use the notation
+documented in section PARAMETERS at <strong>tc</strong>(8). Note that
+under that notation, "bit" stands for bits per second whereas "b" stands
+for bytes per second. When showing, the command line option
+<strong>-i</strong> toggles between using decadic and ISO/IEC
+prefixes.</p>
+</dd>
+</dl>
+<h1>EXAMPLE &amp; USAGE</h1>
+<p>Set rates of all traffic classes to 25Gbps, except for TC 6, which
+will have the rate of 100Gbps:</p>
+<p># dcb maxrate set dev eth0 tc-maxrate all:25Gbit 6:100Gbit</p>
+<p>Show what was set:</p>
+<p># dcb maxrate show dev eth0<br />
+tc-maxrate 0:25Gbit 1:25Gbit 2:25Gbit 3:25Gbit 4:25Gbit 5:25Gbit
+6:100Gbit 7:25Gbit</p>
+<h1>EXIT STATUS</h1>
+<p>Exit status is 0 if command was successful or a positive integer upon
+failure.</p>
+<h1>SEE ALSO</h1>
+<p><strong>dcb</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>Report any bugs to the Network Developers mailing list
+<strong>&lt;netdev@vger.kernel.org&gt;</strong> where the development
+and maintenance is primarily done. You do not have to be subscribed to
+the list to send a message there.</p>
+<h1>AUTHOR</h1>
+<p>Petr Machata &lt;me@pmachata.org&gt;</p>

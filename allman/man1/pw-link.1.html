@@ -1,0 +1,162 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pw-link - The PipeWire Link Command</p>
+<h1>SYNOPSIS</h1>
+<pre><code>pw-link [options] -o|-i|-l [out-pattern] [in-pattern]</code></pre>
+<pre><code>pw-link [options] output input</code></pre>
+<pre><code>pw-link [options] -d output input</code></pre>
+<pre><code>pw-link [options] -d link-id</code></pre>
+<h1>DESCRIPTION</h1>
+<p>List, create and destroy links between PipeWire ports.</p>
+<h1>COMMON OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-r | --remote=NAME</strong></dt>
+<dd>
+<p>The name the <em>remote</em> instance to monitor. If left
+unspecified, a connection is made to the default PipeWire instance.</p>
+</dd>
+<dt><strong>-h | --help</strong></dt>
+<dd>
+<p>Show help.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Show version information.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>LISTING PORTS AND LINKS</h1>
+<p>Specify one of -o, -i or -l to list the matching optional input and
+output ports and their links.</p>
+<blockquote>
+<dl>
+<dt><strong>-o | --output</strong></dt>
+<dd>
+<p>List output ports</p>
+</dd>
+<dt><strong>-i | --input</strong></dt>
+<dd>
+<p>List output ports</p>
+</dd>
+<dt><strong>-l | --links</strong></dt>
+<dd>
+<p>List links</p>
+</dd>
+<dt><strong>-m | --monitor</strong></dt>
+<dd>
+<p>Monitor links and ports. <strong>pw-link</strong> will not exit but
+monitor and print new and destroyed ports or links.</p>
+</dd>
+<dt><strong>-I | --id</strong></dt>
+<dd>
+<p>List IDs. Also list the unique link and port ids.</p>
+</dd>
+<dt><strong>-v | --verbose</strong></dt>
+<dd>
+<p>Verbose port properties. Also list the port-object-path and the
+port-alias.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>CONNECTING PORTS</h1>
+<p>Without any list option (-i, -o or -l), the given ports will be
+linked. Valid port specifications are:</p>
+<blockquote>
+<dl>
+<dt><strong><em>port-id</em></strong></dt>
+<dd>
+<p>As obtained with the -I option when listing ports.</p>
+</dd>
+<dt><strong><em>node-name:port-name</em></strong></dt>
+<dd>
+<p>As obtained when listing ports.</p>
+</dd>
+<dt><strong><em>port-object-path</em></strong></dt>
+<dd>
+<p>As obtained from the first alternative name for the port when listing
+them with the -v option.</p>
+</dd>
+<dt><strong><em>port-alias</em></strong></dt>
+<dd>
+<p>As obtained from the second alternative name for the ports when
+listing them with the -v option.</p>
+</dd>
+</dl>
+</blockquote>
+<p>Extra options when linking can be given:</p>
+<blockquote>
+<dl>
+<dt><strong>-L | --linger</strong></dt>
+<dd>
+<p>Linger. Will create a link that exists after <strong>pw-link</strong>
+is destroyed. This is the default behaviour, unless the -m option is
+given.</p>
+</dd>
+<dt><strong>-P | --passive</strong></dt>
+<dd>
+<p>Passive link. A passive link will keep both nodes it links inactive
+unless another non-passive link is activating the nodes. You can use
+this to link a sink to a filter and have them both suspended when
+nothing else is linked to either of them.</p>
+</dd>
+<dt><strong>-p | --props=PROPS</strong></dt>
+<dd>
+<p>Properties as JSON object. Give extra properties when creaing the
+link.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>DISCONNECTING PORTS</h1>
+<p>When the -d option is given, an existing link between port is
+destroyed.</p>
+<p>To disconnect port, a single <em>link-id</em>, as obtained when
+listing links with the -I option, or two port specifications can be
+given. See the connecting ports section for valid port
+specifications.</p>
+<blockquote>
+<dl>
+<dt><strong>-d | --disconnect</strong></dt>
+<dd>
+<p>Disconnect ports</p>
+</dd>
+</dl>
+</blockquote>
+<h1>EXAMPLES</h1>
+<blockquote>
+<dl>
+<dt><strong><strong>pw-link</strong> -iol</strong></dt>
+<dd>
+<p>List all port and their links.</p>
+</dd>
+<dt><strong><strong>pw-link</strong> -lm</strong></dt>
+<dd>
+<p>List all links and monitor changes until <strong>pw-link</strong> is
+stopped.</p>
+</dd>
+<dt><strong><strong>pw-link</strong> paplay:output_FL
+alsa_output.pci-0000_00_1b.0.analog-stereo:playback_FL</strong></dt>
+<dd>
+<p>Link the given output port to the input port.</p>
+</dd>
+<dt><strong><strong>pw-link</strong> -lI</strong></dt>
+<dd>
+<p>List links and their Id.</p>
+</dd>
+<dt><strong><strong>pw-link</strong> -d 89</strong></dt>
+<dd>
+<p>Destroy the link with id 89.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>AUTHORS</h1>
+<p>The PipeWire Developers
+&lt;<em>https://gitlab.freedesktop.org/pipewire/pipewire/issues</em>&gt;;
+PipeWire is available from <em>https://pipewire.org</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>pipewire(1)</strong>, <strong>pw-cli(1)</strong>,</p>

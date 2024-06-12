@@ -1,0 +1,55 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sane-ricoh2 - SANE backend for Ricoh flatbed scanners</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>sane-ricoh2</strong> library implements a SANE (Scanner
+Access Now Easy) backend that provides access to the following Ricoh
+flatbed scanners:</p>
+<blockquote>
+<p>SG-3110SFNw<br />
+SG-3100SNw<br />
+SP-100SU<br />
+SP-111SU (SP-112SU)</p>
+</blockquote>
+<h1>FILES</h1>
+<dl>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-ricoh2.a</em></dt>
+<dd>
+<p>The static library implementing this backend.</p>
+</dd>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-ricoh2.so</em></dt>
+<dd>
+<p>The shared library implementing this backend (present on systems that
+support dynamic loading).</p>
+</dd>
+</dl>
+<h1>OPTIONS</h1>
+<p>The options the backend supports can either be selected through
+command line options to programs like <strong>scanimage</strong>(1) or
+through GUI elements in programs like <strong>xscanimage</strong>(1) or
+<strong>xsane</strong>(1).</p>
+<p>The following options are supported by ricoh2:</p>
+<p><strong>--mode color|gray</strong></p>
+<blockquote>
+<p>Color or grayscale mode.</p>
+</blockquote>
+<p><strong>--resolution 300|600</strong></p>
+<blockquote>
+<p>DPI resolution.</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>SANE_DEBUG_RICOH2</strong></dt>
+<dd>
+<p>If the library was compiled with debug support enabled, this
+environment variable controls the debug level for this backend. Higher
+debug levels increase the verbosity of the output.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>sane</strong>(7), <strong>sane-usb</strong>(5),
+<strong>scanimage</strong>(1), <strong>xscanimage</strong>(1),
+<strong>xsane</strong>(1)</p>
+<h1>AUTHOR</h1>
+<p>Stanislav Yuzvinsky</p>

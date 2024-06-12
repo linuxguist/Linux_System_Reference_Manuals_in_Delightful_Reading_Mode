@@ -1,0 +1,412 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Scrollbar - Create and manipulate Scrollbar widgets</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$scrollbar</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>Scrollbar</strong>(?<em>options</em>?);</p>
+<h1>STANDARD OPTIONS</h1>
+<p><strong>-activebackground</strong>
+<strong>-highlightbackground</strong> <strong>-orient</strong>
+<strong>-takefocus</strong> <strong>-background</strong>
+<strong>-highlightcolor</strong> <strong>-relief</strong>
+<strong>-troughcolor</strong> <strong>-borderwidth</strong>
+<strong>-highlightthickness</strong> <strong>-repeatdelay</strong>
+<strong>-cursor</strong> <strong>-jump</strong>
+<strong>-repeatinterval</strong></p>
+<p>See Tk::options for details of the standard options.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Name: activeRelief</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: ActiveRelief</dt>
+<dd>
+
+</dd>
+<dt>Switch: -activerelief</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the relief to use when displaying the element that is
+active, if any. Elements other than the active element are always
+displayed with a raised relief.</p>
+<dl>
+<dt>Name: command</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Command</dt>
+<dd>
+
+</dd>
+<dt>Switch: -command</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a callback to invoke to change the view in the widget
+associated with the scrollbar. When a user requests a view change by
+manipulating the scrollbar, the callback is invoked. The callback is
+passed additional arguments as described later. This option almost
+always has a value such as <strong>[xview =&gt;
+<code>$widget</code>]</strong> or <strong>[yview =&gt;
+<code>$widget</code>]</strong>, consisting of the a widget object and
+either <strong>xview</strong> (if the scrollbar is for horizontal
+scrolling) or <strong>yview</strong> (for vertical scrolling). All
+scrollable widgets have <strong>xview</strong> and
+<strong>yview</strong> methods that take exactly the additional
+arguments appended by the scrollbar as described in SCROLLING COMMANDS
+below.</p>
+<dl>
+<dt>Name: elementBorderWidth</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: BorderWidth</dt>
+<dd>
+
+</dd>
+<dt>Switch: -elementborderwidth</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the width of borders drawn around the internal elements of
+the scrollbar (the two arrows and the slider). The value may have any of
+the forms acceptable to <strong>Tk_GetPixels</strong>. If this value is
+less than zero, the value of the <strong>borderWidth</strong> option is
+used in its place.</p>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+<dt>Switch: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired narrow dimension of the scrollbar window, not
+including 3-D border, if any. For vertical scrollbars this will be the
+width and for horizontal scrollbars this will be the height. The value
+may have any of the forms acceptable to
+<strong>Tk_GetPixels</strong>.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Scrollbar</strong> method creates a new window (given by
+the <code>$widget</code> argument) and makes it into a scrollbar widget.
+Additional options, described above, may be specified on the command
+line or in the option database to configure aspects of the scrollbar
+such as its colors, orientation, and relief. The
+<strong>scrollbar</strong> command returns its <code>$widget</code>
+argument. At the time this command is invoked, there must not exist a
+window named <code>$widget</code>, but <code>$widget</code>'s parent
+must exist.</p>
+<p>A scrollbar is a widget that displays two arrows, one at each end of
+the scrollbar, and a <em>slider</em> in the middle portion of the
+scrollbar. It provides information about what is visible in an
+<em>associated window</em> that displays an document of some sort (such
+as a file being edited or a drawing). The position and size of the
+slider indicate which portion of the document is visible in the
+associated window. For example, if the slider in a vertical scrollbar
+covers the top third of the area between the two arrows, it means that
+the associated window displays the top third of its document.</p>
+<p>Scrollbars can be used to adjust the view in the associated window by
+clicking or dragging with the mouse. See BINDINGS below for details.</p>
+<h1>ELEMENTS</h1>
+<p>A scrollbar displays five elements, which are referred to in the
+methods for the scrollbar:</p>
+<dl>
+<dt>arrow1</dt>
+<dd>
+<p>The top or left arrow in the scrollbar.</p>
+</dd>
+<dt>trough1</dt>
+<dd>
+<p>The region between the slider and <strong>arrow1</strong>.</p>
+</dd>
+<dt>slider</dt>
+<dd>
+<p>The rectangle that indicates what is visible in the associated
+widget.</p>
+</dd>
+<dt>trough2</dt>
+<dd>
+<p>The region between the slider and <strong>arrow2</strong>.</p>
+</dd>
+<dt>arrow2</dt>
+<dd>
+<p>The bottom or right arrow in the scrollbar.</p>
+</dd>
+</dl>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>Scrollbar</strong> method creates a widget object. This
+object supports the <strong>configure</strong> and <strong>cget</strong>
+methods described in Tk::options which can be used to enquire and modify
+the options described above. The widget also inherits all the methods
+provided by the generic Tk::Widget class.</p>
+<p>The following additional methods are available for scrollbar
+widgets:</p>
+<dl>
+<dt>$scrollbar-&gt;activate(?element?)</dt>
+<dd>
+<p>Marks the element indicated by <em>element</em> as active, which
+causes it to be displayed as specified by the
+<strong>activeBackground</strong> and <strong>activeRelief</strong>
+options. The only element values understood by this command are
+<strong>arrow1</strong>, <strong>slider</strong>, or
+<strong>arrow2</strong>. If any other value is specified then no element
+of the scrollbar will be active. If <em>element</em> is not specified,
+the command returns the name of the element that is currently active, or
+an empty string if no element is active.</p>
+</dd>
+<dt>$scrollbar-&gt;delta(deltaX, deltaY)</dt>
+<dd>
+<p>Returns a real number indicating the fractional change in the
+scrollbar setting that corresponds to a given change in slider position.
+For example, if the scrollbar is horizontal, the result indicates how
+much the scrollbar setting must change to move the slider
+<em>deltaX</em> pixels to the right (<em>deltaY</em> is ignored in this
+case). If the scrollbar is vertical, the result indicates how much the
+scrollbar setting must change to move the slider <em>deltaY</em> pixels
+down. The arguments and the result may be zero or negative.</p>
+</dd>
+<dt>$scrollbar-&gt;fraction(x, y)</dt>
+<dd>
+<p>Returns a real number between 0 and 1 indicating where the point
+given by <em>x</em> and <em>y</em> lies in the trough area of the
+scrollbar. The value 0 corresponds to the top or left of the trough, the
+value 1 corresponds to the bottom or right, 0.5 corresponds to the
+middle, and so on. <em>X</em> and <em>y</em> must be pixel coordinates
+relative to the scrollbar widget. If <em>x</em> and <em>y</em> refer to
+a point outside the trough, the closest point in the trough is used.</p>
+</dd>
+<dt>$scrollbar-&gt;get</dt>
+<dd>
+<p>Returns the scrollbar settings in the form of a list whose elements
+are the arguments to the most recent <strong>set</strong> method.</p>
+</dd>
+<dt>$scrollbar-&gt;identify(x, y)</dt>
+<dd>
+<p>Returns the name of the element under the point given by <em>x</em>
+and <em>y</em> (such as <strong>arrow1</strong>), or an empty string if
+the point does not lie in any element of the scrollbar. <em>X</em> and
+<em>y</em> must be pixel coordinates relative to the scrollbar
+widget.</p>
+</dd>
+<dt>$scrollbar-&gt;set(first, last)</dt>
+<dd>
+<p>This command is invoked by the scrollbar's associated widget to tell
+the scrollbar about the current view in the widget. The command takes
+two arguments, each of which is a real fraction between 0 and 1. The
+fractions describe the range of the document that is visible in the
+associated widget. For example, if <em>first</em> is 0.2 and
+<em>last</em> is 0.4, it means that the first part of the document
+visible in the window is 20% of the way through the document, and the
+last visible part is 40% of the way through.</p>
+</dd>
+</dl>
+<h1>SCROLLING COMMANDS</h1>
+<p>When the user interacts with the scrollbar, for example by dragging
+the slider, the scrollbar notifies the associated widget that it must
+change its view. The scrollbar makes the notification by evaluating a
+callback specified as the scrollbar's <strong>-command</strong> option.
+The callback may take several forms. In each case, the initial arguments
+passed are those specified in the <strong>-command</strong> callback
+itself, which usually has a form like [<strong>yview</strong> =&gt;
+<em><code>$widget</code></em>]. (Which will invoke
+<em><code>$widget</code></em>-&gt;<strong>yview</strong>(...) where the
+... part is as below. See Tk::callbacks for details.) The callback is
+passed additional arguments as follows:</p>
+<dl>
+<dt>moveto,fraction</dt>
+<dd>
+<p><em>Fraction</em> is a real number between 0 and 1. The widget should
+adjust its view so that the point given by <em>fraction</em> appears at
+the beginning of the widget. If <em>fraction</em> is 0 it refers to the
+beginning of the document. 1.0 refers to the end of the document, 0.333
+refers to a point one-third of the way through the document, and so
+on.</p>
+</dd>
+<dt>scroll,number,units</dt>
+<dd>
+<p>The widget should adjust its view by <em>number</em> units. The units
+are defined in whatever way makes sense for the widget, such as
+characters or lines in a text widget. <em>Number</em> is either 1, which
+means one unit should scroll off the top or left of the window, or -1,
+which means that one unit should scroll off the bottom or right of the
+window.</p>
+</dd>
+<dt>scroll,number,page</dt>
+<dd>
+<p>The widget should adjust its view by <em>number</em> pages. It is up
+to the widget to define the meaning of a page; typically it is slightly
+less than what fits in the window, so that there is a slight overlap
+between the old and new views. <em>Number</em> is either 1, which means
+the next page should become visible, or -1, which means that the
+previous page should become visible.</p>
+</dd>
+</dl>
+<h1>OLD COMMAND SYNTAX</h1>
+<p>In versions of Tk before 4.0, the <strong>set</strong> and
+<strong>get</strong> widget commands used a different form. This form is
+still supported for backward compatibility, but it is deprecated. In the
+old command syntax, the <strong>set</strong> method has the following
+form:</p>
+<dl>
+<dt>$scrollbar-&gt;set(totalUnits, windowUnits, firstUnit,
+lastUnit)</dt>
+<dd>
+<p>In this form the arguments are all integers. <em>TotalUnits</em>
+gives the total size of the object being displayed in the associated
+widget. The meaning of one unit depends on the associated widget; for
+example, in a text editor widget units might correspond to lines of
+text. <em>WindowUnits</em> indicates the total number of units that can
+fit in the associated window at one time. <em>FirstUnit</em> and
+<em>lastUnit</em> give the indices of the first and last units currently
+visible in the associated window (zero corresponds to the first unit of
+the object).</p>
+</dd>
+</dl>
+<p>Under the old syntax the <strong>get</strong> method returns a list
+of four integers, consisting of the <em>totalUnits</em>,
+<em>windowUnits</em>, <em>firstUnit</em>, and <em>lastUnit</em> values
+from the last <strong>set</strong> method.</p>
+<p>The callbacks generated by scrollbars also have a different form when
+the old syntax is being used, the callback is passed a single
+argument:</p>
+<dl>
+<dt>unit</dt>
+<dd>
+<p><em>Unit</em> is an integer that indicates what should appear at the
+top or left of the associated widget's window. It has the same meaning
+as the <em>firstUnit</em> and <em>lastUnit</em> arguments to the
+<strong>set</strong> method.</p>
+</dd>
+</dl>
+<p>The most recent <strong>set</strong> method determines whether or not
+to use the old syntax. If it is given two real arguments then the new
+syntax will be used in the future, and if it is given four integer
+arguments then the old syntax will be used.</p>
+<h1>BINDINGS</h1>
+<p>Tk automatically creates class bindings for scrollbars that give them
+the following default behavior. If the behavior is different for
+vertical and horizontal scrollbars, the horizontal behavior is described
+in parentheses.</p>
+<dl>
+<dt>[1]</dt>
+<dd>
+<p>Pressing button 1 over <strong>arrow1</strong> causes the view in the
+associated widget to shift up (left) by one unit so that the document
+appears to move down (right) one unit. If the button is held down, the
+action auto-repeats.</p>
+</dd>
+<dt>[2]</dt>
+<dd>
+<p>Pressing button 1 over <strong>trough1</strong> causes the view in
+the associated widget to shift up (left) by one screenful so that the
+document appears to move down (right) one screenful. If the button is
+held down, the action auto-repeats.</p>
+</dd>
+<dt>[3]</dt>
+<dd>
+<p>Pressing button 1 over the slider and dragging causes the view to
+drag with the slider. If the <strong>jump</strong> option is true, then
+the view doesn't drag along with the slider; it changes only when the
+mouse button is released.</p>
+</dd>
+<dt>[4]</dt>
+<dd>
+<p>Pressing button 1 over <strong>trough2</strong> causes the view in
+the associated widget to shift down (right) by one screenful so that the
+document appears to move up (left) one screenful. If the button is held
+down, the action auto-repeats.</p>
+</dd>
+<dt>[5]</dt>
+<dd>
+<p>Pressing button 1 over <strong>arrow2</strong> causes the view in the
+associated widget to shift down (right) by one unit so that the document
+appears to move up (left) one unit. If the button is held down, the
+action auto-repeats.</p>
+</dd>
+<dt>[6]</dt>
+<dd>
+<p>If button 2 is pressed over the trough or the slider, it sets the
+view to correspond to the mouse position; dragging the mouse with button
+2 down causes the view to drag with the mouse. If button 2 is pressed
+over one of the arrows, it causes the same behavior as pressing button
+1.</p>
+</dd>
+<dt>[7]</dt>
+<dd>
+<p>If button 1 is pressed with the Control key down, then if the mouse
+is over <strong>arrow1</strong> or <strong>trough1</strong> the view
+changes to the very top (left) of the document; if the mouse is over
+<strong>arrow2</strong> or <strong>trough2</strong> the view changes to
+the very bottom (right) of the document; if the mouse is anywhere else
+then the button press has no effect.</p>
+</dd>
+<dt>[8]</dt>
+<dd>
+<p>In vertical scrollbars the Up and Down keys have the same behavior as
+mouse clicks over <strong>arrow1</strong> and <strong>arrow2</strong>,
+respectively. In horizontal scrollbars these keys have no effect.</p>
+</dd>
+<dt>[9]</dt>
+<dd>
+<p>In vertical scrollbars Control-Up and Control-Down have the same
+behavior as mouse clicks over <strong>trough1</strong> and
+<strong>trough2</strong>, respectively. In horizontal scrollbars these
+keys have no effect.</p>
+</dd>
+<dt>[10]</dt>
+<dd>
+<p>In horizontal scrollbars the Up and Down keys have the same behavior
+as mouse clicks over <strong>arrow1</strong> and
+<strong>arrow2</strong>, respectively. In vertical scrollbars these keys
+have no effect.</p>
+</dd>
+<dt>[11]</dt>
+<dd>
+<p>In horizontal scrollbars Control-Up and Control-Down have the same
+behavior as mouse clicks over <strong>trough1</strong> and
+<strong>trough2</strong>, respectively. In vertical scrollbars these
+keys have no effect.</p>
+</dd>
+<dt>[12]</dt>
+<dd>
+<p>The Prior and Next keys have the same behavior as mouse clicks over
+<strong>trough1</strong> and <strong>trough2</strong>, respectively.</p>
+</dd>
+<dt>[13]</dt>
+<dd>
+<p>The Home key adjusts the view to the top (left edge) of the
+document.</p>
+</dd>
+<dt>[14]</dt>
+<dd>
+<p>The End key adjusts the view to the bottom (right edge) of the
+document.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>Tk::callbacks Tk::Scrolled</p>
+<h1>KEYWORDS</h1>
+<p>scrollbar, widget</p>

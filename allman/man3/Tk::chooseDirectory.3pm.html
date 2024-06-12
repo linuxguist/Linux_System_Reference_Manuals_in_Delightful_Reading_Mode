@@ -1,0 +1,69 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::chooseDirectory - pops up a dialog box for the user to select a
+directory.</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$widget</code></em>-&gt;<strong>chooseDirectory</strong>(
+?<em>option value ...</em>? );</p>
+<h1>DESCRIPTION</h1>
+<p>The method <strong>chooseDirectory</strong> is implemented as a perl
+wrapper on the core tk command <strong>tk_chooseDirectory</strong>, and
+<em><code>$widget</code></em> is passed as the argument to the hidden
+<strong>-parent</strong> option.</p>
+<p>The <strong>chooseDirectory</strong> method pops up a dialog box for
+the user to select a directory. The following <em>option-value</em>
+pairs are possible as command line arguments:</p>
+<dl>
+<dt>-initialdir dirname</dt>
+<dd>
+<p>Specifies that the directories in <em>directory</em> should be
+displayed when the dialog pops up. If this parameter is not specified,
+then the directories in the current working directory are displayed. If
+the parameter specifies a relative path, the return value will convert
+the relative path to an absolute path. This option may not always work
+on the Macintosh. This is not a bug. Rather, the <em>General
+Controls</em> control panel on the Mac allows the end user to override
+the application default directory.</p>
+</dd>
+<dt>-parent $widget</dt>
+<dd>
+<p>Makes <code>$widget</code> the logical parent of the dialog. The
+dialog is displayed on top of its parent window.</p>
+</dd>
+<dt>-title titleString</dt>
+<dd>
+<p>Specifies a string to display as the title of the dialog box. If this
+option is not specified, then a default title will be displayed.</p>
+</dd>
+<dt>-mustexist boolean</dt>
+<dd>
+<p>Specifies whether the user may specify non-existant directories. If
+this parameter is true, then the user may only select directories that
+already exist. The default value is <em>false</em>.</p>
+</dd>
+</dl>
+<h1>CAVEATS</h1>
+<p>Perl does not have a concept of encoded filesystems yet. This means
+that operations on filenames like <code>opendir</code> and
+<code>open</code> still use byte semantics. Tk however uses character
+semantics internally, which means that you can get filenames with the
+UTF-8 flag set in functions like <code>chooseDirectory</code>,
+<code>getOpenFile</code> and similar. It's the user's responsibility to
+determine the encoding of the underlying filesystem and convert the
+result into bytes, e.g.</p>
+<p>use Encode; ... my $dir = $mw-&gt;chooseDirectory; $dir =
+encode("windows-1252", $dir); opendir DIR, $dir or die $!; ...</p>
+<p>See also When Unicode Does Not Happen in perlunicode and Unicode in
+Filenames in perltodo.</p>
+<h1>EXAMPLE</h1>
+<p>my $dir = $mw-&gt;chooseDirectory(-initialdir =&gt; ~, -title =&gt;
+Choose a directory); if (!defined $dir) { warn No directory selected; }
+else { warn "Selected $dir"; }</p>
+<h1>SEE ALSO</h1>
+<p>Tk::getOpenFile, Tk::getOpenFile</p>
+<h1>KEYWORDS</h1>
+<p>directory selection dialog</p>

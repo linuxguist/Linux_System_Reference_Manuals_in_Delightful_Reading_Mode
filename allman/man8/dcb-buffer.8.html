@@ -1,0 +1,93 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dcb-buffer - show / manipulate port buffer settings of the DCB (Data
+Center Bridging) subsystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dcb</strong> [ <em>OPTIONS</em> ] <strong>buffer</strong> {
+<em>COMMAND</em> | <em>help</em> }</p>
+<p><strong>dcb buffer show dev</strong> DEV [
+<strong>prio-buffer</strong> ] [ <strong>buffer-size</strong> ] [
+<strong>total-size</strong> ]</p>
+<p><strong>dcb buffer set dev</strong> DEV [
+<strong>prio-buffer</strong> <strong><em>PRIO-MAP</em></strong> ] [
+<strong>buffer-size</strong> <strong><em>SIZE-MAP</em></strong> ]</p>
+<p><em>PRIO-MAP</em> := [ <em>PRIO-MAP</em> ] <em>PRIO-MAPPING</em></p>
+<p><em>PRIO-MAPPING</em> := { <em>PRIO</em> |
+<em><strong>all</strong></em>
+}<em><strong>:</strong><em>BUFFER</em></em></p>
+<p><em>SIZE-MAP</em> := [ <em>SIZE-MAP</em> ] <em>SIZE-MAPPING</em></p>
+<p><em>SIZE-MAPPING</em> := { <em>BUFFER</em> |
+<em><strong>all</strong></em>
+}<em><strong>:</strong><em>SIZE</em></em></p>
+<p><em>PRIO</em> := { <em><strong>0</strong></em> ..
+<em><strong>7</strong></em> }</p>
+<p><em>BUFFER</em> := { <em><strong>0</strong></em> ..
+<em><strong>7</strong></em> }</p>
+<p><em>SIZE</em> := { <em>INTEGER</em> |
+<em>INTEGER<strong>K</strong></em> | <em>INTEGER<strong>M</strong></em>
+| <em>...</em> }</p>
+<h1>DESCRIPTION</h1>
+<p><strong>dcb buffer</strong> is used to configure assignment of
+traffic to port buffers based on traffic priority, and sizes of those
+buffers. It can be also used to inspect the current configuration, as
+well as total device memory that the port buffers take.</p>
+<h1>PARAMETERS</h1>
+<p>For read-write parameters, the following describes only the write
+direction, i.e. as used with the <strong>set</strong> command. For the
+<strong>show</strong> command, the parameter name is to be used as a
+simple keyword without further arguments. This instructs the tool to
+show the value of a given parameter. When no parameters are given, the
+tool shows the complete buffer configuration.</p>
+<dl>
+<dt><strong>total-size</strong></dt>
+<dd>
+<p>A read-only property that shows the total device memory taken up by
+port buffers. This might be more than a simple sum of individual buffer
+sizes if there are any hidden or internal buffers.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>prio-buffer <em>PRIO-MAP</em></strong></dt>
+<dd>
+<p><em>PRIO-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are priorities, values are
+buffer indices. For each priority sets a buffer where traffic with that
+priority is directed to.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>buffer-size <em>SIZE-MAP</em></strong></dt>
+<dd>
+<p><em>SIZE-MAP</em> uses the array parameter syntax, see
+<strong>dcb</strong>(8) for details. Keys are buffer indices, values are
+sizes of that buffer in bytes. The sizes can use the notation documented
+in section PARAMETERS at <strong>tc</strong>(8). Note that the size
+requested by the tool can be rounded or capped by the driver to satisfy
+the requirements of the device.</p>
+</dd>
+</dl>
+<h1>EXAMPLE &amp; USAGE</h1>
+<p>Configure the priomap in a one-to-one fashion:</p>
+<p># dcb buffer set dev eth0 prio-buffer 0:0 1:1 2:2 3:3 4:4 5:5 6:6
+7:7</p>
+<p>Set sizes of all buffers to 10KB, except for buffer 6, which will
+have the size 1MB:</p>
+<p># dcb buffer set dev eth0 buffer-size all:10K 6:1M</p>
+<p>Show what was set:</p>
+<p># dcb buffer show dev eth0<br />
+prio-buffer 0:0 1:1 2:2 3:3 4:4 5:5 6:6 7:7<br />
+buffer-size 0:10Kb 1:10Kb 2:10Kb 3:10Kb 4:10Kb 5:10Kb 6:1Mb 7:10Kb<br />
+total-size 1222Kb</p>
+<h1>EXIT STATUS</h1>
+<p>Exit status is 0 if command was successful or a positive integer upon
+failure.</p>
+<h1>SEE ALSO</h1>
+<p><strong>dcb</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>Report any bugs to the Network Developers mailing list
+<strong>&lt;netdev@vger.kernel.org&gt;</strong> where the development
+and maintenance is primarily done. You do not have to be subscribed to
+the list to send a message there.</p>
+<h1>AUTHOR</h1>
+<p>Petr Machata &lt;me@pmachata.org&gt;</p>

@@ -1,0 +1,32 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>delpart - tell the kernel to forget about a partition</p>
+<h1>SYNOPSIS</h1>
+<p><strong>delpart</strong> <em>device partition</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>delpart</strong> asks the Linux kernel to forget about the
+specified <em>partition</em> (a number) on the specified
+<em>device</em>. The command is a simple wrapper around the "del
+partition" ioctl.</p>
+<p>This command doesn’t manipulate partitions on a block device.</p>
+<h1>OPTIONS</h1>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>addpart</strong>(8), <strong>fdisk</strong>(8),
+<strong>parted</strong>(8), <strong>partprobe</strong>(8),
+<strong>partx</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>delpart</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

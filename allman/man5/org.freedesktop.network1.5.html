@@ -1,0 +1,178 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>org.freedesktop.network1 - The D-Bus interface of
+systemd-networkd</p>
+<h1>INTRODUCTION</h1>
+<p><strong>systemd-networkd.service</strong>(8) is a system service that
+manages and configures network interfaces. This page describes the D-Bus
+interface.</p>
+<h1>THE MANAGER OBJECT</h1>
+<p>The service exposes the following interfaces on the Manager object on
+the bus:</p>
+<blockquote>
+<pre><code>node /org/freedesktop/network1 {
+  interface org.freedesktop.network1.Manager {
+    methods:
+      ListLinks(out a(iso) links);
+      GetLinkByName(in  s name,
+                    out i ifindex,
+                    out o path);
+      GetLinkByIndex(in  i ifindex,
+                     out s name,
+                     out o path);
+      SetLinkNTP(in  i ifindex,
+                 in  as servers);
+      SetLinkDNS(in  i ifindex,
+                 in  a(iay) addresses);
+      SetLinkDNSEx(in  i ifindex,
+                   in  a(iayqs) addresses);
+      SetLinkDomains(in  i ifindex,
+                     in  a(sb) domains);
+      SetLinkDefaultRoute(in  i ifindex,
+                          in  b enable);
+      SetLinkLLMNR(in  i ifindex,
+                   in  s mode);
+      SetLinkMulticastDNS(in  i ifindex,
+                          in  s mode);
+      SetLinkDNSOverTLS(in  i ifindex,
+                        in  s mode);
+      SetLinkDNSSEC(in  i ifindex,
+                    in  s mode);
+      SetLinkDNSSECNegativeTrustAnchors(in  i ifindex,
+                                        in  as names);
+      RevertLinkNTP(in  i ifindex);
+      RevertLinkDNS(in  i ifindex);
+      RenewLink(in  i ifindex);
+      ForceRenewLink(in  i ifindex);
+      ReconfigureLink(in  i ifindex);
+      Reload();
+      DescribeLink(in  i ifindex,
+                   out s json);
+      Describe(out s json);
+    properties:
+      readonly s OperationalState = ...;
+      readonly s CarrierState = ...;
+      readonly s AddressState = ...;
+      readonly s IPv4AddressState = ...;
+      readonly s IPv6AddressState = ...;
+      readonly s OnlineState = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+      readonly t NamespaceId = ...;
+  };
+  interface org.freedesktop.DBus.Peer { ... };
+  interface org.freedesktop.DBus.Introspectable { ... };
+  interface org.freedesktop.DBus.Properties { ... };
+};
+    </code></pre>
+</blockquote>
+<p>Provides information about the manager.</p>
+<h1>LINK OBJECT</h1>
+<blockquote>
+<pre><code>node /org/freedesktop/network1/link/_1 {
+  interface org.freedesktop.network1.Link {
+    methods:
+      SetNTP(in  as servers);
+      SetDNS(in  a(iay) addresses);
+      SetDNSEx(in  a(iayqs) addresses);
+      SetDomains(in  a(sb) domains);
+      SetDefaultRoute(in  b enable);
+      SetLLMNR(in  s mode);
+      SetMulticastDNS(in  s mode);
+      SetDNSOverTLS(in  s mode);
+      SetDNSSEC(in  s mode);
+      SetDNSSECNegativeTrustAnchors(in  as names);
+      RevertNTP();
+      RevertDNS();
+      Renew();
+      ForceRenew();
+      Reconfigure();
+      Describe(out s json);
+    properties:
+      readonly s OperationalState = ...;
+      readonly s CarrierState = ...;
+      readonly s AddressState = ...;
+      readonly s IPv4AddressState = ...;
+      readonly s IPv6AddressState = ...;
+      readonly s OnlineState = ...;
+      readonly s AdministrativeState = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+      readonly (tt) BitRates = ...;
+  };
+  interface org.freedesktop.DBus.Peer { ... };
+  interface org.freedesktop.DBus.Introspectable { ... };
+  interface org.freedesktop.DBus.Properties { ... };
+  interface org.freedesktop.network1.DHCPServer { ... };
+};
+    </code></pre>
+</blockquote>
+<p>Provides information about interfaces.</p>
+<h1>NETWORK OBJECT</h1>
+<blockquote>
+<pre><code>node /org/freedesktop/network1/network/_1 {
+  interface org.freedesktop.network1.Network {
+    properties:
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+      readonly s Description = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+      readonly s SourcePath = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+      readonly as MatchMAC = [..., ...];
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+      readonly as MatchPath = [..., ...];
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+      readonly as MatchDriver = [..., ...];
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+      readonly as MatchType = [..., ...];
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;const&quot;)
+      readonly as MatchName = [..., ...];
+  };
+  interface org.freedesktop.DBus.Peer { ... };
+  interface org.freedesktop.DBus.Introspectable { ... };
+  interface org.freedesktop.DBus.Properties { ... };
+};
+    </code></pre>
+</blockquote>
+<p>Provides information about .network files.</p>
+<h1>DHCP SERVER OBJECT</h1>
+<blockquote>
+<pre><code>node /org/freedesktop/network1/link/_1 {
+  interface org.freedesktop.network1.DHCPServer {
+    properties:
+      readonly a(uayayayayt) Leases = [...];
+  };
+  interface org.freedesktop.DBus.Peer { ... };
+  interface org.freedesktop.DBus.Introspectable { ... };
+  interface org.freedesktop.DBus.Properties { ... };
+};
+    </code></pre>
+</blockquote>
+<p>Provides information about leases.</p>
+<h1>EXAMPLES</h1>
+<p><strong>Example 1. Introspect org.freedesktop.network1.Manager on the
+bus</strong></p>
+<blockquote>
+<pre><code>$ gdbus introspect --system \
+  --dest org.freedesktop.network1 \
+  --object-path /org/freedesktop/network1
+      </code></pre>
+</blockquote>
+<p><strong>Example 2. Introspect org.freedesktop.network1.Link on the
+bus</strong></p>
+<blockquote>
+<pre><code>$ gdbus introspect --system \
+  --dest org.freedesktop.network1 \
+  --object-path /org/freedesktop/network1/link/_11
+      </code></pre>
+</blockquote>
+<h1>VERSIONING</h1>
+<p>These D-Bus interfaces follow <strong>the usual interface versioning
+guidelines</strong>[1].</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>the usual interface versioning guidelines</p>
+<p>https://0pointer.de/blog/projects/versioning-dbus.html</p>
+</dd>
+</dl>

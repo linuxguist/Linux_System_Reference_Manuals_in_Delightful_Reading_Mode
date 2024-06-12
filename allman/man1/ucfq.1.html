@@ -1,0 +1,77 @@
+<p><strong>\$1</strong></p>
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ucfq - query the ucf database</p>
+<h1>SYNOPSIS</h1>
+<p>usage: ucfq [options] (/path/to/file|package)[/path/to/file|package
+...]</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>--help h Print out a usage message.</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>--debug -d Turn on debugging mode.</dt>
+<dd>
+
+</dd>
+<dt>--verbose -v Make the script more verbose..</dt>
+<dd>
+
+</dd>
+<dt>--with-colons -w</dt>
+<dd>
+<blockquote>
+<p>Normally, the script presents the information in a human readable
+tabular format, but that may be harder for a machine to parse. With this
+option, the output is a compact, colon separated line, with no dividers,
+headers, or footer.</p>
+</blockquote>
+</dd>
+<dt>--state-dr dir</dt>
+<dd>
+<blockquote>
+<p>Set the state directory to <code>/path/to/dir</code> instead of the
+default <code>/var/lib/ucf</code>. Used mostly for testing.</p>
+</blockquote>
+</dd>
+</dl>
+<h1>DESCRIPTION</h1>
+<p>This script takes a set of arguments, each of which is a package name
+(and thus does not contain a /) or a full path to a configuration file,
+and outputs the associated package, if any, if the file exists on disk,
+and whether it has been modified by the user. The output is either a
+human readable tabular form, or a compact colon-separated machine
+friendly format.</p>
+<p>This script can potentially be used in package <code>postrm</code>
+scripts during purge to query the system for configuration files that
+may still exist on the system, and whether these files have been locally
+modified by the user Ω- assuming that the package registered all the
+configuration files with <strong>ucf</strong> using
+<code>ucfr</code>.</p>
+<h1>CAVEATS</h1>
+<p>This is very inchoate, at the moment, and needs testing.</p>
+<h1>BUGS</h1>
+<p>None Known so far.</p>
+<h1>AUTHOR</h1>
+<p>Manoj Srivastava &lt;srivasta\@debian.org&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This script is a part of the Ucf package, and is</p>
+<p>Copyright (c) 2006 Manoj Srivastava &lt;srivasta\@debian.org&gt;</p>
+<p>This program is free software; you can redistribute it and / or
+modify it under the terms of the GNU General Public License as published
+by the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software Foundation,
+Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA</p>

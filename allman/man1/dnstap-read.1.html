@@ -1,0 +1,60 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>dnstap-read - print dnstap data in human-readable form</p>
+<h1>SYNOPSIS</h1>
+<p><strong>dnstap-read</strong> [<strong>-m</strong>]
+[<strong>-p</strong>] [<strong>-x</strong>] [<strong>-y</strong>]
+{file}</p>
+<h1>DESCRIPTION</h1>
+<p><strong>dnstap-read</strong> reads <strong>dnstap</strong> data from
+a specified file and prints it in a human-readable format. By default,
+<strong>dnstap</strong> data is printed in a short summary format, but
+if the <em>-y</em> option is specified, a longer and more detailed YAML
+format is used.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-m</strong></dt>
+<dd>
+<p>This option indicates trace memory allocations, and is used for
+debugging memory leaks.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-p</strong></dt>
+<dd>
+<p>This option prints the text form of the DNS message that was
+encapsulated in the <strong>dnstap</strong> frame, after printing the
+<strong>dnstap</strong> data.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-x</strong></dt>
+<dd>
+<p>This option prints a hex dump of the wire form of the DNS message
+that was encapsulated in the <strong>dnstap</strong> frame, after
+printing the <strong>dnstap</strong> data.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-y</strong></dt>
+<dd>
+<p>This option prints <strong>dnstap</strong> data in a detailed YAML
+format.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><em>named(8)</em>, <em>rndc(8)</em>, BIND 9 Administrator Reference
+Manual.</p>
+<h1>AUTHOR</h1>
+<p>Internet Systems Consortium</p>
+<h1>COPYRIGHT</h1>
+<p>2023, Internet Systems Consortium</p>

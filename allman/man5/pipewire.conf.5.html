@@ -1,0 +1,104 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pipewire.conf - The PipeWire server configuration file</p>
+<h1>SYNOPSIS</h1>
+<p><em>$XDG_CONFIG_HOME/pipewire/pipewire.conf</em></p>
+<p><em>/etc/pipewire/pipewire.conf</em></p>
+<p><em>/usr/share/pipewire/pipewire.conf</em></p>
+<p><em>/usr/share/pipewire/pipewire.conf.d/</em></p>
+<p><em>/etc/pipewire/pipewire.conf.d/</em></p>
+<p><em>$XDG_CONFIG_HOME/pipewire/pipewire.conf.d/</em></p>
+<h1>DESCRIPTION</h1>
+<p>PipeWire is a service that facilitates sharing of multimedia content
+between devices and applications.</p>
+<p>On startup, the daemon reads a main configuration file to configure
+itself. It executes a series of commands listed in the config file.</p>
+<p>The config files are loaded in the order listed in the
+<em>SYNOPSIS</em>. The environment variables
+<strong>PIPEWIRE_CONFIG_DIR</strong>,
+<strong>PIPEWIRE_CONFIG_PREFIX</strong> and
+<strong>PIPEWIRE_CONFIG_NAME</strong> can be used to specify an
+alternative config directory, subdirectory and file respectively.</p>
+<p>Next to the configuration file can be a directory with the same name
+as the file with a <strong>.d/</strong> suffix. All directories in the
+<em>SYNOPSIS</em> directory search paths are traversed in the listed
+order and the contents of the <strong>*.conf</strong> files inside them
+are appended to the main configuration file as overrides. Object
+sections are merged and array sections are appended.</p>
+<h1>CONFIGURATION FILE FORMAT</h1>
+<p>The configuration file format is grouped into sections. A section is
+either a dictionary, {}, or an array, []. Dictionary and array entries
+are separated by whitespace and may be simple value assignment, an array
+or a dictionary. For example:</p>
+<p>name = value # simple assignment</p>
+<p>name = { key1 = value1 key2 = value2 } # a dictionary with two
+entries</p>
+<p>name = [ value1 value2 ] # an array with two entries</p>
+<p>name = [ { k = v1 } { k = v2 } ] # an array of dictionaries</p>
+<p>The configuration files can be expressed in full JSON syntax but for
+ease of use, a relaxed format may be used where:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<ul>
+<li><p><strong>:</strong> to delimit keys and values can be substuted by
+<strong>=</strong> or a space.</p></li>
+<li><dl>
+<dt><strong><strong>"</strong> around keys and string can be omited as
+long as no special characters</strong></dt>
+<dd>
+<p>are used in the strings.</p>
+</dd>
+</dl></li>
+</ul>
+<ul>
+<li><p><strong>,</strong> to separate objects can be replaced with a
+whitespace character.</p></li>
+<li><p><strong>#</strong> can be used to start a comment until the line
+end</p></li>
+</ul>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1>CONFIGURATION FILE SECTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>context.properties</strong></dt>
+<dd>
+<p>Dictionary. These properties configure the PipeWire instance.</p>
+</dd>
+<dt><strong>context.spa-libs</strong></dt>
+<dd>
+<p>Dictionary. Maps plugin features with globs to a spa library.</p>
+</dd>
+<dt><strong>context.modules</strong></dt>
+<dd>
+<p>Array of dictionaries. Each entry in the array is a dictionary with
+the <em>name</em> of the module to load, including optional
+<em>args</em> and <em>flags</em>. Most modules support being loaded
+multiple times.</p>
+</dd>
+<dt><strong>context.objects</strong></dt>
+<dd>
+<p>Array of dictionaries. Each entry in the array is a dictionary
+containing the <em>factory</em> to create an object from and optional
+extra arguments specific to that factory.</p>
+</dd>
+<dt><strong>context.exec</strong></dt>
+<dd>
+<p>Array of dictionaries. Each entry in the array is dictionary
+containing the <em>path</em> of a program to execute on startup and
+optional <em>args</em>.</p>
+<p>This array used to contain an entry to start the session manager but
+this mode of operation has since been demoted to development aid. Avoid
+starting a session manager in this way in production environment.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>AUTHORS</h1>
+<p>The PipeWire Developers
+&lt;<em>https://gitlab.freedesktop.org/pipewire/pipewire/issues</em>&gt;;
+PipeWire is available from <em>https://pipewire.org</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>pipewire(1)</strong>, <strong>pw-mon(1)</strong>,</p>

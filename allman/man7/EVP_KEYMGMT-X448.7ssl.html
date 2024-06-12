@@ -1,0 +1,91 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_PKEY-X25519, EVP_PKEY-X448, EVP_PKEY-ED25519, EVP_PKEY-ED448,
+EVP_KEYMGMT-X25519, EVP_KEYMGMT-X448, EVP_KEYMGMT-ED25519,
+EVP_KEYMGMT-ED448 - EVP_PKEY X25519, X448, ED25519 and ED448 keytype and
+algorithm support</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>X25519</strong>, <strong>X448</strong>,
+<strong>ED25519</strong> and <strong>ED448</strong> keytypes are
+implemented in OpenSSL's default and FIPS providers. These
+implementations support the associated key, containing the public key
+<em>pub</em> and the private key <em>priv</em>.</p>
+<p>No additional parameters can be set during key generation.</p>
+<h2>Common X25519, X448, ED25519 and ED448 parameters</h2>
+<p>In addition to the common parameters that all keytypes should support
+(see Common parameters in <strong>provider-keymgmt</strong> (7)), the
+implementation of these keytypes support the following.</p>
+<dl>
+<dt>"group" (OSSL_PKEY_PARAM_GROUP_NAME) &lt;UTF8 string&gt;</dt>
+<dd>
+<p>This is only supported by X25519 and X448. The group name must be
+x25519 or x448 respectively for those algorithms. This is only present
+for consistency with other key exchange algorithms and is typically not
+needed.</p>
+</dd>
+<dt>"pub" (OSSL_PKEY_PARAM_PUB_KEY) &lt;octet string&gt;</dt>
+<dd>
+<p>The public key value.</p>
+</dd>
+<dt>"priv" (OSSL_PKEY_PARAM_PRIV_KEY) &lt;octet string&gt;</dt>
+<dd>
+<p>The private key value.</p>
+</dd>
+<dt>"encoded-pub-key" (OSSL_PKEY_PARAM_ENCODED_PUBLIC_KEY) &lt;octet
+string&gt;</dt>
+<dd>
+<p>Used for getting and setting the encoding of a public key for the
+<strong>X25519</strong> and <strong>X448</strong> key types. Public keys
+are expected be encoded in a format as defined by RFC7748.</p>
+</dd>
+</dl>
+<h2>ED25519 and ED448 parameters</h2>
+<dl>
+<dt>"mandatory-digest" (OSSL_PKEY_PARAM_MANDATORY_DIGEST) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>The empty string, signifying that no digest may be specified.</p>
+</dd>
+</dl>
+<h1>CONFORMING TO</h1>
+<dl>
+<dt>RFC 8032</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>RFC 8410</dt>
+<dd>
+
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>An <strong>EVP_PKEY</strong> context can be obtained by calling:</p>
+<p>EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_from_name(NULL, "X25519",
+NULL); EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_from_name(NULL, "X448",
+NULL); EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_from_name(NULL, "ED25519",
+NULL); EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_from_name(NULL, "ED448",
+NULL);</p>
+<p>An <strong>X25519</strong> key can be generated like this:</p>
+<p>pkey = EVP_PKEY_Q_keygen(NULL, NULL, "X25519");</p>
+<p>An <strong>X448</strong>, <strong>ED25519</strong>, or
+<strong>ED448</strong> key can be generated likewise.</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_KEYMGMT</strong> (3), <strong>EVP_PKEY</strong> (3),
+<strong>provider-keymgmt</strong> (7),
+<strong>EVP_KEYEXCH-X25519</strong> (7),
+<strong>EVP_KEYEXCH-X448</strong> (7),
+<strong>EVP_SIGNATURE-ED25519</strong> (7),
+<strong>EVP_SIGNATURE-ED448</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

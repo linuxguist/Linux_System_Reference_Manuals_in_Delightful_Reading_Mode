@@ -1,0 +1,39 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-set-default - set the saved default boot entry for GRUB</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-set-default</strong> [<em>OPTION</em>]
+<em>MENU_ENTRY</em></p>
+<h1>DESCRIPTION</h1>
+<p>Set the default boot menu entry for GRUB. This requires setting
+GRUB_DEFAULT=saved in <em>/etc/default/grub</em>.</p>
+<dl>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>print this message and exit</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print the version information and exit</p>
+</dd>
+<dt><strong>--boot-directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>expect GRUB images under the directory DIR/grub instead of the
+<em>/boot/grub</em> directory</p>
+</dd>
+</dl>
+<p>MENU_ENTRY is a number, a menu item title or a menu item
+identifier.</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-reboot</strong>(8), <strong>grub-editenv</strong>(1)</p>
+<p>The full documentation for <strong>grub-set-default</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-set-default</strong> programs are properly installed at
+your site, the command</p>
+<blockquote>
+<p><strong>info grub-set-default</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

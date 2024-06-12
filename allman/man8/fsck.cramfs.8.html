@@ -1,0 +1,67 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>fsck.cramfs - fsck compressed ROM file system</p>
+<h1>SYNOPSIS</h1>
+<p><strong>fsck.cramfs</strong> [options] <em>file</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>fsck.cramfs</strong> is used to check the cramfs file
+system.</p>
+<h1>OPTIONS</h1>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Enable verbose messaging.</p>
+</blockquote>
+<p><strong>-b</strong>, <strong>--blocksize</strong>
+<em>blocksize</em></p>
+<blockquote>
+<p>Use this blocksize, defaults to page size. Must be equal to what was
+set at creation time. Only used for <strong>--extract</strong>.</p>
+</blockquote>
+<p><strong>--extract</strong>[=<em>directory</em>]</p>
+<blockquote>
+<p>Test to uncompress the whole file system. Optionally extract contents
+of the <em>file</em> to <em>directory</em>.</p>
+</blockquote>
+<p><strong>-a</strong></p>
+<blockquote>
+<p>This option is silently ignored.</p>
+</blockquote>
+<p><strong>-y</strong></p>
+<blockquote>
+<p>This option is silently ignored.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>0</strong></p>
+<blockquote>
+<p>success</p>
+</blockquote>
+<p><strong>4</strong></p>
+<blockquote>
+<p>file system was left uncorrected</p>
+</blockquote>
+<p><strong>8</strong></p>
+<blockquote>
+<p>operation error, such as unable to allocate memory</p>
+</blockquote>
+<p><strong>16</strong></p>
+<blockquote>
+<p>usage information was printed</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>mount</strong>(8), <strong>mkfs.cramfs</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>fsck.cramfs</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

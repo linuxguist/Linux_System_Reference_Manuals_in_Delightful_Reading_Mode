@@ -1,0 +1,18 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Submethods - add aliases for tk sub-commands</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::Submethods ( command1 =&gt; [qw(sub1 sub2 sub3)], command2
+=&gt; [qw(sub1 sub2 sub3)]);</p>
+<h1>DESCRIPTION</h1>
+<p>Creates <code>-&gt;commandSub(...)</code> as an alias for
+<code>-&gt;command(sub,...)</code> e.g. <code>-&gt;grabRelease</code>
+for <code>-&gt;grab(release)</code>.</p>
+<p>For each command/subcommand pair this creates a closure with command
+and subcommand as bound lexical variables and assigns a reference to
+this to a 'glob' in the callers package.</p>
+<p>Someday the sub-commands may be created directly in the C code.</p>

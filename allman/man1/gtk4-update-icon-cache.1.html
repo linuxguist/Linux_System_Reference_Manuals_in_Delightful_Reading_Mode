@@ -1,0 +1,69 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gtk4-update-icon-cache - Icon theme caching utility</p>
+<h1>SYNOPSIS</h1>
+<pre><code>gtk4-update-icon-cache [OPTIONS...] &lt;PATH&gt;</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>gtk4-update-icon-cache</strong> creates
+<strong>mmap(2)</strong>-able cache files for icon themes.</p>
+<p>It expects to be given the <strong>PATH</strong> to an icon theme
+directory containing an <strong>index.theme</strong>, e.g.
+<strong>/usr/share/icons/hicolor</strong>, and writes a
+<strong>icon-theme.cache</strong> containing cached information about
+the icons in the directory tree below the given directory.</p>
+<p>GTK can use the cache files created by
+<strong>gtk4-update-icon-cache</strong> to avoid a lot of system call
+and disk seek overhead when the application starts. Since the format of
+the cache files allows them to be shared across multiple processes, for
+instance using the POSIX <strong>mmap(2)</strong> system call, the
+overall memory consumption is reduced as well.</p>
+<h1>OPTIONS</h1>
+<p><strong>-f, --force</strong></p>
+<blockquote>
+<blockquote>
+<p>Overwrite an existing cache file even if it appears to be
+up-to-date.</p>
+</blockquote>
+</blockquote>
+<p><strong>-t, --ignore-theme-index</strong></p>
+<blockquote>
+<blockquote>
+<p>Don't check for the existence of <strong>index.theme</strong> in the
+icon theme directory. Without this option,
+<strong>gtk4-update-icon-cache</strong> refuses to create an icon cache
+in a directory which does not appear to be the toplevel directory of an
+icon theme.</p>
+</blockquote>
+</blockquote>
+<p><strong>-i, --index-only</strong></p>
+<blockquote>
+<blockquote>
+<p>Don't include image data in the cache.</p>
+</blockquote>
+</blockquote>
+<p><strong>--include-image-data</strong></p>
+<blockquote>
+<blockquote>
+<p>Include image data in the cache.</p>
+</blockquote>
+</blockquote>
+<p><strong>-c, --source &lt;NAME&gt;</strong></p>
+<blockquote>
+<blockquote>
+<p>Output a C header file declaring a constant <strong>NAME</strong>
+with the contents of the icon cache.</p>
+</blockquote>
+</blockquote>
+<p><strong>-q, --quiet</strong></p>
+<blockquote>
+<blockquote>
+<p>Turn off verbose output.</p>
+</blockquote>
+</blockquote>
+<p><strong>-v, --validate</strong></p>
+<blockquote>
+<blockquote>
+<p>Validate existing icon cache.</p>
+</blockquote>
+</blockquote>

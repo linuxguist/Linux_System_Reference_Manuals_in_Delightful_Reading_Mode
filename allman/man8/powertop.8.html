@@ -1,0 +1,139 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>powertop - a power consumption and power management diagnosis
+tool.</p>
+<h1>SYNOPSIS</h1>
+<p><strong>powertop</strong> [<em>options</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>powertop</strong> is a program that helps to diagnose various
+issues with power consumption and power management. It also has an
+interactive mode allowing one to experiment with various power
+management settings. When invoking powertop without arguments powertop
+starts in interactive mode.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>--auto-tune</strong></dt>
+<dd>
+<p>Set all tunable options to their good setting without
+interaction.</p>
+</dd>
+<dt><strong>-c</strong>, <strong>--calibrate</strong></dt>
+<dd>
+<p>Runs powertop in calibration mode. When running on battery, powertop
+can track power consumption as well as system activity. When there are
+enough measurements, powertop can start to report power estimates. One
+can get more accurate estimates by using this option to enable a
+calibration cycle. This will cycle through various display levels and
+USB device activities and workloads.</p>
+</dd>
+<dt><strong>-C</strong>, <strong>--csv</strong>[=<em>filename</em>]</dt>
+<dd>
+<p>Generate a CSV report. If a <em>filename</em> is not specified then
+the default name <strong>powertop.csv</strong> is used. The CSV report
+can be used for reporting and data analysis.</p>
+</dd>
+<dt><strong>--debug</strong></dt>
+<dd>
+<p>Run in debug mode.</p>
+</dd>
+<dt><strong>--extech</strong>=<em>devnode</em></dt>
+<dd>
+<p>Use the Extech Power Analyzer for measurements. This allows one to
+specify the serial device node of the serial to USB adaptor connecting
+to the Extech Power Analyzer, for example <em>/dev/ttyUSB0</em>.</p>
+</dd>
+<dt><strong>-r</strong>,
+<strong>--html</strong>[=<em>filename</em>]</dt>
+<dd>
+<p>Generate an HTML report. If a <em>filename</em> is not specified then
+the default name <strong>powertop.html</strong> is used. The HTML report
+can be sent to others to help diagnose power issues.</p>
+</dd>
+<dt><strong>-i</strong>,
+<strong>--iteration</strong>[=<em>iterations</em>]</dt>
+<dd>
+<p>Number of times to run each test.</p>
+</dd>
+<dt><strong>-q</strong>, <strong>--quiet</strong></dt>
+<dd>
+<p>Suppress stderr output.</p>
+</dd>
+<dt><strong>-t</strong>, <strong>--time</strong>[=<em>seconds</em>]</dt>
+<dd>
+<p>Generate a report for a specified number of <em>seconds</em>.</p>
+</dd>
+<dt><strong>-w</strong>,
+<strong>--workload</strong>[=<em>workload</em>]</dt>
+<dd>
+<p>Execute <em>workload</em> file as a part of calibration before making
+a report.</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version information and exit.</p>
+</dd>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Show the help message and exit.</p>
+</dd>
+</dl>
+<h1>COMMANDS</h1>
+<p>In interactive mode, the following key bindings are available:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Tab</strong></td>
+<td style="text-align: left;">Show next tab</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>BackTab</strong></td>
+<td style="text-align: left;">Show previous tab</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Right Arrow</strong></td>
+<td style="text-align: left;">Scroll to the right</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Left Arrow</strong></td>
+<td style="text-align: left;">Scroll to the left</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Up Arrow</strong>,
+<strong>PageUp</strong></td>
+<td style="text-align: left;">Scroll up or select previous item</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Down Arrow</strong>,
+<strong>PageDown</strong></td>
+<td style="text-align: left;">Scroll down or select next item</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Space</strong>,
+<strong>Return</strong></td>
+<td style="text-align: left;">Activate current item</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>s</strong></td>
+<td style="text-align: left;">Set refresh timeout</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>r</strong></td>
+<td style="text-align: left;">Refresh window</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>q</strong>,
+<strong>Ctrl-C</strong>, <strong>Escape</strong></td>
+<td style="text-align: left;">Exit powertop</td>
+</tr>
+</tbody>
+</table>
+<h1>BUGS</h1>
+<p>Send bug reports to <a href="mailto:powertop@lists.01.org"></a></p>
+<h1>SEE ALSO</h1>
+<p>The program is more fully described at <a
+href="https://01.org/powertop"></a></p>
+<h1>AUTHOR</h1>
+<p>powertop was written by <a href="mailto:arjan@linux.intel.com">Arjan
+van de Ven</a>, and is currently maintained by <a
+href="mailto:chris.e.ferron@linux.intel.com">Chris E Ferron</a>.</p>

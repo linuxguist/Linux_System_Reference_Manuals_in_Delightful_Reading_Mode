@@ -1,0 +1,109 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>JxrDecApp - JPEG XR Decoder Utility</p>
+<h1>DESCRIPTION</h1>
+<p>JPEG XR Decoder Utility Copyright 2013 Microsoft Corporation - All
+Rights Reserved</p>
+<p>./debian/tmp/usr/bin/JxrDecApp [options]...</p>
+<dl>
+<dt><strong>-i</strong> input.jxr/wdp</dt>
+<dd>
+<p>Input JPEG XR/HD Photo file name</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-o</strong> output.bmp/pnm/tif/jxr</dt>
+<dd>
+<p>Output image file name bmp: &lt;=8bpc, BGR pnm: &gt;=8bpc, RGB tif:
+&gt;=8bpc, RGB jxr: for compressed domain transcode</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-c</strong> format</dt>
+<dd>
+<p>Specifies the uncompressed output format 0: 24bppBGR 1:
+1bppBlackWhite 2: 8bppGray 3: 16bppGray 4: 16bppGrayFixedPoint 5:
+16bppGrayHalf 7: 32bppGrayFixedPoint 8: 32bppGrayFloat 9: 24bppRGB</p>
+</dd>
+<dt>10: 48bppRGB</dt>
+<dd>
+<p>11: 48bppRGBFixedPoint 12: 48bppRGBHalf 14: 96bppRGBFixedPoint 15:
+128bppRGBFloat 16: 32bppRGBE 17: 32bppCMYK 18: 64bppCMYK 22: 32bppBGRA
+23: 64bppRGBA 24: 64bppRGBAFixedPoint 25: 64bppRGBAHalf 27:
+128bppRGBAFixedPoint 28: 128bppRGBAFloat 29: 16bppBGR555 30: 16bppBGR565
+31: 32bppBGR101010 32: 40bppCMYKA 33: 80bppCMYKA 34: 32bppBGR</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-r</strong> top left height width</dt>
+<dd>
+<p>Specifies the rectangle for region decode</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-T</strong> m</dt>
+<dd>
+<p>Reduced resolution (mipmap) decode 0: Full resolution (default) 1:
+1/2 res (down-sampled from full res) 2: 1/4 res (native decode) 3: 1/8
+res (down-sampled from 1/4 res) 4: 1/16 res (native decode)</p>
+<p>&gt;4: 1/(2^m) res (down-sampled from 1/16 res)</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-O</strong> orientation</dt>
+<dd>
+<p>0: No transformation (default) 1: Flip vertically 2: Flip
+horizontally 3: Flip vertically &amp; horizontally 4: Rotate 90 degrees
+CW 5: Rotate 90 degrees CW &amp; flip vertically 6: Rotate 90 degrees CW
+&amp; flip horizontally 7: Rotate 90 degrees CW &amp; flip vert &amp;
+horiz</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-s</strong> skip subbands</dt>
+<dd>
+<p>Used for compressed domain transcoding 0: All subbands included
+(default) 1: Skip flexbits 2: Skip highpass 3: Skip highpass &amp;
+lowpass (DC only)</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-a</strong> alpha decode</dt>
+<dd>
+<p>0: Decode without alpha channel 1: Decode only alpha channel 2:
+Decode image &amp; alpha (default)</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-p</strong> strength</dt>
+<dd>
+<p>Post processing filter strength 0: None (default) 1: Light 2: Medium
+3: Strong 4: Very strong</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-C</strong></dt>
+<dd>
+<p>Suppress overlapping boundary macro blocks (Used for compressed
+domain tile extraction)</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-t</strong></dt>
+<dd>
+<p>Display timing information</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>Display verbose decoder information</p>
+</dd>
+</dl>
+<p>Eg: ./debian/tmp/usr/bin/JxrDecApp <strong>-i</strong> input.jxr
+<strong>-o</strong> output.bmp <strong>-c</strong> 0</p>
+<h1>AUTHOR</h1>
+<p>This manual page was written by Mathieu Malaterre
+&lt;malat@debian.org&gt; for the Debian GNU/Linux system (but may be
+used by others).</p>

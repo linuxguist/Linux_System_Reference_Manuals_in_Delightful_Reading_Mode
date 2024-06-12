@@ -1,0 +1,117 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pppoe-discovery - perform PPPoE discovery</p>
+<h1>SYNOPSIS</h1>
+<p><strong>pppoe-discovery</strong> [ <em>options</em> ]<br />
+<strong>pppoe-discovery</strong> { <strong>-V</strong> |
+<strong>-h</strong> }</p>
+<h1>DESCRIPTION</h1>
+<p><strong>pppoe-discovery</strong> performs the same discovery process
+as <strong>pppoe</strong>, but does not initiate a session. It sends a
+PADI packet and then prints the names of access concentrators in each
+PADO packet it receives.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-I</strong><em> interface</em></dt>
+<dd>
+<blockquote>
+<p>The <strong>-I</strong> option specifies the Ethernet interface to
+use. Under Linux, it is typically eth0 or eth1. The interface should be
+“up” before you start <strong>pppoe-discovery</strong>, but should
+<em>not</em> be configured to have an IP address. The default interface
+is eth0.</p>
+</blockquote>
+</dd>
+<dt><strong>-D</strong><em> file_name</em></dt>
+<dd>
+<blockquote>
+<p>The <strong>-D</strong> option causes every packet to be dumped to
+the specified <em>file_name</em>. This is intended for debugging
+only.</p>
+</blockquote>
+</dd>
+<dt><strong>-U</strong></dt>
+<dd>
+<blockquote>
+<p>Causes <strong>pppoe-discovery</strong> to use the Host-Uniq tag in
+its discovery packets. The value of the tag is derived from the
+process's PID number. This lets you run multiple instances of
+<strong>pppoe-discovery</strong> and/or <strong>pppd</strong> without
+having their discovery packets interfere with one another. You must
+supply this option to <em>all</em> instances that you intend to run
+simultaneously. This option is mutually exclusive with
+<strong>-W</strong>.</p>
+</blockquote>
+</dd>
+<dt><strong>-W</strong><em> value</em></dt>
+<dd>
+<blockquote>
+<p>Causes <strong>pppoe-discovery</strong> to use the Host-Uniq tag in
+its discovery packets. The value of the tag is taken from the option
+argument, encoded as a string of hexadecimal digits. This lets you run
+multiple instances of <strong>pppoe-discovery</strong> and/or
+<strong>pppd</strong> without having their discovery packets interfere
+with one another. You must supply this option to <em>all</em> instances
+that you intend to run simultaneously. This option is mutually exclusive
+with <strong>-U</strong>.</p>
+</blockquote>
+</dd>
+<dt><strong>-S</strong><em> service_name</em></dt>
+<dd>
+<blockquote>
+<p>Specifies the desired service name. <strong>pppoe-discovery</strong>
+will only accept access concentrators which can provide the specified
+service. In most cases, you should <em>not</em> specify this option. Use
+it only if you know that there are multiple access concentrators or know
+that you need a specific service name.</p>
+</blockquote>
+</dd>
+<dt><strong>-C</strong><em> ac_name</em></dt>
+<dd>
+<blockquote>
+<p>Specifies the desired access concentrator name.
+<strong>pppoe-discovery</strong> will only accept the specified access
+concentrator. In most cases, you should <em>not</em> specify this
+option. Use it only if you know that there are multiple access
+concentrators. If both the <strong>-S</strong> and <strong>-C</strong>
+options are specified, they must <em>both</em> match.</p>
+</blockquote>
+</dd>
+<dt><strong>-Q</strong></dt>
+<dd>
+<blockquote>
+<p>Causes <strong>pppoe-discovery</strong> to avoid printing discovered
+access concentrator names. This can be useful in scripts, which can use
+the exit code of the program to determine whether any matching access
+concentrators were discovered.</p>
+</blockquote>
+</dd>
+<dt><strong>-t</strong><em> timeout</em></dt>
+<dd>
+<blockquote>
+<p>Changes the discovery timeout for PADI requests, in seconds. The
+default value is 5 seconds.</p>
+</blockquote>
+</dd>
+<dt><strong>-a</strong><em> attempts</em></dt>
+<dd>
+<blockquote>
+<p>Changes the number of PADI discovery attempts made. By default, 3
+attempts are made to discover access concentrators before giving up.</p>
+</blockquote>
+</dd>
+<dt><strong>-V</strong> | <strong>-h</strong></dt>
+<dd>
+<blockquote>
+<p>Either of these options causes <strong>pppoe-discovery</strong> to
+print its version number and usage information, then exit.</p>
+</blockquote>
+</dd>
+</dl>
+<h1>AUTHORS</h1>
+<p><strong>pppoe-discovery</strong> was written by Marco d'Itri
+&lt;md@linux.it&gt;, based on <strong>pppoe</strong> by David F. Skoll
+&lt;dfs@roaringpenguin.com&gt;.</p>
+<h1>SEE ALSO</h1>
+<p>pppoe(8), pppoe-sniff(8)</p>

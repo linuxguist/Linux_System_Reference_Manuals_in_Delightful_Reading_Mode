@@ -1,0 +1,61 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>encguess - guess character encodings of files</p>
+<h1>VERSION</h1>
+<p><code>$Id:</code> encguess,v 0.3 2020/12/02 01:28:17 dankogai Exp
+$</p>
+<h1>SYNOPSIS</h1>
+<p>encguess [switches] filename...</p>
+<h2>SWITCHES</h2>
+<dl>
+<dt>-h</dt>
+<dd>
+<p>show this message and exit.</p>
+</dd>
+<dt>-s</dt>
+<dd>
+<p>specify a list of suspect encoding types to test, separated by either
+<code>:</code> or <code>,</code></p>
+</dd>
+<dt>-S</dt>
+<dd>
+<p>output a list of all acceptable encoding types that can be used with
+the -s param</p>
+</dd>
+<dt>-u</dt>
+<dd>
+<p>suppress display of unidentified types</p>
+</dd>
+</dl>
+<h2>EXAMPLES:</h2>
+<ul>
+<li><p>Guess encoding of a file named <code>test.txt</code>, using only
+the default suspect types. encguess test.txt</p></li>
+<li><p>Guess the encoding type of a file named <code>test.txt</code>,
+using the suspect types <code>euc-jp,shiftjis,7bit-jis</code>. encguess
+-s euc-jp,shiftjis,7bit-jis test.txt encguess -s
+euc-jp:shiftjis:7bit-jis test.txt</p></li>
+<li><p>Guess the encoding type of several files, do not display results
+for unidentified files. encguess -us euc-jp,shiftjis,7bit-jis
+test*.txt</p></li>
+</ul>
+<h1>DESCRIPTION</h1>
+<p>The encoding identification is done by checking one encoding type at
+a time until all but the right type are eliminated. The set of encoding
+types to try is defined by the -s parameter and defaults to ascii, utf8
+and UTF-16/32 with BOM. This can be overridden by passing one or more
+encoding types via the -s parameter. If you need to pass in multiple
+suspect encoding types, use a quoted string with the a space separating
+each value.</p>
+<h1>SEE ALSO</h1>
+<p>Encode::Guess, Encode::Detect</p>
+<h1>LICENSE AND COPYRIGHT</h1>
+<p>Copyright 2015 Michael LaGrasta and Dan Kogai.</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the terms of the the Artistic License (2.0). You may obtain a
+copy of the full license at:</p>
+<p>&lt;http://www.perlfoundation.org/artistic_license_2_0&gt;</p>

@@ -1,0 +1,568 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mbimcli - Control MBIM devices</p>
+<h1>DESCRIPTION</h1>
+<h2>Usage:</h2>
+<blockquote>
+<p>mbimcli [OPTION?] - Control MBIM devices</p>
+</blockquote>
+<h2>Help Options:</h2>
+<dl>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Show help options</p>
+</dd>
+<dt><strong>--help-all</strong></dt>
+<dd>
+<p>Show all help options</p>
+</dd>
+<dt><strong>--help-basic-connect</strong></dt>
+<dd>
+<p>Show Basic Connect Service options</p>
+</dd>
+<dt><strong>--help-phonebook</strong></dt>
+<dd>
+<p>Show Phonebook Service options</p>
+</dd>
+<dt><strong>--help-dss</strong></dt>
+<dd>
+<p>Show Device Service Stream options</p>
+</dd>
+<dt><strong>--help-ms-firmware-id</strong></dt>
+<dd>
+<p>Show Microsoft Firmware ID Service options</p>
+</dd>
+<dt><strong>--help-ms-host-shutdown</strong></dt>
+<dd>
+<p>Show Microsoft Host Shutdown Service options</p>
+</dd>
+<dt><strong>--help-ms-sar</strong></dt>
+<dd>
+<p>Show Microsoft SAR Service options</p>
+</dd>
+<dt><strong>--help-atds</strong></dt>
+<dd>
+<p>Show AT&amp;T Device Service options</p>
+</dd>
+<dt><strong>--help-intel-firmware-update</strong></dt>
+<dd>
+<p>Show Intel Firmware Update Service options</p>
+</dd>
+<dt><strong>--help-ms-basic-connect-extensions</strong></dt>
+<dd>
+<p>Show Microsoft Basic Connect Extensions Service options</p>
+</dd>
+<dt><strong>--help-quectel</strong></dt>
+<dd>
+<p>Show Quectel Service options</p>
+</dd>
+<dt><strong>--help-link-management</strong></dt>
+<dd>
+<p>Show link management specific options</p>
+</dd>
+<dt><strong>--help-intel-thermal-rf</strong></dt>
+<dd>
+<p>Show Intel Thermal RF Service options</p>
+</dd>
+<dt><strong>--help-ms-voice-extensions</strong></dt>
+<dd>
+<p>Show Microsoft Voice Extensions Service options</p>
+</dd>
+<dt><strong>--help-ms-uicc-low-level-access</strong></dt>
+<dd>
+<p>Show Microsoft UICC Low Level Access Service options</p>
+</dd>
+</dl>
+<h2>Basic Connect options:</h2>
+<dl>
+<dt><strong>--query-device-caps</strong></dt>
+<dd>
+<p>Query device capabilities</p>
+</dd>
+<dt><strong>--query-subscriber-ready-status</strong></dt>
+<dd>
+<p>Query subscriber ready status</p>
+</dd>
+<dt><strong>--query-radio-state</strong></dt>
+<dd>
+<p>Query radio state</p>
+</dd>
+<dt><strong>--set-radio-state</strong>=<em>[</em>(on|off)]</dt>
+<dd>
+<p>Set radio state</p>
+</dd>
+<dt><strong>--query-device-services</strong></dt>
+<dd>
+<p>Query device services</p>
+</dd>
+<dt><strong>--query-pin-state</strong></dt>
+<dd>
+<p>Query PIN state</p>
+</dd>
+<dt><strong>--enter-pin</strong>=<em>[</em>(PIN type),(current
+PIN)]</dt>
+<dd>
+<p>Enter PIN (PIN type is optional, defaults to PIN1, allowed options:
+(pin1,network-pin,network-subset-pin,service-provider-pin,corporate-pin)</p>
+</dd>
+<dt><strong>--change-pin</strong>=<em>[</em>(current PIN),(new
+PIN)]</dt>
+<dd>
+<p>Change PIN</p>
+</dd>
+<dt><strong>--enable-pin</strong>=<em>[</em>(current PIN)]</dt>
+<dd>
+<p>Enable PIN</p>
+</dd>
+<dt><strong>--disable-pin</strong>=<em>[</em>(PIN type),(current
+PIN)]</dt>
+<dd>
+<p>Disable PIN (PIN type is optional, see enter-pin for details)</p>
+</dd>
+<dt><strong>--enter-puk</strong>=<em>[</em>(PUK type),(PUK),(new
+PIN)]</dt>
+<dd>
+<p>Enter PUK (PUK type is optional, defaults to PUK1, allowed options:
+(puk1,network-puk,network-subset-puk,service-provider-puk,corporate-puk)</p>
+</dd>
+<dt><strong>--query-pin-list</strong></dt>
+<dd>
+<p>Query PIN list</p>
+</dd>
+<dt><strong>--query-home-provider</strong></dt>
+<dd>
+<p>Query home provider</p>
+</dd>
+<dt><strong>--query-preferred-providers</strong></dt>
+<dd>
+<p>Query preferred providers</p>
+</dd>
+<dt><strong>--query-visible-providers</strong></dt>
+<dd>
+<p>Query visible providers</p>
+</dd>
+<dt><strong>--query-registration-state</strong></dt>
+<dd>
+<p>Query registration state</p>
+</dd>
+<dt><strong>--register-automatic</strong></dt>
+<dd>
+<p>Launch automatic registration</p>
+</dd>
+<dt><strong>--query-signal-state</strong></dt>
+<dd>
+<p>Query signal state</p>
+</dd>
+<dt><strong>--query-packet-service-state</strong></dt>
+<dd>
+<p>Query packet service state</p>
+</dd>
+<dt><strong>--attach-packet-service</strong></dt>
+<dd>
+<p>Attach to the packet service</p>
+</dd>
+<dt><strong>--detach-packet-service</strong></dt>
+<dd>
+<p>Detach from the packet service</p>
+</dd>
+<dt><strong>--query-connection-state</strong>=<em>[SessionID]</em></dt>
+<dd>
+<p>Query connection state (SessionID is optional, defaults to 0)</p>
+</dd>
+<dt><strong>--connect</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Connect (allowed keys: session-id, access-string, ip-type, auth,
+username, password, compression, context-type)</p>
+</dd>
+<dt><strong>--query-ip-configuration</strong>=<em>[SessionID]</em></dt>
+<dd>
+<p>Query IP configuration (SessionID is optional, defaults to 0)</p>
+</dd>
+<dt><strong>--disconnect</strong>=<em>[SessionID]</em></dt>
+<dd>
+<p>Disconnect (SessionID is optional, defaults to 0)</p>
+</dd>
+<dt><strong>--query-packet-statistics</strong></dt>
+<dd>
+<p>Query packet statistics</p>
+</dd>
+<dt><strong>--query-ip-packet-filters</strong>=<em>[SessionID]</em></dt>
+<dd>
+<p>Query IP packet filters (SessionID is optional, defaults to 0)</p>
+</dd>
+<dt><strong>--set-ip-packet-filters</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set IP packet filters (allowed keys: session-id, packet-filter,
+packet-mask, filter-id)</p>
+</dd>
+<dt><strong>--query-provisioned-contexts</strong></dt>
+<dd>
+<p>Query provisioned contexts</p>
+</dd>
+<dt><strong>--set-provisioned-contexts</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set provisioned contexts (allowed keys: context-id, context-type,
+auth, compression, username, password, access-string, provider-id)</p>
+</dd>
+<dt><strong>--set-signal-state</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set signal state (allowed keys: signal-strength-interval,
+rssi-threshold, error-rate-threshold)</p>
+</dd>
+<dt><strong>--set-network-idle-hint</strong>=<em>[</em>(enabled|disabled)]</dt>
+<dd>
+<p>Set network idle hint</p>
+</dd>
+<dt><strong>--query-network-idle-hint</strong></dt>
+<dd>
+<p>Query network idle hint</p>
+</dd>
+<dt><strong>--set-emergency-mode</strong>=<em>[</em>(on|off)]</dt>
+<dd>
+<p>Set emergency mode</p>
+</dd>
+<dt><strong>--query-emergency-mode</strong></dt>
+<dd>
+<p>Query emergency mode</p>
+</dd>
+<dt><strong>--set-service-activation</strong>=<em>[Data]</em></dt>
+<dd>
+<p>Set service activation</p>
+</dd>
+</dl>
+<h2>Phonebook options:</h2>
+<dl>
+<dt><strong>--phonebook-query-configuration</strong></dt>
+<dd>
+<p>Query the phonebook configuration</p>
+</dd>
+<dt><strong>--phonebook-read</strong>=<em>[</em>(Phonebook index)]</dt>
+<dd>
+<p>Read phonebook entry with given index</p>
+</dd>
+<dt><strong>--phonebook-read-all</strong></dt>
+<dd>
+<p>Read all phonebook entries</p>
+</dd>
+<dt><strong>--phonebook-write</strong>=<em>[</em>(Name),(Number)[,(Index)]]</dt>
+<dd>
+<p>Add new phonebook entry or update an existing one</p>
+</dd>
+<dt><strong>--phonebook-delete</strong>=<em>[</em>(Phonebook
+index)]</dt>
+<dd>
+<p>Delete phonebook entry with given index</p>
+</dd>
+<dt><strong>--phonebook-delete-all</strong></dt>
+<dd>
+<p>Delete all phonebook entries</p>
+</dd>
+</dl>
+<h2>Device Service Stream options:</h2>
+<dl>
+<dt><strong>--dss-connect</strong>=<em>[</em>(UUID),(Session ID)]</dt>
+<dd>
+<p>Connect DSS session</p>
+</dd>
+<dt><strong>--dss-disconnect</strong>=<em>[</em>(UUID),(Session
+ID)]</dt>
+<dd>
+<p>Disconnect DSS session</p>
+</dd>
+</dl>
+<h2>Microsoft Firmware ID options:</h2>
+<dl>
+<dt><strong>--ms-query-firmware-id</strong></dt>
+<dd>
+<p>Query firmware ID</p>
+</dd>
+</dl>
+<h2>Microsoft Host Shutdown options:</h2>
+<dl>
+<dt><strong>--ms-notify-host-shutdown</strong></dt>
+<dd>
+<p>Notify that host is shutting down</p>
+</dd>
+</dl>
+<h2>Microsoft SAR options:</h2>
+<dl>
+<dt><strong>--ms-set-sar-config</strong>=<em>[</em>(device|os),(enabled|disabled)[,[{antenna_index,backoff_index}...]]]</dt>
+<dd>
+<p>Set SAR config</p>
+</dd>
+<dt><strong>--ms-query-sar-config</strong></dt>
+<dd>
+<p>Query SAR config</p>
+</dd>
+<dt><strong>--ms-set-transmission-status</strong>=<em>[</em>(enabled|disabled),(timer)]</dt>
+<dd>
+<p>Set transmission status and hysteresis timer (in seconds)</p>
+</dd>
+<dt><strong>--ms-query-transmission-status</strong></dt>
+<dd>
+<p>Query transmission status</p>
+</dd>
+</dl>
+<h2>AT&amp;T Device Service options:</h2>
+<dl>
+<dt><strong>--atds-query-signal</strong></dt>
+<dd>
+<p>Query signal info</p>
+</dd>
+<dt><strong>--atds-query-location</strong></dt>
+<dd>
+<p>Query cell location</p>
+</dd>
+</dl>
+<h2>Intel Firmware Update Service options:</h2>
+<dl>
+<dt><strong>--intel-modem-reboot</strong>=<em>[</em>(Boot
+Mode),(Timeout)]</dt>
+<dd>
+<p>Reboot modem. Boot mode and timeout arguments only required if MBIMEx
+&gt;= 2.0.</p>
+</dd>
+</dl>
+<h2>Microsoft Basic Connect Extensions options:</h2>
+<dl>
+<dt><strong>--ms-query-pco</strong>=<em>[SessionID]</em></dt>
+<dd>
+<p>Query PCO value (SessionID is optional, defaults to 0)</p>
+</dd>
+<dt><strong>--ms-query-lte-attach-configuration</strong></dt>
+<dd>
+<p>Query LTE attach configuration</p>
+</dd>
+<dt><strong>--ms-query-lte-attach-info</strong></dt>
+<dd>
+<p>Query LTE attach status information</p>
+</dd>
+<dt><strong>--ms-query-sys-caps</strong></dt>
+<dd>
+<p>Query system capabilities</p>
+</dd>
+<dt><strong>--ms-query-device-caps</strong></dt>
+<dd>
+<p>Query device capabilities</p>
+</dd>
+<dt><strong>--ms-query-slot-info-status</strong>=<em>[SlotIndex]</em></dt>
+<dd>
+<p>Query slot information status</p>
+</dd>
+<dt><strong>--ms-set-device-slot-mappings</strong>=<em>[</em>(SlotIndex)[,(SlotIndex)[,...]]]</dt>
+<dd>
+<p>Set device slot mappings for each executor</p>
+</dd>
+<dt><strong>--ms-query-device-slot-mappings</strong></dt>
+<dd>
+<p>Query device slot mappings</p>
+</dd>
+<dt><strong>--ms-query-location-info-status</strong></dt>
+<dd>
+<p>Query location info status</p>
+</dd>
+<dt><strong>--ms-set-provisioned-contexts</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set provisioned contexts (allowed keys: operation, context-type,
+ip-type, state, roaming-control, media-type, source, auth, compression,
+username, password, access-string)</p>
+</dd>
+<dt><strong>--ms-query-provisioned-contexts</strong></dt>
+<dd>
+<p>Query provisioned contexts</p>
+</dd>
+<dt><strong>--ms-query-base-stations-info</strong></dt>
+<dd>
+<p>Query base stations info</p>
+</dd>
+<dt><strong>--ms-query-version</strong>=<em>[</em>(MBIM version),(MBIM
+extended version)]</dt>
+<dd>
+<p>Exchange supported version information. Since MBIMEx v2.0.</p>
+</dd>
+<dt><strong>--ms-query-registration-parameters</strong></dt>
+<dd>
+<p>Query registration parameters. Since MBIMEx v3.0.</p>
+</dd>
+<dt><strong>--ms-set-registration-parameters</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set registration parameters (required keys: mico-mode, drx-cycle,
+ladn-info, default-pdu-activation-hint, re-register-if-needed). Since
+MBIMEx v3.0.</p>
+</dd>
+<dt><strong>--ms-query-modem-configuration</strong></dt>
+<dd>
+<p>Query modem configuration. Since MBIMEx v3.0.</p>
+</dd>
+<dt><strong>--ms-query-wake-reason</strong></dt>
+<dd>
+<p>Query wake reason. Since MBIMEx v3.0.</p>
+</dd>
+</dl>
+<h2>Quectel options:</h2>
+<dl>
+<dt><strong>--quectel-query-radio-state</strong></dt>
+<dd>
+<p>Query radio state</p>
+</dd>
+<dt><strong>--quectel-set-radio-state</strong>=<em>[</em>(on)]</dt>
+<dd>
+<p>Set radio state</p>
+</dd>
+</dl>
+<h2>Link management options:</h2>
+<dl>
+<dt><strong>--link-list</strong>=<em>[IFACE]</em></dt>
+<dd>
+<p>List links created from a given interface</p>
+</dd>
+<dt><strong>--link-add</strong>=<em>[iface=IFACE</em>,prefix=PREFIX[,session-id=N]]</dt>
+<dd>
+<p>Create new network interface link</p>
+</dd>
+<dt><strong>--link-delete</strong>=<em>IFACE</em></dt>
+<dd>
+<p>Delete a given network interface link</p>
+</dd>
+<dt><strong>--link-delete-all</strong>=<em>[IFACE]</em></dt>
+<dd>
+<p>Delete all network interface links from the given interface</p>
+</dd>
+</dl>
+<h2>Intel Thermal RF Service options:</h2>
+<dl>
+<dt><strong>--intel-query-rfim</strong></dt>
+<dd>
+<p>Query RFIM frequency information</p>
+</dd>
+<dt><strong>--intel-set-rfim</strong>=<em>[</em>(on|off)]</dt>
+<dd>
+<p>Enable or disable RFIM (disabled by default)</p>
+</dd>
+</dl>
+<h2>Microsoft Voice Extensions Service options:</h2>
+<dl>
+<dt><strong>--ms-query-nitz</strong></dt>
+<dd>
+<p>Query network identity and time zone</p>
+</dd>
+</dl>
+<h2>Microsoft UICC Low Level Access Service options:</h2>
+<dl>
+<dt><strong>--ms-query-uicc-application-list</strong></dt>
+<dd>
+<p>Query UICC application list</p>
+</dd>
+<dt><strong>--ms-query-uicc-file-status</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Query UICC file status (allowed keys: application-id, file-path)</p>
+</dd>
+<dt><strong>--ms-query-uicc-read-binary</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Read UICC binary file (allowed keys: application-id, file-path,
+read-offset, read-size, local-pin and data)</p>
+</dd>
+<dt><strong>--ms-query-uicc-read-record</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Read UICC record file (allowed keys: application-id, file-path,
+record-number, local-pin and data)</p>
+</dd>
+<dt><strong>--ms-set-uicc-open-channel</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set UICC open channel (allowed keys: application-id, selectp2arg,
+channel-group)</p>
+</dd>
+<dt><strong>--ms-set-uicc-close-channel</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set UICC close channel (allowed keys: channel, channel-group)</p>
+</dd>
+<dt><strong>--ms-query-uicc-atr</strong></dt>
+<dd>
+<p>Query UICC atr</p>
+</dd>
+<dt><strong>--ms-set-uicc-apdu</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set UICC apdu (allowed keys: channel, secure-message, classbyte-type,
+command)</p>
+</dd>
+<dt><strong>--ms-set-uicc-reset</strong>=<em>[</em>(Pass Through
+Action)]</dt>
+<dd>
+<p>Set UICC reset</p>
+</dd>
+<dt><strong>--ms-query-uicc-reset</strong></dt>
+<dd>
+<p>Query UICC reset</p>
+</dd>
+<dt><strong>--ms-set-uicc-terminal-capability</strong>=<em>[</em>"key=value,..."]</dt>
+<dd>
+<p>Set UICC terminal capability (allowed keys: terminal-capability)</p>
+</dd>
+<dt><strong>--ms-query-uicc-terminal-capability</strong></dt>
+<dd>
+<p>Query UICC terminal capability</p>
+</dd>
+</dl>
+<h2>Application Options:</h2>
+<dl>
+<dt><strong>-d</strong>, <strong>--device</strong>=<em>[PATH]</em></dt>
+<dd>
+<p>Specify device path</p>
+</dd>
+<dt><strong>-p</strong>, <strong>--device-open-proxy</strong></dt>
+<dd>
+<p>Request to use the 'mbim-proxy' proxy</p>
+</dd>
+<dt><strong>--device-open-ms-mbimex-v2</strong></dt>
+<dd>
+<p>Request to enable Microsoft MBIMEx v2.0 support</p>
+</dd>
+<dt><strong>--device-open-ms-mbimex-v3</strong></dt>
+<dd>
+<p>Request to enable Microsoft MBIMEx v3.0 support</p>
+</dd>
+<dt><strong>--no-open</strong>=<em>[Transaction</em> ID]</dt>
+<dd>
+<p>Do not explicitly open the MBIM device before running the command</p>
+</dd>
+<dt><strong>--no-close</strong></dt>
+<dd>
+<p>Do not close the MBIM device after running the command</p>
+</dd>
+<dt><strong>--noop</strong></dt>
+<dd>
+<p>Don't run any command</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>Run action with verbose logs, including the debug ones</p>
+</dd>
+<dt><strong>--verbose-full</strong></dt>
+<dd>
+<p>Run action with verbose logs, including the debug ones and personal
+info</p>
+</dd>
+<dt><strong>--silent</strong></dt>
+<dd>
+<p>Run action with no logs; not even the error/warning ones</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Print version</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2013-2021 Aleksander Morgado License GPLv2+: GNU GPL
+version 2 or later &lt;http://gnu.org/licenses/gpl-2.0.html&gt;<br />
+This is free software: you are free to change and redistribute it. There
+is NO WARRANTY, to the extent permitted by law.</p>
+<h1>SEE ALSO</h1>
+<p>The full documentation for <strong>mbimcli</strong> is maintained as
+a Texinfo manual. If the <strong>info</strong> and
+<strong>mbimcli</strong> programs are properly installed at your site,
+the command</p>
+<blockquote>
+<p><strong>info mbimcli</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

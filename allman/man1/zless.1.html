@@ -1,0 +1,42 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>zless - file perusal filter for crt viewing of compressed text</p>
+<h1>SYNOPSIS</h1>
+<p><strong>zless</strong> [ name ... ]</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>zless</strong> command is a filter which allows
+examination of compressed or plain text files one screenful at a time on
+a soft-copy terminal. It is the equivalent of setting the environment
+variable LESSOPEN to '|gzip -cdfq -- %s', and the environment variable
+LESSMETACHARS to
+'&lt;space&gt;&lt;tab&gt;&lt;newline&gt;;*?"()&lt;&gt;[|&amp;^`#\$%=~',
+and then running <strong>less</strong>. However, enough people seem to
+think that having the command <strong>zless</strong> available is
+important to be worth providing it.</p>
+<h1>SEE ALSO</h1>
+<p><strong>zmore</strong>(1), <strong>less</strong>(1)</p>
+<h1>BUGS</h1>
+<p>The <strong>zless</strong> command does not work with compressed data
+that is piped to it via standard input; it requires that input files be
+specified as arguments. To read compressed data from a pipe, you can use
+. . .<strong>|gunzip|less</strong> instead of
+. . .<strong>|zless</strong>.</p>
+<h1>COPYRIGHT NOTICE</h1>
+<p>Copyright © 2006-2007, 2015-2022 Free Software Foundation, Inc.<br />
+Copyright © 1992, 1993 Jean-loup Gailly</p>
+<p>Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.</p>
+<p>Permission is granted to process this file through troff and print
+the results, provided the printed document carries copying permission
+notice identical to this one except for the removal of this paragraph
+(this paragraph not being relevant to the printed manual).</p>
+<p>Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.</p>
+<p>Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that this permission notice may be stated in a
+translation approved by the Foundation.</p>

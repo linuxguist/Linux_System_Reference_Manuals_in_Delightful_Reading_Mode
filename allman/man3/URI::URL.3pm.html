@@ -1,0 +1,59 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>URI::URL - Uniform Resource Locators</p>
+<h1>SYNOPSIS</h1>
+<p>$u1 = URI::URL-&gt;new($str, $base); $u2 = $u1-&gt;abs;</p>
+<h1>DESCRIPTION</h1>
+<p>This module is provided for backwards compatibility with modules that
+depend on the interface provided by the <code>URI::URL</code> class that
+used to be distributed with the libwww-perl library.</p>
+<p>The following differences exist compared to the <code>URI</code>
+class interface:</p>
+<ul>
+<li><p>The URI::URL module exports the <strong>url()</strong> function
+as an alternate constructor interface.</p></li>
+<li><p>The constructor takes an optional <code>$base</code> argument.
+The <code>URI::URL</code> class is a subclass of
+<code>URI::WithBase</code>.</p></li>
+<li><p>The URI::URL-&gt;newlocal class method is the same as
+URI::file-&gt;new_abs.</p></li>
+<li><p><strong>URI::URL::strict</strong> (1)</p></li>
+<li><p><code>$url</code>-&gt;print_on method</p></li>
+<li><p><code>$url</code>-&gt;crack method</p></li>
+<li><p><code>$url</code>-&gt;full_path: same as ($uri-&gt;abs_path ||
+/)</p></li>
+<li><p><code>$url</code>-&gt;netloc: same as
+<code>$uri</code>-&gt;authority</p></li>
+<li><p><code>$url</code>-&gt;epath, <code>$url</code>-&gt;equery: same
+as <code>$uri</code>-&gt;path, <code>$uri</code>-&gt;query</p></li>
+<li><p><code>$url</code>-&gt;path and <code>$url</code>-&gt;query pass
+unescaped strings.</p></li>
+<li><p><code>$url</code>-&gt;path_components: same as
+<code>$uri</code>-&gt;path_segments (if you don't consider path segment
+parameters)</p></li>
+<li><p><code>$url</code>-&gt;params and <code>$url</code>-&gt;eparams
+methods</p></li>
+<li><p><code>$url</code>-&gt;base method. See URI::WithBase.</p></li>
+<li><p><code>$url</code>-&gt;abs and <code>$url</code>-&gt;rel have an
+optional <code>$base</code> argument. See URI::WithBase.</p></li>
+<li><p><code>$url</code>-&gt;frag: same as
+<code>$uri</code>-&gt;fragment</p></li>
+<li><p><code>$url</code>-&gt;keywords: same as
+<code>$uri</code>-&gt;query_keywords</p></li>
+<li><p><code>$url</code>-&gt;localpath and friends map to
+<code>$uri</code>-&gt;file.</p></li>
+<li><p><code>$url</code>-&gt;address and
+<code>$url</code>-&gt;encoded822addr: same as <code>$uri</code>-&gt;to
+for mailto URI</p></li>
+<li><p><code>$url</code>-&gt;groupart method for news URI</p></li>
+<li><p><code>$url</code>-&gt;article: same as
+<code>$uri</code>-&gt;message</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>URI, URI::WithBase</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1998-2000 Gisle Aas.</p>

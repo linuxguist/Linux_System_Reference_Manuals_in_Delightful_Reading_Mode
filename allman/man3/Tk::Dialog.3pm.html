@@ -1,0 +1,85 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Dialog - Create modal dialog and wait for a response.</p>
+<h1>SYNOPSIS</h1>
+<p>    <em><code>$dialog</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>Dialog</strong>(<em>-option</em>
+=&gt; <em>value</em>, ... );</p>
+<h1>DESCRIPTION</h1>
+<p>This procedure is part of the Tk script library - its arguments
+describe a dialog box. After creating a dialog box,
+<strong>Dialog</strong> waits for the user to select one of the Buttons
+either by clicking on the Button with the mouse or by typing return to
+invoke the default Button (if any). Then it returns the text string of
+the selected Button.</p>
+<p>While waiting for the user to respond, <strong>Dialog</strong> sets a
+local grab. This prevents the user from interacting with the application
+in any way except to invoke the dialog box. See the
+<strong>Show()</strong> method.</p>
+<h1>OPTIONS</h1>
+<p>The following option/value pairs are supported:</p>
+<dl>
+<dt>-title</dt>
+<dd>
+<p>Text to appear in the window manager's title bar for the dialog.</p>
+</dd>
+<dt>-text</dt>
+<dd>
+<p>Message to appear in the top portion of the Dialog.</p>
+</dd>
+<dt>-bitmap</dt>
+<dd>
+<p>If non-empty, specifies a bitmap to display in the top portion of the
+Dialog, to the left of the text. If this is an empty string then no
+bitmap is displayed in the Dialog.</p>
+</dd>
+<dt>-default_button</dt>
+<dd>
+<p>Text label string of the Button that displays the default ring.</p>
+</dd>
+<dt>-buttons</dt>
+<dd>
+<p>A reference to a list of Button label strings. Each <em>string</em>
+specifies text to display in a Button, in order from left to right.</p>
+</dd>
+</dl>
+<h1>METHODS</h1>
+<dl>
+<dt>$answer = $dialog-&gt;Show(?-global?);</dt>
+<dd>
+<p>This method displays the Dialog, waits for the user's response, and
+stores the text string of the selected Button in
+<em><code>$answer</code></em>. If <em>-global</em> is specified a global
+(rather than local) grab is performed. The actual Dialog is shown using
+the <strong>Popup</strong> method. Any other options supplied to
+<strong>Show</strong> are passed to <strong>Popup</strong>, and can be
+used to position the Dialog on the screen. Please read Tk::Popup for
+details.</p>
+</dd>
+</dl>
+<h1>ADVERTISED WIDGETS</h1>
+<p>Because Tk::Dialog is a subclass of Tk::DialogBox it inherits all the
+advertised subwidgets of its superclass: e.g. B_button-text, where
+'button-text' is a Button's -text value. Additionally, Tk::Dialog
+advertises:</p>
+<dl>
+<dt>message</dt>
+<dd>
+<p>The dialog's Label widget containing the message text.</p>
+</dd>
+<dt>bitmap</dt>
+<dd>
+<p>The dialog's Label widget containing the bitmap image.</p>
+</dd>
+</dl>
+<h1>EXAMPLE</h1>
+<p><em><code>$dialog</code></em> =
+<em><code>$mw</code></em>-&gt;<strong>Dialog</strong>(-text =&gt; 'Save
+File?', -bitmap =&gt; 'question', -title =&gt; 'Save File Dialog',
+-default_button =&gt; 'Yes', -buttons =&gt; [qw/Yes No Cancel/);</p>
+<h1>KEYWORDS</h1>
+<p>bitmap, dialog, modal, messageBox</p>

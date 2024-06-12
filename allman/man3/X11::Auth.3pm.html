@@ -1,0 +1,57 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>X11::Auth - Perl module to read X11 authority files</p>
+<h1>SYNOPSIS</h1>
+<p>require X11::Auth; $a = new X11::Auth; ($auth_type, $auth_data) =
+$a-&gt;get_by_host($host, $disp_num);</p>
+<h1>DESCRIPTION</h1>
+<p>This module is an approximate perl replacement for the libXau C
+library and the <strong>xauth</strong> (1) program. It reads and
+interprets the files (usually '~/.Xauthority') that hold authorization
+data used in connecting to X servers. Since it was written mainly for
+the use of X11::Protocol, its functionality is currently restricted to
+reading, not writing, of these files.</p>
+<h1>METHODS</h1>
+<h2>new</h2>
+<p>$auth = X11::Auth-&gt;new; $auth = X11::Auth-&gt;open($filename);</p>
+<p>Open an authority file, and create an object to handle it. The
+filename will be taken from the XAUTHORITY environment variable, if
+present, or '.Xauthority' in the user's home directory, or it may be
+overridden by an argument. 'open' may be used as a synonym.</p>
+<h2>get_one</h2>
+<p>($family, $host_addr, $display_num, $auth_name, $auth_data) =
+$auth-&gt;get_one;</p>
+<p>Read one entry from the file. Returns a null list at end of file.
+<code>$family</code> is usually 'Internet' or 'Local', and
+<code>$display_num</code> can be any string.</p>
+<h2>get_all</h2>
+<p>@auth_data = $auth-&gt;get_all;</p>
+<p>Read all of the entries in the file. Each member of the array
+returned is an array ref similar to the list returned by
+<strong>get_one()</strong>.</p>
+<h2>get_by_host</h2>
+<p>($auth_name, $auth_data) = $auth-&gt;get_by_host($host, $family,
+$display_num);</p>
+<p>Get authentication data for a connection of type <code>$family</code>
+to display <code>$display_num</code> on <code>$host</code>. If
+<code>$family</code> is 'Internet', the host will be translated into an
+appropriate address by <strong>gethostbyname()</strong>. If no data is
+found, returns an empty list.</p>
+<h1>COMPATIBILITY</h1>
+<p>The following table shows the (rough) correspondence between libXau
+calls and X11::Auth methods:</p>
+<p>libXau X11::Auth ------ --------- XauFileName $ENV{XAUTHORITY} ||
+"$ENV{HOME}/.Xauthority" fopen(XauFileName(), "rb") $auth = new
+X11::Auth XauReadAuth $auth-&gt;get_one XauWriteAuth XauGetAuthByAddr
+$auth-&gt;get_by_host XauGetBestAuthByAddr XauLockAuth XauUnlockAuth
+XauDisposeAuth</p>
+<h1>AUTHOR</h1>
+<p>Stephen McCamant &lt;SMCCAM@cpan.org&gt;</p>
+<h1>SEE ALSO</h1>
+<p><strong>perl</strong> (1), X11::Protocol, <strong>Xau</strong> (3),
+<strong>xauth</strong> (1), lib/Xau/README in the X11 source
+distribution.</p>

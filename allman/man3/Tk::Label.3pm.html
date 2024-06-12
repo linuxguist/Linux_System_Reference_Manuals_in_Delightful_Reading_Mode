@@ -1,0 +1,121 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Label - Create and manipulate Label widgets</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$label</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>Label</strong>(?<em>options</em>?);</p>
+<h1>STANDARD OPTIONS</h1>
+<p><strong>-activebackground</strong> <strong>-activeforeground</strong>
+<strong>-anchor</strong> <strong>-background</strong>
+<strong>-bitmap</strong> <strong>-borderwidth</strong>
+<strong>-compound</strong> <strong>-cursor</strong>
+<strong>-disabledforeground</strong> <strong>-font</strong>
+<strong>-foreground</strong> <strong>-highlightbackground</strong>
+<strong>-highlightcolor</strong> <strong>-highlightthickness</strong>
+<strong>-image</strong> <strong>-justify</strong> <strong>-padx</strong>
+<strong>-pady</strong> <strong>-relief</strong>
+<strong>-takefocus</strong> <strong>-text</strong>
+<strong>-textvariable</strong> <strong>-underline</strong>
+<strong>-wraplength</strong></p>
+<p>See Tk::options for details of the standard options.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Name: height</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Height</dt>
+<dd>
+
+</dd>
+<dt>Switch: -height</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a desired height for the label. If an image or bitmap is
+being displayed in the label then the value is in screen units (i.e. any
+of the forms acceptable to <strong>Tk_GetPixels</strong>); for text it
+is in lines of text. If this option isn't specified, the label's desired
+height is computed from the size of the image or bitmap or text being
+displayed in it.</p>
+<dl>
+<dt>Name: state</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: State</dt>
+<dd>
+
+</dd>
+<dt>Switch: -state</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies one of three states for the label: <strong>normal</strong>,
+<strong>active</strong>, or <strong>disabled</strong>. In normal state
+the label is displayed using the <strong>foreground</strong> and
+<strong>background</strong> options. In active state the label is
+displayed using the <strong>activeForeground</strong> and
+<strong>activeBackground</strong> options. In the disabled state the
+<strong>disabledForeground</strong> and <strong>background</strong>
+options determine how the button is displayed.</p>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+<dt>Switch: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a desired width for the label. If an image or bitmap is
+being displayed in the label then the value is in screen units (i.e. any
+of the forms acceptable to <strong>Tk_GetPixels</strong>); for text it
+is in characters. If this option isn't specified, the label's desired
+width is computed from the size of the image or bitmap or text being
+displayed in it.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Label</strong> method creates a new window (given by the
+<code>$widget</code> argument) and makes it into a label widget.
+Additional options, described above, may be specified on the command
+line or in the option database to configure aspects of the label such as
+its colors, font, text, and initial relief. The <strong>label</strong>
+command returns its <code>$widget</code> argument. At the time this
+command is invoked, there must not exist a window named
+<code>$widget</code>, but <code>$widget</code>'s parent must exist.</p>
+<p>A label is a widget that displays a textual string, bitmap or image.
+If text is displayed, it must all be in a single font, but it can occupy
+multiple lines on the screen (if it contains newlines or if wrapping
+occurs because of the <strong>wrapLength</strong> option) and one of the
+characters may optionally be underlined using the
+<strong>underline</strong> option. The label can be manipulated in a few
+simple ways, such as changing its relief or text, using the commands
+described below.</p>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>Label</strong> method creates a widget object. This
+object supports the <strong>configure</strong> and <strong>cget</strong>
+methods described in Tk::options which can be used to enquire and modify
+the options described above. The widget also inherits all the methods
+provided by the generic Tk::Widget class.</p>
+<h1>BINDINGS</h1>
+<p>When a new label is created, it has no default event bindings: labels
+are not intended to be interactive.</p>
+<h1>KEYWORDS</h1>
+<p>label, widget</p>

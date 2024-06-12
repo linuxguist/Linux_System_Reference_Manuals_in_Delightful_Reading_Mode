@@ -1,0 +1,65 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>fonttosfnt - Wrap a bitmap font in a sfnt (TrueType) wrapper</p>
+<h1>SYNOPSIS</h1>
+<p><strong>fonttosfnt</strong> [ <em>options</em> ] <strong>-o</strong>
+<em>file.ttf</em> [ <strong>--</strong> ] <em>font</em>...</p>
+<h1>DESCRIPTION</h1>
+<p>Wrap a bitmap font or a set of bitmap fonts in a sfnt (TrueType or
+OpenType) wrapper.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>Be verbose.</p>
+</dd>
+<dt><strong>-c</strong></dt>
+<dd>
+<p>Do not crop glyphs. This usually increases file size, but may
+sometimes yield a modest decrease in file size for small character cell
+fonts (terminal fonts).</p>
+</dd>
+<dt><strong>-b</strong></dt>
+<dd>
+<p>Write byte-aligned glyph data. By default, unaligned data is written,
+which yields a smaller file size.</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Do not reencode fonts. By default, fonts are reencoded to Unicode
+whenever possible.</p>
+</dd>
+<dt><strong>-g</strong><em> n</em></dt>
+<dd>
+<p>Set the type of scalable glyphs that we write. If <em>n</em> is 0, no
+scalable glyphs are written; this is legal but confuses most current
+software. If <em>n</em> is 1, a single scalable glyph (the undefined
+glyph) is written; this is recommended, but triggers a bug in current
+versions of <strong>FreeType</strong>. If <em>n</em> is 2 (the default),
+a sufficiently high number of blank glyphs are written, which works with
+<strong>FreeType</strong> but increases file size.</p>
+</dd>
+<dt><strong>-m</strong><em> n</em></dt>
+<dd>
+<p>Set the type of scalable metrics that we write. If <em>n</em> is 0,
+no scalable metrics are written, which may or may not be legal. If
+<em>n</em> is 1, full metrics for a single glyph are written, and only
+left sidebearing values are written for the other glyphs. If <em>n</em>
+is 2, scalable metrics for all glyphs are written, which increases file
+size and is not recommended. The default is 1.</p>
+</dd>
+<dt><strong>--</strong></dt>
+<dd>
+<p>End of options.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>Some of the font-level values, notably sub- and superscript
+positions, are dummy values.</p>
+<h1>SEE ALSO</h1>
+<p>X(7), Xserver(1), Xft(3x). <em>Fonts in X11.</em></p>
+<h1>AUTHOR</h1>
+<p>The version of <strong>Fonttosfnt</strong> included in this X.Org
+Foundation release was originally written by Juliusz Chroboczek
+&lt;jch@freedesktop.org&gt; for the XFree86 project.</p>

@@ -1,0 +1,29 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>zstdgrep</strong> - print lines matching a pattern in
+zstandard-compressed files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>zstdgrep</strong> [<em>grep-flags</em>] [--] <em>pattern</em>
+[<em>files</em>  . . .]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>zstdgrep</strong> runs <strong>grep</strong>(1) on files, or
+<strong>stdin</strong> if no files argument is given, after
+decompressing them with <strong>zstdcat</strong>(1).</p>
+<p>The <em>grep-flags</em> and <em>pattern</em> arguments are passed on
+to <strong>grep</strong>(1). If an <strong>-e</strong> flag is found in
+the <em>grep-flags</em>, <strong>zstdgrep</strong> will not look for a
+<em>pattern</em> argument.</p>
+<p>Note that modern <strong>grep</strong> alternatives such as
+<strong>ripgrep</strong> (<strong>rg</strong>(1)) support
+<strong>zstd</strong>-compressed files out of the box, and can prove
+better alternatives than <strong>zstdgrep</strong> notably for
+unsupported complex pattern searches. Note though that such alternatives
+may also feature some minor command line differences.</p>
+<h1>EXIT STATUS</h1>
+<p>In case of missing arguments or missing pattern, 1 will be returned,
+otherwise 0.</p>
+<h1>SEE ALSO</h1>
+<p><strong>zstd</strong>(1)</p>
+<h1>AUTHORS</h1>
+<p>Thomas Klausner <em>wiz@NetBSD.org</em></p>

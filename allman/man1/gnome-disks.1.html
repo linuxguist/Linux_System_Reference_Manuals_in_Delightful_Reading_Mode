@@ -1,0 +1,51 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gnome-disks - the GNOME Disks application</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gnome-disks</strong> [OPTIONS]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>gnome-disks</strong> is the command to launch the GNOME Disks
+application. Disks provides a way to inspect, format, partition and
+configure disks and block devices.</p>
+<p>The Disks application is <em>single-instance</em>. What this means is
+that if the application is not already running when the
+<strong>gnome-disks</strong> command is invoked, it will get launched
+and the command invocation will block until the application exits.
+Otherwise the existing application instance will be used and the
+<strong>gnome-disks</strong> command will exit immediately.</p>
+<h1>OPTIONS</h1>
+<p>The following options are understood:</p>
+<p><strong>--block-device</strong> <em>DEVICE</em></p>
+<blockquote>
+<p>Switches to the Disks application and selects the block device given
+by <em>DEVICE</em> (for example, /dev/sda).</p>
+</blockquote>
+<p><strong>--block-device</strong> <em>DEVICE</em>
+<strong>--format-device</strong> [<strong>--xid</strong>
+<em>WINDOW-ID</em>]</p>
+<blockquote>
+<p>Shows the “Format Volume” dialog for the block device given by
+<em>DEVICE</em> (for example, /dev/sdb1). If <em>WINDOW-ID</em> is
+given, makes the dialog transient to the given XID.</p>
+</blockquote>
+<p><strong>--restore-disk-image</strong> <em>FILE</em></p>
+<blockquote>
+<p>Shows the “Restore Disk Image” dialog for the file given by
+<em>FILE</em> (for example, /home/user/Downloads/SuperOS.iso) and
+prompts the user to choose a disk to restore the image unto.</p>
+</blockquote>
+<p><strong>-h, --help</strong></p>
+<blockquote>
+<p>Prints a short help text and exits.</p>
+</blockquote>
+<h1>AUTHOR</h1>
+<p>Written by David Zeuthen &lt;zeuthen@gmail.com&gt; with a lot of help
+from many others.</p>
+<h1>BUGS</h1>
+<p>Please send bug reports to either the distribution bug tracker or the
+upstream bug tracker at
+<strong>https://gitlab.gnome.org/GNOME/gnome-disk-utility/-/issues/</strong>.</p>
+<h1>SEE ALSO</h1>
+<p><strong>gnome-disk-image-mounter</strong>(1),
+<strong>udisks</strong>(8)</p>

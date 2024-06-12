@@ -1,0 +1,86 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xev - print contents of X events</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xev</strong> [-display <em>displayname</em>] [-geometry
+<em>geom</em>] [-bw <em>pixels</em>] [-bs
+<em>{NotUseful,WhenMapped,Always}</em>] [-id <em>windowid</em>] [-root]
+[-s] [-name <em>string</em>] [-rv] [-version] [-event
+<em>event_mask</em> [-event <em>event_mask</em> ...]]</p>
+<h1>DESCRIPTION</h1>
+<p><em>Xev</em> creates a window and then asks the X server to send it
+<em>events</em> whenever anything happens to the window (such as it
+being moved, resized, typed in, clicked in, etc.). You can also attach
+it to an existing window. It is useful for seeing what causes events to
+occur and to display the information that they contain; it is
+essentially a debugging and development tool, and should not be needed
+in normal usage.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-display <em>display</em></strong></dt>
+<dd>
+<p>This option specifies the X server to contact.</p>
+</dd>
+<dt><strong>-geometry <em>geom</em></strong></dt>
+<dd>
+<p>This option specifies the size and/or location of the window, if a
+window is to be created.</p>
+</dd>
+<dt><strong>-bw <em>pixels</em></strong></dt>
+<dd>
+<p>This option specifies the border width for the window.</p>
+</dd>
+<dt><strong>-bs <em>{NotUseful,WhenMapped,Always}</em></strong></dt>
+<dd>
+<p>This option specifies what kind of backing store to give the window.
+The default is NotUseful. Backing store refers to the the pixels saved
+off-screen when the X server maintains the contents of a window;
+NotUseful means that the xev process will redraw its contents itself, as
+necessary.</p>
+</dd>
+<dt><strong>-id <em>windowid</em></strong></dt>
+<dd>
+<p>This option specifies that the window with the given id should be
+monitored, instead of creating a new window.</p>
+</dd>
+<dt><strong>-root</strong></dt>
+<dd>
+<p>This option specifies that the root window should be monitored,
+instead of creating a new window.</p>
+</dd>
+<dt><strong>-s</strong></dt>
+<dd>
+<p>This option specifies that save-unders should be enabled on the
+window. Save unders are similar to backing store, but they refer rather
+to the saving of pixels off-screen when the current window obscures
+other windows. Save unders are only advisory, and are normally set for
+popup dialogs and other transient windows.</p>
+</dd>
+<dt><strong>-name <em>string</em></strong></dt>
+<dd>
+<p>This option specifies the name to assign to the created window.</p>
+</dd>
+<dt><strong>-rv</strong></dt>
+<dd>
+<p>This option specifies that the window should be in reverse video.</p>
+</dd>
+<dt><strong>-event <em>event_mask</em></strong></dt>
+<dd>
+<p>Select which events to display. The <strong>-event</strong> option
+can be specified multiple times to select multiple types of events. When
+not specified, all events are selected. Available event masks: keyboard
+mouse expose visibility structure substructure focus property colormap
+owner_grab_button randr button</p>
+</dd>
+<dt><strong>-version</strong></dt>
+<dd>
+<p>This option prints the program version and exits.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>X(7), xwininfo(1), xdpyinfo(1), Xlib Programmers Manual, X Protocol
+Specification<br />
+See <em>X(7)</em> for a full statement of rights and permissions.</p>
+<h1>AUTHOR</h1>
+<p>Jim Fulton, MIT X Consortium</p>

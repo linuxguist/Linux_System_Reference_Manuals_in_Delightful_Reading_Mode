@@ -1,0 +1,69 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::IconList - an icon list widget</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::IconList; $il = $mw-&gt;IconList(-browsecmd =&gt; sub { ...
+}, -command =&gt; sub { ... })-&gt;pack; $il-&gt;Add($icon1, $text1);
+$il-&gt;Add($icon2, $text2); $il-&gt;Arrange; ... $il-&gt;DeleteAll;</p>
+<h1>DESCRIPTION</h1>
+<h2>OPTIONS</h2>
+<dl>
+<dt>-browsecmd</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-command</dt>
+<dd>
+
+</dd>
+<dt>-font</dt>
+<dd>
+
+</dd>
+</dl>
+<p>-item -foreground|-fg</p>
+<h2>METHODS</h2>
+<dl>
+<dt>DeleteAll</dt>
+<dd>
+<p>Deletes all the items inside the canvas subwidget and reset the
+IconList's state.</p>
+</dd>
+<dt>Add($image, $text)</dt>
+<dd>
+<p>Adds an icon into the IconList with the designated image and
+text.</p>
+</dd>
+<dt>Arrange</dt>
+<dd>
+<p>Places the icons in a column-major arrangement.</p>
+</dd>
+<dt>Get</dt>
+<dd>
+<p>Return the selected item.</p>
+</dd>
+<dt>Invoke</dt>
+<dd>
+<p>Gets called when the user invokes the IconList (usually by
+double-clicking or pressing the Return key) (internal method).</p>
+</dd>
+<dt>See($tag)</dt>
+<dd>
+<p>If the item is not (completely) visible, scroll the canvas so that it
+becomes visible (internal method).</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>The original tkfbox.tcl from Tcl/Tk is:</p>
+<p>Copyright (c) 1994-1996 Sun Microsystems, Inc.</p>
+<p>See the file license.terms for information on usage and
+redistribution of this file, and for a DISCLAIMER OF ALL WARRANTIES.</p>
+<p>Translated to Perl/Tk by Slaven Rezic &lt;srezic@cpan.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p>Tk::FBox.</p>

@@ -1,0 +1,42 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Text::CharWidth - Get number of occupied columns of a string on
+terminal</p>
+<h1>SYNOPSIS</h1>
+<p>use Text::CharWidth qw(mbwidth mbswidth mblen); mbwidth(string);
+mbswidth(string); mblen(string);</p>
+<h1>DESCRIPTION</h1>
+<p>This module supplies features similar as <strong>wcwidth</strong> (3)
+and <strong>wcswidth</strong> (3) in C language.</p>
+<p>Characters have its own width on terminal depending on locale. For
+example, ASCII characters occupy one column per character, east Asian
+fullwidth characters (like Hiragana or Han Ideograph) occupy two columns
+per character, and combining characters (apperaring in ISO-8859-11 Thai,
+Unicode, and so on) occupy zero columns per character.
+<strong>mbwidth()</strong> gives the width of the first character of the
+given string and <strong>mbswidth()</strong> gives the width of the
+whole given string.</p>
+<p>The names of mbwidth and mbswidth came from multibyte versions of
+wcwidth and wcswidth which are wide character versions.</p>
+<p><em>mblen(string)</em> returns number of bytes of the first character
+of the string. Please note that a character may consist of multiple
+bytes in multibyte encodings such as UTF-8, EUC-JP, EUC-KR, GB2312, or
+Big5.</p>
+<p><em>mbwidth(string)</em> returns the width of the first character of
+the string. <em>mbswidth(string)</em> returns the width of the whole
+string.</p>
+<p>Parameters are to be given in locale encodings, not always in
+UTF-8.</p>
+<h1>SEE ALSO</h1>
+<p><strong>locale</strong> (5), <strong>wcwidth</strong> (3),
+<strong>wcswidth</strong> (3)</p>
+<h1>AUTHOR</h1>
+<p>Tomohiro KUBOTA, &lt;kubota@debian.org&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>Copyright 2003 by Tomohiro KUBOTA</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

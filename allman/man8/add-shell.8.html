@@ -1,0 +1,22 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>add-shell - add shells to the list of valid login shells</p>
+<h1>SYNOPSIS</h1>
+<p><strong>add-shell</strong> <em>shellname</em>
+[<em>shellname</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>add-shell</strong> copies <em>/etc/shells</em> to
+<em>/etc/shells.tmp</em>, adds the given shells to this file if they are
+not already present, and copies this temporary file back to
+<em>/etc/shells</em>.</p>
+<p>The shells must be provided by their full pathnames.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><em>DPKG_ROOT</em></dt>
+<dd>
+<p>specifies the base path under which <em>/etc/shells</em> resides.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>shells</strong>(5)</p>

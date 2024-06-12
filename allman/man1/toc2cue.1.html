@@ -1,0 +1,44 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>toc2cue - converts a TOC files of <em>cdrdao(1)</em> into a .cue
+file</p>
+<h1>SYNOPSIS</h1>
+<p><strong>toc2cue</strong> <strong>[ </strong>-v
+<em>verbosity_level</em><strong> ]</strong> <em>input_toc_file
+output_cue_file</em></p>
+<p><strong>toc2cue</strong> <strong>[ </strong>-V<strong> ]</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>toc2cue</strong> converts a TOC file of <em>cdrdao(1)</em>
+into a .cue file.</p>
+<p>Please note that the resulting cue file is only valid if the toc-file
+was created with <em>cdrdao(1)</em> using the commands 'read-toc' or
+'read-cd'. For manually created or edited toc-files the cue file may not
+be correct. This program just checks for the most obvious toc-file
+features that cannot be converted to a cue file. Furthermore, if the
+toc-file contains audio tracks the byte order of the image file will be
+wrong. This will result in static noise when the cue file is used for
+recording (even with <em>cdrdao(1)</em> itself).</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-v </strong><em>verbosity_level</em></dt>
+<dd>
+<p>Sets the verbosity level to use, can be a integer between 1 and 3. By
+default, only fatal errors are displayed. A verbosity level of 1 shows
+warnings, 2 warnings and errors, 3 warnings, errors and internal
+errors.</p>
+</dd>
+<dt><strong>-V</strong></dt>
+<dd>
+<p>Prints the version of toc2cue.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><em>cdrdao(1)</em></p>
+<h1>AUTHOR</h1>
+<p><strong>toc2cue</strong> was written by Andreas Mueller
+&lt;andreas@daneb.de&gt; and is part of <em>cdrdao(1).</em></p>
+<p>This manual page was written by Francois Wendling
+&lt;frwendling@free.fr&gt; and revised by Daniel Baumann
+&lt;daniel@debian.org&gt;, for the Debian project (but may be used by
+others).</p>

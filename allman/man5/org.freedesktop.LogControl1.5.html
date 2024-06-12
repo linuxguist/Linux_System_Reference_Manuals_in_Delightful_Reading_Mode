@@ -1,0 +1,313 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>org.freedesktop.LogControl1 - D-Bus interface to query and set
+logging configuration</p>
+<h1>INTRODUCTION</h1>
+<p>org.freedesktop.LogControl1 is a generic interface that is intended
+to be used by any daemon which allows the log level and target to be set
+over D-Bus. It is implemented by various daemons that are part of the
+<strong>systemd</strong>(1) suite.</p>
+<p>It is assumed that those settings are global for the whole program,
+so a fixed object path is used. The interface should always be available
+under the path /org/freedesktop/LogControl1.</p>
+<h1>DESCRIPTION</h1>
+<p>The following interface is exposed:</p>
+<blockquote>
+<pre><code>node /org/freedesktop/LogControl1 {
+  interface org.freedesktop.LogControl1 {
+    properties:
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+      @org.freedesktop.systemd1.Privileged(&quot;true&quot;)
+      readwrite s LogLevel = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+      @org.freedesktop.systemd1.Privileged(&quot;true&quot;)
+      readwrite s LogTarget = ...;
+      @org.freedesktop.DBus.Property.EmitsChangedSignal(&quot;false&quot;)
+      readonly s SyslogIdentifier = ...;
+  };
+  interface org.freedesktop.DBus.Peer { ... };
+  interface org.freedesktop.DBus.Introspectable { ... };
+  interface org.freedesktop.DBus.Properties { ... };
+};
+    </code></pre>
+</blockquote>
+<h2>Properties</h2>
+<p><em>LogLevel</em> describes the <strong>syslog</strong>(3)-style
+log-level, and should be one of "emerg", "alert", "crit", "err",
+"warning", "notice", "info", "debug", in order of increasing
+verbosity.</p>
+<p><em>LogTarget</em> describes the log target (mechanism). It should be
+one of "console" (log to the console or standard output), "kmsg" (log to
+the kernel ring buffer), "journal" (log to the journal natively, see
+<strong>systemd-journald.service</strong>(8)), "syslog" (log using the
+<strong>syslog</strong>(3) call).</p>
+<p>Those two properties are writable, so they may be set by sufficiently
+privileged users.</p>
+<p><em>SyslogIdentifier</em> is a read-only property that shows the
+"syslog identifier". It is a short string that identifies the program
+that is the source of log messages that is passed to the
+<strong>syslog</strong>(3) call.</p>
+<h1>TOOLS</h1>
+<p><strong>journalctl</strong> option
+<strong>-p</strong>/<strong>--priority=</strong> may be used to filter
+log messages by log level, option
+<strong>-t</strong>/<strong>--identifier=</strong> may be used to by the
+syslog identifier, and filters like "_TRANSPORT=syslog",
+"_TRANSPORT=journal", and "_TRANSPORT=kernel" may be used to filter
+messages by the mechanism through which they reached
+<strong>systemd-journald</strong>.</p>
+<p><strong>systemctl log-level</strong> and <strong>systemctl
+log-target</strong> verbs may be used to query and set the
+<em>LogLevel</em> and <em>LogTarget</em> properties of the service
+manager. <strong>systemctl service-log-level</strong> and
+<strong>systemctl service-log-target</strong> may similarly be used for
+individual services. (Services must have the <em>BusName=</em> property
+set and must implement the interface described here. See
+<strong>systemd.service</strong>(5) for details about
+<em>BusName=</em>.)</p>
+<h1>EXAMPLE</h1>
+<p><strong>Example 1. Create a simple listener on the bus that
+implements LogControl1</strong></p>
+<blockquote>
+<pre><code>/* SPDX-License-Identifier: MIT-0 */
+
+/* Implements the LogControl1 interface as per specification:
+ * https://www.freedesktop.org/software/systemd/man/org.freedesktop.LogControl1.html
+ *
+ * Compile with cc logcontrol-example.c $(pkg-config --libs --cflags libsystemd)
+ *
+ * To get and set properties via busctl:
+ *
+ * $ busctl --user get-property org.freedesktop.Example \
+ *                              /org/freedesktop/LogControl1 \
+ *                              org.freedesktop.LogControl1 \
+ *                              SyslogIdentifier
+ *   s &quot;example&quot;
+ * $ busctl --user get-property org.freedesktop.Example \
+ *                              /org/freedesktop/LogControl1 \
+ *                              org.freedesktop.LogControl1 \
+ *                              LogTarget
+ *   s &quot;journal&quot;
+ * $ busctl --user get-property org.freedesktop.Example \
+ *                              /org/freedesktop/LogControl1 \
+ *                              org.freedesktop.LogControl1 \
+ *                              LogLevel
+ *   s &quot;info&quot;
+ * $ busctl --user set-property org.freedesktop.Example \
+ *                              /org/freedesktop/LogControl1 \
+ *                              org.freedesktop.LogControl1 \
+ *                              LogLevel \
+ *                              &quot;s&quot; debug
+ * $ busctl --user get-property org.freedesktop.Example \
+ *                              /org/freedesktop/LogControl1 \
+ *                              org.freedesktop.LogControl1 \
+ *                              LogLevel
+ *   s &quot;debug&quot;
+ */
+
+#include &lt;errno.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;syslog.h&gt;
+#include &lt;systemd/sd-bus.h&gt;
+#include &lt;systemd/sd-journal.h&gt;
+
+#define _cleanup_(f) __attribute__((cleanup(f)))
+
+#define check(log_level, x) ({                  \
+  int _r = (x);                                 \
+  errno = _r &lt; 0 ? -_r : 0;                     \
+  sd_journal_print((log_level), #x &quot;: %m&quot;);     \
+  if (_r &lt; 0)                                   \
+    return EXIT_FAILURE;                        \
+  })
+
+typedef enum LogTarget {
+  LOG_TARGET_JOURNAL,
+  LOG_TARGET_KMSG,
+  LOG_TARGET_SYSLOG,
+  LOG_TARGET_CONSOLE,
+  _LOG_TARGET_MAX,
+} LogTarget;
+
+static const char* const log_target_table[_LOG_TARGET_MAX] = {
+  [LOG_TARGET_JOURNAL] = &quot;journal&quot;,
+  [LOG_TARGET_KMSG]    = &quot;kmsg&quot;,
+  [LOG_TARGET_SYSLOG]  = &quot;syslog&quot;,
+  [LOG_TARGET_CONSOLE] = &quot;console&quot;,
+};
+
+static const char* const log_level_table[LOG_DEBUG + 1] = {
+  [LOG_EMERG]   = &quot;emerg&quot;,
+  [LOG_ALERT]   = &quot;alert&quot;,
+  [LOG_CRIT]    = &quot;crit&quot;,
+  [LOG_ERR]     = &quot;err&quot;,
+  [LOG_WARNING] = &quot;warning&quot;,
+  [LOG_NOTICE]  = &quot;notice&quot;,
+  [LOG_INFO]    = &quot;info&quot;,
+  [LOG_DEBUG]   = &quot;debug&quot;,
+};
+
+typedef struct object {
+  const char *syslog_identifier;
+  LogTarget log_target;
+  int log_level;
+} object;
+
+static int property_get(
+                sd_bus *bus,
+                const char *path,
+                const char *interface,
+                const char *property,
+                sd_bus_message *reply,
+                void *userdata,
+                sd_bus_error *error) {
+
+  object *o = userdata;
+
+  if (strcmp(property, &quot;LogLevel&quot;) == 0)
+    return sd_bus_message_append(reply, &quot;s&quot;, log_level_table[o-&gt;log_level]);
+
+  if (strcmp(property, &quot;LogTarget&quot;) == 0)
+    return sd_bus_message_append(reply, &quot;s&quot;, log_target_table[o-&gt;log_target]);
+
+  if (strcmp(property, &quot;SyslogIdentifier&quot;) == 0)
+    return sd_bus_message_append(reply, &quot;s&quot;, o-&gt;syslog_identifier);
+
+  return sd_bus_error_setf(error,
+                           SD_BUS_ERROR_UNKNOWN_PROPERTY,
+                           &quot;Unknown property %s&quot;,
+                           property);
+}
+
+static int property_set(
+                sd_bus *bus,
+                const char *path,
+                const char *interface,
+                const char *property,
+                sd_bus_message *message,
+                void *userdata,
+                sd_bus_error *error) {
+
+  object *o = userdata;
+  const char *value;
+  int r;
+
+  r = sd_bus_message_read(message, &quot;s&quot;, &amp;value);
+  if (r &lt; 0)
+    return r;
+
+  if (strcmp(property, &quot;LogLevel&quot;) == 0) {
+    for (int i = 0; i &lt; LOG_DEBUG + 1; i++)
+      if (strcmp(value, log_level_table[i]) == 0) {
+        o-&gt;log_level = i;
+        return 0;
+      }
+
+    return sd_bus_error_setf(error,
+                             SD_BUS_ERROR_INVALID_ARGS,
+                             &quot;Invalid value for LogLevel: %s&quot;,
+                             value);
+  }
+
+  if (strcmp(property, &quot;LogTarget&quot;) == 0) {
+    for (LogTarget i = 0; i &lt; _LOG_TARGET_MAX; i++)
+      if (strcmp(value, log_target_table[i]) == 0) {
+        o-&gt;log_target = i;
+        return 0;
+      }
+
+    return sd_bus_error_setf(error,
+                             SD_BUS_ERROR_INVALID_ARGS,
+                             &quot;Invalid value for LogTarget: %s&quot;,
+                             value);
+  }
+
+  return sd_bus_error_setf(error,
+                           SD_BUS_ERROR_UNKNOWN_PROPERTY,
+                           &quot;Unknown property %s&quot;,
+                           property);
+}
+
+/* https://www.freedesktop.org/software/systemd/man/sd_bus_add_object.html
+ */
+static const sd_bus_vtable vtable[] = {
+  SD_BUS_VTABLE_START(0),
+  SD_BUS_WRITABLE_PROPERTY(
+    &quot;LogLevel&quot;, &quot;s&quot;,
+    property_get, property_set,
+    0,
+    0),
+  SD_BUS_WRITABLE_PROPERTY(
+    &quot;LogTarget&quot;, &quot;s&quot;,
+    property_get, property_set,
+    0,
+    0),
+  SD_BUS_PROPERTY(
+    &quot;SyslogIdentifier&quot;, &quot;s&quot;,
+    property_get,
+    0,
+    SD_BUS_VTABLE_PROPERTY_CONST),
+  SD_BUS_VTABLE_END
+};
+
+int main(int argc, char **argv) {
+  /* The bus should be relinquished before the program terminates. The cleanup
+   * attribute allows us to do it nicely and cleanly whenever we exit the
+   * block.
+   */
+  _cleanup_(sd_bus_flush_close_unrefp) sd_bus *bus = NULL;
+
+  object o = {
+    .log_level = LOG_INFO,
+    .log_target = LOG_TARGET_JOURNAL,
+    .syslog_identifier = &quot;example&quot;,
+  };
+
+  /* Acquire a connection to the bus, letting the library work out the details.
+   * https://www.freedesktop.org/software/systemd/man/sd_bus_default.html
+   */
+  check(o.log_level, sd_bus_default(&amp;bus));
+
+  /* Publish an interface on the bus, specifying our well-known object access
+   * path and public interface name.
+   * https://www.freedesktop.org/software/systemd/man/sd_bus_add_object.html
+   * https://dbus.freedesktop.org/doc/dbus-tutorial.html
+   */
+  check(o.log_level, sd_bus_add_object_vtable(bus, NULL,
+                                              &quot;/org/freedesktop/LogControl1&quot;,
+                                              &quot;org.freedesktop.LogControl1&quot;,
+                                              vtable,
+                                              &amp;o));
+
+  /* By default the service is assigned an ephemeral name. Also add a fixed
+   * one, so that clients know whom to call.
+   * https://www.freedesktop.org/software/systemd/man/sd_bus_request_name.html
+   */
+  check(o.log_level, sd_bus_request_name(bus, &quot;org.freedesktop.Example&quot;, 0));
+
+  for (;;) {
+    /* https://www.freedesktop.org/software/systemd/man/sd_bus_wait.html
+     */
+    check(o.log_level, sd_bus_wait(bus, UINT64_MAX));
+    /* https://www.freedesktop.org/software/systemd/man/sd_bus_process.html
+     */
+    check(o.log_level, sd_bus_process(bus, NULL));
+  }
+
+  /* https://www.freedesktop.org/software/systemd/man/sd_bus_release_name.html
+   */
+  check(o.log_level, sd_bus_release_name(bus, &quot;org.freedesktop.Example&quot;));
+
+  return 0;
+}</code></pre>
+</blockquote>
+<p>This creates a simple server on the bus. It implements the
+LogControl1 interface by providing the required properties and allowing
+to set the writable ones. It logs at the configured log level using
+<strong>sd_journal_print</strong>(3).</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>journalctl</strong>(1),
+<strong>systemctl</strong>(1), <strong>systemd.service</strong>(5),
+<strong>syslog</strong>(3)</p>

@@ -1,0 +1,222 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::HTTP - Low-level HTTP connection (client)</p>
+<h1>VERSION</h1>
+<p>version 6.22</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::HTTP; my $s = Net::HTTP-&gt;new(Host =&gt; "www.perl.com")
+|| die $@; $s-&gt;write_request(GET =&gt; "/", User-Agent =&gt;
+"Mozilla/5.0"); my($code, $mess, %h) = $s-&gt;read_response_headers;
+while (1) { my $buf; my $n = $s-&gt;read_entity_body($buf, 1024); die
+"read failed: $!" unless defined $n; last unless $n; print $buf; }</p>
+<h1>DESCRIPTION</h1>
+<p>The <code>Net::HTTP</code> class is a low-level HTTP client. An
+instance of the <code>Net::HTTP</code> class represents a connection to
+an HTTP server. The HTTP protocol is described in RFC 2616. The
+<code>Net::HTTP</code> class supports <code>HTTP/1.0</code> and
+<code>HTTP/1.1</code>.</p>
+<p><code>Net::HTTP</code> is a sub-class of one of
+<code>IO::Socket::IP</code> (IPv6+IPv4), <code>IO::Socket::INET6</code>
+(IPv6+IPv4), or <code>IO::Socket::INET</code> (IPv4 only). You can mix
+the methods described below with reading and writing from the socket
+directly. This is not necessary a good idea, unless you know what you
+are doing.</p>
+<p>The following methods are provided (in addition to those of
+<code>IO::Socket::INET</code>):</p>
+<dl>
+<dt>"$s = Net::HTTP-&gt;new( %options )"</dt>
+<dd>
+<p>The <code>Net::HTTP</code> constructor method takes the same options
+as <code>IO::Socket::INET</code>'s as well as these: Host: Initial host
+attribute value KeepAlive: Initial keep_alive attribute value SendTE:
+Initial send_te attribute_value HTTPVersion: Initial http_version
+attribute value PeerHTTPVersion: Initial peer_http_version attribute
+value MaxLineLength: Initial max_line_length attribute value
+MaxHeaderLines: Initial max_header_lines attribute value The
+<code>Host</code> option is also the default for
+<code>IO::Socket::INET</code>'s <code>PeerAddr</code>. The
+<code>PeerPort</code> defaults to 80 if not provided. The
+<code>PeerPort</code> specification can also be embedded in the
+<code>PeerAddr</code> by preceding it with a :, and closing the IPv6
+address on brackets [] if necessary:
+192.0.2.1:80,[2001:db8::1]:80,any.example.com:80. The
+<code>Listen</code> option provided by <code>IO::Socket::INET</code>'s
+constructor method is not allowed. If unable to connect to the given
+HTTP server then the constructor returns <code>undef</code> and $@
+contains the reason. After a successful connect, a <code>Net:HTTP</code>
+object is returned.</p>
+</dd>
+<dt>"$s-&gt;host"</dt>
+<dd>
+<p>Get/set the default value of the <code>Host</code> header to send.
+The <code>$host</code> must not be set to an empty string (or
+<code>undef</code>) for HTTP/1.1.</p>
+</dd>
+<dt>"$s-&gt;keep_alive"</dt>
+<dd>
+<p>Get/set the <em>keep-alive</em> value. If this value is TRUE then the
+request will be sent with headers indicating that the server should try
+to keep the connection open so that multiple requests can be sent. The
+actual headers set will depend on the value of the
+<code>http_version</code> and <code>peer_http_version</code>
+attributes.</p>
+</dd>
+<dt>"$s-&gt;send_te"</dt>
+<dd>
+<p>Get/set the a value indicating if the request will be sent with a TE
+header to indicate the transfer encodings that the server can choose to
+use. The list of encodings announced as accepted by this client depends
+on availability of the following modules:
+<code>Compress::Raw::Zlib</code> for <em>deflate</em>, and
+<code>IO::Compress::Gunzip</code> for <em>gzip</em>.</p>
+</dd>
+<dt>"$s-&gt;http_version"</dt>
+<dd>
+<p>Get/set the HTTP version number that this client should announce.
+This value can only be set to 1.0 or 1.1. The default is 1.1.</p>
+</dd>
+<dt>"$s-&gt;peer_http_version"</dt>
+<dd>
+<p>Get/set the protocol version number of our peer. This value will
+initially be 1.0, but will be updated by a successful
+<strong>read_response_headers()</strong> method call.</p>
+</dd>
+<dt>"$s-&gt;max_line_length"</dt>
+<dd>
+<p>Get/set a limit on the length of response line and response header
+lines. The default is 8192. A value of 0 means no limit.</p>
+</dd>
+<dt>"$s-&gt;max_header_length"</dt>
+<dd>
+<p>Get/set a limit on the number of header lines that a response can
+have. The default is 128. A value of 0 means no limit.</p>
+</dd>
+<dt>"$s-&gt;format_request($method, $uri, %headers, [$content])"</dt>
+<dd>
+<p>Format a request message and return it as a string. If the headers do
+not include a <code>Host</code> header, then a header is inserted with
+the value of the <code>host</code> attribute. Headers like
+<code>Connection</code> and <code>Keep-Alive</code> might also be added
+depending on the status of the <code>keep_alive</code> attribute. If
+<code>$content</code> is given (and it is non-empty), then a
+<code>Content-Length</code> header is automatically added unless it was
+already present.</p>
+</dd>
+<dt>"$s-&gt;write_request($method, $uri, %headers, [$content])"</dt>
+<dd>
+<p>Format and send a request message. Arguments are the same as for
+<strong>format_request()</strong>. Returns true if successful.</p>
+</dd>
+<dt>"$s-&gt;format_chunk( $data )"</dt>
+<dd>
+<p>Returns the string to be written for the given chunk of data.</p>
+</dd>
+<dt>"$s-&gt;write_chunk($data)"</dt>
+<dd>
+<p>Will write a new chunk of request entity body data. This method
+should only be used if the <code>Transfer-Encoding</code> header with a
+value of <code>chunked</code> was sent in the request. Note, writing
+zero-length data is a no-op. Use the <strong>write_chunk_eof()</strong>
+method to signal end of entity body data. Returns true if
+successful.</p>
+</dd>
+<dt>"$s-&gt;format_chunk_eof( %trailers )"</dt>
+<dd>
+<p>Returns the string to be written for signaling EOF when a
+<code>Transfer-Encoding</code> of <code>chunked</code> is used.</p>
+</dd>
+<dt>"$s-&gt;write_chunk_eof( %trailers )"</dt>
+<dd>
+<p>Will write eof marker for chunked data and optional trailers. Note
+that trailers should not really be used unless is was signaled with a
+<code>Trailer</code> header. Returns true if successful.</p>
+</dd>
+<dt>"($code, $mess, %headers) = $s-&gt;read_response_headers( %opts
+)"</dt>
+<dd>
+<p>Read response headers from server and return it. The
+<code>$code</code> is the 3 digit HTTP status code (see HTTP::Status)
+and <code>$mess</code> is the textual message that came with it. Headers
+are then returned as key/value pairs. Since key letter casing is not
+normalized and the same key can even occur multiple times, assigning
+these values directly to a hash is not wise. Only the <code>$code</code>
+is returned if this method is called in scalar context. As a side effect
+this method updates the 'peer_http_version' attribute. Options might be
+passed in as key/value pairs. There are currently only two options
+supported; <code>laxed</code> and <code>junk_out</code>. The
+<code>laxed</code> option will make
+<strong>read_response_headers()</strong> more forgiving towards servers
+that have not learned how to speak HTTP properly. The <code>laxed</code>
+option is a boolean flag, and is enabled by passing in a TRUE value. The
+<code>junk_out</code> option can be used to capture bad header lines
+when <code>laxed</code> is enabled. The value should be an array
+reference. Bad header lines will be pushed onto the array. The
+<code>laxed</code> option must be specified in order to communicate with
+pre-HTTP/1.0 servers that don't describe the response outcome or the
+data they send back with a header block. For these servers
+peer_http_version is set to 0.9 and this method returns (200, Assumed
+OK). The method will raise an exception (die) if the server does not
+speak proper HTTP or if the <code>max_line_length</code> or
+<code>max_header_length</code> limits are reached. If the
+<code>laxed</code> option is turned on and <code>max_line_length</code>
+and <code>max_header_length</code> checks are turned off, then no
+exception will be raised and this method will always return a response
+code.</p>
+</dd>
+<dt>"$n = $s-&gt;read_entity_body($buf, $size);"</dt>
+<dd>
+<p>Reads chunks of the entity body content. Basically the same interface
+as for <strong>read()</strong> and <strong>sysread()</strong>, but the
+buffer offset argument is not supported yet. This method should only be
+called after a successful <strong>read_response_headers()</strong> call.
+The return value will be <code>undef</code> on read errors, 0 on EOF, -1
+if no data could be returned this time, otherwise the number of bytes
+assigned to <code>$buf</code>. The <code>$buf</code> is set to "" when
+the return value is -1. You normally want to retry this call if this
+function returns either -1 or <code>undef</code> with <code>$!</code> as
+EINTR or EAGAIN (see Errno). EINTR can happen if the application catches
+signals and EAGAIN can happen if you made the socket non-blocking. This
+method will raise exceptions (die) if the server does not speak proper
+HTTP. This can only happen when reading chunked data.</p>
+</dd>
+<dt>"%headers = $s-&gt;get_trailers"</dt>
+<dd>
+<p>After <strong>read_entity_body()</strong> has returned 0 to indicate
+end of the entity body, you might call this method to pick up any
+trailers.</p>
+</dd>
+<dt>"$s-&gt;_rbuf"</dt>
+<dd>
+<p>Get/set the read buffer content. The
+<strong>read_response_headers()</strong> and
+<strong>read_entity_body()</strong> methods use an internal buffer which
+they will look for data before they actually sysread more from the
+socket itself. If they read too much, the remaining data will be left in
+this buffer.</p>
+</dd>
+<dt>"$s-&gt;_rbuf_length"</dt>
+<dd>
+<p>Returns the number of bytes in the read buffer. This should always be
+the same as: length($s-&gt;_rbuf) but might be more efficient.</p>
+</dd>
+</dl>
+<h1>SUBCLASSING</h1>
+<p>The <strong>read_response_headers()</strong> and
+<strong>read_entity_body()</strong> will invoke the
+<strong>sysread()</strong> method when they need more data. Subclasses
+might want to override this method to control how reading takes
+place.</p>
+<p>The object itself is a glob. Subclasses should avoid using hash key
+names prefixed with <code>http_</code> and <code>io_</code>.</p>
+<h1>SEE ALSO</h1>
+<p>LWP, IO::Socket::INET, Net::HTTP::NB</p>
+<h1>AUTHOR</h1>
+<p>Gisle Aas &lt;gisle@activestate.com&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2001 by Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

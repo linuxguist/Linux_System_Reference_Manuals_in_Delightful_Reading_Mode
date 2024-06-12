@@ -1,0 +1,212 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-pkey - public or private key processing command</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl</strong> <strong>pkey</strong>
+[<strong>-help</strong>] [<strong>-engine</strong> <em>id</em>]
+[<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>] [<strong>-check</strong>]
+[<strong>-pubcheck</strong>] [<strong>-in</strong>
+<em>filename</em>|<em>uri</em>] [<strong>-inform</strong>
+<strong>DER</strong>|<strong>PEM</strong>|<strong>P12</strong>|<strong>ENGINE</strong>]
+[<strong>-passin</strong> <em>arg</em>] [<strong>-pubin</strong>]
+[<strong>-out</strong> <em>filename</em>] [<strong>-outform</strong>
+<strong>DER</strong>|<strong>PEM</strong>]
+[<strong>-<em>cipher</em></strong>] [<strong>-passout</strong>
+<em>arg</em>] [<strong>-traditional</strong>] [<strong>-pubout</strong>]
+[<strong>-noout</strong>] [<strong>-text</strong>]
+[<strong>-text_pub</strong>] [<strong>-ec_conv_form</strong>
+<em>arg</em>] [<strong>-ec_param_enc</strong> <em>arg</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command processes public or private keys. They can be converted
+between various forms and their components printed.</p>
+<h1>OPTIONS</h1>
+<h2>General options</h2>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-engine id</dt>
+<dd>
+<p>See Engine Options in <strong>openssl</strong> (1). This option is
+deprecated.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<dl>
+<dt>-check</dt>
+<dd>
+<p>This option checks the consistency of a key pair for both public and
+private components.</p>
+</dd>
+<dt>-pubcheck</dt>
+<dd>
+<p>This option checks the correctness of either a public key or the
+public component of a key pair.</p>
+</dd>
+</dl>
+<h2>Input options</h2>
+<dl>
+<dt>-in filename|uri</dt>
+<dd>
+<p>This specifies the input to read a key from or standard input if this
+option is not specified. If the key input is encrypted and
+<strong>-passin</strong> is not given a pass phrase will be prompted
+for.</p>
+</dd>
+<dt>-inform DER|PEM|P12|ENGINE</dt>
+<dd>
+<p>The key input format; unspecified by default. See
+<strong>openssl-format-options</strong> (1) for details.</p>
+</dd>
+<dt>-passin arg</dt>
+<dd>
+<p>The password source for the key input. For more information about the
+format of <strong>arg</strong> see
+<strong>openssl-passphrase-options</strong> (1).</p>
+</dd>
+<dt>-pubin</dt>
+<dd>
+<p>By default a private key is read from the input. With this option
+only the public components are read.</p>
+</dd>
+</dl>
+<h2>Output options</h2>
+<dl>
+<dt>-out filename</dt>
+<dd>
+<p>This specifies the output filename to save the encoded and/or text
+output of key or standard output if this option is not specified. If any
+cipher option is set but no <strong>-passout</strong> is given then a
+pass phrase will be prompted for. The output filename should
+<strong>not</strong> be the same as the input filename.</p>
+</dd>
+<dt>-outform DER|PEM</dt>
+<dd>
+<p>The key output format; the default is <strong>PEM</strong>. See
+<strong>openssl-format-options</strong> (1) for details.</p>
+</dd>
+<dt>-cipher</dt>
+<dd>
+<p>Encrypt the PEM encoded private key with the supplied cipher. Any
+algorithm name accepted by <strong>EVP_get_cipherbyname()</strong> is
+acceptable such as <strong>aes128</strong>. Encryption is not supported
+for DER output.</p>
+</dd>
+<dt>-passout arg</dt>
+<dd>
+<p>The password source for the output file. For more information about
+the format of <strong>arg</strong> see
+<strong>openssl-passphrase-options</strong> (1).</p>
+</dd>
+<dt>-traditional</dt>
+<dd>
+<p>Normally a private key is written using standard format: this is
+PKCS#8 form with the appropriate encryption algorithm (if any). If the
+<strong>-traditional</strong> option is specified then the older
+traditional format is used instead.</p>
+</dd>
+<dt>-pubout</dt>
+<dd>
+<p>By default the private and public key is output; this option
+restricts the output to the public components. This option is
+automatically set if the input is a public key. When combined with
+<strong>-text</strong>, this is equivalent to
+<strong>-text_pub</strong>.</p>
+</dd>
+<dt>-noout</dt>
+<dd>
+<p>Do not output the key in encoded form.</p>
+</dd>
+<dt>-text</dt>
+<dd>
+<p>Output the various key components in plain text (possibly in addition
+to the PEM encoded form). This cannot be combined with encoded output in
+DER format.</p>
+</dd>
+<dt>-text_pub</dt>
+<dd>
+<p>Output in text form only the public key components (also for private
+keys). This cannot be combined with encoded output in DER format.</p>
+</dd>
+<dt>-ec_conv_form arg</dt>
+<dd>
+<p>This option only applies to elliptic-curve based keys. This specifies
+how the points on the elliptic curve are converted into octet strings.
+Possible values are: <strong>compressed</strong> (the default value),
+<strong>uncompressed</strong> and <strong>hybrid</strong>. For more
+information regarding the point conversion forms please read the X9.62
+standard. <strong>Note</strong> Due to patent issues the
+<strong>compressed</strong> option is disabled by default for binary
+curves and can be enabled by defining the preprocessor macro
+<strong>OPENSSL_EC_BIN_PT_COMP</strong> at compile time.</p>
+</dd>
+<dt>-ec_param_enc arg</dt>
+<dd>
+<p>This option only applies to elliptic curve based public and private
+keys. This specifies how the elliptic curve parameters are encoded.
+Possible value are: <strong>named_curve</strong>, i.e. the ec parameters
+are specified by an OID, or <strong>explicit</strong> where the ec
+parameters are explicitly given (see RFC 3279 for the definition of the
+EC parameters structures). The default value is
+<strong>named_curve</strong>. <strong>Note</strong> the
+<strong>implicitlyCA</strong> alternative, as specified in RFC 3279, is
+currently not implemented in OpenSSL.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>To remove the pass phrase on a private key:</p>
+<p>openssl pkey -in key.pem -out keyout.pem</p>
+<p>To encrypt a private key using triple DES:</p>
+<p>openssl pkey -in key.pem -des3 -out keyout.pem</p>
+<p>To convert a private key from PEM to DER format:</p>
+<p>openssl pkey -in key.pem -outform DER -out keyout.der</p>
+<p>To print out the components of a private key to standard output:</p>
+<p>openssl pkey -in key.pem -text -noout</p>
+<p>To print out the public components of a private key to standard
+output:</p>
+<p>openssl pkey -in key.pem -text_pub -noout</p>
+<p>To just output the public part of a private key:</p>
+<p>openssl pkey -in key.pem -pubout -out pubkey.pem</p>
+<p>To change the EC parameters encoding to
+<strong>explicit</strong>:</p>
+<p>openssl pkey -in key.pem -ec_param_enc explicit -out keyout.pem</p>
+<p>To change the EC point conversion form to
+<strong>compressed</strong>:</p>
+<p>openssl pkey -in key.pem -ec_conv_form compressed -out keyout.pem</p>
+<h1>SEE ALSO</h1>
+<p><strong>openssl</strong> (1), <strong>openssl-genpkey</strong> (1),
+<strong>openssl-rsa</strong> (1), <strong>openssl-pkcs8</strong> (1),
+<strong>openssl-dsa</strong> (1), <strong>openssl-genrsa</strong> (1),
+<strong>openssl-gendsa</strong> (1)</p>
+<h1>HISTORY</h1>
+<p>The <strong>-engine</strong> option was deprecated in OpenSSL
+3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2006-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

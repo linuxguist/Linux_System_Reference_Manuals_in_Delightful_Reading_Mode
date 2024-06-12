@@ -1,0 +1,144 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>fsck.minix - check consistency of Minix filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>fsck.minix</strong> [options] <em>device</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>fsck.minix</strong> performs a consistency check for the
+Linux MINIX filesystem.</p>
+<p>The program assumes the filesystem is quiescent.
+<strong>fsck.minix</strong> should not be used on a mounted device
+unless you can be sure nobody is writing to it. Remember that the kernel
+can write to device when it searches for files.</p>
+<p>The <em>device</em> name will usually have the following form:</p>
+<blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">/dev/hda[1-63]</td>
+<td style="text-align: left;">IDE disk 1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">/dev/hdb[1-63]</td>
+<td style="text-align: left;">IDE disk 2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">/dev/sda[1-15]</td>
+<td style="text-align: left;">SCSI disk 1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">/dev/sdb[1-15]</td>
+<td style="text-align: left;">SCSI disk 2</td>
+</tr>
+</tbody>
+</table>
+<p><br />
+</p>
+</blockquote>
+<p>If the filesystem was changed, i.e., repaired, then
+<strong>fsck.minix</strong> will print "FILE SYSTEM HAS BEEN CHANGED"
+and will <strong>sync</strong>(2) three times before exiting. There is
+<em>no</em> need to reboot after check.</p>
+<h1>WARNING</h1>
+<p><strong>fsck.minix</strong> should <strong>not</strong> be used on a
+mounted filesystem. Using <strong>fsck.minix</strong> on a mounted
+filesystem is very dangerous, due to the possibility that deleted files
+are still in use, and can seriously damage a perfectly good filesystem!
+If you absolutely have to run <strong>fsck.minix</strong> on a mounted
+filesystem, such as the root filesystem, make sure nothing is writing to
+the disk, and that no files are "zombies" waiting for deletion.</p>
+<h1>OPTIONS</h1>
+<p><strong>-l</strong>, <strong>--list</strong></p>
+<blockquote>
+<p>List all filenames.</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--repair</strong></p>
+<blockquote>
+<p>Perform interactive repairs.</p>
+</blockquote>
+<p><strong>-a</strong>, <strong>--auto</strong></p>
+<blockquote>
+<p>Perform automatic repairs. This option implies
+<strong>--repair</strong> and serves to answer all of the questions
+asked with the default. Note that this can be extremely dangerous in the
+case of extensive filesystem damage.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Be verbose.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--super</strong></p>
+<blockquote>
+<p>Output super-block information.</p>
+</blockquote>
+<p><strong>-m</strong>, <strong>--uncleared</strong></p>
+<blockquote>
+<p>Activate MINIX-like "mode not cleared" warnings.</p>
+</blockquote>
+<p><strong>-f</strong>, <strong>--force</strong></p>
+<blockquote>
+<p>Force a filesystem check even if the filesystem was marked as valid.
+Marking is done by the kernel when the filesystem is unmounted.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>DIAGNOSTICS</h1>
+<p>There are numerous diagnostic messages. The ones mentioned here are
+the most commonly seen in normal usage.</p>
+<p>If the device does not exist, <strong>fsck.minix</strong> will print
+"unable to read super block". If the device exists, but is not a MINIX
+filesystem, <strong>fsck.minix</strong> will print "bad magic number in
+super-block".</p>
+<h1>EXIT STATUS</h1>
+<p>The exit status returned by <strong>fsck.minix</strong> is the sum of
+the following:</p>
+<p><strong>0</strong></p>
+<blockquote>
+<p>No errors</p>
+</blockquote>
+<p><strong>3</strong></p>
+<blockquote>
+<p>Filesystem errors corrected, system should be rebooted if filesystem
+was mounted</p>
+</blockquote>
+<p><strong>4</strong></p>
+<blockquote>
+<p>Filesystem errors left uncorrected</p>
+</blockquote>
+<p><strong>7</strong></p>
+<blockquote>
+<p>Combination of exit statuses 3 and 4</p>
+</blockquote>
+<p><strong>8</strong></p>
+<blockquote>
+<p>Operational error</p>
+</blockquote>
+<p><strong>16</strong></p>
+<blockquote>
+<p>Usage or syntax error</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<p>Exit status values by</p>
+<p>Added support for filesystem valid flag:</p>
+<p>Check to prevent fsck of mounted filesystem added by</p>
+<p>Minix v2 fs support by</p>
+<p>updated by</p>
+<p>Portability patch by</p>
+<h1>SEE ALSO</h1>
+<p><strong>fsck</strong>(8), <strong>fsck.ext2</strong>(8),
+<strong>mkfs</strong>(8), <strong>mkfs.ext2</strong>(8),
+<strong>mkfs.minix</strong>(8), <strong>reboot</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>fsck.minix</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

@@ -1,0 +1,433 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>aspell - interactive spell checker</p>
+<h1>SYNOPSIS</h1>
+<p><strong>aspell</strong> <em>[options] &lt;command&gt;</em><br />
+</p>
+<h1>DESCRIPTION</h1>
+<p><strong>aspell</strong> is a utility program that connects to the
+Aspell library so that it can function as an <strong>ispell -a</strong>
+replacement, as an independent spell checker, as a test utility to test
+out Aspell library features, and as a utility for managing dictionaries
+used by the library.</p>
+<p>The Aspell library contains an interface allowing other programs
+direct access to its functions and therefore reducing the complex task
+of spell checking to simple library calls. The default library does not
+contain dictionary word lists. To add language dictionaries, please
+check your distro first for modified dictionaries, otherwise look here
+for base language dictionaries &lt;http://aspell.net&gt;.</p>
+<p>The following information describes the commands and options used by
+the Aspell Utility.</p>
+<p>This manual page is maintained separately from the official
+documentation so it may be out of date or incomplete. The official
+documentation is maintained as a Texinfo manual. See the
+` <strong>aspell</strong> ' entry in <strong>info</strong> for more
+complete documentation.</p>
+<h1>COMMANDS</h1>
+<p><em>&lt;command&gt;</em> is one of:</p>
+<dl>
+<dt><strong>usage</strong>, <strong>-?</strong></dt>
+<dd>
+<p>Send a brief Aspell Utility usage message to standard output. This is
+a short summary listing more common spell-check commands and
+options.</p>
+</dd>
+<dt><strong>help</strong></dt>
+<dd>
+<p>Send a detailed Aspell Utility help message to standard output. This
+is a complete list showing all commands, options, filters and
+dictionaries.</p>
+</dd>
+<dt><strong>version</strong>, <strong>-v</strong></dt>
+<dd>
+<p>Print version number of Aspell Library and Utility to standard
+output.</p>
+</dd>
+<dt><strong>check</strong> <em>&lt;file&gt;</em>, <strong>-c</strong>
+<em>&lt;file&gt;</em></dt>
+<dd>
+<p>Spell-check a single file.</p>
+</dd>
+<dt><strong>pipe</strong>, <strong>-a</strong></dt>
+<dd>
+<p>Run Aspell in <em>ispell -a</em> compatibility mode.</p>
+</dd>
+<dt><strong>list</strong></dt>
+<dd>
+<p>Produce a list of misspelled words from standard input.</p>
+</dd>
+<dt>[<strong>dump</strong>] <strong>config</strong></dt>
+<dd>
+<p>Dump all current configuration options to standard output.</p>
+</dd>
+<dt><strong>config </strong><em>&lt;key&gt;</em></dt>
+<dd>
+<p>Send the current value of <em>&lt;key&gt;</em> to standard
+output.</p>
+</dd>
+<dt><strong>soundslike</strong></dt>
+<dd>
+<p>Output the soundslike equivalent of each word entered.</p>
+</dd>
+<dt><strong>munch</strong></dt>
+<dd>
+<p>Generate possible root words and affixes from an input list of
+words.</p>
+</dd>
+<dt><strong>expand</strong> [<strong>1-4</strong>]</dt>
+<dd>
+<p>Expands the affix flags of each affix compressed word entered.</p>
+</dd>
+<dt><strong>clean</strong> [<strong>strict</strong>]</dt>
+<dd>
+<p>Cleans an input word list so that every line is a valid word.</p>
+</dd>
+<dt><strong>munch-list</strong> [<strong>simple</strong>]
+[<strong>single</strong>|<strong>multi</strong>]
+[<strong>keep</strong>]</dt>
+<dd>
+<p>Reduce the size of a word list via affix compression.</p>
+</dd>
+<dt><strong>conv</strong> <em>&lt;from&gt; &lt;to&gt;</em>
+[<em>&lt;norm-form&gt;</em>]</dt>
+<dd>
+<p>Converts <em>&lt;from&gt;</em> one encoding <em>&lt;to&gt;</em>
+another.</p>
+</dd>
+<dt><strong>norm</strong> (<em>&lt;norm-map&gt;</em>|<em>&lt;from&gt;
+&lt;norm-map&gt; &lt;to&gt;</em>) [<em>&lt;norm-form&gt;</em>]</dt>
+<dd>
+<p>Perform Unicode normalization.</p>
+</dd>
+<dt>[<strong>dump</strong>]
+<strong>dicts</strong>|<strong>filters</strong>|<strong>modes</strong></dt>
+<dd>
+<p>Lists available dictionaries, filters, or modes.</p>
+</dd>
+<dt><strong>dump</strong>|<strong>create</strong>|<strong>merge
+master</strong>|<strong>personal</strong>|<strong>repl</strong>
+<em>&lt;wordlist&gt;</em></dt>
+<dd>
+<p>dump, create, or merge a master, personal, or replacement word
+list.</p>
+</dd>
+</dl>
+<h1>DICTIONARY OPTIONS</h1>
+<p>The following options may be used to control which dictionaries to
+use and how they behave.</p>
+<dl>
+<dt><strong>--master=</strong><em>&lt;name&gt;</em>, <strong>-d</strong>
+<em>&lt;name&gt;</em></dt>
+<dd>
+<p>Base name of the dictionary to use. If this option is specified then
+Aspell will either use this dictionary or die.</p>
+</dd>
+<dt><strong>--dict-dir=</strong><em>&lt;directory&gt;</em></dt>
+<dd>
+<p>Location of the main dictionary word list.</p>
+</dd>
+<dt><strong>--lang=</strong><em>&lt;string&gt;</em>, <strong>-l</strong>
+<em>&lt;string&gt;</em></dt>
+<dd>
+<p>Language to use. It follows the same format of the LANG environmental
+variable on most systems. It consists of the two letter ISO 639 language
+code and an optional two letter ISO 3166 country code after a dash or
+underscore. The default value is based on the value of the LC_MESSAGES
+locale.</p>
+</dd>
+<dt><strong>--size=</strong><em>&lt;string&gt;</em></dt>
+<dd>
+<p>The preferred size of the dictionary word list. This consists of a
+two char digit code describing the size of the list, with typical values
+of: 10=tiny, 20=really small, 30=small, 40=med-small, 50=med,
+60=med-large, 70=large, 80=huge, 90=insane.</p>
+</dd>
+<dt><strong>--variety=</strong><em>&lt;string&gt;</em></dt>
+<dd>
+<p>Any extra information to distinguish this variety of dictionary from
+other dictionaries which may have the same <em>lang</em> and
+<em>size</em>.</p>
+</dd>
+<dt><strong>--jargon=</strong><em>&lt;string&gt;</em></dt>
+<dd>
+<p>Please use the <em>variety</em> option since it replaces
+<em>jargon</em> as a better choice. <em>jargon</em> will be removed in
+the future.</p>
+</dd>
+<dt><strong>--word-list-path=</strong><em>&lt;list of
+directories&gt;</em></dt>
+<dd>
+<p>Search path for word list information files.</p>
+</dd>
+<dt><strong>--personal=</strong><em>&lt;file&gt;</em>,
+<strong>-p</strong> <em>&lt;file&gt;</em></dt>
+<dd>
+<p>Personal word list file name.</p>
+</dd>
+<dt><strong>--repl=</strong><em>&lt;file&gt;</em></dt>
+<dd>
+<p>Replacements list file name.</p>
+</dd>
+<dt><strong>--extra-dicts=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>Extra dictionaries to use.</p>
+</dd>
+<dt><strong>--ignore-accents</strong></dt>
+<dd>
+<p>This option is not yet implemented.</p>
+</dd>
+</dl>
+<h1>CHECKER OPTIONS</h1>
+<p>These options control the behavior of Aspell when checking
+documents.</p>
+<dl>
+<dt><strong>--ignore=</strong><em>&lt;integer&gt;</em>,
+<strong>-W</strong> <em>&lt;integer&gt;</em></dt>
+<dd>
+<p>Ignore words &lt;= <em>&lt;integer&gt;</em> characters in length.</p>
+</dd>
+<dt><strong>--ignore-case</strong>,
+<strong>--dont-ignore-case</strong></dt>
+<dd>
+<p>Ignore case when checking words.</p>
+</dd>
+<dt><strong>--ignore-repl</strong>,
+<strong>--dont-ignore-repl</strong></dt>
+<dd>
+<p>Ignore commands to store replacement pairs.</p>
+</dd>
+<dt><strong>--save-repl</strong>, <strong>--dont-save-repl</strong></dt>
+<dd>
+<p>Save the replacement word list on save all.</p>
+</dd>
+<dt><strong>--sug-mode=</strong><em>&lt;mode&gt;</em></dt>
+<dd>
+<p>Suggestion <em>&lt;mode&gt;</em> =
+<strong>ultra</strong>|<strong>fast</strong>|<strong>normal</strong>|<strong>bad-spellers</strong></p>
+</dd>
+</dl>
+<h1>FILTER OPTIONS</h1>
+<p>These options modify the behavior of the various filters.</p>
+<dl>
+<dt><strong>--add-filter=</strong><em>&lt;list&gt;</em>,
+<strong>--rem-filter=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>Add or remove a filter.</p>
+</dd>
+<dt><strong>--add-filter-path=</strong><em>&lt;paths&gt;</em>,
+<strong>--rem-filter-path=</strong><em>&lt;paths&gt;</em></dt>
+<dd>
+<p>Add or remove paths searched for filters.</p>
+</dd>
+<dt><strong>--mode=</strong><em>&lt;string&gt;</em>,
+<strong>-e</strong>, <strong>-H</strong>, <strong>-t</strong>,
+<strong>-n</strong></dt>
+<dd>
+<p>Sets the filter mode. <em>Mode</em> is one of none, url, email, html,
+tex or nroff. The alternative shortcut options are '-e' for email, '-H'
+for Html/Sgml, '-t' for Tex or '-n' for Nroff.</p>
+</dd>
+<dt><strong>--encoding=</strong><em>&lt;string&gt;</em></dt>
+<dd>
+<p>encoding the document is expected to be in. The default depends on
+the current locale.</p>
+</dd>
+<dt><strong>--add-email-quote=</strong><em>&lt;list&gt;</em>,
+<strong>--rem-email-quote=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>Add or Remove a list of email quote characters.</p>
+</dd>
+<dt><strong>--email-margin=</strong><em>&lt;integer&gt;</em></dt>
+<dd>
+<p>Number of chars that can appear before the quote char.</p>
+</dd>
+<dt><strong>--add-html-check=</strong><em>&lt;list&gt;</em>,
+<strong>--rem-html-check=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>Add or remove a list of HTML attributes to always check. For example,
+look inside alt= tags.</p>
+</dd>
+<dt><strong>--add-html-skip=</strong><em>&lt;list&gt;</em>,
+<strong>--rem-html-skip=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>Add or remove a list of HTML attributes to always skip while spell
+checking.</p>
+</dd>
+<dt><strong>--add-sgml-check=</strong><em>&lt;list&gt;</em>,
+<strong>--rem-sgml-check=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>Add or remove a list of SGML attributes to always check for
+spelling.</p>
+</dd>
+<dt><strong>--add-sgml-skip=</strong><em>&lt;list&gt;</em>,
+<strong>--rem-sgml-skip=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>Add or remove a list of SGML attributes to always skip while spell
+checking.</p>
+</dd>
+<dt><strong>--sgml-extension=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>SGML file extensions.</p>
+</dd>
+<dt><strong>--tex-check-comments</strong>,
+<strong>--dont-tex-check-comments</strong></dt>
+<dd>
+<p>Check TeX comments.</p>
+</dd>
+<dt><strong>--add-tex-command=</strong><em>&lt;list&gt;</em>,
+<strong>--rem-tex-command=</strong><em>&lt;list&gt;</em></dt>
+<dd>
+<p>Add or Remove a list of TeX commands.</p>
+</dd>
+</dl>
+<h1>RUN-TOGETHER WORD OPTIONS</h1>
+<p>These may be used to control the behavior of run-together words.</p>
+<dl>
+<dt><strong>--run-together</strong>,
+<strong>--dont-run-together</strong>, <strong>-C</strong>,
+<strong>-B</strong></dt>
+<dd>
+<p>Consider run-together words valid.</p>
+</dd>
+<dt><strong>--run-together-limit=</strong><em>&lt;integer&gt;</em></dt>
+<dd>
+<p>Maximum number of words that can be strung together.</p>
+</dd>
+<dt><strong>--run-together-min=</strong><em>&lt;integer&gt;</em></dt>
+<dd>
+<p>Minimal length of interior words.</p>
+</dd>
+</dl>
+<h1>MISC OPTIONS</h1>
+<p>Miscellaneous options that don't fall under any other category.</p>
+<dl>
+<dt><strong>--conf=</strong><em>&lt;file name&gt;</em></dt>
+<dd>
+<p>Main configuration file. This file overrides Aspell's global
+defaults.</p>
+</dd>
+<dt><strong>--conf-dir=</strong><em>&lt;directory&gt;</em></dt>
+<dd>
+<p>Location of main configuration file.</p>
+</dd>
+<dt><strong>--data-dir=</strong><em>&lt;directory&gt;</em></dt>
+<dd>
+<p>Location of language data files.</p>
+</dd>
+<dt><strong>--keyboard=</strong><em>&lt;keyboard&gt;</em></dt>
+<dd>
+<p>Use this keyboard layout for suggesting possible words. These
+spelling errors happen if a user accidentally presses a key next to the
+intended correct key.</p>
+</dd>
+<dt><strong>--local-data-dir=</strong><em>&lt;directory&gt;</em></dt>
+<dd>
+<p>Alternative location of language data files. This directory is
+searched before data-dir.</p>
+</dd>
+<dt><strong>--home-dir=</strong><em>&lt;directory&gt;</em></dt>
+<dd>
+<p>Directory Location for personal wordlist files.</p>
+</dd>
+<dt><strong>--per-conf=</strong><em>&lt;file name&gt;</em></dt>
+<dd>
+<p>Personal configuration file. This file overrides options found in the
+global config file.</p>
+</dd>
+</dl>
+<h1>ASPELL UTILITY OPTIONS</h1>
+<p>These options are part of the <em>aspell</em> Utility and work
+independently of the library.</p>
+<dl>
+<dt><strong>--backup</strong>, <strong>--dont-backup</strong>,
+<strong>-b</strong>, <strong>-x</strong></dt>
+<dd>
+<p>The aspell utility creates a backup file by making a copy and
+appending <em>.bak</em> to file name. This only applies when the command
+is <em>check &lt;file&gt;</em> and the backup file is only created if
+any spelling modifications take place.</p>
+</dd>
+<dt><strong>--byte-offsets</strong>,
+<strong>--dont-byte-offsets</strong></dt>
+<dd>
+<p>Use byte offsets instead of character offsets.</p>
+</dd>
+<dt><strong>--guess</strong>, <strong>--dont-guess</strong>,
+<strong>-m</strong>, <strong>-P</strong></dt>
+<dd>
+<p>Create missing root/affix combinations not in the dictionary in
+<strong>pipe</strong> mode.</p>
+</dd>
+<dt><strong>--keymapping=aspell</strong>,
+<strong>--keymapping=ispell</strong></dt>
+<dd>
+<p>The keymapping to use, either <em>aspell</em> for the default mapping
+or <em>ispell</em> to use the same mapping that the Ispell utility
+uses.</p>
+</dd>
+<dt><strong>--reverse</strong>, <strong>--dont-reverse</strong></dt>
+<dd>
+<p>Reverse the order of the suggestions list in pipe mode.</p>
+</dd>
+<dt><strong>--suggest</strong>, <strong>--dont-suggest</strong></dt>
+<dd>
+<p>Suggest possible replacements in pipe mode. If false, Aspell will
+simply report the misspelling and make no attempt at suggestions or
+possible corrections.</p>
+</dd>
+<dt><strong>--time</strong>, <strong>--dont-time</strong></dt>
+<dd>
+<p>Time the load time and suggest a time in pipe mode.</p>
+</dd>
+</dl>
+<p>In addition Aspell will try to make sense out of Ispell's command
+line options so that it can function as a drop in replacement for
+Ispell. If Aspell is run without any command line options it will
+display a brief help screen and quit.</p>
+<h1>CONFIGURATION</h1>
+<p>Aspell can accept options via global or personal configuration files
+so that you do not need to specify them each time at the command line.
+The default global configuration file is <em>/etc/aspell.conf</em> or
+another file specified by option <em>--conf</em> and is checked first.
+The default per user configuration file <em>~/.aspell.conf</em> located
+in the <strong>$HOME</strong> directory (or another file specified by
+option <em>--per-conf</em>) is checked next and overrides options set in
+the global config file. Options specified at either the command line or
+via an environmental variable override those specified by either
+configuration file.</p>
+<p>Each line of the configuration file has the format:</p>
+<blockquote>
+<p><strong>option</strong> <em>[value]</em></p>
+</blockquote>
+<p>where <strong>option</strong> is any one of the standard library
+options above without the leading dashes. For example the following line
+will set the default language to Swiss German:</p>
+<blockquote>
+<p><strong>lang de_CH</strong></p>
+</blockquote>
+<p>There may be any number of spaces between the option and the value,
+however it can only be spaces, i.e. there is no '=' between the option
+name and the value. Comments may also be included by preceding them with
+a '#' as anything from a '#' to a newline is ignored. Blank lines are
+also allowed. The <em>/etc/aspell.conf</em> file is a good example of
+how to set these options and the Aspell Manual has more detailed
+info.</p>
+<h1>SEE ALSO</h1>
+<p><strong>aspell-import</strong>(1), <strong>prezip-bin</strong>(1),
+<strong>run-with-aspell</strong>(1),
+<strong>word-list-compress</strong>(1)</p>
+<p>Aspell is fully documented in its Texinfo manual. See the
+` <strong>aspell</strong> ' entry in <strong>info</strong> for more
+complete documentation.</p>
+<h1>SUPPORT</h1>
+<p>Support for Aspell can be found on the Aspell mailing lists.
+Instructions for joining the various mailing lists (and an archive of
+them) can be found off the Aspell home page at
+&lt;http://aspell.net&gt;. Bug reports should be submitted via GitHub
+Issues rather than being posted to the mailing lists.</p>
+<h1>AUTHOR</h1>
+<p>This manual page was written by Brian Nelson &lt;pyro@debian.org&gt;
+based on the Aspell User's Manual, Copyright © 2002 Kevin Atkinson.
+Updated Nov 2006 by Jose Da Silva &lt;digital@joescat.com&gt;, and Dec
+2006 by Kevin Atkinson &lt;kevina@gnu.org&gt;.</p>

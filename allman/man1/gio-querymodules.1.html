@@ -1,0 +1,14 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gio-querymodules - GIO module cache creation</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gio-querymodules</strong> {DIRECTORY...}</p>
+<h1>DESCRIPTION</h1>
+<p><strong>gio-querymodules</strong> creates a giomodule.cache file in
+the listed directories. This file lists the implemented extension points
+for each module that has been found. It is used by GIO at runtime to
+avoid opening all modules just to find out which extension points they
+are implementing.</p>
+<p>GIO modules are usually installed in the gio/modules subdirectory of
+libdir.</p>

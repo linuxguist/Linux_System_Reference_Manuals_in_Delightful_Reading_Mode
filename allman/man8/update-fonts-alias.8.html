@@ -1,0 +1,127 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>update-fonts-alias - compile fonts.alias files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>update-fonts-alias</strong> [<em>OPTION</em>] <em>directory
+...</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>update-fonts-alias</strong> assembles a <em>fonts.alias</em>
+file in an X font directory using one or more alias files found in a
+subdirectory of <em>/etc/X11/fonts/</em>. It is typically invoked only
+from the post-installation and post-removal scripts of a
+<em>package</em> containing X Window System fonts that provide aliases
+for their XLFD names, but may be invoked at any time to reconstruct
+<em>fonts.alias</em> files. For each <em>directory</em>, which is simply
+the last component of its path (such as ‘75dpi’ or ‘misc’),
+<strong>update-fonts-alias</strong> will assemble either
+<em>/usr/lib/X11/fonts/</em>directory<em>/fonts.alias</em> or
+<em>/usr/share/fonts/X11/</em>directory<em>/fonts.alias</em> from the
+files found in
+<em>/etc/X11/fonts/</em>directory<em>/</em>package<em>.alias</em>.</p>
+<p>This enables multiple packages to provide aliases for fonts in the
+same directory. No font package actually provides the
+<em>fonts.alias</em> file in the X font directory itself, so there is no
+danger of overwriting one package's aliases with those of another.</p>
+<p>For instance, the two packages ‘xfonts-base’ and
+‘xfonts-base-transcoded’ may both install fonts into the directory
+<em>/usr/lib/X11/fonts/misc</em>. They each place their
+<em>fonts.alias</em> files in
+<em>/etc/X11/fonts/misc/xfonts-base.alias</em> and
+<em>/etc/X11/fonts/misc/xfonts-base-transcoded.alias</em>
+(respectively). <strong>update-fonts-alias</strong> concatenates these
+two files (as well as any others that match
+<em>/etc/X11/fonts/misc/*.alias</em>) into
+<em>/usr/lib/X11/fonts/misc/fonts.alias</em>.</p>
+<p>The format of <em>fonts.alias</em> files is described in the
+<strong>mkfontdir</strong>(1x) manual page.</p>
+<p>An example of how to use <strong>update-fonts-alias</strong> in
+package maintainer scripts is provided in the Debian Policy Manual.</p>
+<h1>OPTIONS</h1>
+<p><strong>-h, <strong>--help</strong></strong> displays a brief usage
+message and exits.</p>
+<h1>OPERANDS</h1>
+<p><strong>update-fonts-alias</strong> takes one or more X font
+directory names to operate on as operands. Only the final path component
+of the directory name should be specified; e.g.,</p>
+<blockquote>
+<p><strong>update-fonts-alias 75dpi</strong></p>
+</blockquote>
+<p>is correct, while ‘<strong>update-fonts-alias
+/usr/X11R6/lib/X11/fonts/75dpi</strong>’ and ‘<strong>update-fonts-alias
+/usr/lib/X11/fonts/75dpi</strong>’ are not.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>COLUMNS</strong></dt>
+<dd>
+<p>indicates the width of the terminal device in character cells. This
+value is used for formatting diagnostic messages. If not set, the
+terminal is queried using <strong>stty</strong>(1) to determine its
+width. If that fails, a value of ‘80’ is assumed.</p>
+</dd>
+</dl>
+<h1>DIAGNOSTICS</h1>
+<h2>Errors</h2>
+<dl>
+<dt><strong>usage error: one or more font directories must be
+provided</strong></dt>
+<dd>
+<p><strong>update-fonts-alias</strong> was invoked without operands.
+Supply one or more X font directory names to operate on.</p>
+</dd>
+<dt><strong>usage error: unrecognized option</strong></dt>
+<dd>
+<p><strong>update-fonts-alias</strong> was invoked with an unrecognized
+option argument. Use only the options documented in “OPTIONS”,
+above.</p>
+</dd>
+<dt><strong>fatal error: path to X font directory must be
+used</strong></dt>
+<dd>
+<p>A directory name was supplied that was not an X font directory name.
+Supply X font directory names only.</p>
+</dd>
+</dl>
+<h2>Warnings</h2>
+<dl>
+<dt><strong>warning: absolute path </strong><em>directory</em><strong>
+was provided</strong></dt>
+<dd>
+<p>Usage of absolute paths is deprecated. Use only the final component
+of the X font directory name for <em>directory</em>.</p>
+</dd>
+<dt><strong>warning: </strong><em>directory</em><strong> does not exist
+or is not a directory</strong></dt>
+<dd>
+<p>The supplied <em>directory</em> was invalid.
+<strong>update-fonts-alias</strong> skipped it.</p>
+</dd>
+</dl>
+<h1>EXIT STATUS</h1>
+<dl>
+<dt>0</dt>
+<dd>
+<p><strong>update-fonts-alias</strong> ran successfully.</p>
+</dd>
+<dt>1</dt>
+<dd>
+<p><strong>update-fonts-alias</strong> experienced a fatal error; see
+the section on diagnostic messages above.</p>
+</dd>
+<dt>2</dt>
+<dd>
+<p><strong>update-fonts-alias</strong> was invoked with invalid
+arguments.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>See the Debian Bug Tracking System ⟨URL:
+https://bugs.debian.org/xfonts-utils ⟩. If you wish to report a bug in
+<strong>update-fonts-alias</strong>, please see
+<em>/usr/share/doc/debian/bug-reporting.txt</em> or the
+<strong>reportbug</strong>(1) command.</p>
+<h1>AUTHOR</h1>
+<p><strong>update-fonts-alias</strong> was written by Branden
+Robinson.</p>
+<h1>SEE ALSO</h1>
+<p><strong>mkfontdir</strong>(1x)</p>

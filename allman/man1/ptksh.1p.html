@@ -1,0 +1,130 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ptksh - Perl/Tk script to provide a graphical user interface for
+testing Perl/Tk commands and scripts.</p>
+<h1>SYNOPSIS</h1>
+<p>% ptksh ?scriptfile? ... version information ... ptksh&gt;
+$b=$mw-&gt;Button(-text=&gt;Hi,-command=&gt;sub{print Hi}) ptksh&gt;
+$b-&gt;pack ptksh&gt; o $b ... list of options ... ptksh&gt; help ...
+help information ... ptksh&gt; exit %</p>
+<h1>DESCRIPTION</h1>
+<p>ptksh is a perl/Tk shell to enter perl commands interactively. When
+one starts ptksh a MainWindow is automatically created, along with a
+ptksh command window. One can access the main window by typing commands
+using the variable <code>$mw</code> at the 'ptksh&gt; ' prompt of the
+command window.</p>
+<p>ptksh supports command line editing and history. Just type &lt;Up&gt;
+at the command prompt to see a history list. The last 50 commands
+entered are saved, then reloaded into history list the next time you
+start ptksh.</p>
+<p>ptksh supports some convenient commands for inspecting Tk widgets.
+See below.</p>
+<p>To exit ptksh use: <code>exit</code>.</p>
+<p>ptksh is <strong>*not*</strong> a full symbolic debugger. To debug
+perl/Tk programs at a low level use the more powerful perl debugger.
+(Just enter ``O tk'' on debuggers command line to start the Tk
+eventloop.)</p>
+<h1>FEATURES</h1>
+<h2>History</h2>
+<p>Press &lt;Up&gt; (the Up Arrow) in the perlwish window to obtain a
+gui-based history list. Press &lt;Enter&gt; on any history line to enter
+it into the perlwish window. Then hit return. So, for example, repeat
+last command is &lt;Up&gt;&lt;Enter&gt;&lt;Enter&gt;. You can quit the
+history window with &lt;Escape&gt;. NOTE: history is only saved if exit
+is graceful (i.e. by the exit command from the console or by quitting
+all main windowsΩ-NOT by interrupt).</p>
+<h2>Debugging Support</h2>
+<p>ptksh provides some convenience function to make browsing in perl/Tk
+widget easier:</p>
+<dl>
+<dt>?, or h</dt>
+<dd>
+<p>displays a short help summary.</p>
+</dd>
+<dt>d, or x ?args, ...?</dt>
+<dd>
+<p>Dumps recursively arguments to stdout. (see Data::Dumper). You must
+have &lt;Data::Dumper&gt; installed to support this feature.
+<strong>x</strong> was introduced for perl debugger compatibility.</p>
+</dd>
+<dt>p ?arg, ...?</dt>
+<dd>
+<p>appends |\n to each of it's arguments and prints it. If value is
+<strong>undef</strong>, '(undef)' is printed to stdout.</p>
+</dd>
+<dt>o $widget ?-option ...?</dt>
+<dd>
+<p>prints the option(s) of <em><code>$widget</code></em> one on each
+line. If no options are given all options of the widget are listed. See
+Tk::options for more details on the format and contents of the returned
+list.</p>
+</dd>
+<dt>o $widget /regexp/</dt>
+<dd>
+<p>Lists options of <em><code>$widget</code></em> matching the regular
+expression <em>regexp</em>.</p>
+</dd>
+<dt>u ?class?</dt>
+<dd>
+<p>If no argument is given it lists the modules loaded by the commands
+you executed or since the last time you called <code>u</code>. If
+argument is the empty string lists all modules that are loaded by ptksh.
+If argument is a string, ``text'' it tries to do a ``use
+Tk::Text;''.</p>
+</dd>
+</dl>
+<h2>Packages</h2>
+<p>Ptksh compiles into package Tk::ptksh. Your code is eval'ed into
+package main. The coolness of this is that your eval code should not
+interfere with ptksh itself.</p>
+<h2>Multiline Commands</h2>
+<p>ptksh will accept multiline commands. Simply put a \ character
+immediately before the newline, and ptksh will continue your command
+onto the next line.</p>
+<h2>Source File Support</h2>
+<p>If you have a perl/Tk script that you want to do debugging on, try
+running the command</p>
+<p>ptksh&gt; do myscript; -- or (at shell command prompt) -- % ptksh
+myscript</p>
+<p>Then use the perl/Tk commands to try out different operations on your
+script.</p>
+<h1>ENVIRONMENT</h1>
+<p>Looks for your .ptksh_history in the directory specified by the
+<code>$HOME</code> environment variable ($HOMEPATH on Win32
+systems).</p>
+<h1>FILES</h1>
+<dl>
+<dt>.ptksh_init</dt>
+<dd>
+<p>If found in current directory it is read in an evaluated after the
+mainwindow <em><code>$mw</code></em> is created. <em>.ptksh_init</em>
+can contain any valid perl code.</p>
+</dd>
+<dt>~/.ptksh_history</dt>
+<dd>
+<p>Contains the last 50 lines entered in ptksh session(s).</p>
+</dd>
+</dl>
+<h1>PITFALLS</h1>
+<p>It is best not to use my in the commands you type into ptksh. For
+example my <code>$v</code> will make <code>$v</code> local just to the
+command or commands entered until &lt;Return&gt; is pressed. For a
+related reason, there are no file-scopy my variables in the ptksh code
+itself (else the user might trounce on them by accident).</p>
+<h1>BUGS</h1>
+<p><strong>Tk::MainLoop</strong> function interactively entered or
+sourced in a init or script file will block ptksh.</p>
+<h1>SEE ALSO</h1>
+<p>Tk perldebug</p>
+<h1>VERSION</h1>
+<p>VERSION 2.03</p>
+<h1>AUTHORS</h1>
+<p>Mike Beller &lt;beller@penvision.com&gt;, Achim Bohnet
+&lt;ach@mpe.mpg.de&gt;</p>
+<p>Copyright (c) 1996 - 1998 Achim Bohnet and Mike Beller. All rights
+reserved. This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.</p>

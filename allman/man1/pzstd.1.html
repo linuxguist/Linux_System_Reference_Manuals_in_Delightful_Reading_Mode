@@ -1,0 +1,89 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>PZSTD - parallelized Zstandard compression, a la pigz</p>
+<h1>DESCRIPTION</h1>
+<h2>Usage:</h2>
+<blockquote>
+<p>pzstd [args] [FILE(s)]</p>
+</blockquote>
+<h2>Parallel ZSTD options:</h2>
+<dl>
+<dt><strong>-p</strong>, <strong>--processes</strong></dt>
+<dd>
+<p># : number of threads to use for (de)compression
+(default:&lt;numcpus&gt;)</p>
+</dd>
+</dl>
+<h2>ZSTD options:</h2>
+<dl>
+<dt>-#</dt>
+<dd>
+<p>: # compression level (1-19, default:&lt;numcpus&gt;)</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--decompress</strong></dt>
+<dd>
+<p>: decompression</p>
+</dd>
+<dt><strong>-o</strong></dt>
+<dd>
+<p>file : result stored into `file` (only if 1 input file)</p>
+</dd>
+<dt><strong>-f</strong>, <strong>--force</strong></dt>
+<dd>
+<p>: overwrite output without prompting, (de)compress links</p>
+</dd>
+<dt><strong>--rm</strong></dt>
+<dd>
+<p>: remove source file(s) after successful (de)compression</p>
+</dd>
+<dt><strong>-k</strong>, <strong>--keep</strong></dt>
+<dd>
+<p>: preserve source file(s) (default)</p>
+</dd>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>: display help and exit</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>: display version number and exit</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>: verbose mode; specify multiple times to increase log level
+(default:2)</p>
+</dd>
+<dt><strong>-q</strong>, <strong>--quiet</strong></dt>
+<dd>
+<p>: suppress warnings; specify twice to suppress errors too</p>
+</dd>
+<dt><strong>-c</strong>, <strong>--stdout</strong></dt>
+<dd>
+<p>: write to standard output (even if it is the console)</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>: operate recursively on directories</p>
+</dd>
+<dt><strong>--ultra</strong></dt>
+<dd>
+<p>: enable levels beyond 19, up to 22 (requires more memory)</p>
+</dd>
+<dt><strong>-C</strong>, <strong>--check</strong></dt>
+<dd>
+<p>: integrity check (default)</p>
+</dd>
+<dt><strong>--no-check</strong></dt>
+<dd>
+<p>: no integrity check</p>
+</dd>
+<dt><strong>-t</strong>, <strong>--test</strong></dt>
+<dd>
+<p>: test compressed file integrity</p>
+</dd>
+<dt><strong>--</strong></dt>
+<dd>
+<p>: all arguments after "--" are treated as files</p>
+</dd>
+</dl>

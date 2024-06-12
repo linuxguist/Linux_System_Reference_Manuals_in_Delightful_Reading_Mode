@@ -1,0 +1,50 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mime.convs - mime type conversion file for cups (deprecated)</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>mime.convs</strong> file defines the filters that are
+available for converting files from one format to another. The standard
+filters support text, PDF, PostScript, and many types of image
+files.</p>
+<p>Additional filters are specified in files with the extension
+<em>.convs</em> in the CUPS configuration directory.</p>
+<p>Each line in the <strong>mime.convs</strong> file is a comment,
+blank, or filter line. Comment lines start with the # character. Filter
+lines specify the source and destination MIME types along with a
+relative cost associated with the filter and the filter to run:</p>
+<pre><code>
+    source/type destination/type cost filter
+</code></pre>
+<p>The <em>source/type</em> field specifies the source MIME media type
+that is consumed by the filter.</p>
+<p>The <em>destination/type</em> field specifies the destination MIME
+media type that is produced by the filter.</p>
+<p>The <em>cost</em> field specifies the relative cost for running the
+filter. A value of 100 means that the filter uses a large amount of
+resources while a value of 0 means that the filter uses very few
+resources.</p>
+<p>The <em>filter</em> field specifies the filter program filename.
+Filenames are relative to the CUPS filter directory.</p>
+<h1>FILES</h1>
+<p><em>/etc/cups</em> - Typical CUPS configuration directory.<br />
+<em>/usr/lib/cups/filter</em> - Typical CUPS filter directory.<br />
+<em>/usr/libexec/cups/filter</em> - CUPS filter directory on macOS.</p>
+<h1>EXAMPLES</h1>
+<p>Define a filter that converts PostScript documents to CUPS Raster
+format:</p>
+<pre><code>
+    application/vnd.cups-postscript application/vnd.cups-raster 50 pstoraster
+</code></pre>
+<h1>NOTES</h1>
+<p>CUPS filters are deprecated and will no longer be supported in a
+future feature release of CUPS. Printers that do not support IPP can be
+supported using applications such as
+<strong>ippeveprinter</strong>(1).</p>
+<h1>SEE ALSO</h1>
+<p><strong>cups-files.conf</strong>(5), <strong>cupsd.conf</strong>(5),
+<strong>cupsd</strong>(8), <strong>cupsfilter</strong>(8),
+<strong>mime.types</strong>(5), CUPS Online Help
+(http://localhost:631/help)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2021-2022 by OpenPrinting.</p>

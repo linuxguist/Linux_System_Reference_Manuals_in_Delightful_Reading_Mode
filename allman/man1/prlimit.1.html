@@ -1,0 +1,178 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>prlimit - get and set process resource limits</p>
+<h1>SYNOPSIS</h1>
+<p><strong>prlimit</strong> [options]
+[<strong>--resource</strong>[=<em>limits</em>]] [<strong>--pid</strong>
+<em>PID</em>]</p>
+<p><strong>prlimit</strong> [options]
+[<strong>--resource</strong>[=<em>limits</em>]] <em>command</em>
+[<em>argument</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p>Given a process ID and one or more resources,
+<strong>prlimit</strong> tries to retrieve and/or modify the limits.</p>
+<p>When <em>command</em> is given, <strong>prlimit</strong> will run
+this command with the given arguments.</p>
+<p>The <em>limits</em> parameter is composed of a soft and a hard value,
+separated by a colon (:), in order to modify the existing values. If no
+<em>limits</em> are given, <strong>prlimit</strong> will display the
+current values. If one of the values is not given, then the existing one
+will be used. To specify the unlimited or infinity limit
+(<strong>RLIM_INFINITY</strong>), the -1 or 'unlimited' string can be
+passed.</p>
+<p>Because of the nature of limits, the soft limit must be lower or
+equal to the high limit (also called the ceiling). To see all available
+resource limits, refer to the <strong>RESOURCE OPTIONS</strong>
+section.</p>
+<blockquote>
+<p>·</p>
+<p><em>soft</em>:_hard_ Specify both limits.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p><em>soft</em>: Specify only the soft limit.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>:<em>hard</em> Specify only the hard limit.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p><em>value</em> Specify both limits to the same value.</p>
+</blockquote>
+<h1>GENERAL OPTIONS</h1>
+<p><strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print a header line.</p>
+</blockquote>
+<p><strong>-o, --output</strong> <em>list</em></p>
+<blockquote>
+<p>Define the output columns to use. If no output arrangement is
+specified, then a default set is used. Use <strong>--help</strong> to
+get a list of all supported columns.</p>
+</blockquote>
+<p><strong>-p, --pid</strong></p>
+<blockquote>
+<p>Specify the process id; if none is given, the running process will be
+used.</p>
+</blockquote>
+<p><strong>--raw</strong></p>
+<blockquote>
+<p>Use the raw output format.</p>
+</blockquote>
+<p><strong>--verbose</strong></p>
+<blockquote>
+<p>Verbose mode.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>RESOURCE OPTIONS</h1>
+<p><strong>-c, --core</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum size of a core file.</p>
+</blockquote>
+<p><strong>-d, --data</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum data size.</p>
+</blockquote>
+<p><strong>-e, --nice</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum nice priority allowed to raise.</p>
+</blockquote>
+<p><strong>-f, --fsize</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum file size.</p>
+</blockquote>
+<p><strong>-i, --sigpending</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum number of pending signals.</p>
+</blockquote>
+<p><strong>-l, --memlock</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum locked-in-memory address space.</p>
+</blockquote>
+<p><strong>-m, --rss</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum Resident Set Size (RSS).</p>
+</blockquote>
+<p><strong>-n, --nofile</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum number of open files.</p>
+</blockquote>
+<p><strong>-q, --msgqueue</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum number of bytes in POSIX message queues.</p>
+</blockquote>
+<p><strong>-r, --rtprio</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum real-time priority.</p>
+</blockquote>
+<p><strong>-s, --stack</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum size of the stack.</p>
+</blockquote>
+<p><strong>-t, --cpu</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>CPU time, in seconds.</p>
+</blockquote>
+<p><strong>-u, --nproc</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum number of processes.</p>
+</blockquote>
+<p><strong>-v, --as</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Address space limit.</p>
+</blockquote>
+<p><strong>-x, --locks</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Maximum number of file locks held.</p>
+</blockquote>
+<p><strong>-y, --rttime</strong>[=<em>limits</em>]</p>
+<blockquote>
+<p>Timeout for real-time tasks.</p>
+</blockquote>
+<h1>NOTES</h1>
+<p>The <strong>prlimit</strong>(2) system call is supported since Linux
+2.6.36, older kernels will break this program.</p>
+<h1>EXAMPLES</h1>
+<p><strong>prlimit --pid 13134</strong></p>
+<blockquote>
+<p>Display limit values for all current resources.</p>
+</blockquote>
+<p><strong>prlimit --pid 13134 --rss --nofile=1024:4095</strong></p>
+<blockquote>
+<p>Display the limits of the RSS, and set the soft and hard limits for
+the number of open files to 1024 and 4095, respectively.</p>
+</blockquote>
+<p><strong>prlimit --pid 13134 --nproc=512:</strong></p>
+<blockquote>
+<p>Modify only the soft limit for the number of processes.</p>
+</blockquote>
+<p><strong>prlimit --pid $$ --nproc=unlimited</strong></p>
+<blockquote>
+<p>Set for the current process both the soft and ceiling values for the
+number of processes to unlimited.</p>
+</blockquote>
+<p><strong>prlimit --cpu=10 sort -u hugefile</strong></p>
+<blockquote>
+<p>Set both the soft and hard CPU time limit to ten seconds and run
+<strong>sort</strong>(1).</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<p>- In memory of Dennis M. Ritchie.</p>
+<h1>SEE ALSO</h1>
+<p><strong>ulimit</strong>(1p), <strong>prlimit</strong>(2)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>prlimit</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

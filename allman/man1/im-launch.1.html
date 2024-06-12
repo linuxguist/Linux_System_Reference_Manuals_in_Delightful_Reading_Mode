@@ -1,0 +1,34 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>im-launch - launch input method and execute session program</p>
+<h1>SYNOPSIS</h1>
+<dl>
+<dt><strong>im-launch <em>SESSION-PROGRAM</em></strong></dt>
+<dd>
+<h1>DESCRIPTION</h1>
+<p>The <strong>im-launch</strong> command is used to start a input
+method framework server daemon such as <strong>ibus-daemon</strong>, set
+up the appropriate environment variables for the client programs, and
+execute <em>SESSION-PROGRAM</em> such as
+<strong>x-session-manager</strong>.</p>
+<p>This command is usually not invoked from the console of a normal user
+but is normally invoked by the
+<strong>/etc/X11/Xsession.d/70im-config_launch</strong>.</p>
+</dd>
+</dl>
+<h1>TROUBLESHOOT</h1>
+<p>If you have any problem, see the first part of
+<strong>~/.xsession-errors</strong> and look for the cause. If you are
+running <strong>im-config</strong> while Debian (sid) system is
+undergoing a major library transition, you may need to manually set up
+<strong>~/.xinputrc</strong> with adjusted library version number etc.
+Please file a bug report to the im-config package using reportbug(1)
+describing your resolution experience.</p>
+<h1>SEE ALSO</h1>
+<p><strong>im-config(8),</strong>
+<strong>/usr/share/doc/im-config/README.Debian.gz</strong></p>
+<h1>AUTHOR</h1>
+<p>This manual page was written by Aron Xu &lt;aron@debian.org&gt;, and
+Osamu Aoki &lt;osamu@debian.org&gt; for the Debian GNU/Linux system (but
+may be used by others).</p>

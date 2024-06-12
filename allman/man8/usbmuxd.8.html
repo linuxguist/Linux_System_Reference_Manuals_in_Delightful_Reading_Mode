@@ -1,0 +1,88 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>usbmuxd - Expose a socket to multiplex connections from and to iOS
+devices.</p>
+<h1>SYNOPSIS</h1>
+<p><strong>usbmuxd</strong> [OPTIONS]</p>
+<h1>DESCRIPTION</h1>
+<p>usbmuxd stands for "USB multiplexing daemon". This daemon is in
+charge of multiplexing connections over USB to an iOS device. To users,
+it means you can sync your music, contacts, photos, etc. over USB. To
+developers, it means you can connect to any listening localhost socket
+on the device. usbmuxd is not used for tethering data transfer which
+uses a dedicated USB interface as a virtual network device. Multiple
+connections to different TCP ports can happen in parallel. The
+higher-level layers are handled by libimobiledevice.</p>
+<p>When usbmuxd is running (normally started, or stopped as a result of
+"udev" auto-insertion messages or by systemd) it provides a socket
+interface in "/var/run/usbmuxd" that is designed to be compatible with
+the socket interface that is provided on Mac OS X.</p>
+<p>You should also create a "usbmux" user that has access to USB devices
+on your system. Alternatively, you can pass a different username using
+the -U argument.</p>
+<p>Due to iOS 7 the daemon now also manages pairing records with iOS
+devices and the host in "/var/lib/lockdown" (Linux) or
+"/var/db/lockdown" (Mac OS X). Ensure proper permissions are setup for
+the daemon to access the directory.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-U, --user USER</strong></dt>
+<dd>
+<p>Change to this user after startup (needs USB privileges).</p>
+</dd>
+<dt><strong>-f, --foreground</strong></dt>
+<dd>
+<p>Do not daemonize (implies one -v).</p>
+</dd>
+<dt><strong>-n, --disable-hotplug</strong></dt>
+<dd>
+<p>Disables automatic discovery of devices on hotplug. Starting another
+instance will trigger discovery instead.</p>
+</dd>
+<dt><strong>-z, --enable-exit</strong></dt>
+<dd>
+<p>Enable "--exit" request from other instances and exit automatically
+if no device is attached.</p>
+</dd>
+<dt><strong>-u, --udev</strong></dt>
+<dd>
+<p>Run in udev operation mode (implies -n and -z).</p>
+</dd>
+<dt><strong>-s, --systemd</strong></dt>
+<dd>
+<p>Run in systemd operation mode (implies -z and -f).</p>
+</dd>
+<dt><strong>-x, --exit</strong></dt>
+<dd>
+<p>Notify a running instance to exit if there are no devices connected
+(sends SIGUSR1 to running instance) and exit.</p>
+</dd>
+<dt><strong>-X, --force-exit</strong></dt>
+<dd>
+<p>Notify a running instance to exit even if there are still devices
+connected (always works) and exit.</p>
+</dd>
+<dt><strong>-v, --verbose</strong></dt>
+<dd>
+<p>be verbose (use twice or more to increase verbose level).</p>
+</dd>
+<dt><strong>-V, --version</strong></dt>
+<dd>
+<p>print version information and exit.</p>
+</dd>
+<dt><strong>-h, --help</strong></dt>
+<dd>
+<p>prints usage information.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>The first usbmuxd daemon implementation was authored by Hector
+Martin.</p>
+<p>Now mainly developed by Nikias Bassen, Martin Szulecki and
+contributors (see AUTHORS file).</p>
+<h1>SEE ALSO</h1>
+<p>idevice_id(1), iproxy(1).</p>
+<h1>ON THE WEB</h1>
+<p>https://libimobiledevice.org</p>
+<p>https://github.com/libimobiledevice/usbmuxd</p>

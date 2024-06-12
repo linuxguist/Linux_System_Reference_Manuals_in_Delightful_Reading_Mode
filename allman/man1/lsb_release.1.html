@@ -1,0 +1,81 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lsb_release - print distribution-specific information (minimal
+implementation).</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lsb_release</strong> <em>[options]</em></p>
+<h1>DESCRIPTION</h1>
+<p>This is a bare-bones version of the <strong>lsb_release</strong>
+command, implemented as a tiny POSIX shell script (less than 100 lines
+of commented code).</p>
+<p>Instead of using LSB packages, this version of
+<strong>lsb_release</strong> uses the information in
+<em>/etc/os-release</em> and <em>/usr/lib/os-release</em>. Nevertheless,
+the output of this version is byte-for-byte compatible with the
+Python-based version provided by Debian and its derivatives.</p>
+<p>Using this implementation it is possible to avoid installing Python
+in a base OS image while still retaining compatibility with older
+scripts that expect <strong>lsb_release</strong> to exist.</p>
+<h1>OPTIONS</h1>
+<p>The program follows the usual GNU command line syntax, with long
+options starting with two dashes (<code>--</code>). A summary of options
+are included below.</p>
+<dl>
+<dt>-h, --help</dt>
+<dd>
+<p>Show a help message with a list of options and exit.</p>
+</dd>
+<dt>-v, --version</dt>
+<dd>
+<p>Show LSB modules this system supports.</p>
+</dd>
+<dt>-i, --id</dt>
+<dd>
+<p>Show distributor ID.</p>
+</dd>
+<dt>-d, --description</dt>
+<dd>
+<p>Show description of this distribution.</p>
+</dd>
+<dt>-r, --release</dt>
+<dd>
+<p>Show release number of this distribution.</p>
+</dd>
+<dt>-c, --codename</dt>
+<dd>
+<p>Show code name of this distribution.</p>
+</dd>
+<dt>-a, --all</dt>
+<dd>
+<p>Show all of the above information.</p>
+</dd>
+<dt>-s, --short</dt>
+<dd>
+<p>Show requested information in short format.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt>/usr/lib/os-release</dt>
+<dd>
+<p>Distribution-provided file with operating system identification
+data.</p>
+</dd>
+<dt>/etc/os-release</dt>
+<dd>
+<p>Machine-specific file with operating system identification data. If
+present, <em>/etc/os-release</em> is read instead of
+<em>/usr/lib/os-release</em>.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>os-release</strong> (5)</p>
+<h1>AUTHOR</h1>
+<p>Gioele Barabucci &lt;https://gioele.io&gt;</p>
+<h1>LICENSE</h1>
+<p>This implementation of <strong>lsb_release</strong> is free software
+released under the terms of the ISC license.</p>

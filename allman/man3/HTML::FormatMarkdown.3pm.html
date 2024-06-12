@@ -1,0 +1,29 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTML::FormatMarkdown - Format HTML as Markdown</p>
+<h1>VERSION</h1>
+<p>version 2.16</p>
+<h1>SYNOPSIS</h1>
+<p>use HTML::FormatMarkdown; my $string =
+HTML::FormatMarkdown-&gt;format_file( test.html ); open my $fh, "&gt;",
+"test.md" or die "$!\n"; print $fh $string; close $fh;</p>
+<h1>DESCRIPTION</h1>
+<p>HTML::FormatMarkdown is a formatter that outputs Markdown.</p>
+<p>HTML::FormatMarkdown is built on HTML::Formatter and documentation
+for that module applies to this - especially new in HTML::Formatter,
+format_file in HTML::Formatter and format_string in HTML::Formatter.</p>
+<h1>AUTHORS</h1>
+<ul>
+<li><p>Nigel Metheringham &lt;nigelm@cpan.org&gt;</p></li>
+<li><p>Sean M Burke &lt;sburke@cpan.org&gt;</p></li>
+<li><p>Gisle Aas &lt;gisle@ActiveState.com&gt;</p></li>
+</ul>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2016 by Nigel Metheringham, 2002-2005
+Sean M Burke, 1999-2002 Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

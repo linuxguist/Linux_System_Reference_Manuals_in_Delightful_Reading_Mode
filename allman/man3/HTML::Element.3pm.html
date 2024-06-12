@@ -1,0 +1,1123 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTML::Element - Class for objects that represent HTML elements</p>
+<h1>VERSION</h1>
+<p>This document describes version 5.07 of HTML::Element, released
+August 31, 2017 as part of HTML-Tree.</p>
+<h1>SYNOPSIS</h1>
+<p>use HTML::Element; $a = HTML::Element-&gt;new(a, href =&gt;
+http://www.perl.com/); $a-&gt;push_content("The Perl Homepage"); $tag =
+$a-&gt;tag; print "$tag starts out as:", $a-&gt;starttag, "\n"; print
+"$tag ends as:", $a-&gt;endtag, "\n"; print "$tag\s href attribute is:
+", $a-&gt;attr(href), "\n"; $links_r = $a-&gt;extract_links(); print
+"Hey, I found ", scalar(@$links_r), " links.\n"; print "And that, as
+HTML, is: ", $a-&gt;as_HTML, "\n"; $a = $a-&gt;delete;</p>
+<h1>DESCRIPTION</h1>
+<p>(This class is part of the HTML::Tree dist.)</p>
+<p>Objects of the HTML::Element class can be used to represent elements
+of HTML document trees. These objects have attributes, notably
+attributes that designates each element's parent and content. The
+content is an array of text segments and other HTML::Element objects. A
+tree with HTML::Element objects as nodes can represent the syntax tree
+for a HTML document.</p>
+<h1>HOW WE REPRESENT TREES</h1>
+<p>Consider this HTML document:</p>
+<p>&lt;html lang=en-US&gt; &lt;head&gt; &lt;title&gt;Stuff&lt;/title&gt;
+&lt;meta name=author content=Jojo&gt; &lt;/head&gt; &lt;body&gt;
+&lt;h1&gt;I like potatoes!&lt;/h1&gt; &lt;/body&gt; &lt;/html&gt;</p>
+<p>Building a syntax tree out of it makes a tree-structure in memory
+that could be diagrammed as:</p>
+<p>html (lang=en-US) / \ / \ / \ head body /\ \ / \ \ / \ \ title meta
+h1 | (name=author, | "Stuff" content=Jojo) "I like potatoes"</p>
+<p>This is the traditional way to diagram a tree, with the root at the
+top, and it's this kind of diagram that people have in mind when they
+say, for example, that the meta element is under the head element
+instead of under the body element. (The same is also said with inside
+instead of under Ω- the use of inside makes more sense when you're
+looking at the HTML source.)</p>
+<p>Another way to represent the above tree is with indenting:</p>
+<p>html (attributes: lang=en-US) head title "Stuff" meta (attributes:
+name=author content=Jojo) body h1 "I like potatoes"</p>
+<p>Incidentally, diagramming with indenting works much better for very
+large trees, and is easier for a program to generate. The
+<code>$tree-&gt;dump</code> method uses indentation just that way.</p>
+<p>However you diagram the tree, it's stored the same in memory Ω- it's
+a network of objects, each of which has attributes like so:</p>
+<p>element #1: _tag: html _parent: none _content: [element #2, element
+#5] lang: en-US element #2: _tag: head _parent: element #1 _content:
+[element #3, element #4] element #3: _tag: title _parent: element #2
+_content: [text segment "Stuff"] element #4 _tag: meta _parent: element
+#2 _content: none name: author content: Jojo element #5 _tag: body
+_parent: element #1 _content: [element #6] element #6 _tag: h1 _parent:
+element #5 _content: [text segment "I like potatoes"]</p>
+<p>The treeness of the tree-structure that these elements comprise is
+not an aspect of any particular object, but is emergent from the
+relatedness attributes (_parent and _content) of these element-objects
+and from how you use them to get from element to element.</p>
+<p>While you could access the content of a tree by writing code that
+says "access the 'src' attribute of the root's <em>first</em> child's
+<em>seventh</em> child's <em>third</em> child, you're more likely to
+have to scan the contents of a tree, looking for whatever nodes, or
+kinds of nodes, you want to do something with. The most straightforward
+way to look over a tree is to traverse" it; an HTML::Element method
+(<code>$h-&gt;traverse</code>) is provided for this purpose; and several
+other HTML::Element methods are based on it.</p>
+<p>(For everything you ever wanted to know about trees, and then some,
+see Niklaus Wirth's <em>Algorithms + Data Structures = Programs</em> or
+Donald Knuth's <em>The Art of Computer Programming, Volume 1</em>.)</p>
+<h2>Weak References</h2>
+<p>TL;DR summary: <code>use HTML::TreeBuilder 5 -weak;</code> and forget
+about the <code>delete</code> method (except for pruning a node from a
+tree).</p>
+<p>Because HTML::Element stores a reference to the parent element,
+Perl's reference-count garbage collection doesn't work properly with
+HTML::Element trees. Starting with version 5.00, HTML::Element uses weak
+references (if available) to prevent that problem. Weak references were
+introduced in Perl 5.6.0, but you also need a version of Scalar::Util
+that provides the <code>weaken</code> function.</p>
+<p>Weak references are enabled by default. If you want to be certain
+they're in use, you can say <code>use HTML::Element 5 -weak;</code>. You
+must include the version number; previous versions of HTML::Element
+ignored the import list entirely.</p>
+<p>To disable weak references, you can say
+<code>use HTML::Element -noweak;</code>. This is a global setting.
+<strong>This feature is deprecated</strong> and is provided only as a
+quick fix for broken code. If your code does not work properly with weak
+references, you should fix it immediately, as weak references may become
+mandatory in a future version. Generally, all you need to do is keep a
+reference to the root of the tree until you're done working with it.</p>
+<p>Because HTML::TreeBuilder is a subclass of HTML::Element, you can
+also import <code>-weak</code> or <code>-noweak</code> from
+HTML::TreeBuilder: e.g.
+<code>use HTML::TreeBuilder: 5 -weak;</code>.</p>
+<h1>BASIC METHODS</h1>
+<h2>new</h2>
+<p>$h = HTML::Element-&gt;new(tag, attrname =&gt; value, ... );</p>
+<p>This constructor method returns a new HTML::Element object. The tag
+name is a required argument; it will be forced to lowercase. Optionally,
+you can specify other initial attributes at object creation time.</p>
+<h2>attr</h2>
+<p>$value = $h-&gt;attr(attr); $old_value = $h-&gt;attr(attr,
+$new_value);</p>
+<p>Returns (optionally sets) the value of the given attribute of
+<code>$h</code>. The attribute name (but not the value, if provided) is
+forced to lowercase. If trying to read the value of an attribute not
+present for this element, the return value is undef. If setting a new
+value, the old value of that attribute is returned.</p>
+<p>If methods are provided for accessing an attribute (like
+<code>$h-&gt;tag</code> for _tag, <code>$h-&gt;content_list</code>, etc.
+below), use those instead of calling attr <code>$h-&gt;attr</code>,
+whether for reading or setting.</p>
+<p>Note that setting an attribute to <code>undef</code> (as opposed to
+"", the empty string) actually deletes the attribute.</p>
+<h2>tag</h2>
+<p>$tagname = $h-&gt;tag(); $h-&gt;tag(tagname);</p>
+<p>Returns (optionally sets) the tag name (also known as the generic
+identifier) for the element <code>$h</code>. In setting, the tag name is
+always converted to lower case.</p>
+<p>There are four kinds of pseudo-elements that show up as HTML::Element
+objects:</p>
+<dl>
+<dt>Comment pseudo-elements</dt>
+<dd>
+<p>These are element objects with a <code>$h-&gt;tag</code> value of
+~comment, and the content of the comment is stored in the text attribute
+(<code>$h-&gt;attr("text")</code>). For example, parsing this code with
+HTML::TreeBuilder... &lt;!-- I like Pie. Pie is good --&gt; produces an
+HTML::Element object with these attributes: "_tag", "~comment", "text",
+" I like Pie.\n Pie is good\n "</p>
+</dd>
+<dt>Declaration pseudo-elements</dt>
+<dd>
+<p>Declarations (rarely encountered) are represented as HTML::Element
+objects with a tag name of ~declaration, and content in the text
+attribute. For example, this: &lt;!DOCTYPE foo&gt; produces an element
+whose attributes include: "_tag", "~declaration", "text", "DOCTYPE
+foo"</p>
+</dd>
+<dt>Processing instruction pseudo-elements</dt>
+<dd>
+<p>PIs (rarely encountered) are represented as HTML::Element objects
+with a tag name of ~pi, and content in the text attribute. For example,
+this: &lt;?stuff foo?&gt; produces an element whose attributes include:
+"_tag", "~pi", "text", "stuff foo?" (assuming a recent version of
+HTML::Parser)</p>
+</dd>
+<dt>~literal pseudo-elements</dt>
+<dd>
+<p>These objects are not currently produced by HTML::TreeBuilder, but
+can be used to represent a super-literal Ω- i.e., a literal you want to
+be immune from escaping. (Yes, I just made that term up.) That is, this
+is useful if you want to insert code into a tree that you plan to dump
+out with <code>as_HTML</code>, where you want, for some reason, to
+suppress <code>as_HTML</code>'s normal behavior of amp-quoting text
+segments. For example, this: my $literal =
+HTML::Element-&gt;new(~literal, text =&gt; x &lt; 4 &amp; y &gt; 7 ); my
+$span = HTML::Element-&gt;new(span); $span-&gt;push_content($literal);
+print $span-&gt;as_HTML; prints this: &lt;span&gt;x &lt; 4 &amp; y &gt;
+7&lt;/span&gt; Whereas this: my $span = HTML::Element-&gt;new(span);
+$span-&gt;push_content(x &lt; 4 &amp; y &gt; 7); # normal text segment
+print $span-&gt;as_HTML; prints this: &lt;span&gt;x &amp;lt; 4 &amp;amp;
+y &amp;gt; 7&lt;/span&gt; Unless you're inserting lots of pre-cooked
+code into existing trees, and dumping them out again, it's not likely
+that you'll find <code>~literal</code> pseudo-elements useful.</p>
+</dd>
+</dl>
+<h2>parent</h2>
+<p>$parent = $h-&gt;parent(); $h-&gt;parent($new_parent);</p>
+<p>Returns (optionally sets) the parent (aka container) for this
+element. The parent should either be undef, or should be another
+element.</p>
+<p>You <strong>should not</strong> use this to directly set the parent
+of an element. Instead use any of the other methods under
+Structure-Modifying Methods, below.</p>
+<p>Note that <code>not($h-&gt;parent)</code> is a simple test for
+whether <code>$h</code> is the root of its subtree.</p>
+<h2>content_list</h2>
+<p>@content = $h-&gt;content_list(); $num_children =
+$h-&gt;content_list();</p>
+<p>Returns a list of the child nodes of this element Ω- i.e., what nodes
+(elements or text segments) are inside/under this element. (Note that
+this may be an empty list.)</p>
+<p>In a scalar context, this returns the count of the items, as you may
+expect.</p>
+<h2>content</h2>
+<p>$content_array_ref = $h-&gt;content(); # may return undef</p>
+<p>This somewhat deprecated method returns the content of this element;
+but unlike content_list, this returns either undef (which you should
+understand to mean no content), or a <em>reference to the array</em> of
+content items, each of which is either a text segment (a string, i.e., a
+defined non-reference scalar value), or an HTML::Element object. Note
+that even if an arrayref is returned, it may be a reference to an empty
+array.</p>
+<p>While older code should feel free to continue to use
+<code>$h-&gt;content</code>, new code should use
+<code>$h-&gt;content_list</code> in almost all conceivable cases. It is
+my experience that in most cases this leads to simpler code anyway,
+since it means one can say:</p>
+<p>@children = $h-&gt;content_list;</p>
+<p>instead of the inelegant:</p>
+<p>@children = @{$h-&gt;content || []};</p>
+<p>If you do use <code>$h-&gt;content</code> (or
+<code>$h-&gt;content_array_ref</code>), you should not use the reference
+returned by it (assuming it returned a reference, and not undef) to
+directly set or change the content of an element or text segment!
+Instead use content_refs_list or any of the other methods under
+Structure-Modifying Methods, below.</p>
+<h2>content_array_ref</h2>
+<p>$content_array_ref = $h-&gt;content_array_ref(); # never undef</p>
+<p>This is like <code>content</code> (with all its caveats and
+deprecations) except that it is guaranteed to return an array reference.
+That is, if the given node has no <code>_content</code> attribute, the
+<code>content</code> method would return that undef, but
+<code>content_array_ref</code> would set the given node's
+<code>_content</code> value to <code>[]</code> (a reference to a new,
+empty array), and return that.</p>
+<h2>content_refs_list</h2>
+<p>@content_refs = $h-&gt;content_refs_list;</p>
+<p>This returns a list of scalar references to each element of
+<code>$h</code>'s content list. This is useful in case you want to
+in-place edit any large text segments without having to get a copy of
+the current value of that segment value, modify that copy, then use the
+<code>splice_content</code> to replace the old with the new. Instead,
+here you can in-place edit:</p>
+<p>foreach my $item_r ($h-&gt;content_refs_list) { next if ref $$item_r;
+$$item_r =~ s/honour/honor/g; }</p>
+<p>You <em>could</em> currently achieve the same affect with:</p>
+<p>foreach my $item (@{ $h-&gt;content_array_ref }) { # deprecated! next
+if ref $item; $item =~ s/honour/honor/g; }</p>
+<p>...except that using the return value of <code>$h-&gt;content</code>
+or <code>$h-&gt;content_array_ref</code> to do that is deprecated, and
+just might stop working in the future.</p>
+<h2>implicit</h2>
+<p>$is_implicit = $h-&gt;implicit();
+$h-&gt;implicit($make_implicit);</p>
+<p>Returns (optionally sets) the _implicit attribute. This attribute is
+a flag that's used for indicating that the element was not originally
+present in the source, but was added to the parse tree (by
+HTML::TreeBuilder, for example) in order to conform to the rules of HTML
+structure.</p>
+<h2>pos</h2>
+<p>$pos = $h-&gt;pos(); $h-&gt;pos($element);</p>
+<p>Returns (and optionally sets) the _pos (for "current
+<em>pos</em>ition") pointer of <code>$h</code>. This attribute is a
+pointer used during some parsing operations, whose value is whatever
+HTML::Element element at or under <code>$h</code> is currently open,
+where <code>$h-&gt;insert_element(NEW)</code> will actually insert a new
+element.</p>
+<p>(This has nothing to do with the Perl function called
+<code>pos</code>, for controlling where regular expression matching
+starts.)</p>
+<p>If you set <code>$h-&gt;pos($element)</code>, be sure that
+<code>$element</code> is either <code>$h</code>, or an element under
+<code>$h</code>.</p>
+<p>If you've been modifying the tree under <code>$h</code> and are no
+longer sure <code>$h-&gt;pos</code> is valid, you can enforce validity
+with:</p>
+<p>$h-&gt;pos(undef) unless $h-&gt;pos-&gt;is_inside($h);</p>
+<h2>all_attr</h2>
+<p>%attr = $h-&gt;all_attr();</p>
+<p>Returns all this element's attributes and values, as key-value pairs.
+This will include any internal attributes (i.e., ones not present in the
+original element, and which will not be represented if/when you call
+<code>$h-&gt;as_HTML</code>). Internal attributes are distinguished by
+the fact that the first character of their key (not value! key!) is an
+underscore (_).</p>
+<p>Example output of <code>$h-&gt;all_attr()</code> :
+<code>_parent, </code><em>[object_value]</em><code> , _tag, em, lang, en-US,</code>
+_content, <em>[array-ref value]</em>.</p>
+<h2>all_attr_names</h2>
+<p>@names = $h-&gt;all_attr_names(); $num_attrs =
+$h-&gt;all_attr_names();</p>
+<p>Like <code>all_attr</code>, but only returns the names of the
+attributes. In scalar context, returns the number of attributes.</p>
+<p>Example output of <code>$h-&gt;all_attr_names()</code> :
+<code>_parent, _tag, lang, _content, </code>.</p>
+<h2>all_external_attr</h2>
+<p>%attr = $h-&gt;all_external_attr();</p>
+<p>Like <code>all_attr</code>, except that internal attributes are not
+present.</p>
+<h2>all_external_attr_names</h2>
+<p>@names = $h-&gt;all_external_attr_names(); $num_attrs =
+$h-&gt;all_external_attr_names();</p>
+<p>Like <code>all_attr_names</code>, except that internal attributes'
+names are not present (or counted).</p>
+<h2>id</h2>
+<p>$id = $h-&gt;id(); $h-&gt;id($string);</p>
+<p>Returns (optionally sets to <code>$string</code>) the id attribute.
+<code>$h-&gt;id(undef)</code> deletes the id attribute.</p>
+<p><code>$h-&gt;id(...)</code> is basically equivalent to
+<code>$h-&gt;attr(id, ...)</code>, except that when setting the
+attribute, this method returns the new value, not the old value.</p>
+<h2>idf</h2>
+<p>$id = $h-&gt;idf(); $h-&gt;idf($string);</p>
+<p>Just like the <code>id</code> method, except that if you call
+<code>$h-&gt;idf()</code> and no id attribute is defined for this
+element, then it's set to a likely-to-be-unique value, and returned.
+(The f is for force.)</p>
+<h1>STRUCTURE-MODIFYING METHODS</h1>
+<p>These methods are provided for modifying the content of trees by
+adding or changing nodes as parents or children of other nodes.</p>
+<h2>push_content</h2>
+<p>$h-&gt;push_content($element_or_text, ...);</p>
+<p>Adds the specified items to the <em>end</em> of the content list of
+the element <code>$h</code>. The items of content to be added should
+each be either a text segment (a string), an HTML::Element object, or an
+arrayref. Arrayrefs are fed thru
+<code>$h-&gt;new_from_lol(that_arrayref)</code> to convert them into
+elements, before being added to the content list of <code>$h</code>.
+This means you can say things concise things like:</p>
+<p>$body-&gt;push_content( [br], [ul, map [li, $_], qw(Peaches Apples
+Pears Mangos) ] );</p>
+<p>See the new_from_lol method's documentation, far below, for more
+explanation.</p>
+<p>Returns <code>$h</code> (the element itself).</p>
+<p>The push_content method will try to consolidate adjacent text
+segments while adding to the content list. That's to say, if
+<code>$h</code>'s <code>content_list</code> is</p>
+<p>(foo bar , $some_node, baz!)</p>
+<p>and you call</p>
+<p>$h-&gt;push_content(quack?);</p>
+<p>then the resulting content list will be this:</p>
+<p>(foo bar , $some_node, baz!quack?)</p>
+<p>and not this:</p>
+<p>(foo bar , $some_node, baz!, quack?)</p>
+<p>If that latter is what you want, you'll have to override the feature
+of consolidating text by using splice_content, as in:</p>
+<p>$h-&gt;splice_content(scalar($h-&gt;content_list),0,quack?);</p>
+<p>Similarly, if you wanted to add 'Skronk' to the beginning of the
+content list, calling this:</p>
+<p>$h-&gt;unshift_content(Skronk);</p>
+<p>then the resulting content list will be this:</p>
+<p>(Skronkfoo bar , $some_node, baz!)</p>
+<p>and not this:</p>
+<p>(Skronk, foo bar , $some_node, baz!)</p>
+<p>What you'd to do get the latter is:</p>
+<p>$h-&gt;splice_content(0,0,Skronk);</p>
+<h2>unshift_content</h2>
+<p>$h-&gt;unshift_content($element_or_text, ...)</p>
+<p>Just like <code>push_content</code>, but adds to the
+<em>beginning</em> of the <code>$h</code> element's content list.</p>
+<p>The items of content to be added should each be either a text segment
+(a string), an HTML::Element object, or an arrayref (which is fed thru
+<code>new_from_lol</code>).</p>
+<p>The unshift_content method will try to consolidate adjacent text
+segments while adding to the content list. See above for a discussion of
+this.</p>
+<p>Returns <code>$h</code> (the element itself).</p>
+<h2>splice_content</h2>
+<p>@removed = $h-&gt;splice_content($offset, $length, $element_or_text,
+...);</p>
+<p>Detaches the elements from <code>$h</code>'s list of content-nodes,
+starting at <code>$offset</code> and continuing for <code>$length</code>
+items, replacing them with the elements of the following list, if any.
+Returns the elements (if any) removed from the content-list. If
+<code>$offset</code> is negative, then it starts that far from the end
+of the array, just like Perl's normal <code>splice</code> function. If
+<code>$length</code> and the following list is omitted, removes
+everything from <code>$offset</code> onward.</p>
+<p>The items of content to be added (if any) should each be either a
+text segment (a string), an arrayref (which is fed thru new_from_lol),
+or an HTML::Element object that's not already a child of
+<code>$h</code>.</p>
+<h2>detach</h2>
+<p>$old_parent = $h-&gt;detach();</p>
+<p>This unlinks <code>$h</code> from its parent, by setting its 'parent'
+attribute to undef, and by removing it from the content list of its
+parent (if it had one). The return value is the parent that was detached
+from (or undef, if <code>$h</code> had no parent to start with). Note
+that neither <code>$h</code> nor its parent are explicitly
+destroyed.</p>
+<h2>detach_content</h2>
+<p>@old_content = $h-&gt;detach_content();</p>
+<p>This unlinks all of <code>$h</code>'s children from <code>$h</code>,
+and returns them. Note that these are not explicitly destroyed; for
+that, you can just use <code>$h-&gt;delete_content</code>.</p>
+<h2>replace_with</h2>
+<p>$h-&gt;replace_with( $element_or_text, ... )</p>
+<p>This replaces <code>$h</code> in its parent's content list with the
+nodes specified. The element <code>$h</code> (which by then may have no
+parent) is returned. This causes a fatal error if <code>$h</code> has no
+parent. The list of nodes to insert may contain <code>$h</code>, but at
+most once. Aside from that possible exception, the nodes to insert
+should not already be children of <code>$h</code>'s parent.</p>
+<p>Also, note that this method does not destroy <code>$h</code> if weak
+references are turned off Ω- use
+<code>$h-&gt;replace_with(...)-&gt;delete</code> if you need that.</p>
+<h2>preinsert</h2>
+<p>$h-&gt;preinsert($element_or_text...);</p>
+<p>Inserts the given nodes right BEFORE <code>$h</code> in
+<code>$h</code>'s parent's content list. This causes a fatal error if
+<code>$h</code> has no parent. None of the given nodes should be
+<code>$h</code> or other children of <code>$h</code>. Returns
+<code>$h</code>.</p>
+<h2>postinsert</h2>
+<p>$h-&gt;postinsert($element_or_text...)</p>
+<p>Inserts the given nodes right AFTER <code>$h</code> in
+<code>$h</code>'s parent's content list. This causes a fatal error if
+<code>$h</code> has no parent. None of the given nodes should be
+<code>$h</code> or other children of <code>$h</code>. Returns
+<code>$h</code>.</p>
+<h2>replace_with_content</h2>
+<p>$h-&gt;replace_with_content();</p>
+<p>This replaces <code>$h</code> in its parent's content list with its
+own content. The element <code>$h</code> (which by then has no parent or
+content of its own) is returned. This causes a fatal error if
+<code>$h</code> has no parent. Also, note that this does not destroy
+<code>$h</code> if weak references are turned off Ω- use
+<code>$h-&gt;replace_with_content-&gt;delete</code> if you need
+that.</p>
+<h2>delete_content</h2>
+<p>$h-&gt;delete_content(); $h-&gt;destroy_content(); # alias</p>
+<p>Clears the content of <code>$h</code>, calling
+<code>$h-&gt;delete</code> for each content element. Compare with
+<code>$h-&gt;detach_content</code>.</p>
+<p>Returns <code>$h</code>.</p>
+<p><code>destroy_content</code> is an alias for this method.</p>
+<h2>delete</h2>
+<p>$h-&gt;delete(); $h-&gt;destroy(); # alias</p>
+<p>Detaches this element from its parent (if it has one) and explicitly
+destroys the element and all its descendants. The return value is the
+empty list (or <code>undef</code> in scalar context).</p>
+<p>Before version 5.00 of HTML::Element, you had to call
+<code>delete</code> when you were finished with the tree, or your
+program would leak memory. This is no longer necessary if weak
+references are enabled, see Weak References.</p>
+<h2>destroy</h2>
+<p>An alias for delete.</p>
+<h2>destroy_content</h2>
+<p>An alias for delete_content.</p>
+<h2>clone</h2>
+<p>$copy = $h-&gt;clone();</p>
+<p>Returns a copy of the element (whose children are clones
+(recursively) of the original's children, if any).</p>
+<p>The returned element is parentless. Any '_pos' attributes present in
+the source element/tree will be absent in the copy. For that and other
+reasons, the clone of an HTML::TreeBuilder object that's in mid-parse
+(i.e, the head of a tree that HTML::TreeBuilder is elaborating) cannot
+(currently) be used to continue the parse.</p>
+<p>You are free to clone HTML::TreeBuilder trees, just as long as: 1)
+they're done being parsed, or 2) you don't expect to resume parsing into
+the clone. (You can continue parsing into the original; it is never
+affected.)</p>
+<h2>clone_list</h2>
+<p>@copies = HTML::Element-&gt;clone_list(...nodes...);</p>
+<p>Returns a list consisting of a copy of each node given. Text segments
+are simply copied; elements are cloned by calling
+<code>$it-&gt;clone</code> on each of them.</p>
+<p>Note that this must be called as a class method, not as an instance
+method. <code>clone_list</code> will croak if called as an instance
+method. You can also call it like so:</p>
+<p>ref($h)-&gt;clone_list(...nodes...)</p>
+<h2>normalize_content</h2>
+<p>$h-&gt;normalize_content</p>
+<p>Normalizes the content of <code>$h</code> Ω- i.e., concatenates any
+adjacent text nodes. (Any undefined text segments are turned into
+empty-strings.) Note that this does not recurse into <code>$h</code>'s
+descendants.</p>
+<h2>delete_ignorable_whitespace</h2>
+<p>$h-&gt;delete_ignorable_whitespace()</p>
+<p>This traverses under <code>$h</code> and deletes any text segments
+that are ignorable whitespace. You should not use this if
+<code>$h</code> is under a <code>&lt;pre&gt;</code> element.</p>
+<h2>insert_element</h2>
+<p>$h-&gt;insert_element($element, $implicit);</p>
+<p>Inserts (via push_content) a new element under the element at
+<code>$h-&gt;pos()</code>. Then updates <code>$h-&gt;pos()</code> to
+point to the inserted element, unless <code>$element</code> is a
+prototypically empty element like <code>&lt;br&gt;</code>,
+<code>&lt;hr&gt;</code>, <code>&lt;img&gt;</code>, etc. The new
+<code>$h-&gt;pos()</code> is returned. This method is useful only if
+your particular tree task involves setting
+<code>$h-&gt;pos()</code>.</p>
+<h1>DUMPING METHODS</h1>
+<h2>dump</h2>
+<p>$h-&gt;dump() $h-&gt;dump(*FH) ; # or *FH{IO} or $fh_obj</p>
+<p>Prints the element and all its children to STDOUT (or to a specified
+filehandle), in a format useful only for debugging. The structure of the
+document is shown by indentation (no end tags).</p>
+<h2>as_HTML</h2>
+<p>$s = $h-&gt;as_HTML(); $s = $h-&gt;as_HTML($entities); $s =
+$h-&gt;as_HTML($entities, $indent_char); $s = $h-&gt;as_HTML($entities,
+$indent_char, \%optional_end_tags);</p>
+<p>Returns a string representing in HTML the element and its
+descendants. The optional argument <code>$entities</code> specifies a
+string of the entities to encode. For compatibility with previous
+versions, specify <code>&lt;&gt;&amp;</code> here. If omitted or undef,
+<em>all</em> unsafe characters are encoded as HTML entities. See
+HTML::Entities for details. If passed an empty string, no entities are
+encoded.</p>
+<p>If <code>$indent_char</code> is specified and defined, the HTML to be
+output is intented, using the string you specify (which you probably
+should set to \t, or some number of spaces, if you specify it).</p>
+<p>If <code>\%optional_end_tags</code> is specified and defined, it
+should be a reference to a hash that holds a true value for every tag
+name whose end tag is optional. Defaults to
+<code>\%HTML::Element::optionalEndTag</code>, which is an alias to
+<code>%HTML::Tagset::optionalEndTag</code>, which, at time of writing,
+contains true values for <code>p, li, dt, dd</code>. A useful value to
+pass is an empty hashref, <code>{}</code>, which means that no end-tags
+are optional for this dump. Otherwise, possibly consider copying
+<code>%HTML::Tagset::optionalEndTag</code> to a hash of your own, adding
+or deleting values as you like, and passing a reference to that
+hash.</p>
+<h2>as_text</h2>
+<p>$s = $h-&gt;as_text(); $s = $h-&gt;as_text(skip_dels =&gt; 1);</p>
+<p>Returns a string consisting of only the text parts of the element's
+descendants. Any whitespace inside the element is included unchanged,
+but whitespace not in the tree is never added. But remember that
+whitespace may be ignored or compacted by HTML::TreeBuilder during
+parsing (depending on the value of the
+<code>ignore_ignorable_whitespace</code> and
+<code>no_space_compacting</code> attributes). Also, since whitespace is
+never added during parsing,</p>
+<p>HTML::TreeBuilder-&gt;new_from_content("&lt;p&gt;a&lt;/p&gt;&lt;p&gt;b&lt;/p&gt;")
+-&gt;as_text;</p>
+<p>returns <code>"ab"</code>, not <code>"a b"</code> or
+<code>"a\nb"</code>.</p>
+<p>Text under <code>&lt;script&gt;</code> or <code>&lt;style&gt;</code>
+elements is never included in what's returned. If <code>skip_dels</code>
+is true, then text content under <code>&lt;del&gt;</code> nodes is not
+included in what's returned.</p>
+<h2>as_trimmed_text</h2>
+<p>$s = $h-&gt;as_trimmed_text(...); $s =
+$h-&gt;as_trimmed_text(extra_chars =&gt; \xA0); # remove &amp;nbsp; $s =
+$h-&gt;as_text_trimmed(...); # alias</p>
+<p>This is just like <code>as_text(...)</code> except that leading and
+trailing whitespace is deleted, and any internal whitespace is
+collapsed.</p>
+<p>This will not remove non-breaking spaces, Unicode spaces, or any
+other non-ASCII whitespace unless you supply the extra characters as a
+string argument (e.g.
+<code>$h-&gt;as_trimmed_text(extra_chars =&gt; \xA0)</code>).
+<code>extra_chars</code> may be any string that can appear inside a
+character class, including ranges like <code>a-z</code>, POSIX character
+classes like <code>[:alpha:]</code>, and character class escapes like
+<code>\p{Zs}</code>.</p>
+<h2>as_XML</h2>
+<p>$s = $h-&gt;as_XML()</p>
+<p>Returns a string representing in XML the element and its
+descendants.</p>
+<p>The XML is not indented.</p>
+<h2>as_Lisp_form</h2>
+<p>$s = $h-&gt;as_Lisp_form();</p>
+<p>Returns a string representing the element and its descendants as a
+Lisp form. Unsafe characters are encoded as octal escapes.</p>
+<p>The Lisp form is indented, and contains external (href, etc.) as well
+as internal attributes (_tag, _content, _implicit, etc.), except for
+_parent, which is omitted.</p>
+<p>Current example output for a given element:</p>
+<p>("_tag" "img" "border" "0" "src" "pie.png" "usemap" "#main.map")</p>
+<h2>format</h2>
+<p>$s = $h-&gt;format; # use HTML::FormatText $s =
+$h-&gt;format($formatter);</p>
+<p>Formats text output. Defaults to HTML::FormatText.</p>
+<p>Takes a second argument that is a reference to a formatter.</p>
+<h2>starttag</h2>
+<p>$start = $h-&gt;starttag(); $start = $h-&gt;starttag($entities);</p>
+<p>Returns a string representing the complete start tag for the element.
+I.e., leading &lt;, tag name, attributes, and trailing &gt;. All values
+are surrounded with double-quotes, and appropriate characters are
+encoded. If <code>$entities</code> is omitted or undef, <em>all</em>
+unsafe characters are encoded as HTML entities. See HTML::Entities for
+details. If you specify some value for <code>$entities</code>, remember
+to include the double-quote character in it. (Previous versions of this
+module would basically behave as if <code>&amp;"&gt;</code> were
+specified for <code>$entities</code>.) If <code>$entities</code> is an
+empty string, no entity is escaped.</p>
+<h2>starttag_XML</h2>
+<p>$start = $h-&gt;starttag_XML();</p>
+<p>Returns a string representing the complete start tag for the
+element.</p>
+<h2>endtag</h2>
+<p>$end = $h-&gt;endtag();</p>
+<p>Returns a string representing the complete end tag for this element.
+I.e., &lt;/, tag name, and &gt;.</p>
+<h2>endtag_XML</h2>
+<p>$end = $h-&gt;endtag_XML();</p>
+<p>Returns a string representing the complete end tag for this element.
+I.e., &lt;/, tag name, and &gt;.</p>
+<h1>SECONDARY STRUCTURAL METHODS</h1>
+<p>These methods all involve some structural aspect of the tree; either
+they report some aspect of the tree's structure, or they involve
+traversal down the tree, or walking up the tree.</p>
+<h2>is_inside</h2>
+<p>$inside = $h-&gt;is_inside(tag, $element, ...);</p>
+<p>Returns true if the <code>$h</code> element is, or is contained
+anywhere inside an element that is any of the ones listed, or whose tag
+name is any of the tag names listed. You can use any mix of elements and
+tag names.</p>
+<h2>is_empty</h2>
+<p>$empty = $h-&gt;is_empty();</p>
+<p>Returns true if <code>$h</code> has no content, i.e., has no elements
+or text segments under it. In other words, this returns true if
+<code>$h</code> is a leaf node, AKA a terminal node. Do not confuse this
+sense of empty with another sense that it can have in SGML/HTML/XML
+terminology, which means that the element in question is of the type
+(like HTML's <code>&lt;hr&gt;</code>, <code>&lt;br&gt;</code>,
+<code>&lt;img&gt;</code>, etc.) that <em>can't</em> have any
+content.</p>
+<p>That is, a particular <code>&lt;p&gt;</code> element may happen to
+have no content, so <code>$that_p_element</code>-&gt;is_empty will be
+true Ω- even though the prototypical <code>&lt;p&gt;</code> element
+isn't empty (not in the way that the prototypical
+<code>&lt;hr&gt;</code> element is).</p>
+<p>If you think this might make for potentially confusing code, consider
+simply using the clearer exact equivalent:
+<code>not($h-&gt;content_list)</code>.</p>
+<h2>pindex</h2>
+<p>$index = $h-&gt;pindex();</p>
+<p>Return the index of the element in its parent's contents array, such
+that <code>$h</code> would equal</p>
+<p>$h-&gt;parent-&gt;content-&gt;[$h-&gt;pindex] # or
+($h-&gt;parent-&gt;content_list)[$h-&gt;pindex]</p>
+<p>assuming <code>$h</code> isn't root. If the element <code>$h</code>
+is root, then <code>$h-&gt;pindex</code> returns <code>undef</code>.</p>
+<h2>left</h2>
+<p>$element = $h-&gt;left(); @elements = $h-&gt;left();</p>
+<p>In scalar context: returns the node that's the immediate left sibling
+of <code>$h</code>. If <code>$h</code> is the leftmost (or only) child
+of its parent (or has no parent), then this returns undef.</p>
+<p>In list context: returns all the nodes that're the left siblings of
+<code>$h</code> (starting with the leftmost). If <code>$h</code> is the
+leftmost (or only) child of its parent (or has no parent), then this
+returns an empty list.</p>
+<p>(See also <code>$h-&gt;preinsert(LIST)</code>.)</p>
+<h2>right</h2>
+<p>$element = $h-&gt;right(); @elements = $h-&gt;right();</p>
+<p>In scalar context: returns the node that's the immediate right
+sibling of <code>$h</code>. If <code>$h</code> is the rightmost (or
+only) child of its parent (or has no parent), then this returns
+<code>undef</code>.</p>
+<p>In list context: returns all the nodes that're the right siblings of
+<code>$h</code>, starting with the leftmost. If <code>$h</code> is the
+rightmost (or only) child of its parent (or has no parent), then this
+returns an empty list.</p>
+<p>(See also <code>$h-&gt;postinsert(LIST)</code>.)</p>
+<h2>address</h2>
+<p>$address = $h-&gt;address(); $element_or_text =
+$h-&gt;address($address);</p>
+<p>The first form (with no parameter) returns a string representing the
+location of <code>$h</code> in the tree it is a member of. The address
+consists of numbers joined by a '.', starting with '0', and followed by
+the pindexes of the nodes in the tree that are ancestors of
+<code>$h</code>, starting from the top.</p>
+<p>So if the way to get to a node starting at the root is to go to child
+2 of the root, then child 10 of that, and then child 0 of that, and then
+you're there Ω- then that node's address is 0.2.10.0.</p>
+<p>As a bit of a special case, the address of the root is simply 0.</p>
+<p>I forsee this being used mainly for debugging, but you may find your
+own uses for it.</p>
+<p>$element_or_text = $h-&gt;address($address);</p>
+<p>This form returns the node (whether element or text-segment) at the
+given address in the tree that <code>$h</code> is a part of. (That is,
+the address is resolved starting from <code>$h-&gt;root</code>.)</p>
+<p>If there is no node at the given address, this returns
+<code>undef</code>.</p>
+<p>You can specify relative addressing (i.e., that indexing is supposed
+to start from <code>$h</code> and not from <code>$h-&gt;root</code>) by
+having the address start with a period Ω- e.g.,
+<code>$h-&gt;address(".3.2")</code> will look at child 3 of
+<code>$h</code>, and child 2 of that.</p>
+<h2>depth</h2>
+<p>$depth = $h-&gt;depth();</p>
+<p>Returns a number expressing <code>$h</code>'s depth within its tree,
+i.e., how many steps away it is from the root. If <code>$h</code> has no
+parent (i.e., is root), its depth is 0.</p>
+<h2>root</h2>
+<p>$root = $h-&gt;root();</p>
+<p>Returns the element that's the top of <code>$h</code>'s tree. If
+<code>$h</code> is root, this just returns <code>$h</code>. (If you want
+to test whether <code>$h</code> <em>is</em> the root, instead of asking
+what its root is, just test <code>not($h-&gt;parent)</code>.)</p>
+<h2>lineage</h2>
+<p>@lineage = $h-&gt;lineage();</p>
+<p>Returns the list of <code>$h</code>'s ancestors, starting with its
+parent, and then that parent's parent, and so on, up to the root. If
+<code>$h</code> is root, this returns an empty list.</p>
+<p>If you simply want a count of the number of elements in
+<code>$h</code>'s lineage, use <code>$h-&gt;depth</code>.</p>
+<h2>lineage_tag_names</h2>
+<p>@names = $h-&gt;lineage_tag_names();</p>
+<p>Returns the list of the tag names of <code>$h</code>'s ancestors,
+starting with its parent, and that parent's parent, and so on, up to the
+root. If <code>$h</code> is root, this returns an empty list. Example
+output: <code>(em, td, tr, table, body, html)</code></p>
+<p>Equivalent to:</p>
+<p>map { $_-&gt;tag } $h-&gt;lineage;</p>
+<h2>descendants</h2>
+<p>@descendants = $h-&gt;descendants();</p>
+<p>In list context, returns the list of all <code>$h</code>'s descendant
+elements, listed in pre-order (i.e., an element appears before its
+content-elements). Text segments DO NOT appear in the list. In scalar
+context, returns a count of all such elements.</p>
+<h2>descendents</h2>
+<p>This is just an alias to the <code>descendants</code> method, for
+people who can't spell.</p>
+<h2>find_by_tag_name</h2>
+<p>@elements = $h-&gt;find_by_tag_name(tag, ...); $first_match =
+$h-&gt;find_by_tag_name(tag, ...);</p>
+<p>In list context, returns a list of elements at or under
+<code>$h</code> that have any of the specified tag names. In scalar
+context, returns the first (in pre-order traversal of the tree) such
+element found, or undef if none.</p>
+<h2>find</h2>
+<p>This is just an alias to <code>find_by_tag_name</code>. (There was
+once going to be a whole find_* family of methods, but then
+<code>look_down</code> filled that niche, so there turned out not to be
+much reason for the verboseness of the name find_by_tag_name.)</p>
+<h2>find_by_attribute</h2>
+<p>@elements = $h-&gt;find_by_attribute(attribute, value); $first_match
+= $h-&gt;find_by_attribute(attribute, value);</p>
+<p>In a list context, returns a list of elements at or under
+<code>$h</code> that have the specified attribute, and have the given
+value for that attribute. In a scalar context, returns the first (in
+pre-order traversal of the tree) such element found, or undef if
+none.</p>
+<p>This method is <strong>deprecated</strong> in favor of the more
+expressive <code>look_down</code> method, which new code should use
+instead.</p>
+<h2>look_down</h2>
+<p>@elements = $h-&gt;look_down( ...criteria... ); $first_match =
+$h-&gt;look_down( ...criteria... );</p>
+<p>This starts at <code>$h</code> and looks thru its element descendants
+(in pre-order), looking for elements matching the criteria you specify.
+In list context, returns all elements that match all the given criteria;
+in scalar context, returns the first such element (or undef, if nothing
+matched).</p>
+<p>There are three kinds of criteria you can specify:</p>
+<dl>
+<dt>(attr_name, attr_value)</dt>
+<dd>
+<p>This means you're looking for an element with that value for that
+attribute. Example: <code>"alt", "pix!"</code>. Consider that you can
+search on internal attribute values too: <code>"_tag", "p"</code>.</p>
+</dd>
+<dt>(attr_name, qr/.../)</dt>
+<dd>
+<p>This means you're looking for an element whose value for that
+attribute matches the specified Regexp object.</p>
+</dd>
+<dt>a coderef</dt>
+<dd>
+<p>This means you're looking for elements where
+coderef-&gt;(each_element) returns true. Example: my @wide_pix_images =
+$h-&gt;look_down( _tag =&gt; "img", alt =&gt; "pix!", sub {
+$_[0]-&gt;attr(width) &gt; 350 } );</p>
+</dd>
+</dl>
+<p>Note that <code>(attr_name, attr_value)</code> and
+<code>(attr_name, qr/.../)</code> criteria are almost always faster than
+coderef criteria, so should presumably be put before them in your list
+of criteria. That is, in the example above, the sub ref is called only
+for elements that have already passed the criteria of having a _tag
+attribute with value img, and an alt attribute with value pix!. If the
+coderef were first, it would be called on every element, and
+<em>then</em> what elements pass that criterion (i.e., elements for
+which the coderef returned true) would be checked for their _tag and alt
+attributes.</p>
+<p>Note that comparison of string attribute-values against the string
+value in <code>(attr_name, attr_value)</code> is case-INsensitive! A
+criterion of <code>(align, right)</code> <em>will</em> match an element
+whose align value is RIGHT, or right or rIGhT, etc.</p>
+<p>Note also that <code>look_down</code> considers "" (empty-string) and
+undef to be different things, in attribute values. So this:</p>
+<p>$h-&gt;look_down("alt", "")</p>
+<p>will find elements <em>with</em> an alt attribute, but where the
+value for the alt attribute is "". But this:</p>
+<p>$h-&gt;look_down("alt", undef)</p>
+<p>is the same as:</p>
+<p>$h-&gt;look_down(sub { !defined($_[0]-&gt;attr(alt)) } )</p>
+<p>That is, it finds elements that do not have an alt attribute at all
+(or that do have an alt attribute, but with a value of undef Ω- which is
+not normally possible).</p>
+<p>Note that when you give several criteria, this is taken to mean
+you're looking for elements that match <em>all</em> your criterion, not
+just <em>any</em> of them. In other words, there is an implicit and, not
+an or. So if you wanted to express that you wanted to find elements with
+a name attribute with the value foo <em>or</em> with an id attribute
+with the value baz, you'd have to do it like:</p>
+<p>@them = $h-&gt;look_down( sub { # the lcs are to fold case
+lc($_[0]-&gt;attr(name)) eq foo or lc($_[0]-&gt;attr(id)) eq baz }
+);</p>
+<p>Coderef criteria are more expressive than
+<code>(attr_name, attr_value)</code> and
+<code>(attr_name, qr/.../)</code> criteria, and all
+<code>(attr_name, attr_value)</code> and
+<code>(attr_name, qr/.../)</code> criteria could be expressed in terms
+of coderefs. However, <code>(attr_name, attr_value)</code> and
+<code>(attr_name, qr/.../)</code> criteria are a convenient shorthand.
+(In fact, <code>look_down</code> itself is basically shorthand too,
+since anything you can do with <code>look_down</code> you could do by
+traversing the tree, either with the <code>traverse</code> method or
+with a routine of your own. However, <code>look_down</code> often makes
+for very concise and clear code.)</p>
+<h2>look_up</h2>
+<p>@elements = $h-&gt;look_up( ...criteria... ); $first_match =
+$h-&gt;look_up( ...criteria... );</p>
+<p>This is identical to <code>$h-&gt;look_down</code>, except that
+whereas <code>$h-&gt;look_down</code> basically scans over the list:</p>
+<p>($h, $h-&gt;descendants)</p>
+<p><code>$h-&gt;look_up</code> instead scans over the list</p>
+<p>($h, $h-&gt;lineage)</p>
+<p>So, for example, this returns all ancestors of <code>$h</code>
+(possibly including <code>$h</code> itself) that are
+<code>&lt;td&gt;</code> elements with an align attribute with a value of
+right (or RIGHT, etc.):</p>
+<p>$h-&gt;look_up("_tag", "td", "align", "right");</p>
+<h2>traverse</h2>
+<p>$h-&gt;traverse(...options...)</p>
+<p>Lengthy discussion of HTML::Element's unnecessary and confusing
+<code>traverse</code> method has been moved to a separate file:
+HTML::Element::traverse</p>
+<h2>attr_get_i</h2>
+<p>@values = $h-&gt;attr_get_i(attribute); $first_value =
+$h-&gt;attr_get_i(attribute);</p>
+<p>In list context, returns a list consisting of the values of the given
+attribute for <code>$h</code> and for all its ancestors starting from
+<code>$h</code> and working its way up. Nodes with no such attribute are
+skipped. (attr_get_i stands for attribute get, with inheritance.) In
+scalar context, returns the first such value, or undef if none.</p>
+<p>Consider a document consisting of:</p>
+<p>&lt;html lang=i-klingon&gt; &lt;head&gt;&lt;title&gt;Pati
+Pata&lt;/title&gt;&lt;/head&gt; &lt;body&gt; &lt;h1
+lang=la&gt;Stuff&lt;/h1&gt; &lt;p lang=es-MX align=center&gt; Foo bar
+baz &lt;cite&gt;Quux&lt;/cite&gt;. &lt;/p&gt; &lt;p&gt;Hooboy.&lt;/p&gt;
+&lt;/body&gt; &lt;/html&gt;</p>
+<p>If <code>$h</code> is the <code>&lt;cite&gt;</code> element,
+<code>$h-&gt;attr_get_i("lang")</code> in list context will return the
+list <code>(es-MX, i-klingon)</code>. In scalar context, it will return
+the value <code>es-MX</code>.</p>
+<p>If you call with multiple attribute names...</p>
+<p>@values = $h-&gt;attr_get_i(a1, a2, a3); $first_value =
+$h-&gt;attr_get_i(a1, a2, a3);</p>
+<p>...in list context, this will return a list consisting of the values
+of these attributes which exist in <code>$h</code> and its ancestors. In
+scalar context, this returns the first value (i.e., the value of the
+first existing attribute from the first element that has any of the
+attributes listed). So, in the above example,</p>
+<p>$h-&gt;attr_get_i(lang, align);</p>
+<p>will return:</p>
+<p>(es-MX, center, i-klingon) # in list context or es-MX # in scalar
+context.</p>
+<p>But note that this:</p>
+<p>$h-&gt;attr_get_i(align, lang);</p>
+<p>will return:</p>
+<p>(center, es-MX, i-klingon) # in list context or center # in scalar
+context.</p>
+<h2>tagname_map</h2>
+<p>$hash_ref = $h-&gt;tagname_map();</p>
+<p>Scans across <code>$h</code> and all its descendants, and makes a
+hash (a reference to which is returned) where each entry consists of a
+key that's a tag name, and a value that's a reference to a list to all
+elements that have that tag name. I.e., this method returns:</p>
+<p>{ # Across $h and all descendants... a =&gt; [ ...list of all
+&lt;a&gt; elements... ], em =&gt; [ ...list of all &lt;em&gt;
+elements... ], img =&gt; [ ...list of all &lt;img&gt; elements... ],
+}</p>
+<p>(There are entries in the hash for only those tagnames that occur
+at/under <code>$h</code> Ω- so if there's no <code>&lt;img&gt;</code>
+elements, there'll be no img entry in the returned hashref.)</p>
+<p>Example usage:</p>
+<p>my $map_r = $h-&gt;tagname_map(); my @heading_tags = sort grep
+m/^h\d$/s, keys %$map_r; if(@heading_tags) { print "Heading levels used:
+@heading_tags\n"; } else { print "No headings.\n" }</p>
+<h2>extract_links</h2>
+<p>$links_array_ref = $h-&gt;extract_links(); $links_array_ref =
+$h-&gt;extract_links(@wantedTypes);</p>
+<p>Returns links found by traversing the element and all of its children
+and looking for attributes (like href in an <code>&lt;a&gt;</code>
+element, or src in an <code>&lt;img&gt;</code> element) whose values
+represent links. The return value is a <em>reference</em> to an array.
+Each element of the array is reference to an array with <em>four</em>
+items: the link-value, the element that has the attribute with that
+link-value, and the name of that attribute, and the tagname of that
+element. (Example: <code>[http://www.suck.com/,</code>
+<em><code>$elem_obj</code></em> <code>, href, a]</code>.) You may or may
+not end up using the element itself Ω- for some purposes, you may use
+only the link value.</p>
+<p>You might specify that you want to extract links from just some kinds
+of elements (instead of the default, which is to extract links from
+<em>all</em> the kinds of elements known to have attributes whose values
+represent links). For instance, if you want to extract links from only
+<code>&lt;a&gt;</code> and <code>&lt;img&gt;</code> elements, you could
+code it like this:</p>
+<p>for (@{ $e-&gt;extract_links(a, img) }) { my($link, $element, $attr,
+$tag) = @$_; print "Hey, theres a $tag that links to ", $link, ", in its
+$attr attribute, at ", $element-&gt;address(), ".\n"; }</p>
+<h2>simplify_pres</h2>
+<p>$h-&gt;simplify_pres();</p>
+<p>In text bits under PRE elements that are at/under <code>$h</code>,
+this routine nativizes all newlines, and expands all tabs.</p>
+<p>That is, if you read a file with lines delimited by
+<code>\cm\cj</code>'s, the text under PRE areas will have
+<code>\cm\cj</code>'s instead of <code>\n</code>'s. Calling
+<code>$h-&gt;simplify_pres</code> on such a tree will turn
+<code>\cm\cj</code>'s into <code>\n</code>'s.</p>
+<p>Tabs are expanded to however many spaces it takes to get to the next
+8th column Ω- the usual way of expanding them.</p>
+<h2>same_as</h2>
+<p>$equal = $h-&gt;same_as($i)</p>
+<p>Returns true if <code>$h</code> and <code>$i</code> are both elements
+representing the same tree of elements, each with the same tag name,
+with the same explicit attributes (i.e., not counting attributes whose
+names start with _), and with the same content (textual, comments,
+etc.).</p>
+<p>Sameness of descendant elements is tested, recursively, with
+<code>$child1-&gt;same_as($child_2)</code>, and sameness of text
+segments is tested with <code>$segment1 eq $segment2</code>.</p>
+<h2>new_from_lol</h2>
+<p>$h = HTML::Element-&gt;new_from_lol($array_ref); @elements =
+HTML::Element-&gt;new_from_lol($array_ref, ...);</p>
+<p>Recursively constructs a tree of nodes, based on the (non-cyclic)
+data structure represented by each <code>$array_ref</code>, where that
+is a reference to an array of arrays (of arrays (of arrays (etc.))).</p>
+<p>In each arrayref in that structure, different kinds of values are
+treated as follows:</p>
+<ul>
+<li><p>Arrayrefs Arrayrefs are considered to designate a sub-tree
+representing children for the node constructed from the current
+arrayref.</p></li>
+<li><p>Hashrefs Hashrefs are considered to contain attribute-value pairs
+to add to the element to be constructed from the current
+arrayref</p></li>
+<li><p>Text segments Text segments at the start of any arrayref will be
+considered to specify the name of the element to be constructed from the
+current arrayref; all other text segments will be considered to specify
+text segments as children for the current arrayref.</p></li>
+<li><p>Elements Existing element objects are either inserted into the
+treelet constructed, or clones of them are. That is, when the lol-tree
+is being traversed and elements constructed based what's in it, if an
+existing element object is found, if it has no parent, then it is added
+directly to the treelet constructed; but if it has a parent, then
+<code>$that_node-&gt;clone</code> is added to the treelet at the
+appropriate place.</p></li>
+</ul>
+<p>An example will hopefully make this more obvious:</p>
+<p>my $h = HTML::Element-&gt;new_from_lol( [html, [head, [ title, I like
+stuff! ], ], [body, {lang, en-JP, _implicit =&gt; 1}, stuff, [p, um, p
+&lt; 4!, {class =&gt; par123}], [div, {foo =&gt; bar}, 123], ] ] );
+$h-&gt;dump;</p>
+<p>Will print this:</p>
+<p>&lt;html&gt; @0 &lt;head&gt; @0.0 &lt;title&gt; @0.0.0 "I like
+stuff!" &lt;body lang="en-JP"&gt; @0.1 (IMPLICIT) "stuff" &lt;p
+class="par123"&gt; @0.1.1 "um, p &lt; 4!" &lt;div foo="bar"&gt; @0.1.2
+"123"</p>
+<p>And printing <code>$h</code>-&gt;as_HTML will give something
+like:</p>
+<p>&lt;html&gt;&lt;head&gt;&lt;title&gt;I like
+stuff!&lt;/title&gt;&lt;/head&gt; &lt;body lang="en-JP"&gt;stuff&lt;p
+class="par123"&gt;um, p &amp;lt; 4! &lt;div
+foo="bar"&gt;123&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</p>
+<p>You can even do fancy things with <code>map</code>:</p>
+<p>$body-&gt;push_content( # push_content implicitly calls new_from_lol
+on arrayrefs... [br], [blockquote, [h2, Pictures!], map [p, $_],
+$body2-&gt;look_down("_tag", "img"), # images, to be copied from that
+other tree. ], # and more stuff: [ul, map [li, [a, {href=&gt;"$_.png"},
+$_ ] ], qw(Peaches Apples Pears Mangos) ], );</p>
+<p>In scalar context, you must supply exactly one arrayref. In list
+context, you can pass a list of arrayrefs, and new_from_lol will return
+a list of elements, one for each arrayref.</p>
+<p>@elements = HTML::Element-&gt;new_from_lol( [hr], [p, And there, on
+the door, was a hook!], ); # constructs two elements.</p>
+<h2>objectify_text</h2>
+<p>$h-&gt;objectify_text();</p>
+<p>This turns any text nodes under <code>$h</code> from mere text
+segments (strings) into real objects, pseudo-elements with a tag-name of
+~text, and the actual text content in an attribute called text. (For a
+discussion of pseudo-elements, see the tag method, far above.) This
+method is provided because, for some purposes, it is convenient or
+necessary to be able, for a given text node, to ask what element is its
+parent; and clearly this is not possible if a node is just a text
+string.</p>
+<p>Note that these ~text objects are not recognized as text nodes by
+methods like as_text. Presumably you will want to call
+<code>$h-&gt;objectify_text</code>, perform whatever task that you
+needed that for, and then call <code>$h-&gt;deobjectify_text</code>
+before calling anything like <code>$h-&gt;as_text</code>.</p>
+<h2>deobjectify_text</h2>
+<p>$h-&gt;deobjectify_text();</p>
+<p>This undoes the effect of <code>$h-&gt;objectify_text</code>. That
+is, it takes any ~text pseudo-elements in the tree at/under
+<code>$h</code>, and deletes each one, replacing each with the content
+of its text attribute.</p>
+<p>Note that if <code>$h</code> itself is a ~text pseudo-element, it
+will be destroyed Ω- a condition you may need to treat specially in your
+calling code (since it means you can't very well do anything with
+<code>$h</code> after that). So that you can detect that condition, if
+<code>$h</code> is itself a ~text pseudo-element, then this method
+returns the value of the text attribute, which should be a defined
+value; in all other cases, it returns undef.</p>
+<p>(This method assumes that no ~text pseudo-element has any
+children.)</p>
+<h2>number_lists</h2>
+<p>$h-&gt;number_lists();</p>
+<p>For every UL, OL, DIR, and MENU element at/under <code>$h</code>,
+this sets a _bullet attribute for every child LI element. For LI
+children of an OL, the _bullet attribute's value will be something like
+4., d., D., IV., or iv., depending on the OL element's type attribute.
+LI children of a UL, DIR, or MENU get their _bullet attribute set to *.
+There should be no other LIs (i.e., except as children of OL, UL, DIR,
+or MENU elements), and if there are, they are unaffected.</p>
+<h2>has_insane_linkage</h2>
+<p>$h-&gt;has_insane_linkage</p>
+<p>This method is for testing whether this element or the elements under
+it have linkage attributes (_parent and _content) whose values are
+deeply aberrant: if there are undefs in a content list; if an element
+appears in the content lists of more than one element; if the _parent
+attribute of an element doesn't match its actual parent; or if an
+element appears as its own descendant (i.e., if there is a cyclicity in
+the tree).</p>
+<p>This returns empty list (or false, in scalar context) if the
+subtree's linkage methods are sane; otherwise it returns two items (or
+true, in scalar context): the element where the error occurred, and a
+string describing the error.</p>
+<p>This method is provided is mainly for debugging and troubleshooting
+Ω- it should be <em>quite impossible</em> for any document constructed
+via HTML::TreeBuilder to parse into a non-sane tree (since it's not the
+content of the tree per se that's in question, but whether the tree in
+memory was properly constructed); and it <em>should</em> be impossible
+for you to produce an insane tree just thru reasonable use of normal
+documented structure-modifying methods. But if you're constructing your
+own trees, and your program is going into infinite loops as during calls
+to <strong>traverse()</strong> or any of the secondary structural
+methods, as part of debugging, consider calling
+<code>has_insane_linkage</code> on the tree.</p>
+<h2>element_class</h2>
+<p>$classname = $h-&gt;element_class();</p>
+<p>This method returns the class which will be used for new elements. It
+defaults to HTML::Element, but can be overridden by subclassing or
+esoteric means best left to those will will read the source and then not
+complain when those esoteric means change. (Just subclass.)</p>
+<h1>CLASS METHODS</h1>
+<h2>Use_Weak_Refs</h2>
+<p>$enabled = HTML::Element-&gt;Use_Weak_Refs;
+HTML::Element-&gt;Use_Weak_Refs( $enabled );</p>
+<p>This method allows you to check whether weak reference support is
+enabled, and to enable or disable it. For details, see Weak References.
+<code>$enabled</code> is true if weak references are enabled.</p>
+<p>You should not switch this in the middle of your program, and you
+probably shouldn't use it at all. Existing trees are not affected by
+this method (until you start modifying nodes in them).</p>
+<p>Throws an exception if you attempt to enable weak references and your
+Perl or Scalar::Util does not support them.</p>
+<p>Disabling weak reference support is deprecated.</p>
+<h1>SUBROUTINES</h1>
+<h2>Version</h2>
+<p>This subroutine is deprecated. Please use the standard VERSION method
+(e.g. <code>HTML::Element-&gt;VERSION</code>) instead.</p>
+<h2>ABORT OK PRUNE PRUNE_SOFTLY PRUNE_UP</h2>
+<p>Constants for signalling back to the traverser</p>
+<h1>BUGS</h1>
+<p>* If you want to free the memory associated with a tree built of
+HTML::Element nodes, and you have disabled weak references, then you
+will have to delete it explicitly using the delete method. See Weak
+References.</p>
+<p>* There's almost nothing to stop you from making a tree with
+cyclicities (loops) in it, which could, for example, make the traverse
+method go into an infinite loop. So don't make cyclicities! (If all
+you're doing is parsing HTML files, and looking at the resulting trees,
+this will never be a problem for you.)</p>
+<p>* There's no way to represent comments or processing directives in a
+tree with HTML::Elements. Not yet, at least.</p>
+<p>* There's (currently) nothing to stop you from using an undefined
+value as a text segment. If you're running under <code>perl -w</code>,
+however, this may make HTML::Element's code produce a slew of
+warnings.</p>
+<h1>NOTES ON SUBCLASSING</h1>
+<p>You are welcome to derive subclasses from HTML::Element, but you
+should be aware that the code in HTML::Element makes certain assumptions
+about elements (and I'm using element to mean ONLY an object of class
+HTML::Element, or of a subclass of HTML::Element):</p>
+<p>* The value of an element's _parent attribute must either be undef or
+otherwise false, or must be an element.</p>
+<p>* The value of an element's _content attribute must either be undef
+or otherwise false, or a reference to an (unblessed) array. The array
+may be empty; but if it has items, they must ALL be either mere strings
+(text segments), or elements.</p>
+<p>* The value of an element's _tag attribute should, at least, be a
+string of printable characters.</p>
+<p>Moreover, bear these rules in mind:</p>
+<p>* Do not break encapsulation on objects. That is, access their
+contents only thru <code>$obj</code>-&gt;attr or more specific
+methods.</p>
+<p>* You should think twice before completely overriding any of the
+methods that HTML::Element provides. (Overriding with a method that
+calls the superclass method is not so bad, though.)</p>
+<h1>SEE ALSO</h1>
+<p>HTML::Tree; HTML::TreeBuilder; HTML::AsSubs; HTML::Tagset; and, for
+the morbidly curious, HTML::Element::traverse.</p>
+<h1>ACKNOWLEDGEMENTS</h1>
+<p>Thanks to Mark-Jason Dominus for a POD suggestion.</p>
+<h1>AUTHOR</h1>
+<p>Current maintainers:</p>
+<ul>
+<li><p>Christopher J. Madsen
+<code>&lt;perl AT cjmweb.net&gt;</code></p></li>
+<li><p>Jeff Fearn <code>&lt;jfearn AT cpan.org&gt;</code></p></li>
+</ul>
+<p>Original HTML-Tree author:</p>
+<ul>
+<li><p>Gisle Aas</p></li>
+</ul>
+<p>Former maintainers:</p>
+<ul>
+<li><p>Sean M. Burke</p></li>
+<li><p>Andy Lester</p></li>
+<li><p>Pete Krawczyk <code>&lt;petek AT cpan.org&gt;</code></p></li>
+</ul>
+<p>You can follow or contribute to HTML-Tree's development at
+&lt;https://github.com/kentfredric/HTML-Tree&gt;.</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>Copyright 1995-1998 Gisle Aas, 1999-2004 Sean M. Burke, 2005 Andy
+Lester, 2006 Pete Krawczyk, 2010 Jeff Fearn, 2012 Christopher J.
+Madsen.</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>
+<p>The programs in this library are distributed in the hope that they
+will be useful, but without any warranty; without even the implied
+warranty of merchantability or fitness for a particular purpose.</p>

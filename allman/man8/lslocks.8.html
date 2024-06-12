@@ -1,0 +1,136 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lslocks - list local system locks</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lslocks</strong> [options]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>lslocks</strong> lists information about all the currently
+held file locks in a Linux system.</p>
+<p>Note that lslocks also lists OFD (Open File Description) locks, these
+locks are not associated with any process (PID is -1). OFD locks are
+associated with the open file description on which they are acquired.
+This lock type is available since Linux 3.15, see
+<strong>fcntl</strong>(2) for more details.</p>
+<h1>OPTIONS</h1>
+<p><strong>-b</strong>, <strong>--bytes</strong></p>
+<blockquote>
+<p>Print the sizes in bytes rather than in a human-readable format.</p>
+<p>By default, the unit, sizes are expressed in, is byte, and unit
+prefixes are in power of 2^10 (1024). Abbreviations of symbols are
+exhibited truncated in order to reach a better readability, by
+exhibiting alone the first letter of them; examples: "1 KiB" and "1 MiB"
+are respectively exhibited as "1 K" and "1 M", then omitting on purpose
+the mention "iB", which is part of these abbreviations.</p>
+</blockquote>
+<p><strong>-i</strong>, <strong>--noinaccessible</strong></p>
+<blockquote>
+<p>Ignore lock files which are inaccessible for the current user.</p>
+</blockquote>
+<p><strong>-J</strong>, <strong>--json</strong></p>
+<blockquote>
+<p>Use JSON output format.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print a header line.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Specify which output columns to print. Use <strong>--help</strong> to
+get a list of all supported columns.</p>
+<p>The default list of columns may be extended if <em>list</em> is
+specified in the format <em>+list</em> (e.g., <strong>lslocks -o
++BLOCKER</strong>).</p>
+</blockquote>
+<p><strong>--output-all</strong></p>
+<blockquote>
+<p>Output all available columns.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--pid</strong> <em>pid</em></p>
+<blockquote>
+<p>Display only the locks held by the process with this
+<em>pid</em>.</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--raw</strong></p>
+<blockquote>
+<p>Use the raw output format.</p>
+</blockquote>
+<p><strong>-u</strong>, <strong>--notruncate</strong></p>
+<blockquote>
+<p>Do not truncate text in columns.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>OUTPUT</h1>
+<p>COMMAND</p>
+<blockquote>
+<p>The command name of the process holding the lock.</p>
+</blockquote>
+<p>PID</p>
+<blockquote>
+<p>The process ID of the process which holds the lock or -1 for
+OFDLCK.</p>
+</blockquote>
+<p>TYPE</p>
+<blockquote>
+<p>The type of lock; can be FLOCK (created with
+<strong>flock</strong>(2)), POSIX (created with
+<strong>fcntl</strong>(2) and <strong>lockf</strong>(3)) or OFDLCK
+(created with <strong>fcntl</strong>(2)).</p>
+</blockquote>
+<p>SIZE</p>
+<blockquote>
+<p>Size of the locked file.</p>
+</blockquote>
+<p>MODE</p>
+<blockquote>
+<p>The lock’s access permissions (read, write). If the process is
+blocked and waiting for the lock, then the mode is postfixed with an '*'
+(asterisk).</p>
+</blockquote>
+<p>M</p>
+<blockquote>
+<p>Whether the lock is mandatory; 0 means no (meaning the lock is only
+advisory), 1 means yes. (See <strong>fcntl</strong>(2).)</p>
+</blockquote>
+<p>START</p>
+<blockquote>
+<p>Relative byte offset of the lock.</p>
+</blockquote>
+<p>END</p>
+<blockquote>
+<p>Ending offset of the lock.</p>
+</blockquote>
+<p>PATH</p>
+<blockquote>
+<p>Full path of the lock. If none is found, or there are no permissions
+to read the path, it will fall back to the device’s mountpoint and "..."
+is appended to the path. The path might be truncated; use
+<strong>--notruncate</strong> to get the full path.</p>
+</blockquote>
+<p>BLOCKER</p>
+<blockquote>
+<p>The PID of the process which blocks the lock.</p>
+</blockquote>
+<h1>NOTES</h1>
+<p>The <strong>lslocks</strong> command is meant to replace the
+<strong>lslk</strong>(8) command, originally written by</p>
+<p>and unmaintained since 2001.</p>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>flock</strong>(1), <strong>fcntl</strong>(2),
+<strong>lockf</strong>(3)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>lslocks</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

@@ -1,0 +1,239 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>deluser, delgroup - remove a user or group from the system</p>
+<h1>SYNOPSIS</h1>
+<p><strong>deluser</strong> [ <strong>--backup</strong> ] [
+<strong>--backup-suffix</strong> str ] [ <strong>--backup-to</strong>
+dir ] [ <strong>--conf</strong> file ] [ <strong>--debug</strong> ] [
+<strong>--remove-all-files</strong> ] [ <strong>--remove-home</strong> ]
+[ <strong>--quiet</strong> ] [ <strong>--verbose</strong> ]
+<strong>user</strong> <strong>deluser</strong> [
+<strong>--system</strong> ] [ <strong>--backup</strong> ] [
+<strong>--backup-suffix</strong> str ] [ <strong>--backup-to</strong>
+dir ] [ <strong>--conf</strong> file ] [ <strong>--debug</strong> ] [
+<strong>--remove-all-files</strong> ] [ <strong>--remove-home</strong> ]
+[ <strong>--quiet</strong> ] [ <strong>--verbose</strong> ]
+<strong>user</strong> <strong>deluser</strong> <strong>--group</strong>
+[ <strong>--conf</strong> file ] [ <strong>--debug</strong> ] [
+<strong>--only-if-empty</strong> ] [ <strong>--quiet</strong> ] [
+<strong>--verbose</strong> ] <strong>group</strong>
+<strong>delgroup</strong> [ <strong>--system</strong> ] [
+<strong>--conf</strong> file ] [ <strong>--debug</strong> ] [
+<strong>--only-if-empty</strong> ] [ <strong>--quiet</strong> ] [
+<strong>--verbose</strong> ] <strong>group</strong>
+<strong>deluser</strong> [ <strong>--conf</strong> file ] [
+<strong>--debug</strong> ] [ <strong>--quiet</strong> ] [
+<strong>--verbose</strong> ] <strong>user</strong>
+<strong>group</strong> <strong>deluser</strong> <strong>--help</strong>
+<strong>deluser</strong> <strong>--version</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>deluser</strong> and <strong>delgroup</strong> remove users
+and groups from the system according to command line options and
+configuration information in <em>/etc/deluser.conf</em> and
+<em>/etc/adduser.conf</em>.</p>
+<p>They are friendlier front ends to the <strong>userdel</strong> and
+<strong>groupdel</strong> programs, removing the home directory as
+option or even all files on the system owned by the user to be removed,
+running a custom script, and other features.</p>
+<p>For a full list and explanations of all options, see the OPTIONS
+section.</p>
+<p><strong>deluser</strong> and <strong>delgroup</strong> can be run in
+one of three modes:</p>
+<h2>Remove a user</h2>
+<p>If called with one non-option argument and without the
+<strong>--group</strong> option, <strong>deluser</strong> will remove a
+non-system user.</p>
+<p>By default, <strong>deluser</strong> will remove the user without
+removing the home directory, the mail spool or any other files on the
+system owned by the user. Removing the home directory and mail spool can
+be achieved using the <strong>--remove-home</strong> option.</p>
+<p>The <strong>--remove-all-files</strong> option removes all files on
+the system owned by the user. Note that if you activate both options
+<strong>--remove-home</strong> will have no additional effect because
+all files including the home directory and mail spool are already
+covered by the <strong>--remove-all-files</strong> option.</p>
+<p>If you want to backup all files before deleting them you can activate
+the <strong>--backup</strong> option which will create a file
+<em>username.tar(.gz|.bz2)</em> in the directory specified by the
+<strong>--backup-to</strong> option.</p>
+<p>By default, the backup archive is compressed with
+<strong>gzip</strong>(1). To change this, the
+<strong>--backup-suffix</strong> option can be set to any suffix
+supported by <strong>tar --auto-compress</strong> (e.g. .gz, .bz2,
+.xz).</p>
+<p><strong>deluser</strong> will refuse to remove the root account.</p>
+<p>If the <strong>--system</strong> option is given on the command line,
+the delete operation is actually executed only if the user is a system
+user. This avoids accidentally deleting non-system users. Additionally,
+if the user does not exist, no error value is returned. Debian package
+maintainer scripts may use this flag to remove system users or groups
+while ignoring the case where the removal already occurred.</p>
+<h2>Remove a group</h2>
+<p>If <strong>deluser</strong> is called with the
+<strong>--group</strong> option, or <strong>delgroup</strong> is called,
+a group will be removed. The primary group of an existing user cannot be
+removed. If the option <strong>--only-if-empty</strong> is given, the
+group won't be removed if it has any members left.</p>
+<p>The <strong>--system</strong> option adds the same functionality as
+for users, respectively.</p>
+<h2>Remove a user from a specific group</h2>
+<p>If called with two non-option arguments, <strong>deluser</strong>
+will remove a user from a specific group.</p>
+<h1>OPTIONS</h1>
+<p>Different modes of <strong>deluser</strong> allow different options.
+If no valid modes are listed for a option, it is accepted in all
+modes.</p>
+<p>Short versions for certain options may exist for historical reasons.
+They are going to stay supported, but are removed from the
+documentation. Users are advised to migrate to the long version of
+options.</p>
+<dl>
+<dt><strong>--backup</strong></dt>
+<dd>
+<p>Backup all files contained in the userhome and the mailspool file to
+a file named <em>username.tar.bz2</em> or <em>username.tar.gz</em>.
+Valid Modes: <strong>deluser</strong>, <strong>deluser
+--system</strong>,</p>
+</dd>
+<dt><strong>--backup-suffix </strong>str</dt>
+<dd>
+<p>Select compression algorithm for a home directory backup. Can be set
+to any suffix recognized by <strong>tar --auto-compress</strong>.
+Defaults to <em>.gz</em>. Valid Modes: <strong>deluser</strong>,
+<strong>deluser --system</strong>,</p>
+</dd>
+<dt><strong>--backup-to </strong><em>dir</em></dt>
+<dd>
+<p>Place the backup files not in the current directory but in
+<em>dir</em>. This implicitly sets <strong>--backup</strong> also.
+(defaulting to the current working directory). Valid Modes:
+<strong>deluser</strong>, <strong>deluser --system</strong>,</p>
+</dd>
+<dt><strong>--conf <em>file</em></strong></dt>
+<dd>
+<p>Use <em>file</em> instead of the default files
+<em>/etc/deluser.conf</em> and <em>/etc/adduser.conf</em>. Multiple
+--conf options may be given.</p>
+</dd>
+<dt><strong>--debug</strong></dt>
+<dd>
+<p>Activate debugging code.</p>
+</dd>
+<dt><strong>--group</strong></dt>
+<dd>
+<p>Remove a group. This is the default action if the program is invoked
+as <em>delgroup</em>. Valid Mode: <strong>deluser</strong>.</p>
+</dd>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>Display brief instructions.</p>
+</dd>
+<dt><strong>--only-if-empty</strong></dt>
+<dd>
+<p>Only remove if no members are left. Valid Modes: <strong>deluser
+--group</strong>, <strong>delgroup</strong>,</p>
+</dd>
+<dt><strong>--quiet</strong></dt>
+<dd>
+<p>Suppress informational messages, only show warnings and errors.</p>
+</dd>
+<dt><strong>--remove-all-files</strong></dt>
+<dd>
+<p>Remove all files from the system owned by this user. Note:
+--remove-home does not have an effect any more. If
+<strong>--backup</strong> is specified, the files are deleted after
+having performed the backup. Valid Modes: <strong>deluser</strong>,
+<strong>deluser --system</strong>,</p>
+</dd>
+<dt><strong>--remove-home</strong></dt>
+<dd>
+<p>Remove the home directory of the user and its mailspool. If
+<strong>--backup</strong> is specified, the files are deleted after
+having performed the backup. Valid Modes: <strong>deluser</strong>,
+<strong>deluser --system</strong>,</p>
+</dd>
+<dt><strong>--system</strong></dt>
+<dd>
+<p>Only delete if user/group is a system user/group. If the user does
+not exist, no error value is returned. Valid Modes:
+<strong>deluser</strong>, <strong>deluser --system</strong>,</p>
+</dd>
+<dt><strong>--verbose</strong></dt>
+<dd>
+<p>Be more verbose.</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>Display version and copyright information.</p>
+</dd>
+</dl>
+<h1>RETURN VALUE</h1>
+<dl>
+<dt><strong>0</strong></dt>
+<dd>
+<p>Success: The action was successfully executed.</p>
+</dd>
+<dt><strong>1</strong></dt>
+<dd>
+<p>The user to delete was not a system account. No action was
+performed.</p>
+</dd>
+<dt><strong>2</strong></dt>
+<dd>
+<p>There is no such user. No action was performed.</p>
+</dd>
+<dt><strong>3</strong></dt>
+<dd>
+<p>There is no such group. No action was performed.</p>
+</dd>
+<dt><strong>4</strong></dt>
+<dd>
+<p>Internal error. No action was performed.</p>
+</dd>
+<dt><strong>5</strong></dt>
+<dd>
+<p>The group to delete is not empty. No action was performed.</p>
+</dd>
+<dt><strong>6</strong></dt>
+<dd>
+<p>The user does not belong to the specified group. No action was
+performed.</p>
+</dd>
+<dt><strong>7</strong></dt>
+<dd>
+<p>You cannot remove a user from its primary group. No action was
+performed.</p>
+</dd>
+<dt><strong>8</strong></dt>
+<dd>
+<p>The suggested package 'perl' is not installed. This package is
+required to perform the requested actions. No action was performed.</p>
+</dd>
+<dt><strong>9</strong></dt>
+<dd>
+<p>The root account cannot be deleted. No action was performed.</p>
+</dd>
+</dl>
+<h1>SECURITY</h1>
+<p><strong>deluser</strong> needs root privileges and offers, via the
+<strong>--conf</strong> command line option to use different
+configuration files. Do not use <strong>sudo</strong>(8) or similar
+tools to give partial privileges to <strong>deluser</strong> with
+restricted command line parameters. This is easy to circumvent and might
+allow users to create arbitrary accounts. If you want this, consider
+writing your own wrapper script and giving privileges to execute that
+script.</p>
+<h1>FILES</h1>
+<p><em>/etc/deluser.conf</em> Default configuration file for
+<strong>deluser</strong>(8) and <strong>delgroup</strong>(8)</p>
+<dl>
+<dt><em>/usr/local/sbin/deluser.local</em></dt>
+<dd>
+<p>Optional custom add-ons, see <strong>deluser.local</strong>(8)</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>adduser</strong>(8), <strong>deluser.conf</strong>(5),
+<strong>deluser.local.conf</strong>(8), <strong>groupdel</strong>(8),
+<strong>userdel</strong>(8)</p>

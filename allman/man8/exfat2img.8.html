@@ -1,0 +1,37 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>exfat2img - dump metadata of an exFAT filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>exfat2img</strong> [ <strong>-o
+<em>path</em><strong>]</strong> [</strong> <strong>-V</strong> ]
+<em>device</em><br />
+<strong>exfat2img -V</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>exfat2img</strong> dump metadata of exFAT filesystems for
+debugging. <strong>exfat2img dump boot sector, File Allcation Table,
+Bitmap and all metadata which can reach from root
+directory.</strong></p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-o --output</strong></dt>
+<dd>
+<p>Specify output result file. If filesystem to which output file is
+written does not support sparse file, you should use '-' in place of
+<em>path</em><strong>.</strong> Because a dump image generated from
+stdout has a special format, when restoring a partition from it,
+exfat2img should be used. See Examples.</p>
+</dd>
+<dt><strong>-V</strong></dt>
+<dd>
+<p>Prints the version number and exits.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>Dump metadata into a sparse file.</p>
+<pre><code>$&quot;exfat2img-osda1.dump/dev/sda1
+
+Dump metadata into standard out and restore a partition
+$ exfat2img -o - /dev/sda1 | bzip2 &gt; sda1.dump.bz2
+$ bzip2 -dc sda1.dump.bz2 | exfat2img -o /dev/sdb1 -
+</code></pre>

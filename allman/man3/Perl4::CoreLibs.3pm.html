@@ -1,0 +1,199 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Perl4::CoreLibs - libraries historically supplied with Perl 4</p>
+<h1>DESCRIPTION</h1>
+<p>This is a collection of <code>.pl</code> files that were bundled with
+the Perl core until core version 5.15.1. Relying on their presence in
+the core distribution is deprecated; they should be acquired from this
+CPAN distribution instead. From core version 5.13.3 until their removal,
+the core versions of these libraries emit a deprecation warning when
+loaded. The CPAN version does not emit such a warning.</p>
+<p>The entire Perl 4 approach to libraries was largely superseded in
+Perl 5.000 by the system of module namespaces and <code>.pm</code>
+files. Most of the libraries in this collection predate Perl 5.000, but
+a handful were first introduced in that version. Functionally, most have
+been directly superseded by modules in the Perl 5 style. These libraries
+should not be used by new code. This collection exists to support old
+Perl programs that predate satisfactory replacements.</p>
+<p>Most of these libraries have not been substantially maintained in the
+course of Perl 5 development. They are now very antiquated in style,
+making no use of the language facilities introduced since Perl 4. They
+should therefore not be used as programming examples.</p>
+<h1>LIBRARIES</h1>
+<p>The libraries in this collection are:</p>
+<dl>
+<dt>abbrev.pl</dt>
+<dd>
+<p>Build a dictionary of unambiguous abbreviations for a group of words.
+Prefer Text::Abbrev.</p>
+</dd>
+<dt>assert.pl</dt>
+<dd>
+<p>Assertion checking with stack trace upon assertion failure.</p>
+</dd>
+<dt>bigfloat.pl</dt>
+<dd>
+<p>Arbitrary precision decimal floating point arithmetic. Prefer
+Math::BigFloat.</p>
+</dd>
+<dt>bigint.pl</dt>
+<dd>
+<p>Arbitrary precision integer arithmetic. Prefer Math::BigInt.</p>
+</dd>
+<dt>bigrat.pl</dt>
+<dd>
+<p>Arbitrary precision rational arithmetic. Prefer Math::BigRat.</p>
+</dd>
+<dt>cacheout.pl</dt>
+<dd>
+<p>Manage output to a large number of files to avoid running out of file
+descriptors.</p>
+</dd>
+<dt>chat2.pl</dt>
+<dd>
+<p>Framework for partial automation of communication with a remote
+process over IP. Prefer IO::Socket::INET.</p>
+</dd>
+<dt>complete.pl</dt>
+<dd>
+<p>Interactive line input with word completion. Prefer
+Term::Complete.</p>
+</dd>
+<dt>ctime.pl</dt>
+<dd>
+<p>One form of textual representation of time. Prefer
+<code>scalar(localtime())</code> or ctime in POSIX.</p>
+</dd>
+<dt>dotsh.pl</dt>
+<dd>
+<p>Inhale shell variables set by a shell script.</p>
+</dd>
+<dt>exceptions.pl</dt>
+<dd>
+<p>String-based exception handling built on <code>eval</code> and
+<code>die</code>. Prefer Try::Tiny or TryCatch.</p>
+</dd>
+<dt>fastcwd.pl</dt>
+<dd>
+<p>Determine current directory. Prefer Cwd.</p>
+</dd>
+<dt>find.pl</dt>
+<dd>
+<p>Historical interface for a way of searching for files. Prefer
+File::Find.</p>
+</dd>
+<dt>finddepth.pl</dt>
+<dd>
+<p>Historical interface for a way of searching for files. Prefer
+File::Find.</p>
+</dd>
+<dt>flush.pl</dt>
+<dd>
+<p>Flush an I/O handle's output buffer. Prefer flush in IO::Handle.</p>
+</dd>
+<dt>ftp.pl</dt>
+<dd>
+<p>File Transfer Protocol (FTP) over IP. Prefer Net::FTP.</p>
+</dd>
+<dt>getcwd.pl</dt>
+<dd>
+<p>Determine current directory. Prefer Cwd.</p>
+</dd>
+<dt>getopt.pl</dt>
+<dd>
+<p>Unix-like option processing with all option taking arguments. Prefer
+Getopt::Std.</p>
+</dd>
+<dt>getopts.pl</dt>
+<dd>
+<p>Full Unix-like option processing. Prefer Getopt::Std.</p>
+</dd>
+<dt>hostname.pl</dt>
+<dd>
+<p>Determine host's hostname. Prefer Sys::Hostname.</p>
+</dd>
+<dt>importenv.pl</dt>
+<dd>
+<p>Import environment variables as Perl package variables.</p>
+</dd>
+<dt>look.pl</dt>
+<dd>
+<p>Data-based seek within regular file.</p>
+</dd>
+<dt>newgetopt.pl</dt>
+<dd>
+<p>GNU-like option processing. Prefer Getopt::Long.</p>
+</dd>
+<dt>open2.pl</dt>
+<dd>
+<p>Open a subprocess for both reading and writing. Prefer
+IPC::Open2.</p>
+</dd>
+<dt>open3.pl</dt>
+<dd>
+<p>Open a subprocess for reading, writing, and error handling. Prefer
+IPC::Open3.</p>
+</dd>
+<dt>pwd.pl</dt>
+<dd>
+<p>Track changes of current directory in <code>$ENV{PWD}</code>.</p>
+</dd>
+<dt>shellwords.pl</dt>
+<dd>
+<p>Interpret shell quoting. Prefer Text::ParseWords.</p>
+</dd>
+<dt>stat.pl</dt>
+<dd>
+<p>Access fields of a stat structure by name. Prefer File::stat.</p>
+</dd>
+<dt>syslog.pl</dt>
+<dd>
+<p>Write to Unix system log. Prefer Sys::Syslog.</p>
+</dd>
+<dt>tainted.pl</dt>
+<dd>
+<p>Determine whether data is tainted. Prefer Taint::Util.</p>
+</dd>
+<dt>termcap.pl</dt>
+<dd>
+<p>Generate escape sequences to control arbitrary terminal. Prefer
+Term::Cap.</p>
+</dd>
+<dt>timelocal.pl</dt>
+<dd>
+<p>Generate time number from broken-down time. Prefer Time::Local.</p>
+</dd>
+<dt>validate.pl</dt>
+<dd>
+<p>Check permissions on a group of files.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Known contributing authors for the libraries in this package are
+Brandon S. Allbery, John Bazik, Tom Christiansen
+&lt;tchrist@convex.com&gt;, Charles Collins, Joe Doupnik
+&lt;JRD@CC.USU.EDU&gt;, Marion Hakanson &lt;hakanson@cse.ogi.edu&gt;,
+Waldemar Kebsch &lt;kebsch.pad@nixpbe.UUCP&gt;, Lee McLoughlin
+&lt;lmjm@doc.ic.ac.uk&gt;, &lt;A.Macpherson@bnr.co.uk&gt;, Randal L.
+Schwartz &lt;merlyn@stonehenge.com&gt;, Aaron Sherman
+&lt;asherman@fmrco.com&gt;, Wayne Thompson, Larry Wall
+&lt;lwall@jpl-devvax.jpl.nasa.gov&gt;, and Ilya Zakharevich. (Most of
+these email addresses are probably out of date.)</p>
+<p>Known contributing authors for the tests in this package are Tom
+Christiansen &lt;tchrist@convex.com&gt;, Alexandr Ciornii (alexchorny at
+gmail.com), Marc Horowitz &lt;marc@mit.edu&gt;, Dave Rolsky
+&lt;autarch@urth.org&gt;, and David Sundstrom
+&lt;sunds@asictest.sc.ti.com&gt;.</p>
+<p>Andrew Main (Zefram) &lt;zefram@fysh.org&gt; built the
+Perl4::CoreLibs package.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 1987-2009 Larry Wall et al</p>
+<p>Copyright (C) 2010, 2011, 2017 Andrew Main (Zefram)
+&lt;zefram@fysh.org&gt;</p>
+<h1>LICENSE</h1>
+<p>This module is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

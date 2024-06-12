@@ -1,0 +1,19 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>securetty - list of terminals on which root is allowed to login</p>
+<h1>DESCRIPTION</h1>
+<p>The file <em>/etc/securetty</em> contains the names of terminals (one
+per line, without leading <em>/dev/</em>) which are considered secure
+for the transmission of certain authentication tokens.</p>
+<p>It is used by (some versions of) <strong>login</strong>(1) to
+restrict the terminals on which root is allowed to login. See
+<strong>login.defs</strong>(5) if you use the shadow suite.</p>
+<p>On PAM enabled systems, it is used for the same purpose by
+<strong>pam_securetty</strong>(8) to restrict the terminals on which
+empty passwords are accepted.</p>
+<h1>FILES</h1>
+<p><em>/etc/securetty</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>login</strong>(1), <strong>login.defs</strong>(5),
+<strong>pam_securetty</strong>(8)</p>

@@ -1,0 +1,62 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_SIGNATURE-ECDSA - The EVP_PKEY ECDSA signature
+implementation.</p>
+<h1>DESCRIPTION</h1>
+<p>Support for computing ECDSA signatures. See
+<strong>EVP_PKEY-EC</strong> (7) for information related to EC keys.</p>
+<h2>ECDSA Signature Parameters</h2>
+<p>The following signature parameters can be set using
+<strong>EVP_PKEY_CTX_set_params()</strong>. This may be called after
+<strong>EVP_PKEY_sign_init()</strong> or
+<strong>EVP_PKEY_verify_init()</strong>, and before calling
+<strong>EVP_PKEY_sign()</strong> or
+<strong>EVP_PKEY_verify()</strong>.</p>
+<dl>
+<dt>"digest" (OSSL_SIGNATURE_PARAM_DIGEST) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"properties" (OSSL_SIGNATURE_PARAM_PROPERTIES) &lt;UTF8
+string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These parameters are described in
+<strong>provider-signature</strong> (7).</p>
+<p>The following signature parameters can be retrieved using
+<strong>EVP_PKEY_CTX_get_params()</strong>.</p>
+<dl>
+<dt>"algorithm-id" (OSSL_SIGNATURE_PARAM_ALGORITHM_ID) &lt;octet
+string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"digest" (OSSL_SIGNATURE_PARAM_DIGEST) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The parameters are described in
+<strong>provider-signature</strong> (7).</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY_CTX_set_params</strong> (3),
+<strong>EVP_PKEY_sign</strong> (3),
+<strong>EVP_PKEY_verify</strong> (3),
+<strong>provider-signature</strong> (7),</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

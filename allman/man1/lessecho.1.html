@@ -1,0 +1,63 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lessecho - expand metacharacters</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lessecho</strong> <em>[-ox] [-cx] [-pn] [-dn] [-mx] [-nn]
+[-ex] [-a] file ...</em></p>
+<h1>DESCRIPTION</h1>
+<p><em>lessecho</em> is a program that simply echos its arguments on
+standard output. But any metacharacter in the output is preceded by an
+"escape" character, which by default is a backslash.</p>
+<h1>OPTIONS</h1>
+<p>A summary of options is included below.</p>
+<dl>
+<dt><strong>-ex</strong></dt>
+<dd>
+<p>Specifies "x", rather than backslash, to be the escape char for
+metachars. If x is "-", no escape char is used and arguments containing
+metachars are surrounded by quotes instead.</p>
+</dd>
+<dt><strong>-ox</strong></dt>
+<dd>
+<p>Specifies "x", rather than double-quote, to be the open quote
+character, which is used if the -e- option is specified.</p>
+</dd>
+<dt><strong>-cx</strong></dt>
+<dd>
+<p>Specifies "x" to be the close quote character.</p>
+</dd>
+<dt><strong>-pn</strong></dt>
+<dd>
+<p>Specifies "n" to be the open quote character, as an integer.</p>
+</dd>
+<dt><strong>-dn</strong></dt>
+<dd>
+<p>Specifies "n" to be the close quote character, as an integer.</p>
+</dd>
+<dt><strong>-mx</strong></dt>
+<dd>
+<p>Specifies "x" to be a metachar. By default, no characters are
+considered metachars.</p>
+</dd>
+<dt><strong>-nn</strong></dt>
+<dd>
+<p>Specifies "n" to be a metachar, as an integer.</p>
+</dd>
+<dt><strong>-fn</strong></dt>
+<dd>
+<p>Specifies "n" to be the escape char for metachars, as an integer.</p>
+</dd>
+<dt><strong>-a</strong></dt>
+<dd>
+<p>Specifies that all arguments are to be quoted. The default is that
+only arguments containing metacharacters are quoted.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>less</strong>(1)</p>
+<h1>AUTHOR</h1>
+<p>This manual page was written by Thomas Schoepf
+&lt;schoepf@debian.org&gt;, for the Debian GNU/Linux system (but may be
+used by others).</p>
+<p>Report bugs at https://github.com/gwsw/less/issues.</p>

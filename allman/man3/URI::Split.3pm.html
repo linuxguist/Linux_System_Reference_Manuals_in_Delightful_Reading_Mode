@@ -1,0 +1,40 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>URI::Split - Parse and compose URI strings</p>
+<h1>SYNOPSIS</h1>
+<p>use URI::Split qw(uri_split uri_join); ($scheme, $auth, $path,
+$query, $frag) = uri_split($uri); $uri = uri_join($scheme, $auth, $path,
+$query, $frag);</p>
+<h1>DESCRIPTION</h1>
+<p>Provides functions to parse and compose URI strings. The following
+functions are provided:</p>
+<dl>
+<dt>($scheme, $auth, $path, $query, $frag) = uri_split($uri)</dt>
+<dd>
+<p>Breaks up a URI string into its component parts. An
+<code>undef</code> value is returned for those parts that are not
+present. The <code>$path</code> part is always present (but can be the
+empty string) and is thus never returned as <code>undef</code>. No
+sensible value is returned if this function is called in a scalar
+context.</p>
+</dd>
+<dt>$uri = uri_join($scheme, $auth, $path, $query, $frag)</dt>
+<dd>
+<p>Puts together a URI string from its parts. Missing parts are signaled
+by passing <code>undef</code> for the corresponding argument. Minimal
+escaping is applied to parts that contain reserved chars that would
+confuse a parser. For instance, any occurrence of '?' or '#' in
+<code>$path</code> is always escaped, as it would otherwise be parsed
+back as a query or fragment.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>URI, URI::Escape</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2003, Gisle Aas</p>
+<p>This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.</p>

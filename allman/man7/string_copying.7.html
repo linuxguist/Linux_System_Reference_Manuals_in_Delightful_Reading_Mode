@@ -1,0 +1,619 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>stpcpy, strcpy, strcat, stpecpy, strlcpy, strlcat, stpncpy, strncpy,
+zustr2ustp, zustr2stp, strncat, ustpcpy, ustr2stp - copying strings and
+character sequences</p>
+<h1>SYNOPSIS</h1>
+<h2>Strings</h2>
+<pre><code>// Chain-copy a string.
+char *stpcpy(char *restrict dst, const char *restrict src);
+
+// Copy/catenate a string.
+char *strcpy(char *restrict dst, const char *restrict src);
+char *strcat(char *restrict dst, const char *restrict src);
+
+// Chain-copy a string with truncation.
+char *stpecpy(char *dst, char end[0], const char *restrict src);
+
+// Copy/catenate a string with truncation.
+size_t strlcpy(char dst[restrict .sz], const char *restrict src,
+ size_t sz);
+size_t strlcat(char dst[restrict .sz], const char *restrict src,
+ size_t sz);</code></pre>
+<h2>Null-padded character sequences</h2>
+<pre><code>// Zero a fixed-width buffer, and
+// copy a string into a character sequence with truncation.
+char *stpncpy(char dst[restrict .sz], const char *restrict src,
+ size_t sz);
+
+// Zero a fixed-width buffer, and
+// copy a string into a character sequence with truncation.
+char *strncpy(char dest[restrict .sz], const char *restrict src,
+ size_t sz);
+
+// Chain-copy a null-padded character sequence into a character sequence.
+char *zustr2ustp(char *restrict dst, const char src[restrict .sz],
+ size_t sz);
+
+// Chain-copy a null-padded character sequence into a string.
+char *zustr2stp(char *restrict dst, const char src[restrict .sz],
+ size_t sz);
+
+// Catenate a null-padded character sequence into a string.
+char *strncat(char *restrict dst, const char src[restrict .sz],
+ size_t sz);</code></pre>
+<h2>Measured character sequences</h2>
+<pre><code>// Chain-copy a measured character sequence.
+char *ustpcpy(char *restrict dst, const char src[restrict .len],
+ size_t len);
+
+// Chain-copy a measured character sequence into a string.
+char *ustr2stp(char *restrict dst, const char src[restrict .len],
+ size_t len);</code></pre>
+<h1>DESCRIPTION</h1>
+<h2>Terms (and abbreviations)</h2>
+<dl>
+<dt><em>string </em>(<em>str</em>)</dt>
+<dd>
+<p>is a sequence of zero or more non-null characters followed by a null
+byte.</p>
+</dd>
+<dt><em>character sequence</em></dt>
+<dd>
+<p>is a sequence of zero or more non-null characters. A program should
+never use a character sequence where a string is required. However, with
+appropriate care, a string can be used in the place of a character
+sequence.</p>
+<dl>
+<dt><em>null-padded character sequence </em>(<em>zustr</em>)</dt>
+<dd>
+<p>Character sequences can be contained in fixed-width buffers, which
+contain padding null bytes after the character sequence, to fill the
+rest of the buffer without affecting the character sequence; however,
+those padding null bytes are not part of the character sequence.</p>
+</dd>
+<dt><em>measured character sequence </em>(<em>ustr</em>)</dt>
+<dd>
+<p>Character sequence delimited by its length. It may be a slice of a
+larger character sequence, or even of a string.</p>
+</dd>
+</dl>
+</dd>
+<dt><em>length </em>(<em>len</em>)</dt>
+<dd>
+<p>is the number of non-null characters in a string or character
+sequence. It is the return value of <em>strlen(str)</em> and of
+<em>strnlen(ustr, sz)</em>.</p>
+</dd>
+<dt><em>size </em>(<em>sz</em>)</dt>
+<dd>
+<p>refers to the entire buffer where the string or character sequence is
+contained.</p>
+</dd>
+<dt><em>end</em></dt>
+<dd>
+<p>is the name of a pointer to one past the last element of a buffer. It
+is equivalent to <em>&amp;str[sz]</em>. It is used as a sentinel value,
+to be able to truncate strings or character sequences instead of
+overrunning the containing buffer.</p>
+</dd>
+<dt><em>copy</em></dt>
+<dd>
+<p>This term is used when the writing starts at the first element
+pointed to by <em>dst</em>.</p>
+</dd>
+<dt><em>catenate</em></dt>
+<dd>
+<p>This term is used when a function first finds the terminating null
+byte in <em>dst</em>, and then starts writing at that position.</p>
+</dd>
+<dt><em>chain</em></dt>
+<dd>
+<p>This term is used when it's the programmer who provides a pointer to
+the terminating null byte in the string <em>dst</em> (or one after the
+last character in a character sequence), and the function starts writing
+at that location. The function returns a pointer to the new location of
+the terminating null byte (or one after the last character in a
+character sequence) after the call, so that the programmer can use it to
+chain such calls.</p>
+</dd>
+</dl>
+<h2>Copy, catenate, and chain-copy</h2>
+<p>Originally, there was a distinction between functions that copy and
+those that catenate. However, newer functions that copy while allowing
+chaining cover both use cases with a single API. They are also
+algorithmically faster, since they don't need to search for the
+terminating null byte of the existing string. However, functions that
+catenate have a much simpler use, so if performance is not important, it
+can make sense to use them for improving readability.</p>
+<p>The pointer returned by functions that allow chaining is a byproduct
+of the copy operation, so it has no performance costs. Functions that
+return such a pointer, and thus can be chained, have names of the form
+*<strong>stp</strong>*(), since it's common to name the pointer just
+<em>p</em>.</p>
+<p>Chain-copying functions that truncate should accept a pointer to the
+end of the destination buffer, and have names of the form
+*<strong>stpe</strong>*(). This allows not having to recalculate the
+remaining size after each call.</p>
+<h2>Truncate or not?</h2>
+<p>The first thing to note is that programmers should be careful with
+buffers, so they always have the correct size, and truncation is not
+necessary.</p>
+<p>In most cases, truncation is not desired, and it is simpler to just
+do the copy. Simpler code is safer code. Programming against programming
+mistakes by adding more code just adds more points where mistakes can be
+made.</p>
+<p>Nowadays, compilers can detect most programmer errors with features
+like compiler warnings, static analyzers, and
+<strong>_FORTIFY_SOURCE</strong> (see <strong>ftm</strong>(7)). Keeping
+the code simple helps these overflow-detection features be more
+precise.</p>
+<p>When validating user input, however, it makes sense to truncate.
+Remember to check the return value of such function calls.</p>
+<p>Functions that truncate:</p>
+<ul>
+<li><p><strong>stpecpy</strong>(3) is the most efficient string copy
+function that performs truncation. It only requires to check for
+truncation once after all chained calls.</p></li>
+<li><p><strong>strlcpy</strong>(3bsd) and <strong>strlcat</strong>(3bsd)
+are designed to crash if the input string is invalid (doesn't contain a
+terminating null byte).</p></li>
+<li><p><strong>stpncpy</strong>(3) and <strong>strncpy</strong>(3) also
+truncate, but they don't write strings, but rather null-padded character
+sequences.</p></li>
+</ul>
+<h2>Null-padded character sequences</h2>
+<p>For historic reasons, some standard APIs, such as
+<strong>utmpx</strong>(5), use null-padded character sequences in
+fixed-width buffers. To interface with them, specialized functions need
+to be used.</p>
+<p>To copy strings into them, use <strong>stpncpy</strong>(3).</p>
+<p>To copy from an unterminated string within a fixed-width buffer into
+a string, ignoring any trailing null bytes in the source fixed-width
+buffer, you should use <strong>zustr2stp</strong>(3) or
+<strong>strncat</strong>(3).</p>
+<p>To copy from an unterminated string within a fixed-width buffer into
+a character sequence, ignoring any trailing null bytes in the source
+fixed-width buffer, you should use <strong>zustr2ustp</strong>(3).</p>
+<h2>Measured character sequences</h2>
+<p>The simplest character sequence copying function is
+<strong>mempcpy</strong>(3). It requires always knowing the length of
+your character sequences, for which structures can be used. It makes the
+code much faster, since you always know the length of your character
+sequences, and can do the minimal copies and length measurements.
+<strong>mempcpy</strong>(3) copies character sequences, so you need to
+explicitly set the terminating null byte if you need a string.</p>
+<p>However, for keeping type safety, it's good to add a wrapper that
+uses <em>char *</em> instead of <em>void *</em>:
+<strong>ustpcpy</strong>(3).</p>
+<p>In programs that make considerable use of strings or character
+sequences, and need the best performance, using overlapping character
+sequences can make a big difference. It allows holding subsequences of a
+larger character sequence. while not duplicating memory nor using time
+to do a copy.</p>
+<p>However, this is delicate, since it requires using character
+sequences. C library APIs use strings, so programs that use character
+sequences will have to take care of differentiating strings from
+character sequences.</p>
+<p>To copy a measured character sequence, use
+<strong>ustpcpy</strong>(3).</p>
+<p>To copy a measured character sequence into a string, use
+<strong>ustr2stp</strong>(3).</p>
+<p>Because these functions ask for the length, and a string is by nature
+composed of a character sequence of the same length plus a terminating
+null byte, a string is also accepted as input.</p>
+<h2>String vs character sequence</h2>
+<p>Some functions only operate on strings. Those require that the input
+<em>src</em> is a string, and guarantee an output string (even when
+truncation occurs). Functions that catenate also require that
+<em>dst</em> holds a string before the call. List of functions:</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>stpcpy</strong>(3)</p>
+<ul>
+<li><p><strong>strcpy</strong>(3), <strong>strcat</strong>(3)</p></li>
+<li><p><strong>stpecpy</strong>(3)</p></li>
+<li><p><strong>strlcpy</strong>(3bsd),
+<strong>strlcat</strong>(3bsd)</p></li>
+</ul>
+<p>Other functions require an input string, but create a character
+sequence as output. These functions have confusing names, and have a
+long history of misuse. List of functions:</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>stpncpy</strong>(3)</p>
+<ul>
+<li><p><strong>strncpy</strong>(3)</p></li>
+</ul>
+<p>Other functions operate on an input character sequence, and create an
+output string. Functions that catenate also require that <em>dst</em>
+holds a string before the call. <strong>strncat</strong>(3) has an even
+more misleading name than the functions above. List of functions:</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>zustr2stp</strong>(3)</p>
+<ul>
+<li><p><strong>strncat</strong>(3)</p></li>
+<li><p><strong>ustr2stp</strong>(3)</p></li>
+</ul>
+<p>Other functions operate on an input character sequence to create an
+output character sequence. List of functions:</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>ustpcpy</strong>(3)</p>
+<ul>
+<li><p><strong>zustr2stp</strong>(3)</p></li>
+</ul>
+<h2>Functions</h2>
+<dl>
+<dt><strong>stpcpy</strong>(3)</dt>
+<dd>
+<p>This function copies the input string into a destination string. The
+programmer is responsible for allocating a buffer large enough. It
+returns a pointer suitable for chaining.</p>
+</dd>
+<dt><strong>strcpy</strong>(3)<br />
+<strong>strcat</strong>(3)</dt>
+<dd>
+<p>These functions copy and catenate the input string into a destination
+string. The programmer is responsible for allocating a buffer large
+enough. The return value is useless.</p>
+<p><strong>stpcpy</strong>(3) is a faster alternative to these
+functions.</p>
+</dd>
+<dt><strong>stpecpy</strong>(3)</dt>
+<dd>
+<p>This function copies the input string into a destination string. If
+the destination buffer, limited by a pointer to its end, isn't large
+enough to hold the copy, the resulting string is truncated (but it is
+guaranteed to be null-terminated). It returns a pointer suitable for
+chaining. Truncation needs to be detected only once after the last
+chained call.</p>
+<p>This function is not provided by any library; See EXAMPLES for a
+reference implementation.</p>
+</dd>
+<dt><strong>strlcpy</strong>(3bsd)<br />
+<strong>strlcat</strong>(3bsd)</dt>
+<dd>
+<p>These functions copy and catenate the input string into a destination
+string. If the destination buffer, limited by its size, isn't large
+enough to hold the copy, the resulting string is truncated (but it is
+guaranteed to be null-terminated). They return the length of the total
+string they tried to create. These functions force a SIGSEGV if the
+<em>src</em> pointer is not a string.</p>
+<p><strong>stpecpy</strong>(3) is a simpler alternative to these
+functions.</p>
+</dd>
+<dt><strong>stpncpy</strong>(3)</dt>
+<dd>
+<p>This function copies the input string into a destination null-padded
+character sequence in a fixed-width buffer. If the destination buffer,
+limited by its size, isn't large enough to hold the copy, the resulting
+character sequence is truncated. Since it creates a character sequence,
+it doesn't need to write a terminating null byte. It's impossible to
+distinguish truncation by the result of the call, from a character
+sequence that just fits the destination buffer; truncation should be
+detected by comparing the length of the input string with the size of
+the destination buffer.</p>
+</dd>
+<dt><strong>strncpy</strong>(3)</dt>
+<dd>
+<p>This function is identical to <strong>stpncpy</strong>(3) except for
+the useless return value.</p>
+<p><strong>stpncpy</strong>(3) is a more useful alternative to this
+function.</p>
+</dd>
+<dt><strong>zustr2ustp</strong>(3)</dt>
+<dd>
+<p>This function copies the input character sequence contained in a
+null-padded wixed-width buffer, into a destination character sequence.
+The programmer is responsible for allocating a buffer large enough. It
+returns a pointer suitable for chaining.</p>
+<p>A truncating version of this function doesn't exist, since the size
+of the original character sequence is always known, so it wouldn't be
+very useful.</p>
+<p>This function is not provided by any library; See EXAMPLES for a
+reference implementation.</p>
+</dd>
+<dt><strong>zustr2stp</strong>(3)</dt>
+<dd>
+<p>This function copies the input character sequence contained in a
+null-padded wixed-width buffer, into a destination string. The
+programmer is responsible for allocating a buffer large enough. It
+returns a pointer suitable for chaining.</p>
+<p>A truncating version of this function doesn't exist, since the size
+of the original character sequence is always known, so it wouldn't be
+very useful.</p>
+<p>This function is not provided by any library; See EXAMPLES for a
+reference implementation.</p>
+</dd>
+<dt><strong>strncat</strong>(3)</dt>
+<dd>
+<p>Do not confuse this function with <strong>strncpy</strong>(3); they
+are not related at all.</p>
+<p>This function catenates the input character sequence contained in a
+null-padded wixed-width buffer, into a destination string. The
+programmer is responsible for allocating a buffer large enough. The
+return value is useless.</p>
+<p><strong>zustr2stp</strong>(3) is a faster alternative to this
+function.</p>
+</dd>
+<dt><strong>ustpcpy</strong>(3)</dt>
+<dd>
+<p>This function copies the input character sequence, limited by its
+length, into a destination character sequence. The programmer is
+responsible for allocating a buffer large enough. It returns a pointer
+suitable for chaining.</p>
+</dd>
+<dt><strong>ustr2stp</strong>(3)</dt>
+<dd>
+<p>This function copies the input character sequence, limited by its
+length, into a destination string. The programmer is responsible for
+allocating a buffer large enough. It returns a pointer suitable for
+chaining.</p>
+</dd>
+</dl>
+<h1>RETURN VALUE</h1>
+<p>The following functions return a pointer to the terminating null byte
+in the destination string.</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>stpcpy</strong>(3)</p>
+<ul>
+<li><p><strong>ustr2stp</strong>(3)</p></li>
+<li><p><strong>zustr2stp</strong>(3)</p></li>
+</ul>
+<p>The following function returns a pointer to the terminating null byte
+in the destination string, except when truncation occurs; if truncation
+occurs, it returns a pointer to the end of the destination buffer.</p>
+<ul>
+<li><p><strong>stpecpy</strong>(3)</p></li>
+</ul>
+<p>The following function returns a pointer to one after the last
+character in the destination character sequence; if truncation occurs,
+that pointer is equivalent to a pointer to the end of the destination
+buffer.</p>
+<ul>
+<li><p><strong>stpncpy</strong>(3)</p></li>
+</ul>
+<p>The following functions return a pointer to one after the last
+character in the destination character sequence.</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>zustr2ustp</strong>(3)</p>
+<ul>
+<li><p><strong>ustpcpy</strong>(3)</p></li>
+</ul>
+<p>The following functions return the length of the total string that
+they tried to create (as if truncation didn't occur).</p>
+<ul>
+<li><p><strong>strlcpy</strong>(3bsd),
+<strong>strlcat</strong>(3bsd)</p></li>
+</ul>
+<p>The following functions return the <em>dst</em> pointer, which is
+useless.</p>
+<ul>
+<li></li>
+</ul>
+<p><strong>strcpy</strong>(3), <strong>strcat</strong>(3)</p>
+<ul>
+<li><p><strong>strncpy</strong>(3)</p></li>
+<li><p><strong>strncat</strong>(3)</p></li>
+</ul>
+<h1>NOTES</h1>
+<p>The Linux kernel has an internal function for copying strings, which
+is similar to <strong>stpecpy</strong>(3), except that it can't be
+chained:</p>
+<dl>
+<dt><strong>strscpy</strong>(9)</dt>
+<dd>
+<p>This function copies the input string into a destination string. If
+the destination buffer, limited by its size, isn't large enough to hold
+the copy, the resulting string is truncated (but it is guaranteed to be
+null-terminated). It returns the length of the destination string, or
+<strong>-E2BIG</strong> on truncation.</p>
+<p><strong>stpecpy</strong>(3) is a simpler and faster alternative to
+this function.</p>
+</dd>
+</dl>
+<h1>CAVEATS</h1>
+<p>Don't mix chain calls to truncating and non-truncating functions. It
+is conceptually wrong unless you know that the first part of a copy will
+always fit. Anyway, the performance difference will probably be
+negligible, so it will probably be more clear if you use consistent
+semantics: either truncating or non-truncating. Calling a non-truncating
+function after a truncating one is necessarily wrong.</p>
+<h1>BUGS</h1>
+<p>All catenation functions share the same performance problem: <a
+href="https://www.joelonsoftware.com/2001/12/11/back-to-basics/">Shlemiel
+the painter</a>.</p>
+<h1>EXAMPLES</h1>
+<p>The following are examples of correct use of each of these
+functions.</p>
+<dl>
+<dt><strong>stpcpy</strong>(3)</dt>
+<dd>
+<pre><code>p = buf;
+p = stpcpy(p, &quot;Hello &quot;);
+p = stpcpy(p, &quot;world&quot;);
+p = stpcpy(p, &quot;!&quot;);
+len = p - buf;
+puts(buf);</code></pre>
+</dd>
+<dt><strong>strcpy</strong>(3)<br />
+<strong>strcat</strong>(3)</dt>
+<dd>
+<pre><code>strcpy(buf, &quot;Hello &quot;);
+strcat(buf, &quot;world&quot;);
+strcat(buf, &quot;!&quot;);
+len = strlen(buf);
+puts(buf);</code></pre>
+</dd>
+<dt><strong>stpecpy</strong>(3)</dt>
+<dd>
+<pre><code>end = buf + sizeof(buf);
+p = buf;
+p = stpecpy(p, end, &quot;Hello &quot;);
+p = stpecpy(p, end, &quot;world&quot;);
+p = stpecpy(p, end, &quot;!&quot;);
+if (p == end) {
+    p--;
+    goto toolong;
+}
+len = p - buf;
+puts(buf);</code></pre>
+</dd>
+<dt><strong>strlcpy</strong>(3bsd)<br />
+<strong>strlcat</strong>(3bsd)</dt>
+<dd>
+<pre><code>if (strlcpy(buf, &quot;Hello &quot;, sizeof(buf)) &gt;= sizeof(buf))
+    goto toolong;
+if (strlcat(buf, &quot;world&quot;, sizeof(buf)) &gt;= sizeof(buf))
+    goto toolong;
+len = strlcat(buf, &quot;!&quot;, sizeof(buf));
+if (len &gt;= sizeof(buf))
+    goto toolong;
+puts(buf);</code></pre>
+</dd>
+<dt><strong>strscpy</strong>(9)</dt>
+<dd>
+<pre><code>len = strscpy(buf, &quot;Hello world!&quot;, sizeof(buf));
+if (len == -E2BIG)
+    goto toolong;
+puts(buf);</code></pre>
+</dd>
+<dt><strong>stpncpy</strong>(3)</dt>
+<dd>
+<pre><code>p = stpncpy(buf, &quot;Hello world!&quot;, sizeof(buf));
+if (sizeof(buf) &lt; strlen(&quot;Hello world!&quot;))
+    goto toolong;
+len = p - buf;
+for (size_t i = 0; i &lt; sizeof(buf); i++)
+    putchar(buf[i]);</code></pre>
+</dd>
+<dt><strong>strncpy</strong>(3)</dt>
+<dd>
+<pre><code>strncpy(buf, &quot;Hello world!&quot;, sizeof(buf));
+if (sizeof(buf) &lt; strlen(&quot;Hello world!&quot;))
+    goto toolong;
+len = strnlen(buf, sizeof(buf));
+for (size_t i = 0; i &lt; sizeof(buf); i++)
+    putchar(buf[i]);</code></pre>
+</dd>
+<dt><strong>zustr2ustp</strong>(3)</dt>
+<dd>
+<pre><code>p = buf;
+p = zustr2ustp(p, &quot;Hello &quot;, 6);
+p = zustr2ustp(p, &quot;world&quot;, 42);  // Padding null bytes ignored.
+p = zustr2ustp(p, &quot;!&quot;, 1);
+len = p - buf;
+printf(&quot;%.*s\n&quot;, (int) len, buf);</code></pre>
+</dd>
+<dt><strong>zustr2stp</strong>(3)</dt>
+<dd>
+<pre><code>p = buf;
+p = zustr2stp(p, &quot;Hello &quot;, 6);
+p = zustr2stp(p, &quot;world&quot;, 42);  // Padding null bytes ignored.
+p = zustr2stp(p, &quot;!&quot;, 1);
+len = p - buf;
+puts(buf);</code></pre>
+</dd>
+<dt><strong>strncat</strong>(3)</dt>
+<dd>
+<pre><code>buf[0] = &#39;\0&#39;;  // There&#39;s no &#39;cpy&#39; function to this &#39;cat&#39;.
+strncat(buf, &quot;Hello &quot;, 6);
+strncat(buf, &quot;world&quot;, 42);  // Padding null bytes ignored.
+strncat(buf, &quot;!&quot;, 1);
+len = strlen(buf);
+puts(buf);</code></pre>
+</dd>
+<dt><strong>ustpcpy</strong>(3)</dt>
+<dd>
+<pre><code>p = buf;
+p = ustpcpy(p, &quot;Hello &quot;, 6);
+p = ustpcpy(p, &quot;world&quot;, 5);
+p = ustpcpy(p, &quot;!&quot;, 1);
+len = p - buf;
+printf(&quot;%.*s\n&quot;, (int) len, buf);</code></pre>
+</dd>
+<dt><strong>ustr2stp</strong>(3)</dt>
+<dd>
+<pre><code>p = buf;
+p = ustr2stp(p, &quot;Hello &quot;, 6);
+p = ustr2stp(p, &quot;world&quot;, 5);
+p = ustr2stp(p, &quot;!&quot;, 1);
+len = p - buf;
+puts(buf);</code></pre>
+</dd>
+</dl>
+<h2>Implementations</h2>
+<p>Here are reference implementations for functions not provided by
+libc.</p>
+<pre><code>/* This code is in the public domain. */
+
+char *
+stpecpy(char *dst, char end[0], const char *restrict src)
+{
+    char *p;
+
+    if (src[strlen(src)] != &#39;\0&#39;)
+        raise(SIGSEGV);
+
+    if (dst == end)
+        return end;
+
+    p = memccpy(dst, src, &#39;\0&#39;, end - dst);
+    if (p != NULL)
+        return p - 1;
+
+    /* truncation detected */
+    end[-1] = &#39;\0&#39;;
+    return end;
+}
+
+char *
+zustr2ustp(char *restrict dst, const char *restrict src, size_t sz)
+{
+    return ustpcpy(dst, src, strnlen(src, sz));
+}
+
+char *
+zustr2stp(char *restrict dst, const char *restrict src, size_t sz)
+{
+    char  *p;
+
+    p = zustr2ustp(dst, src, sz);
+    *p = &#39;\0&#39;;
+
+    return p;
+}
+
+char *
+ustpcpy(char *restrict dst, const char *restrict src, size_t len)
+{
+    return mempcpy(dst, src, len);
+}
+
+char *
+ustr2stp(char *restrict dst, const char *restrict src, size_t len)
+{
+    char  *p;
+
+    p = ustpcpy(dst, src, len);
+    *p = &#39;\0&#39;;
+
+    return p;
+}</code></pre>
+<h1>SEE ALSO</h1>
+<p><strong>bzero</strong>(3), <strong>memcpy</strong>(3),
+<strong>memccpy</strong>(3), <strong>mempcpy</strong>(3),
+<strong>stpcpy</strong>(3), <strong>strlcpy</strong>(3bsd),
+<strong>strncat</strong>(3), <strong>stpncpy</strong>(3),
+<strong>string</strong>(3)</p>

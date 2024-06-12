@@ -1,0 +1,69 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>sane-xerox_mfp - SANE backend for Xerox Phaser 3200MFP device et
+al.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>sane-xerox_mfp</strong> library implements a SANE
+(Scanner Access Now Easy) backend that provides access to several
+Samsung-based Samsung, Xerox, and Dell scanners. Please see full list of
+supported devices at
+<em>http://www.sane-project.org/sane-supported-devices.html</em>.</p>
+<h1>CONFIGURATION</h1>
+<dl>
+<dt><em>/etc/sane.d/xerox_mfp.conf</em></dt>
+<dd>
+<p>USB scanners do not need any configuration.</p>
+<p>For SCX-4500W in network mode you need to specify</p>
+</dd>
+</dl>
+<blockquote>
+<p><strong>tcp host_address [port]</strong></p>
+</blockquote>
+<p>The <strong>host_address</strong> is passed through resolver, thus
+can be a dotted quad or a name from <em>/etc/hosts</em> or resolvable
+through DNS.</p>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/sane.d/xerox_mfp.conf</em></dt>
+<dd>
+<p>The backend configuration file. By default all scanner types/models
+are enabled, you may want to comment out unwanted entries.</p>
+</dd>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-xerox_mfp.a</em></dt>
+<dd>
+<p>The static library implementing this backend.</p>
+</dd>
+<dt><em>/usr/lib/x86_64-linux-gnu/sane/libsane-xerox_mfp.so</em></dt>
+<dd>
+<p>The shared library implementing this backend (present on systems that
+support dynamic loading).</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>SANE_DEBUG_XEROX_MFP</strong></dt>
+<dd>
+<p>If the library was compiled with debug support enabled, this
+environment variable controls the debug level for this backend. Higher
+debug levels increase the verbosity of the output.</p>
+<p>Example: export SANE_DEBUG_XEROX_MFP=4</p>
+</dd>
+</dl>
+<h1>LIMITATIONS</h1>
+<p>Multicast autoconfiguration for LAN scanners is not implemented yet.
+IPv6 addressing has never been tested.</p>
+<h1>BUGS AND SUPPORT</h1>
+<p>If you have found a bug or need support please follow open-source way
+of acquiring support via mail-lists
+<em>http://www.sane-project.org/mailing-lists.html</em> or SANE bug
+tracker <em>http://www.sane-project.org/bugs.html</em>.</p>
+<h1>AUTHORS</h1>
+<p>Alex Belkin &lt;<em>abc@telekom.ru</em>&gt;.<br />
+Samsung SCX-4500W scan over network support by Alexander Kuznetsov
+&lt;<em>acca(at)cpan.org</em>&gt;.<br />
+Color scanning on Samsung M2870 model and Xerox Cognac 3215 &amp; 3225
+models by Laxmeesh Onkar Markod
+&lt;<em>m.laxmeesh@samsung.com</em>&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>sane</strong>(7), <strong>sane-usb</strong>(5)</p>

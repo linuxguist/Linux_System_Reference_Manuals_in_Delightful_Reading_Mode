@@ -1,0 +1,89 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_KDF-KRB5KDF - The RFC3961 Krb5 KDF EVP_KDF implementation</p>
+<h1>DESCRIPTION</h1>
+<p>Support for computing the <strong>KRB5KDF</strong> KDF through the
+<strong>EVP_KDF</strong> API.</p>
+<p>The EVP_KDF-KRB5KDF algorithm implements the key derivation function
+defined in RFC 3961, section 5.1 and is used by Krb5 to derive session
+keys. Three inputs are required to perform key derivation: a cipher,
+(for example AES-128-CBC), the initial key, and a constant.</p>
+<h2>Identity</h2>
+<p>KRB5KDF is the name for this implementation; it can be used with the
+<strong>EVP_KDF_fetch()</strong> function.</p>
+<h2>Supported parameters</h2>
+<p>The supported parameters are:</p>
+<dl>
+<dt>"properties" (OSSL_KDF_PARAM_PROPERTIES) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"cipher" (OSSL_KDF_PARAM_CIPHER) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+<dt>"key" (OSSL_KDF_PARAM_KEY) &lt;octet string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These parameters work as described in PARAMETERS in
+<strong>EVP_KDF</strong> (3).</p>
+<dl>
+<dt>"constant" (OSSL_KDF_PARAM_CONSTANT) &lt;octet string&gt;</dt>
+<dd>
+<p>This parameter sets the constant value for the KDF. If a value is
+already set, the contents are replaced.</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>A context for KRB5KDF can be obtained by calling:</p>
+<p>EVP_KDF *kdf = EVP_KDF_fetch(NULL, "KRB5KDF", NULL); EVP_KDF_CTX
+*kctx = EVP_KDF_CTX_new(kdf);</p>
+<p>The output length of the KRB5KDF derivation is specified via the
+<em>keylen</em> parameter to the <strong>EVP_KDF_derive</strong> (3)
+function, and MUST match the key length for the chosen cipher or an
+error is returned. Moreover, the constant's length must not exceed the
+block size of the cipher. Since the KRB5KDF output length depends on the
+chosen cipher, calling <strong>EVP_KDF_CTX_get_kdf_size</strong> (3) to
+obtain the requisite length returns the correct length only after the
+cipher is set. Prior to that <strong>EVP_MAX_KEY_LENGTH</strong> is
+returned. The caller must allocate a buffer of the correct length for
+the chosen cipher, and pass that buffer to the
+<strong>EVP_KDF_derive</strong> (3) function along with that length.</p>
+<h1>EXAMPLES</h1>
+<p>This example derives a key using the AES-128-CBC cipher:</p>
+<p>EVP_KDF *kdf; EVP_KDF_CTX *kctx; unsigned char key[16] = "01234...";
+unsigned char constant[] = "Im a constant"; unsigned char out[16];
+size_t outlen = sizeof(out); OSSL_PARAM params[4], *p = params; kdf =
+EVP_KDF_fetch(NULL, "KRB5KDF", NULL); kctx = EVP_KDF_CTX_new(kdf);
+EVP_KDF_free(kdf); *p++ =
+OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_CIPHER, SN_aes_128_cbc,
+strlen(SN_aes_128_cbc)); *p++ =
+OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_KEY, key, (size_t)16);
+*p++ = OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_CONSTANT,
+constant, strlen(constant)); *p = OSSL_PARAM_construct_end(); if
+(EVP_KDF_derive(kctx, out, outlen, params) &lt;= 0) /* Error */
+EVP_KDF_CTX_free(kctx);</p>
+<h1>CONFORMING TO</h1>
+<p>RFC 3961</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_KDF</strong> (3), <strong>EVP_KDF_CTX_free</strong> (3),
+<strong>EVP_KDF_CTX_get_kdf_size</strong> (3),
+<strong>EVP_KDF_derive</strong> (3), PARAMETERS in
+<strong>EVP_KDF</strong> (3)</p>
+<h1>HISTORY</h1>
+<p>This functionality was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2016-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

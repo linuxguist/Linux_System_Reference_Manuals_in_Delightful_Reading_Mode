@@ -1,0 +1,158 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::MainLoop - An event source manager</p>
+<h1>DESCRIPTION</h1>
+<p>Event-driven programs need some sort of loop which watches for events
+and launches the appropriate actions. Glib::MainLoop provides this
+functionality.</p>
+<p>Mainloops have context, provided by the MainContext object. For the
+most part you can use the default context (see <code>default</code>),
+but if you want to create a subcontext for a nested loop which doesn't
+have the same event sources, etc, you can.</p>
+<p>Event sources, attached to main contexts, watch for events to happen,
+and launch appropriate actions. Glib provides a few ready-made event
+sources, the Glib::Timeout, Glib::Idle, and io watch
+(<code>Glib::IO-&gt;add_watch</code>).</p>
+<p>Under the hood, Gtk+ adds event sources for GdkEvents to dispatch
+events to your widgets. In fact, Gtk2 provides an abstraction of
+Glib::MainLoop (See <code>Gtk2-&gt;main</code> and friends), so you may
+rarely have cause to use Glib::MainLoop directly.</p>
+<p>Note: As of version 1.080, the Glib module uses a custom event source
+to ensure that perl's safe signal handling and the glib polling event
+loop play nicely together. It is no longer necessary to install a
+timeout to ensure that async signals get handled in a timely manner.</p>
+<h1>CONSTANTS</h1>
+<p><code>SOURCE_REMOVE</code> and <code>SOURCE_CONTINUE</code> are
+designed for use as the return values from timeout, idle and I/O watch
+source functions. They return true to keep running or false to remove
+themselves. These constants can help you get that the right way
+around.</p>
+<p>Glib::SOURCE_CONTINUE # true Glib::SOURCE_REMOVE # false</p>
+<h1>METHODS</h1>
+<h2>maincontext thingamabob =
+Glib::MainContext-&gt;<strong>new</strong></h2>
+<h2>mainloop = Glib::MainLoop-&gt;<strong>new</strong> ($context=undef,
+$is_running=FALSE)</h2>
+<ul>
+<li><p><code>$context</code> (Glib::MainContext thingamabob)</p></li>
+<li><p><code>$is_running</code> (boolean)</p></li>
+</ul>
+<h2>integer = Glib::Timeout-&gt;<strong>add</strong> ($interval,
+$callback, $data=undef, $priority=G_PRIORITY_DEFAULT)</h2>
+<ul>
+<li><p><code>$interval</code> (integer) number of milliseconds</p></li>
+<li><p><code>$callback</code> (subroutine)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+<li><p><code>$priority</code> (integer)</p></li>
+</ul>
+<p>Run <em><code>$callback</code></em> every
+<em><code>$interval</code></em> milliseconds until
+<em><code>$callback</code></em> returns false. Returns a source id which
+may be used with <code>Glib::Source-&gt;remove</code>. Note that a
+mainloop must be active for the timeout to execute.</p>
+<h2>integer = Glib::Idle-&gt;<strong>add</strong> ($callback,
+$data=undef, $priority=G_PRIORITY_DEFAULT_IDLE)</h2>
+<ul>
+<li><p><code>$callback</code> (subroutine)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+<li><p><code>$priority</code> (integer)</p></li>
+</ul>
+<p>Run <em><code>$callback</code></em> when the mainloop is idle. If
+<em><code>$callback</code></em> returns false, it will uninstall itself,
+otherwise, it will run again at the next idle iteration. Returns a
+source id which may be used with
+<code>Glib::Source-&gt;remove</code>.</p>
+<h2>integer = Glib::Timeout-&gt;<strong>add_seconds</strong> ($interval,
+$callback, $data=undef, $priority=G_PRIORITY_DEFAULT)</h2>
+<ul>
+<li><p><code>$interval</code> (integer)</p></li>
+<li><p><code>$callback</code> (scalar)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+<li><p><code>$priority</code> (integer)</p></li>
+</ul>
+<p>Since: glib 2.14</p>
+<h2>integer = Glib::IO-&gt;<strong>add_watch</strong> ($fd, $condition,
+$callback, $data=undef, $priority=G_PRIORITY_DEFAULT)</h2>
+<ul>
+<li><p><code>$fd</code> (integer) file descriptor, e.g.
+fileno($filehandle)</p></li>
+<li><p><code>$condition</code> (Glib::IOCondition)</p></li>
+<li><p><code>$callback</code> (subroutine)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+<li><p><code>$priority</code> (integer)</p></li>
+</ul>
+<p>Run <em><code>$callback</code></em> when there is an event on
+<em><code>$fd</code></em> that matches <em><code>$condition</code></em>.
+The watch uninstalls itself if <em><code>$callback</code></em> returns
+false. Returns a source id that may be used with
+<code>Glib::Source-&gt;remove</code>.</p>
+<p>Glib's IO channels serve the same basic purpose as Perl's file
+handles, so for the most part you don't see GIOChannels in Perl. The IO
+watch integrates IO operations with the main loop, which Perl file
+handles don't do. For various reasons, this function requires raw file
+descriptors, not full file handles. See <code>fileno</code> in
+perlfunc.</p>
+<h2>maincontext thingamabob =
+$loop-&gt;<strong>get_context</strong></h2>
+<h2>maincontext thingamabob =
+Glib::MainContext-&gt;<strong>default</strong></h2>
+<h2>boolean = $context-&gt;<strong>is_owner</strong></h2>
+<p>Since: glib 2.12</p>
+<h2>boolean = $loop-&gt;<strong>is_running</strong></h2>
+<h2>boolean = $context-&gt;<strong>iteration</strong> ($may_block)</h2>
+<ul>
+<li><p><code>$may_block</code> (boolean)</p></li>
+</ul>
+<h2>integer = Glib::main_depth</h2>
+<p>Find the current main loop recursion level. This is handy in fringe
+situations, but those are very rare; see the C API reference for a more
+in-depth discussion.</p>
+<p>Since: glib 2.4</p>
+<h2>boolean = $context-&gt;<strong>pending</strong></h2>
+<h2>$loop-&gt;<strong>quit</strong></h2>
+<h2>boolean = Glib::Source-&gt;<strong>remove</strong> ($tag)</h2>
+<ul>
+<li><p><code>$tag</code> (integer)</p></li>
+</ul>
+<p>Remove an event source. <em><code>$tag</code></em> is the number
+returned by things like <code>Glib::Timeout-&gt;add</code>,
+<code>Glib::Idle-&gt;add</code>, and
+<code>Glib::IO-&gt;add_watch</code>.</p>
+<h2>$loop-&gt;<strong>run</strong></h2>
+<h2>integer = Glib::Child-&gt;<strong>watch_add</strong> ($pid,
+$callback, $data=undef, $priority=G_PRIORITY_DEFAULT)</h2>
+<ul>
+<li><p><code>$pid</code> (integer) child process ID</p></li>
+<li><p><code>$callback</code> (subroutine)</p></li>
+<li><p><code>$data</code> (scalar)</p></li>
+<li><p><code>$priority</code> (integer)</p></li>
+</ul>
+<p>Add a source to the default main context which will call</p>
+<p>&amp;$callback ($pid, $waitstatus, $data)</p>
+<p>when child process <code>$pid</code> terminates. The return value is
+a source id which can be used with <code>Glib::Source-&gt;remove</code>.
+When the callback is made the source is removed automatically.</p>
+<p>In a non-threaded program Glib implements this source by installing a
+SIGCHLD handler. Don't change <code>$SIG</code>{CHLD} in Perl or the
+callback will never run.</p>
+<p>Since: glib 2.4</p>
+<h1>ENUMS AND FLAGS</h1>
+<h2>flags Glib::IOCondition</h2>
+<ul>
+<li><p>'in' / 'G_IO_IN'</p></li>
+<li><p>'out' / 'G_IO_OUT'</p></li>
+<li><p>'pri' / 'G_IO_PRI'</p></li>
+<li><p>'err' / 'G_IO_ERR'</p></li>
+<li><p>'hup' / 'G_IO_HUP'</p></li>
+<li><p>'nval' / 'G_IO_NVAL'</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Glib</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

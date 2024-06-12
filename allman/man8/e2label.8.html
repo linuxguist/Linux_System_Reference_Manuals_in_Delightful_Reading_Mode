@@ -1,0 +1,31 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>e2label - Change the label on an ext2/ext3/ext4 file system</p>
+<h1>SYNOPSIS</h1>
+<p><strong>e2label</strong> <em>device</em> [ <em>volume-label</em>
+]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>e2label</strong> will display or change the volume label on
+the ext2, ext3, or ext4 file system located on <em>device.</em></p>
+<p>If the optional argument <em>volume-label</em> is not present,
+<strong>e2label</strong> will simply display the current volume
+label.</p>
+<p>If the optional argument <em>volume-label</em> is present, then
+<strong>e2label</strong> will set the volume label to be
+<em>volume-label</em>. Ext2 volume labels can be at most 16 characters
+long; if <em>volume-label</em> is longer than 16 characters,
+<strong>e2label</strong> will truncate it and print a warning message.
+For other file systems that support online label manipulation and are
+mounted <strong>e2label</strong> will work as well, but it will not
+attempt to truncate the <em>volume-label</em> at all.</p>
+<p>It is also possible to set the volume label using the
+<strong>-L</strong> option of <strong>tune2fs</strong>(8).</p>
+<h1>AUTHOR</h1>
+<p><strong>e2label</strong> was written by Theodore Ts'o
+(tytso@mit.edu).</p>
+<h1>AVAILABILITY</h1>
+<p><strong>e2label</strong> is part of the e2fsprogs package and is
+available from http://e2fsprogs.sourceforge.net.</p>
+<h1>SEE ALSO</h1>
+<p><strong>mke2fs</strong>(8), <strong>tune2fs</strong>(8)</p>

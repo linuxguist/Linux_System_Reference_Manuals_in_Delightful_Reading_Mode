@@ -1,0 +1,24 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>radattr.so - RADIUS utility plugin for <strong>pppd</strong>(8)</p>
+<h1>SYNOPSIS</h1>
+<p><strong>pppd</strong> [ <em>options</em> ] plugin radius.so plugin
+radattr.so</p>
+<h1>DESCRIPTION</h1>
+<p>The radattr plugin for pppd causes all radius attributes returned by
+the RADIUS server at authentication time to be stored in the file
+<em>/var/run/radattr.pppN</em> where <em>pppN</em> is the name of the
+PPP interface. The RADIUS attributes are stored one per line in the
+format "Attribute-Name Attribute-Value". This format is convenient for
+use in /etc/ppp/ip-up and /etc/ppp/ip-down scripts.</p>
+<p>Note that you <em>must</em> load the radius.so plugin before loading
+the radattr.so plugin; radattr.so depends on symbols defined in
+radius.so.</p>
+<h1>USAGE</h1>
+<p>To use the plugin, simply supply the <strong>plugin radius.so plugin
+radattr.so</strong> options to pppd.</p>
+<h1>SEE ALSO</h1>
+<p><strong>pppd</strong>(8)<strong> pppd-radius</strong>(8)</p>
+<h1>AUTHOR</h1>
+<p>David F. Skoll &lt;dfs@roaringpenguin.com&gt;</p>

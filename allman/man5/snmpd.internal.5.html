@@ -1,0 +1,109 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>snmpd.internal - internal configuration of the Net-SNMP agent</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>snmpd.conf(5)</em> man page defines the syntax and behaviour
+of the main configuration directives that can be used to control the
+operation of the Net-SNMP agent, and the management information it
+provides.</p>
+<p>However there are several other configuration directives (many of
+which, though not all, start with a leading underscore) that are
+recognised by the agent. These are typically used to retain
+configuration across agent restarts, and are not intended for direct
+user access. This man page list these directives, giving a brief
+indication of where they are used. For full details - see the relevant
+source files. If you can't follow that source, you probably shouldn't be
+fiddling with these directives!</p>
+<h1>AGENT BEHAVIOUR</h1>
+<dl>
+<dt>quit</dt>
+<dd>
+
+</dd>
+</dl>
+<h1>ACCESS CONTROL</h1>
+<h2>VACM Configuration</h2>
+<dl>
+<dt>vacmView / vacmGroup / vacmAccess </dt>
+<dd>
+<p>These directives are used to retain dynamically configured access
+control settings.</p>
+</dd>
+</dl>
+<h1>SYSTEM INFORMATION</h1>
+<h2>System Group</h2>
+<dl>
+<dt>setSerialNo </dt>
+<dd>
+<p>This directive is used to implement the advisory lock object
+<code>snmpSetSerialNo</code>.</p>
+</dd>
+<dt>psyslocation / psyscontact / psysname </dt>
+<dd>
+<p>These directives are used to retain dynamically configured system
+settings. They will be overridden by the corresponding
+<em>sysLocation</em>, <em>sysContact</em> and <em>sysName</em>
+directives.</p>
+</dd>
+</dl>
+<h1>ACTIVE MONITORING</h1>
+<h2>Notification Handling</h2>
+<dl>
+<dt>pauthtrapenable</dt>
+<dd>
+<p>This directive is used to retain the dynamically configured setting
+of whether the agent should generate authenticationFailure traps. It
+will be overridden by the corresponding <em>authtrapenable</em>
+directive.</p>
+</dd>
+<dt>snmpNotify*Table </dt>
+<dd>
+
+</dd>
+<dt>targetAddr / targetParams </dt>
+<dd>
+<p>These directives are used to retain dynamically configured
+notification destination settings.</p>
+</dd>
+</dl>
+<h2>DisMan Event MIB</h2>
+<dl>
+<dt>_mteE*Table, _mteOTable, _mteT*Table </dt>
+<dd>
+<p>These directives are used to retain dynamically configured event,
+object and monitor trigger settings.</p>
+</dd>
+<dt>mteObjectsTable / mteTriggerTable </dt>
+<dd>
+<p>These directives are for compatibility with the previous
+<em>disman/event-mib</em> implementation.</p>
+</dd>
+</dl>
+<h2>DisMan Schedule MIB</h2>
+<dl>
+<dt>_schedTable </dt>
+<dd>
+<p>This directive is used to retain dynamically configured scheduled
+events.</p>
+</dd>
+</dl>
+<h1>EXTENDING AGENT FUNCTIONALITY</h1>
+<h2>Arbitrary Extension Commands</h2>
+<dl>
+<dt>extend-sh </dt>
+<dd>
+
+</dd>
+<dt>exec2 / sh2 / execFix2 </dt>
+<dd>
+<p>These directives were defined by analogy with equivalent directives
+in the previous <em>ucd-snmp/extensible</em> implementation. They are
+deprecated, and should not be used.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<p>/etc/snmp/snmpd.conf</p>
+<h1>SEE ALSO</h1>
+<p>snmpconf(1), snmpd.conf(5), snmp.conf(5), snmp_config(5), snmpd(8),
+EXAMPLE.conf, netsnmp_config_api(3).</p>

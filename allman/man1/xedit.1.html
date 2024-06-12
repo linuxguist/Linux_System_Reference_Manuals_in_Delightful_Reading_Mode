@@ -1,0 +1,669 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xedit - simple text editor for X</p>
+<h1>SYNTAX</h1>
+<p><strong>xedit</strong> [ <em>-toolkitoption</em> . . . ] [
+<em>filename</em> . . . ]</p>
+<h1>DESCRIPTION</h1>
+<p><em>Xedit</em> provides a window consisting of the following four
+areas:</p>
+<dl>
+<dt>Commands Section</dt>
+<dd>
+<p>A set of commands that allow you to exit <em>xedit</em>, save the
+file, or load a new file into the edit window.</p>
+</dd>
+<dt>Message Window</dt>
+<dd>
+<p>Displays <em>xedit</em> messages. In addition, this window can be
+also used as a scratch pad.</p>
+</dd>
+<dt>Filename Display</dt>
+<dd>
+<p>Displays the name of the file currently being edited, and whether
+this file is <em>Read-Write</em> or <em>Read Only</em>.</p>
+</dd>
+<dt>Edit Window</dt>
+<dd>
+<p>Displays the text of the file that you are editing or creating.</p>
+</dd>
+</dl>
+<h1>OPTIONS</h1>
+<p><em>Xedit</em> accepts all of the standard X Toolkit command line
+options (see <em>X</em>(7)). The order of the command line options is
+not important.</p>
+<dl>
+<dt><em>filename</em></dt>
+<dd>
+<p>Specifies the file(s) that are to be loaded during start-up. This is
+the file which will be edited. If a file is not specified,
+<em>xedit</em> lets you load files or create new files after it has
+started up.</p>
+</dd>
+</dl>
+<h1>EDITING</h1>
+<p>The Athena Text widget is used for the three sections of this
+application that allow text input. The characters typed will go to the
+Text widget that has the input focus, or the Text widget that the
+pointer cursor is currently over.</p>
+<p>The following keystroke combinations are defined:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-a</td>
+<td style="text-align: left;">Beginning Of Line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-b</td>
+<td style="text-align: left;">Backward Word</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-b</td>
+<td style="text-align: left;">Backward Character</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-f</td>
+<td style="text-align: left;">Forward Word</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-d</td>
+<td style="text-align: left;">Delete Next Character</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-i</td>
+<td style="text-align: left;">Insert File</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-e</td>
+<td style="text-align: left;">End Of Line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-k</td>
+<td style="text-align: left;">Kill To End Of Paragraph</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-f</td>
+<td style="text-align: left;">Forward Character</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-q</td>
+<td style="text-align: left;">Form Paragraph</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-g</td>
+<td style="text-align: left;">Keyboard Reset</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-v</td>
+<td style="text-align: left;">Previous Page</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-h</td>
+<td style="text-align: left;">Delete Previous Character</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-y</td>
+<td style="text-align: left;">Insert Current Selection</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-j</td>
+<td style="text-align: left;">Newline And Indent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-z</td>
+<td style="text-align: left;">Scroll One Line Down</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-k</td>
+<td style="text-align: left;">Kill To End Of Line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-d</td>
+<td style="text-align: left;">Delete Next Word</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-l</td>
+<td style="text-align: left;">Redraw Display</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-D</td>
+<td style="text-align: left;">Kill Word</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-m</td>
+<td style="text-align: left;">Newline</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-h</td>
+<td style="text-align: left;">Delete Previous Word</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-n</td>
+<td style="text-align: left;">Next Line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-H</td>
+<td style="text-align: left;">Backward Kill Word</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-o</td>
+<td style="text-align: left;">Newline And Backup</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-&lt;</td>
+<td style="text-align: left;">Beginning Of File</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-p</td>
+<td style="text-align: left;">Previous Line</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-&gt;</td>
+<td style="text-align: left;">End Of File</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-r</td>
+<td style="text-align: left;">Search/Replace Backward</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-]</td>
+<td style="text-align: left;">Forward Paragraph</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-s</td>
+<td style="text-align: left;">Search/Replace Forward</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meta-[</td>
+<td style="text-align: left;">Backward Paragraph</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ctrl-t</td>
+<td style="text-align: left;">Transpose Characters</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ctrl-u [<em>number</em>]</td>
+<td style="text-align: left;">Multiply by 4 or <em>number</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Meta-Delete</td>
+<td style="text-align: left;">Delete Previous Word</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ctrl-v</td>
+<td style="text-align: left;">Next Page</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Meta-Shift Delete</td>
+<td style="text-align: left;">Kill Previous Word</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ctrl-w</td>
+<td style="text-align: left;">Kill Selection</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Meta-Backspace</td>
+<td style="text-align: left;">Delete Previous Word</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ctrl-y</td>
+<td style="text-align: left;">Unkill</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Meta-Shift Backspace</td>
+<td style="text-align: left;">Kill Previous Word</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ctrl-z</td>
+<td style="text-align: left;">Scroll One Line Up</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Meta-z</td>
+<td style="text-align: left;">Scroll One Line Down</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ctrl-_</td>
+<td style="text-align: left;">Undo</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Escape</td>
+<td style="text-align: left;">Line Edit Mode</td>
+</tr>
+</tbody>
+</table>
+<p>In addition, the pointer may be used to cut and paste text:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Button 1 Down</td>
+<td style="text-align: left;">Start Selection</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Button 1 Motion</td>
+<td style="text-align: left;">Adjust Selection</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Button 1 Up</td>
+<td style="text-align: left;">End Selection (cut)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Button 2 Down</td>
+<td style="text-align: left;">Insert Current Selection (paste)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Button 3 Down</td>
+<td style="text-align: left;">Extend Current Selection</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Button 3 Motion</td>
+<td style="text-align: left;">Adjust Selection</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Button 3 Up</td>
+<td style="text-align: left;">End Selection (cut)</td>
+</tr>
+</tbody>
+</table>
+<h1>LINE EDIT MODE</h1>
+<p><em>Line edit mode</em> enables several shortcut commands for
+searching and replacing text in a xedit buffer. <em>Line edit mode</em>
+commands have the format:<br />
+</p>
+<pre><code>
+	[line-number[,line-number]]command[parameters]
+</code></pre>
+<p><em>Line number</em> may be specified as:</p>
+<dl>
+<dt>.</dt>
+<dd>
+<p>The current text line.</p>
+</dd>
+<dt>$</dt>
+<dd>
+<p>The last line of the file.</p>
+</dd>
+<dt>number</dt>
+<dd>
+<p>The literal line <em>number</em>.</p>
+</dd>
+<dt>- or ^</dt>
+<dd>
+<p>The previous line. Equivalent to <em>-1</em>.</p>
+</dd>
+<dt>-number or ^number</dt>
+<dd>
+<p>The current line minus <em>number</em>.</p>
+</dd>
+<dt>+</dt>
+<dd>
+<p>The next line. Equivalent to <em>+1</em>.</p>
+</dd>
+<dt>+number</dt>
+<dd>
+<p>The current line plus <em>number</em>.</p>
+</dd>
+<dt>, or %</dt>
+<dd>
+<p>From the first to the last line. Equivalent to <em>1,$</em>.</p>
+</dd>
+<dt>;</dt>
+<dd>
+<p>From the current to the last line. Equivalent to <em>.,$</em>.</p>
+</dd>
+</dl>
+<p><em>Command</em> may be specified as:</p>
+<dl>
+<dt>s</dt>
+<dd>
+<p>Substitute text in the specified lines.</p>
+</dd>
+<dt>/re/</dt>
+<dd>
+<p>Search forward for the regular expression pattern <em>re</em>.</p>
+</dd>
+<dt>?re?</dt>
+<dd>
+<p>Search backward for the regular expression pattern <em>re</em>.</p>
+</dd>
+</dl>
+<p><em>Parameters</em> may be specified as:</p>
+<dl>
+<dt>/re/</dt>
+<dd>
+<p>Works as a parameter to <em>i</em> or as a command.</p>
+</dd>
+<dt>/re/text/</dt>
+<dd>
+<p>Search forward for <em>re</em> and substitute by <em>text</em>.</p>
+</dd>
+</dl>
+<p><em>Options</em> may follow or be parameters, known values are:</p>
+<dl>
+<dt>i</dt>
+<dd>
+<p>Case insensitive search.</p>
+</dd>
+<dt>g</dt>
+<dd>
+<p><em>Global</em> match when replacing text. Unless specified, only the
+nth, that defaults to 1, match will be replaced.</p>
+</dd>
+<dt>c</dt>
+<dd>
+<p><em>Confirm</em> before replacing text.</p>
+</dd>
+<dt>number</dt>
+<dd>
+<p>Replace only the occurrence referenced by <em>number</em>.</p>
+</dd>
+</dl>
+<p>Commands accept some variations, examples:<br />
+</p>
+<pre><code>	/pattern/i
+	i/pattern/
+	i/pattern</code></pre>
+<p>Search forward for <em>pattern</em>.<br />
+</p>
+<pre><code>
+	,sc/pattern/text
+	,sc/pattern/text/
+	,s/pattern/text/c</code></pre>
+<p>Search the entire buffer and ask confirmation to replace
+<em>pattern</em> with <em>text</em>.<br />
+</p>
+<pre><code>
+	,s/pattern/text/number</code></pre>
+<p>Replace the match <em>number</em> in the text line. If not specified,
+defaults to the first occurrence.</p>
+<p>When searching for text, type &lt;Return&gt; to go to the next match.
+When interactively replacing text, type <em>y</em> or <em>Y</em> to
+accept the change, and <em>n</em> or <em>N</em> to ignore it and go to
+the next match.</p>
+<h1>COMMANDS</h1>
+<dl>
+<dt>Quit</dt>
+<dd>
+<p>Quits the current editing session. If any changes have not been
+saved, <em>xedit</em> displays a warning message, allowing the user to
+save them.</p>
+</dd>
+<dt>Save</dt>
+<dd>
+<p>If file backups are enabled (see RESOURCES, below) <em>xedit</em>
+stores a copy of the original, unedited file in
+&lt;prefix&gt;<em>file</em>&lt;suffix&gt;, then overwrites the
+<em>file</em> with the contents of the edit window. The filename is
+retrieved from the Text widget directly to the right of the
+<em>Load</em> button.</p>
+</dd>
+<dt>Load</dt>
+<dd>
+<p>Loads the file named in the text widget immediately to the right of
+the this button and displays it in the Edit window.</p>
+</dd>
+</dl>
+<h1>RESOURCES</h1>
+<p>For <em>xedit</em> the available resources are:</p>
+<dl>
+<dt><strong>tagsName (<em>Class</em> TagsName)</strong></dt>
+<dd>
+<p>Specifies the name of the tags file to search when loading a new
+file. Default value is <em>tags</em><strong>.</strong></p>
+</dd>
+<dt><strong>loadTags (<em>Class</em> LoadTags)</strong></dt>
+<dd>
+<p>Boolean value to enable or disabling searching for tags files.
+Default is <em>True</em><strong>.</strong></p>
+</dd>
+<dt><strong>enableBackups (<em>Class</em> EnableBackups)</strong></dt>
+<dd>
+<p>Specifies that, when edits made to an existing file are saved,
+<em>xedit</em> is to copy the original version of that file to
+&lt;prefix&gt;<em>file</em><strong>&lt;suffix&gt;</strong> before it
+saves the changes. The default value for this resource is ``on,''
+stating that backups should be created.</p>
+</dd>
+<dt><strong>backupNamePrefix (<em>Class</em>
+BackupNamePrefix)</strong></dt>
+<dd>
+<p>Specifies a string that is to be prepended to the backup filename.
+The default is that no string shall be prepended.</p>
+</dd>
+<dt><strong>backupNameSuffix (<em>Class</em>
+BackupNameSuffix)</strong></dt>
+<dd>
+<p>Specifies a string that is to be appended to the backup filename. The
+default is to use ``~'' as the suffix.</p>
+</dd>
+<dt><strong>positionFormat (<em>Class</em> Format)</strong></dt>
+<dd>
+<p>Specifies a format string used to display the cursor position. This
+string uses printf(3) like notation, where <strong>%l</strong> prints
+the line number, <strong>%c</strong> prints the column number,
+<strong>%p</strong> prints the insert position offset, and
+<strong>%s</strong> prints the current file size. It is also allowed to
+specify field sizes, with the notation <strong>%-?[0-9]+</strong> . The
+default format string is ``L%l'', which shows the character ``L''
+followed by the line number.</p>
+</dd>
+<dt><strong>hints (<em>Class</em> Hints)</strong></dt>
+<dd>
+<p>Specifies a list of strings, separated by new lines, that will be
+displayed in the bc_label window.</p>
+</dd>
+<dt><strong>hintsInterval (<em>Class</em>
+<strong>Interval)</strong></strong></dt>
+<dd>
+<p>Specifies the interval in seconds, which the hint string in the
+bc_label window will be changed.</p>
+</dd>
+<dt><strong>changedBitmap (<em>Class</em>
+<strong>Bitmap)</strong></strong></dt>
+<dd>
+<p>Specifies the name of the Bitmap that will be displayed in the
+fileMenu, when the file being edited is changed.</p>
+</dd>
+<dt><strong>autoReplace (<em>Class</em>
+<strong>Replace)</strong></strong></dt>
+<dd>
+<p>This resource is useful to automatically correct common misspelling
+errors, but can also be used to create simple macros. The format is
+<em>{non-blanks}{blanks}[{string}]</em><strong>. Fields are separated by
+newlines.</strong> Example of use:<br />
+</p>
+</dd>
+</dl>
+<pre><code>nto	  not\n\
+/macro some long string with \\\n newlines \\\n</code></pre>
+<p><br />
+Will automatically replace the word <em>nto</em> <strong>by</strong>
+<em>not</em><strong>, and</strong> <em>/macro</em> by <em>some long
+string with</em> newlines when you type that words.</p>
+<dl>
+<dt><strong>ispell.dictionaries (<em>Class</em>
+<strong>ispell.Dictionary)</strong></strong></dt>
+<dd>
+<p>Specifies a list of dictionary names, separated by spaces, available
+to the ispell program. The default value is <em>"american americamed+
+english"</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.dictionary (<em>Class</em>
+<strong>ispell.Dictionary)</strong></strong></dt>
+<dd>
+<p>Specifies the default dictionary to use.</p>
+</dd>
+<dt><strong>ispell*&lt;DICTIONARY&gt;.wordChars (<em>Class</em>
+<strong>ispell*Chars)</strong></strong></dt>
+<dd>
+<p>Specifies a set of characters that can be part of a legal word. The
+<em>&lt;DICTIONARY&gt;</em> <strong>field is one of the dictionaries
+specified in the</strong> <em>dictionaries</em>
+<strong>resource.</strong></p>
+</dd>
+<dt><strong>ispell.ispellCommand (<em>Class</em>
+<strong>ispell.CommandLine)</strong></strong></dt>
+<dd>
+<p>The path to the ispell program, and possibly, additional arguments.
+You don't need to specify the ``-w'' option, neither the ``-a'' option.
+Refer to the <em>ispell</em><strong>(1) manpage for more information on
+ispell options.</strong></p>
+</dd>
+<dt><strong>ispell.formatting (<em>Class</em>
+<strong>ispell.TextFormat)</strong></strong></dt>
+<dd>
+<p>Specifies which text formatting to use while spell checking the file.
+The available formats are <em>text</em> <strong>and</strong>
+<em>html</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell*text.skipLines (<em>Class</em>
+<strong>ispell*text.Skip)</strong></strong></dt>
+<dd>
+<p>Lines starting with one of the characters in this string will not be
+spell checked. This resource is only used in <em>text</em>
+<strong>mode.</strong></p>
+</dd>
+<dt><strong>ispell.terseMode (<em>Class</em>
+<strong>ispell.Terse)</strong></strong></dt>
+<dd>
+<p>When enabled, runs ispell in terse mode, not asking user interaction
+for words generated through compound formation (when using the ispell
+``-C'' option), or words generated through affix removal. The default
+value is False.</p>
+</dd>
+<dt><strong>ispell.lookCommand (<em>Class</em>
+<strong>ispell.CommandLine)</strong></strong></dt>
+<dd>
+<p>The path to the program to search for alternate words, and possibly,
+additional arguments. The default program used is
+<em>/usr/bin/egrep</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.wordsFile (<em>Class</em>
+<strong>ispell.Words)</strong></strong></dt>
+<dd>
+<p>The path to the file[s] to search for alternate words. The default
+file is <em>/usr/share/dict/words</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.guessLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>String displayed in the ispell status bar when ispell returns a guess
+list of one or more words. The default value is
+<em>Guess</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.missLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>String displayed in the ispell status bar when ispell returns a list
+of one or more words to match a misspelled one. The default value is
+<em>Miss</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.rootLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>String displayed in the ispell status bar when the word is not in the
+dictionary, but it can be formed through a root one. The default value
+is <em>Root:</em><strong>, and is</strong> followed by a space and the
+root word.</p>
+</dd>
+<dt><strong>ispell.noneLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>String displayed in the ispell status bar when there is no near
+misses. The default value is <em>None</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.compoundLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>String displayed in the ispell status bar when the word being checked
+is formed by concatenation of two words. The default value is
+<em>Compound</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.okLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>String displayed in the ispell status bar when the checked word is in
+the dictionary. This string is only displayed when using the
+<em>check</em> <strong>button in the xedit ispell</strong> interface.
+The default value is <em>Ok</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.eofLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>The string displayed in the ispell status bar when the end of the
+file is reached. The default value is <em>End Of
+File</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.repeatLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>The string displayed in the ispell status bar when two identical
+words are found together in the file. The default value is
+<em>Repeat</em><strong>.</strong></p>
+</dd>
+<dt><strong>ispell.lookLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>The string displayed in the ispell status bar after displaying the
+results of the <em>Look</em> <strong>command. If no results are found,
+the value of the</strong> <em>ispell.noneLabel</em> <strong>resource is
+shown.</strong></p>
+</dd>
+<dt><strong>ispell.workingLabel (<em>Class</em>
+<strong>ispell.Status)</strong></strong></dt>
+<dd>
+<p>The string displayed in the ispell status bar while xedit is
+communicating with ispell. The default value is
+<em>...</em><strong>.</strong></p>
+</dd>
+</dl>
+<h1>WIDGETS</h1>
+<p>In order to specify resources, it is useful to know the hierarchy of
+the widgets which compose <em>xedit</em>. In the notation below,
+indentation indicates hierarchical structure. The widget class name is
+given first, followed by the widget instance name.</p>
+<pre><code>Xedit  xedit
+        Paned  paned
+                Paned  buttons
+                        Command  quit
+                        Command  save
+                        Command  load
+                        Text     filename
+                Label  bc_label
+                Text   messageWindow
+                Label  labelWindow
+                Text   editWindow</code></pre>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><em>DISPLAY</em></dt>
+<dd>
+<p>to get the default host and display number.</p>
+</dd>
+<dt><em>XENVIRONMENT</em></dt>
+<dd>
+<p>to get the name of a resource file that overrides the global
+resources stored in the RESOURCE_MANAGER property.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/X11/app-defaults/Xedit</em></dt>
+<dd>
+<p>specifies required resources</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><em>X</em>(7), <em>xrdb</em>(1), <em>Athena Widget Set</em></p>
+<h1>RESTRICTIONS</h1>
+<p>Xedit is not a replacement to Emacs.</p>
+<h1>AUTHORS</h1>
+<p>Chris D. Peterson, MIT X Consortium<br />
+Paulo Cesar Pereira de Andrade, The XFree86 Project</p>

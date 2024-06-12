@@ -1,0 +1,191 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gnome-control-center - Configure GNOME settings</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gnome-control-center</strong> <strong>[OPTION...]</strong>
+<strong></strong> <strong>[PANEL]</strong> <strong></strong>
+<strong>[ARG...]</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>gnome-control-center</strong> is a graphical user interface
+to configure various aspects of GNOME.</p>
+<p>When run without arguments, the shell displays the overview, which
+shows all available configuration panels. The overview allows to open
+individual panels by clicking on them. It also has a search entry to
+find panels by searching keywords.</p>
+<p>It is also possible to specify a panel name as commandline argument
+to go directly to that panel. Individual panels may accept further
+arguments to specify which tab to open (for multi-tabbed panels) or
+which item to display (for panels with lists).</p>
+<p>Note that <strong>gnome-control-center</strong> is not meant to
+expose each and every setting that is available. The settings that can
+be found here represent what is considered useful and commonly needed
+options. For more exotic or uncommon options, you can look at
+<strong>gnome-tweak-tool</strong> or the <strong>gsettings</strong>
+commandline utility.</p>
+<h1>PANELS</h1>
+<p>The following panel names can be specified:</p>
+<p><strong>background</strong></p>
+<blockquote>
+<p>The background panel lets you set your desktop background.</p>
+</blockquote>
+<p><strong>bluetooth</strong></p>
+<blockquote>
+<p>The bluetooth panel lets you configure your computers Bluetooth
+adapter, and pair the computer with Bluetooth keyboards, phones,
+etc.</p>
+</blockquote>
+<p><strong>color</strong></p>
+<blockquote>
+<p>The color panel can calibrate monitors, web cams and printers for
+accurate color reproduction.</p>
+</blockquote>
+<p><strong>datetime</strong></p>
+<blockquote>
+<p>The datetime panel lets you set the timezone and time format.</p>
+<p>Some operations in this panel affect all user accounts on the
+computer and require privieges.</p>
+</blockquote>
+<p><strong>display</strong></p>
+<blockquote>
+<p>The display panel configures the resolution and arrangement of
+monitors and laptop panels. Note that monitors can be rearranged by
+drag-and-drop, and you can change which monitor is your main display by
+dragging the black bar.</p>
+</blockquote>
+<p><strong>info-overview</strong></p>
+<blockquote>
+<p>The info-overview panel shows a general overview of the system
+configuration. It also lets you change the default applications for
+various tasks and the handling of removable media.</p>
+</blockquote>
+<p><strong>keyboard</strong></p>
+<blockquote>
+<p>The keyboard panel can change how the keyboard reacts to key presses
+and lets you change keyboard shortcuts or create custom shortcuts.</p>
+<p>You can open this panel on a specific tab by passing
+<strong>typing</strong> or <strong>shortcuts</strong> as extra
+argument.</p>
+</blockquote>
+<p><strong>mouse</strong></p>
+<blockquote>
+<p>The mouse panel can change how mice and touchpads react to user
+input.</p>
+</blockquote>
+<p><strong>network</strong></p>
+<blockquote>
+<p>The network panel provides a view of available network devices
+(wired, wireless or mobile) and their current configuration. It also
+provides a way to create new VPN connections and configure proxy
+settings.</p>
+<p>You can open this panel on a specific dialog by passing
+<strong>create-wifi</strong>, <strong>connect-hidden-wifi</strong>,
+<strong>connect-3g</strong>, <strong>connect-8021x-wifi</strong> or
+<strong>show-device</strong> as extra argument. The last three
+parameters require an additional extra argument for the network object
+in the form <em>/org/freedesktop/NetworkManager/Devices/0</em>.</p>
+</blockquote>
+<p><strong>notifications</strong></p>
+<blockquote>
+<p>The notifications panel provides a way to control the display of
+notifications.</p>
+</blockquote>
+<p><strong>online-accounts</strong></p>
+<blockquote>
+<p>The online-accounts panel shows your configured online accounts and
+lets you add or remove accounts.</p>
+</blockquote>
+<p><strong>power</strong></p>
+<blockquote>
+<p>The power panel shows the fill level of batteries and can configure
+what happens when the computer is idle or runs out of battery.</p>
+</blockquote>
+<p><strong>printers</strong></p>
+<blockquote>
+<p>The printers panel shows all known printers and their status. It is
+possible to inspect queued print jobs and add new printers.</p>
+<p>Some operations in this panel require privileges.</p>
+</blockquote>
+<p><strong>privacy</strong></p>
+<blockquote>
+<p>The privacy panel allows to control visible file usage history,
+temporary files, and name.</p>
+</blockquote>
+<p><strong>region</strong></p>
+<blockquote>
+<p>The region panel contains regional settings such as the display
+language, formatting for times, dates, numbers, and input sources.</p>
+</blockquote>
+<p><strong>search</strong></p>
+<blockquote>
+<p>The search panel controls the results visible in the overview, and
+the files and folders to be indexed.</p>
+</blockquote>
+<p><strong>screen</strong></p>
+<blockquote>
+<p>The screen panel contains settings that control the screen brightness
+and screen lock behavior.</p>
+</blockquote>
+<p><strong>sharing</strong></p>
+<blockquote>
+<p>The sharing panel contains settings that control what is shared over
+the network.</p>
+</blockquote>
+<p><strong>sound</strong></p>
+<blockquote>
+<p>The sound panel shows all known sound devices and their
+configuration, including volume and balance settings.</p>
+<p>You can open this panel on a specific tab by passing
+<strong>output</strong>, <strong>input</strong>,
+<strong>hardware</strong>, <strong>effects</strong> or
+<strong>applications</strong> as extra argument.</p>
+</blockquote>
+<p><strong>universal-access</strong></p>
+<blockquote>
+<p>The universal-access panel contains settings for accessible
+technologies such as the screen reader, magnifier, screen keyboard and
+AccessX options.</p>
+</blockquote>
+<p><strong>user-accounts</strong></p>
+<blockquote>
+<p>The user-accounts panel shows all user accounts that exist on the
+computer and allows to change them in some ways, such as changing the
+user name, password or permissions. It also allows to create or remove
+accounts.</p>
+<p>Some operations in this panel require privileges.</p>
+</blockquote>
+<p><strong>wacom</strong></p>
+<blockquote>
+<p>the wacom panel shows connected Wacom graphics tablets and lets you
+calibrate and configure such devices.</p>
+</blockquote>
+<h1>OPTIONS</h1>
+<p><strong>-?</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Prints a short help text and exits.</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Prints the program version and exits.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Enables verbose mode.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--list</strong></p>
+<blockquote>
+<p>Lists the available panels and exits.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--overview</strong></p>
+<blockquote>
+<p>Opens the overview.</p>
+</blockquote>
+<p><strong>-s</strong> <em>term</em>, <strong>--search</strong>
+<em>term</em></p>
+<blockquote>
+<p>Sets the following search term.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p>On success 0 is returned, a non-zero failure code otherwise.</p>
+<h1>SEE ALSO</h1>
+<p><strong>gsettings</strong>(1)</p>

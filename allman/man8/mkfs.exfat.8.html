@@ -1,0 +1,95 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mkfs.exfat - create an exFAT filesystem</p>
+<h1>SYNOPSIS</h1>
+<p><strong>mkfs.exfat</strong> [ <strong>-b</strong>
+<em>boundary_alignment</em> ] [ <strong>-c</strong>
+<em>cluster_size</em> ] [ <strong>-f</strong> ] [ <strong>-h</strong> ]
+[ <strong>-L</strong> <em>volume_label</em> ] [
+<strong>--pack-bitmap</strong> ] [ <strong>-v</strong> ]
+<em>device</em><br />
+<strong>mkfs.exfat -V</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>mkfs.exfat</strong> creates an exFAT filesystem by writing on
+a special file using the values found in the arguments of the command
+line. It is invoked automatically by <strong>mkfs</strong>(8) when it is
+given the <strong>-t exfat</strong> option.</p>
+<p>As an example, to make a filesystem on the first partition on the
+first SCSI disk, use:</p>
+<blockquote>
+<p><strong>mkfs.exfat /dev/sda1</strong></p>
+</blockquote>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-b</strong>,
+<strong>--boundary-align</strong>=<em>alignment</em></dt>
+<dd>
+<p>Specifies the alignment for the FAT and the start of the cluster
+heap. The <em>alignment</em> argument is specified in bytes or may be
+specified with <strong>m</strong>/<strong>M</strong> suffix for
+mebibytes or <strong>k</strong>/<strong>K</strong> suffix for kibibytes
+and should be a power of two. Some media like SD cards need this for
+optimal performance and endurance, in which case <em>alignment</em>
+should be set to half of the card's native boundary unit size. If the
+card's native boundary unit size is not known, refer to the following
+table of boundary unit sizes recommended by the SD Card Association.</p>
+</dd>
+</dl>
+<p>TABLE</p>
+<dl>
+<dt><strong>-c</strong>,
+<strong>--cluster-size</strong>=<em>size</em></dt>
+<dd>
+<p>Specifies the cluster size of the exFAT file system. The
+<em>size</em> argument is specified in bytes or may be specified with
+<strong>m</strong>/<strong>M</strong> suffix for mebibytes or
+<strong>k</strong>/<strong>K</strong> suffix for kibibytes and must be a
+power of two.</p>
+</dd>
+<dt><strong>-f</strong>, <strong>--full-format</strong></dt>
+<dd>
+<p>Performs a full format. This zeros the entire disk device while
+creating the exFAT filesystem.</p>
+</dd>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Prints the help and exit.</p>
+</dd>
+<dt><strong>-L</strong>,
+<strong>--volume-label</strong>=<em>label</em></dt>
+<dd>
+<p>Specifies the volume label to be associated with the exFAT
+filesystem.</p>
+</dd>
+<dt><strong>--pack-bitmap</strong></dt>
+<dd>
+<p>Attempts to relocate the exFAT allocation bitmap so that it ends at
+the alignment boundary immediately following the FAT rather than
+beginning at that boundary. This strictly violates the SD card
+specification but may improve performance and endurance on SD cards and
+other flash media not designed for use with exFAT by allowing
+file-system metadata updates to touch fewer flash allocation units.
+Furthermore, many SD cards and other flash devices specially optimize
+the allocation unit where the FAT resides so as to support tiny writes
+with reduced write amplification but expect only larger writes in
+subsequent allocation units — where the exFAT bitmap would be placed by
+default. Specifying <strong>--pack-bitmap</strong> attempts to avoid the
+potential problems associated with issuing many small writes to the
+bitmap by making it share an allocation unit with the FAT. If there is
+insufficient space for the bitmap there, then this option will have no
+effect, and the bitmap will be aligned at the boundary as by
+default.</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>Prints verbose debugging information while creating the exFAT
+filesystem.</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Prints the version number and exits.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>mkfs</strong>(8), <strong>mount</strong>(8),</p>

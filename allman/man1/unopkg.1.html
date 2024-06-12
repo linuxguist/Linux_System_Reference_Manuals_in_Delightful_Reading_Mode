@@ -1,0 +1,83 @@
+<h1>Name</h1>
+<p>unopkg - LibreOffice Extension Manager</p>
+<h1>SYNOPSIS</h1>
+<p><strong>unopkg</strong> [<strong>add</strong>]
+&lt;<em>options</em>&gt; <em>extension-path...</em><br />
+<strong>unopkg</strong> [<strong>remove</strong>]
+&lt;<em>options</em>&gt; <em>extension-identifier...</em><br />
+<strong>unopkg</strong> [<strong>list</strong>] &lt;<em>options</em>&gt;
+<em>extension-identifier...</em><br />
+<strong>unopkg</strong> [<strong>reinstall</strong>]
+&lt;<em>options</em>&gt;<br />
+<strong>unopkg</strong> [<strong>gui</strong>]<br />
+<strong>unopkg</strong>
+[<strong>--help</strong>|<strong>-h</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p>LibreOffice is a fully featured office suite for the daily use with
+all features you would normally expect in an office suite.</p>
+<p>There exists many LibreOffice extensions all over the world. For
+example, see <strong>https://extensions.libreoffice.org/</strong></p>
+<p>This tool allows managing the extensions from the command line.</p>
+<h1>SUB-COMMANDS</h1>
+<dl>
+<dt><strong>add</strong></dt>
+<dd>
+<p>add the given extensions</p>
+</dd>
+<dt><strong>remove</strong></dt>
+<dd>
+<p>remove extensions by the given identifiers</p>
+</dd>
+<dt><strong>reinstall</strong></dt>
+<dd>
+<p>reinstall all deployed extensions (only for experts)</p>
+</dd>
+<dt><strong>list</strong></dt>
+<dd>
+<p>list information about the deployed extensions</p>
+</dd>
+<dt><strong>gui</strong></dt>
+<dd>
+<p>raise Extension Manager Graphical User Interface (GUI)</p>
+</dd>
+</dl>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>--help</strong>|<strong>-h</strong></dt>
+<dd>
+<p>display help and exit</p>
+</dd>
+<dt><strong>--version</strong>|<strong>-V</strong></dt>
+<dd>
+<p>output version information and exit</p>
+</dd>
+<dt><strong>--verbose</strong>|<strong>-v</strong></dt>
+<dd>
+<p>verbose output</p>
+</dd>
+<dt><strong>--force</strong>|<strong>-f</strong></dt>
+<dd>
+<p>force overwriting existing extensions</p>
+</dd>
+<dt><strong>--log-file</strong> &lt;<em>file</em>&gt;</dt>
+<dd>
+<p>custom log file; the default one is &lt;cache-dir&gt;/log.txt</p>
+</dd>
+<dt><strong>--shared</strong>|<strong>-f</strong></dt>
+<dd>
+<p>operate on the system installation deployment context; use only when
+no concurrent Office process(es) are running! (only for experts)</p>
+</dd>
+<dt><strong>--deployment-context</strong> &lt;<em>context</em>&gt;</dt>
+<dd>
+<p>operate on explicit deployment context (only for experts)</p>
+</dd>
+</dl>
+<h1>TROUBLESHOOTING PROBLEMS</h1>
+<p>See <strong>http://wiki.documentfoundation.org/BugReport</strong> for
+more details about how to report bugs in LibreOffice.</p>
+<h1>SEE ALSO</h1>
+<p><strong>http://www.documentfoundation.org/</strong></p>
+<h1>AUTHOR</h1>
+<p>This manual page was created by Petr Mladek
+&lt;pmladek@suse.cz&gt;.</p>

@@ -1,0 +1,115 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::Utils - Miscellaneous utility functions</p>
+<h1>SYNOPSIS</h1>
+<p>use Glib; Glib::set_application_name (Glib::get_real_name."s Cool
+Program"); print "app name is ".Glib::get_application_name()."\n";</p>
+<h1>DESCRIPTION</h1>
+<p>Here are some useful miscellaneous utilities. GLib is a portability
+library, providing portable utility functions for C programs. As such,
+most of these functions seem to violate the Glib binding principle of
+not duplicating functionality that Perl already provides, but there's a
+distinction for each one, i swear. The functions for dealing with user
+information are provided on all GLib-supported platforms, not just where
+POSIX (which provides similar information) is available, and even work
+on platforms where <code>%ENV</code> may not include the expected
+information. Also, the application name referred to by
+(set|get)_application_name is a human readable name, distinct from the
+actual program name provided by Perl's own <code>$0</code>.</p>
+<h1>METHODS</h1>
+<h2>string = Glib::get_application_name</h2>
+<p>Get the human-readable application name set by
+<code>set_application_name</code>.</p>
+<p>Since: glib 2.2</p>
+<h2>Glib::set_application_name ($application_name)</h2>
+<ul>
+<li><p><code>$application_name</code> (string)</p></li>
+</ul>
+<p>Set the human-readable application name.</p>
+<p>Since: glib 2.2</p>
+<h2>string = Glib::get_home_dir</h2>
+<p>Find the current user's home directory, by
+system-dependent/appropriate means.</p>
+<h2>list = Glib::get_language_names</h2>
+<p>Computes a list of applicable locale names, which can be used to e.g.
+construct locale-dependent filenames or search paths. The returned list
+is sorted from most desirable to least desirable and always contains the
+default locale C.</p>
+<p>Since: glib 2.6</p>
+<h2>string = Glib::get_prgname</h2>
+<h2>Glib::set_prgname ($prgname)</h2>
+<ul>
+<li><p><code>$prgname</code> (string)</p></li>
+</ul>
+<h2>string = Glib::get_real_name</h2>
+<p>Get the current user's real name.</p>
+<h2>string = Glib::strerror ($err)</h2>
+<ul>
+<li><p><code>$err</code> (integer)</p></li>
+</ul>
+<p>Return a string describing the given errno value, like No such file
+or directory for ENOENT. This is translated into the user's preferred
+language and is a utf8 wide-char string (unlike a $! string (perlvar) or
+POSIX::strerror (POSIX) which are locale codeset bytes).</p>
+<h2>string = Glib::strsignal ($signum)</h2>
+<ul>
+<li><p><code>$signum</code> (integer)</p></li>
+</ul>
+<p>Return a string describing the given signal number, like Segmentation
+violation for SIGSEGV. This is translated into the user's preferred
+language and is a utf8 wide-char string.</p>
+<h2>list = Glib::get_system_config_dirs</h2>
+<p>Returns an ordered list of base directories in which to access
+system-wide configuration information.</p>
+<p>Since: glib 2.6</p>
+<h2>list = Glib::get_system_data_dirs</h2>
+<p>Returns an ordered list of base directories in which to access
+system-wide application data.</p>
+<p>Since: glib 2.6</p>
+<h2>string = Glib::get_tmp_dir</h2>
+<p>Get the temp dir as appropriate for the current system. See the GLib
+docs for info on how it works.</p>
+<h2>string = Glib::get_user_cache_dir</h2>
+<p>Gets the base directory in which to store non-essential, cached data
+specific to particular user.</p>
+<p>Since: glib 2.6</p>
+<h2>string = Glib::get_user_config_dir</h2>
+<p>Gets the base directory in which to store user-specific application
+configuration information such as user preferences and settings.</p>
+<p>Since: glib 2.6</p>
+<h2>string = Glib::get_user_data_dir</h2>
+<p>Get the base directory for application data such as icons that is
+customized for a particular user.</p>
+<p>Since: glib 2.6</p>
+<h2>string = Glib::get_user_name</h2>
+<p>Get the current user's name by whatever system-dependent means
+necessary.</p>
+<h2>string = Glib::get_user_special_dir ($directory)</h2>
+<ul>
+<li><p><code>$directory</code> (Glib::UserDirectory)</p></li>
+</ul>
+<p>Returns the full path of a special directory using its logical
+id.</p>
+<p>Since: glib 2.14</p>
+<h1>ENUMS AND FLAGS</h1>
+<h2>enum Glib::UserDirectory</h2>
+<ul>
+<li><p>'desktop' / 'G_USER_DIRECTORY_DESKTOP'</p></li>
+<li><p>'documents' / 'G_USER_DIRECTORY_DOCUMENTS'</p></li>
+<li><p>'download' / 'G_USER_DIRECTORY_DOWNLOAD'</p></li>
+<li><p>'music' / 'G_USER_DIRECTORY_MUSIC'</p></li>
+<li><p>'pictures' / 'G_USER_DIRECTORY_PICTURES'</p></li>
+<li><p>'public-share' / 'G_USER_DIRECTORY_PUBLIC_SHARE'</p></li>
+<li><p>'templates' / 'G_USER_DIRECTORY_TEMPLATES'</p></li>
+<li><p>'videos' / 'G_USER_DIRECTORY_VIDEOS'</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Glib</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

@@ -1,0 +1,134 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>apgbfm - APG Bloom filter management program</p>
+<h1>SYNOPSIS</h1>
+<p><strong>apgbfm</strong> <strong>-f</strong> <em>filter</em>
+<strong>-n</strong> <strong>numofwords</strong> [<strong>-q</strong>]
+[<strong>-s</strong>]<br />
+<strong>apgbfm</strong> <strong>-f</strong> <em>filter</em>
+<strong>-d</strong> <em>dictfile</em> [<strong>-q</strong>]
+[<strong>-s</strong>]<br />
+<strong>apgbfm</strong> <strong>-f</strong> <em>filter</em>
+<strong>-a</strong> <strong>word</strong> [<strong>-q</strong>]<br />
+<strong>apgbfm</strong> <strong>-f</strong> <em>filter</em>
+<strong>-A</strong> <em>dictfile</em> [<strong>-q</strong>]<br />
+<strong>apgbfm</strong> <strong>-f</strong> <em>filter</em>
+<strong>-c</strong> <strong>word</strong> [<strong>-q</strong>]<br />
+<strong>apgbfm</strong> <strong>-f</strong> <em>filter</em>
+<strong>-C</strong> <em>dictfile</em> [<strong>-q</strong>]<br />
+<strong>apgbfm</strong> <strong>-i</strong> <em>filter</em><br />
+<strong>apgbfm</strong> [<strong>-v</strong>] [<strong>-h</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>apgbfm</strong> is used to manage Bloom filter that is used
+to restrict password generation in <strong>APG</strong> pasword
+generation software. Usage of the Bloom filter allows to speed up
+password check for large dictionaries and has some other benefits.</p>
+<p>The idea to use Bloom filter for that purpose is came from the
+description of the <strong>OPUS</strong> project <strong>OPUS:
+Preventing Weak Password Choices</strong> <em>Purdue Technical Report
+CSD-TR 92-028</em> writen by <em>Eugene H. Spafford</em>.</p>
+<p>You can obtain this article from:<br />
+<em>http://www.cerias.purdue.edu/homes/spaf/tech-reps/9128.ps</em><br />
+It has very nice description of Bloom filter and it's advantages for
+password checking systems.</p>
+<p>In simple words, <strong>apgbfm</strong> generates <em>n</em> hash
+values for every word and sets corresponding bits in filter file to 1.
+To check the word <strong>apgbfm</strong> generates the same hash
+functions for that word and if all <em>n</em> corresponding bits in
+filter file are set to 1 then it suppose that word exists in dicionary.
+<strong>apgbfm</strong> uses <strong>SHA-1</strong> as a hash
+function.</p>
+<p><strong>apgbfm</strong> can be used as standalone utility, not only
+with <strong>apg</strong>, or <strong>apgd</strong>.</p>
+<dl>
+<dt><strong>WARNING !!!</strong></dt>
+<dd>
+<p>Filter file format can be changed in the future. I'll try to make
+file formats compatible but i can not guaranty this.</p>
+</dd>
+<dt><strong>WARNING !!!</strong></dt>
+<dd>
+<p><strong>apgbfm</strong> may slow down your computer during filter
+creation.</p>
+</dd>
+</dl>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-f <em>filter</em></strong></dt>
+<dd>
+<p>use <em>filter</em> as the name for Bloom filter filename.</p>
+</dd>
+<dt><strong>-i <em>filter</em></strong></dt>
+<dd>
+<p>print information about <em>filter</em>.</p>
+</dd>
+<dt><strong>-n numofwords</strong></dt>
+<dd>
+<p>create new empty filter for <strong>numofwords</strong> number of
+words. Useful when you want to fill filter dynamicaly.</p>
+</dd>
+<dt><strong>-d <em>dictfile</em></strong></dt>
+<dd>
+<p>create new filter from <em>dictfile</em>. It may take a lot of time
+to generate filter from a big dictionary. In that dictionary you may
+place words (one per line) that should not appear as generated
+passwords. For example: user names common words, etc. You even can use
+one of the dictionaries that come with <em>dictionary password
+crackers</em>. This check is case sensitive. For example, if you want to
+reject word 'root', you should insert in <em>dictfile</em> words: root,
+Root, RoOt, ... , ROOT. To indicate that program is working
+<strong>apgbfm</strong> prints dot for every 100 words added in
+dictionary.</p>
+</dd>
+<dt><strong>-a word</strong></dt>
+<dd>
+<p>add <strong>word</strong> to the filter.</p>
+</dd>
+<dt><strong>-A <em>dictfile</em></strong></dt>
+<dd>
+<p>add all words from <em>dictfile</em> to the filter. To indicate that
+program is working <strong>apgbfm</strong> prints dot for every 100
+words added in dictionary.</p>
+</dd>
+<dt><strong>-c word</strong></dt>
+<dd>
+<p>check <strong>word</strong> for appearance in the filter.</p>
+</dd>
+<dt><strong>-C <em>dictfile</em></strong></dt>
+<dd>
+<p>check every word from <em>dictfile</em> for appearance in the
+filter.</p>
+</dd>
+<dt><strong>-q</strong></dt>
+<dd>
+<p>quiet mode.</p>
+</dd>
+<dt><strong>-s</strong></dt>
+<dd>
+<p>create new filter in case-insensitive mode.</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>print version information.</p>
+</dd>
+<dt><strong>-h</strong></dt>
+<dd>
+<p>print help information.</p>
+</dd>
+</dl>
+<h1>EXIT CODE</h1>
+<p>On successful completion of its task, <strong>apgbfm</strong> will
+complete with exit code 0. An exit code of -1 indicates an error
+occurred. Textual errors are written to the standard error stream.</p>
+<h1>FILES</h1>
+<p><strong>None.</strong></p>
+<h1>BUGS</h1>
+<p><strong>None.</strong> If you've found one, please send bug
+description to the author.</p>
+<p>This man page is Alpha too.</p>
+<h1>SEE ALSO</h1>
+<p><strong>apg</strong>(1)</p>
+<h1>AUTHOR</h1>
+<p>Adel I. Mirzazhanov, &lt;a-del@iname.com&gt;<br />
+Project home page: http://www.adel.nursat.kz/apg/</p>

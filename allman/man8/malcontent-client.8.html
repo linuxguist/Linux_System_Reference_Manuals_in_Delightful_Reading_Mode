@@ -1,0 +1,272 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>malcontent-client - Parental Controls Access Utility</p>
+<h1>SYNOPSIS</h1>
+<p><strong>malcontent-client get-app-filter [-q] [-n]
+[</strong>USER<strong>]</strong></p>
+<p><strong>malcontent-client check-app-filter [-q] [-n] [USER]
+ARG</strong></p>
+<p><strong>malcontent-client set-app-filter [-q] [-n] [USER]
+ARG</strong></p>
+<p><strong>malcontent-client oars-section [-q] [-n] [USER]
+SECTION</strong></p>
+<p><strong>malcontent-client get-session-limits [-q] [-n]
+[USER]</strong></p>
+<p><strong>malcontent-client monitor [-q] [USER]</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>malcontent-client is a utility for querying and updating
+the</strong> parental controls settings for users on the system. It will
+typically require administrator access to do anything more than query
+the current user’s parental controls.</p>
+<p>It communicates with accounts-service, which stores parental controls
+data.</p>
+<p>Its first argument is a command to run. The supported commands are
+documented below.</p>
+<p>The command line API and output format are unstable and likely to
+change in future versions of <strong>malcontent-client.</strong></p>
+<h1><strong>get-app-filter</strong> OPTIONS</h1>
+<p>Get the app filter for a user. For example:</p>
+<blockquote>
+<p># malcontent-client get-app-filter timmy</p>
+</blockquote>
+<dl>
+<dt>USER</dt>
+<dd>
+<p>Username or ID of the user to get the app filter for. If not
+specified, the current user will be used by default.</p>
+</dd>
+<dt>-q, --quiet</dt>
+<dd>
+<p>Only output error messages, and no informational messages, as the
+operation progresses. (Default: Output informational messages.)</p>
+</dd>
+<dt>-n, --no-interactive</dt>
+<dd>
+<p>Do not allow interactive authorization with polkit. If this is needed
+to complete the operation, the operation will fail. (Default: Allow
+interactive authorization.)</p>
+</dd>
+</dl>
+<h1><strong>check-app-filter</strong> OPTIONS</h1>
+<p>Check if a given program, content type or flatpak ref is permitted to
+be used by a user, according to their current app filter. For
+example:</p>
+<blockquote>
+<p># malcontent-client check-app-filter timmy $(which
+gnome-calculator)</p>
+<p># malcontent-client check-app-filter timmy x-scheme-handler/http</p>
+<p># malcontent-client check-app-filter timmy
+app/com.realm667.WolfenDoom_Blade_of_Agony/x86_64/stable</p>
+</blockquote>
+<dl>
+<dt>USER</dt>
+<dd>
+<p>Username or ID of the user to get the app filter for. If not
+specified, the current user will be used by default.</p>
+</dd>
+<dt>ARG</dt>
+<dd>
+<p>Path to a program, content type or flatpak ref to check against the
+app filter, to see if it is allowed for the specified user.</p>
+</dd>
+<dt>-q, --quiet</dt>
+<dd>
+<p>Only output error messages, and no informational messages, as the
+operation progresses. (Default: Output informational messages.)</p>
+</dd>
+<dt>-n, --no-interactive</dt>
+<dd>
+<p>Do not allow interactive authorization with polkit. If this is needed
+to complete the operation, the operation will fail. (Default: Allow
+interactive authorization.)</p>
+</dd>
+</dl>
+<h1><strong>set-app-filter</strong> OPTIONS</h1>
+<p>Set the app filter for a user, replacing all previous values in it.
+For example:</p>
+<blockquote>
+<p># malcontent-client set-app-filter timmy \
+--disallow-user-installation \ $(which gnome-calculator) \
+x-scheme-handler/http \
+app/com.realm667.WolfenDoom_Blade_of_Agony/x86_64/stable</p>
+</blockquote>
+<dl>
+<dt>USER</dt>
+<dd>
+<p>Username or ID of the user to set the app filter for. If not
+specified, the current user will be used by default.</p>
+</dd>
+<dt>ARG</dt>
+<dd>
+<p>Item to filter in the user’s app filter. This could either be an
+absolute path or flatpak ref of a program to block; a content type to
+block all programs handling that type; or an OARS <strong>section=value
+pair to block installation of</strong> apps with a more extreme rating
+for that OARS section. Multiple items may be specified, and they will
+replace the user’s current app filter in entirety. If zero items are
+specified, the app filter is cleared.</p>
+</dd>
+<dt>--allow-user-installation</dt>
+<dd>
+<p>Allow the user to install flatpaks to their user repository.</p>
+</dd>
+<dt>--disallow-user-installation</dt>
+<dd>
+<p>Disallow the user from installing flatpaks to their user
+repository.</p>
+</dd>
+<dt>--allow-system-installation</dt>
+<dd>
+<p>Allow the user to install flatpaks to the system repository.</p>
+</dd>
+<dt>--disallow-system-installation</dt>
+<dd>
+<p>Disallow the user from installing flatpaks to the system
+repository.</p>
+</dd>
+<dt>-q, --quiet</dt>
+<dd>
+<p>Only output error messages, and no informational messages, as the
+operation progresses. (Default: Output informational messages.)</p>
+</dd>
+<dt>-n, --no-interactive</dt>
+<dd>
+<p>Do not allow interactive authorization with polkit. If this is needed
+to complete the operation, the operation will fail. (Default: Allow
+interactive authorization.)</p>
+</dd>
+</dl>
+<h1><strong>oars-section</strong> OPTIONS</h1>
+<p>Get the value set for a specific OARS section from the app filter of
+the given user. For example:</p>
+<blockquote>
+<p># malcontent-client oars-section timmy language-profanity</p>
+</blockquote>
+<dl>
+<dt>USER</dt>
+<dd>
+<p>Username or ID of the user to get the OARS filter for. If not
+specified, the current user will be used by default.</p>
+</dd>
+<dt>SECTION</dt>
+<dd>
+<p>OARS section to get the restriction level of the given user for. For
+example, <strong>language-profanity.</strong></p>
+</dd>
+<dt>-q, --quiet</dt>
+<dd>
+<p>Only output error messages, and no informational messages, as the
+operation progresses. (Default: Output informational messages.)</p>
+</dd>
+<dt>-n, --no-interactive</dt>
+<dd>
+<p>Do not allow interactive authorization with polkit. If this is needed
+to complete the operation, the operation will fail. (Default: Allow
+interactive authorization.)</p>
+</dd>
+</dl>
+<h1><strong>get-session-limits</strong> OPTIONS</h1>
+<p>Get the session limits set for a user. For example:</p>
+<blockquote>
+<p># malcontent-client get-session-limits timmy</p>
+</blockquote>
+<dl>
+<dt>USER</dt>
+<dd>
+<p>Username or ID of the user to get the session limits for. If not
+specified, the current user will be used by default.</p>
+</dd>
+<dt>-q, --quiet</dt>
+<dd>
+<p>Only output error messages, and no informational messages, as the
+operation progresses. (Default: Output informational messages.)</p>
+</dd>
+<dt>-n, --no-interactive</dt>
+<dd>
+<p>Do not allow interactive authorization with polkit. If this is needed
+to complete the operation, the operation will fail. (Default: Allow
+interactive authorization.)</p>
+</dd>
+<dt>--now yyyy-mm-ddThh:mm:ssZ</dt>
+<dd>
+<p>Check session limits (in particular, session expiry time) against the
+given date/time, provided in ISO 8601 format. (Default: Current
+date/time.)</p>
+</dd>
+</dl>
+<h1><strong>monitor</strong> OPTIONS</h1>
+<p>Monitor changes to the parental controls settings for a specific
+user. For example:</p>
+<blockquote>
+<p># malcontent-client monitor timmy</p>
+</blockquote>
+<dl>
+<dt>USER</dt>
+<dd>
+<p>Username or ID of the user to monitor the parental controls for. If
+not specified, the current user will be used by default.</p>
+</dd>
+<dt>-q, --quiet</dt>
+<dd>
+<p>Only output error messages, and no informational messages, as the
+operation progresses. (Default: Output informational messages.)</p>
+</dd>
+</dl>
+<h1>ENVIRONMENT</h1>
+<p><strong>malcontent-client supports the standard GLib
+environment</strong> variables for debugging. These variables are
+<strong>not intended to be used in</strong> production:</p>
+<dl>
+<dt>$G_MESSAGES_DEBUG</dt>
+<dd>
+
+</dd>
+</dl>
+<p>This variable can contain one or more debug domain names to display
+debug output for. The value <em>all</em> <strong>will enable all debug
+output. The default is for no</strong> debug output to be enabled.</p>
+<h1>EXIT STATUS</h1>
+<p><strong>malcontent-client may return one of several error codes if
+it</strong> encounters problems.</p>
+<ol start="0" type="1">
+<li></li>
+</ol>
+<p>No problems occurred. The utility ran and successfully queried the
+app filter. If running the <strong>check-app-filter command, the given
+path, content type or</strong> flatpak ref was allowed for the given
+user.</p>
+<ol type="1">
+<li></li>
+</ol>
+<p>An invalid option was passed to <strong>malcontent-client on</strong>
+startup.</p>
+<ol start="2" type="1">
+<li></li>
+</ol>
+<p>The current user was not authorized to query the app filter for the
+given user.</p>
+<ol start="3" type="1">
+<li></li>
+</ol>
+<p>If running the <strong>check-app-filter command, the given path,
+content type or</strong> flatpak ref was <em>not</em> <strong>allowed
+for the given user.</strong></p>
+<ol start="4" type="1">
+<li></li>
+</ol>
+<p>Malcontent is disabled at the system level, and hence parental
+controls are not enabled or enforced.</p>
+<ol start="5" type="1">
+<li></li>
+</ol>
+<p>An operation failed and no more specific error information is
+available.</p>
+<h1>BUGS</h1>
+<p>Any bugs which are found should be reported on the project
+website:<br />
+<em>https://gitlab.freedesktop.org/pwithnall/malcontent/-/issues</em></p>
+<h1>AUTHOR</h1>
+<p>Endless Mobile, Inc.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2018 Endless Mobile, Inc.</p>

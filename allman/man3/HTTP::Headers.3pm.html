@@ -1,0 +1,379 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>HTTP::Headers - Class encapsulating HTTP Message headers</p>
+<h1>VERSION</h1>
+<p>version 6.44</p>
+<h1>SYNOPSIS</h1>
+<p>require HTTP::Headers; $h = HTTP::Headers-&gt;new;
+$h-&gt;header(Content-Type =&gt; text/plain); # set $ct =
+$h-&gt;header(Content-Type); # get $h-&gt;remove_header(Content-Type); #
+delete</p>
+<h1>DESCRIPTION</h1>
+<p>The <code>HTTP::Headers</code> class encapsulates HTTP-style message
+headers. The headers consist of attribute-value pairs also called
+fields, which may be repeated, and which are printed in a particular
+order. The field names are cases insensitive.</p>
+<p>Instances of this class are usually created as member variables of
+the <code>HTTP::Request</code> and <code>HTTP::Response</code> classes,
+internal to the library.</p>
+<p>The following methods are available:</p>
+<dl>
+<dt>$h = HTTP::Headers-&gt;new</dt>
+<dd>
+<p>Constructs a new <code>HTTP::Headers</code> object. You might pass
+some initial attribute-value pairs as parameters to the constructor.
+<em>E.g.</em>: $h = HTTP::Headers-&gt;new( Date =&gt; Thu, 03 Feb 1994
+00:00:00 GMT, Content_Type =&gt; text/html; version=3.2, Content_Base
+=&gt; http://www.perl.org/); The constructor arguments are passed to the
+<code>header</code> method which is described below.</p>
+</dd>
+<dt>$h-&gt;clone</dt>
+<dd>
+<p>Returns a copy of this <code>HTTP::Headers</code> object.</p>
+</dd>
+<dt>$h-&gt;header( $field )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$h-&gt;header( $field =&gt; $value )</dt>
+<dd>
+
+</dd>
+<dt>$h-&gt;header( $f1 =&gt; $v1, $f2 =&gt; $v2, ... )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Get or set the value of one or more header fields. The header field
+name ($field) is not case sensitive. To make the life easier for perl
+users who wants to avoid quoting before the =&gt; operator, you can use
+'_' as a replacement for '-' in header names. The
+<strong>header()</strong> method accepts multiple ($field =&gt;
+<code>$value</code>) pairs, which means that you can update several
+fields with a single invocation. The <code>$value</code> argument may be
+a plain string or a reference to an array of strings for a multi-valued
+field. If the <code>$value</code> is provided as <code>undef</code> then
+the field is removed. If the <code>$value</code> is not given, then that
+header field will remain unchanged. In addition to being a string,
+<code>$value</code> may be something that stringifies. The old value (or
+values) of the last of the header fields is returned. If no such field
+exists <code>undef</code> will be returned. A multi-valued field will be
+returned as separate values in list context and will be concatenated
+with , as separator in scalar context. The HTTP spec (RFC 2616) promises
+that joining multiple values in this way will not change the semantic of
+a header field, but in practice there are cases like old-style Netscape
+cookies (see HTTP::Cookies) where , is used as part of the syntax of a
+single field value. Examples: $header-&gt;header(MIME_Version =&gt; 1.0,
+User_Agent =&gt; My-Web-Client/0.01); $header-&gt;header(Accept =&gt;
+"text/html, text/plain, image/*"); $header-&gt;header(Accept =&gt;
+[qw(text/html text/plain image/*)]); @accepts =
+$header-&gt;header(Accept); # get multiple values $accepts =
+$header-&gt;header(Accept); # get values as a single string</p>
+<dl>
+<dt>$h-&gt;push_header( $field =&gt; $value )</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$h-&gt;push_header( $f1 =&gt; $v1, $f2 =&gt; $v2, ... )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Add a new field value for the specified header field. Previous values
+for the same field are retained. As for the <strong>header()</strong>
+method, the field name ($field) is not case sensitive and '_' can be
+used as a replacement for '-'. The <code>$value</code> argument may be a
+scalar or a reference to a list of scalars.
+$header-&gt;push_header(Accept =&gt; image/jpeg);
+$header-&gt;push_header(Accept =&gt; [map "image/$_", qw(gif png
+tiff)]);</p>
+<dl>
+<dt>$h-&gt;init_header( $field =&gt; $value )</dt>
+<dd>
+<p>Set the specified header to the given value, but only if no previous
+value for that field is set. The header field name ($field) is not case
+sensitive and '_' can be used as a replacement for '-'. The
+<code>$value</code> argument may be a scalar or a reference to a list of
+scalars.</p>
+</dd>
+<dt>$h-&gt;remove_header( $field, ... )</dt>
+<dd>
+<p>This function removes the header fields with the specified names. The
+header field names ($field) are not case sensitive and '_' can be used
+as a replacement for '-'. The return value is the values of the fields
+removed. In scalar context the number of fields removed is returned.
+Note that if you pass in multiple field names then it is generally not
+possible to tell which of the returned values belonged to which
+field.</p>
+</dd>
+<dt>$h-&gt;remove_content_headers</dt>
+<dd>
+<p>This will remove all the header fields used to describe the content
+of a message. All header field names prefixed with <code>Content-</code>
+fall into this category, as well as <code>Allow</code>,
+<code>Expires</code> and <code>Last-Modified</code>. RFC 2616 denotes
+these fields as <em>Entity Header</em> Fields. The return value is a new
+<code>HTTP::Headers</code> object that contains the removed headers
+only.</p>
+</dd>
+<dt>$h-&gt;clear</dt>
+<dd>
+<p>This will remove all header fields.</p>
+</dd>
+<dt>$h-&gt;header_field_names</dt>
+<dd>
+<p>Returns the list of distinct names for the fields present in the
+header. The field names have case as suggested by HTTP spec, and the
+names are returned in the recommended Good Practice order. In scalar
+context return the number of distinct field names.</p>
+</dd>
+<dt>$h-&gt;scan( \&amp;process_header_field )</dt>
+<dd>
+<p>Apply a subroutine to each header field in turn. The callback routine
+is called with two parameters; the name of the field and a single value
+(a string). If a header field is multi-valued, then the routine is
+called once for each value. The field name passed to the callback
+routine has case as suggested by HTTP spec, and the headers will be
+visited in the recommended Good Practice order. Any return values of the
+callback routine are ignored. The loop can be broken by raising an
+exception (<code>die</code>), but the caller of <strong>scan()</strong>
+would have to trap the exception itself.</p>
+</dd>
+<dt>$h-&gt;flatten()</dt>
+<dd>
+<p>Returns the list of pairs of keys and values.</p>
+</dd>
+<dt>$h-&gt;as_string</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$h-&gt;as_string( $eol )</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Return the header fields as a formatted MIME header. Since it
+internally uses the <code>scan</code> method to build the string, the
+result will use case as suggested by HTTP spec, and it will follow
+recommended Good Practice of ordering the header fields. Long header
+values are not folded. The optional <code>$eol</code> parameter
+specifies the line ending sequence to use. The default is \n. Embedded
+\n characters in header field values will be substituted with this line
+ending sequence.</p>
+<h1>CONVENIENCE METHODS</h1>
+<p>The most frequently used headers can also be accessed through the
+following convenience methods. Most of these methods can both be used to
+read and to set the value of a header. The header value is set if you
+pass an argument to the method. The old header value is always returned.
+If the given header did not exist then <code>undef</code> is
+returned.</p>
+<p>Methods that deal with dates/times always convert their value to
+system time (seconds since Jan 1, 1970) and they also expect this kind
+of value when the header value is set.</p>
+<dl>
+<dt>$h-&gt;date</dt>
+<dd>
+<p>This header represents the date and time at which the message was
+originated. <em>E.g.</em>: $h-&gt;date(time); # set current date</p>
+</dd>
+<dt>$h-&gt;expires</dt>
+<dd>
+<p>This header gives the date and time after which the entity should be
+considered stale.</p>
+</dd>
+<dt>$h-&gt;if_modified_since</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$h-&gt;if_unmodified_since</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These header fields are used to make a request conditional. If the
+requested resource has (or has not) been modified since the time
+specified in this field, then the server will return a
+<code>304 Not Modified</code> response instead of the document
+itself.</p>
+<dl>
+<dt>$h-&gt;last_modified</dt>
+<dd>
+<p>This header indicates the date and time at which the resource was
+last modified. <em>E.g.</em>: # check if document is more than 1 hour
+old if (my $last_mod = $h-&gt;last_modified) { if ($last_mod &lt; time -
+60*60) { ... } }</p>
+</dd>
+<dt>$h-&gt;content_type</dt>
+<dd>
+<p>The Content-Type header field indicates the media type of the message
+content. <em>E.g.</em>: $h-&gt;content_type(text/html); The value
+returned will be converted to lower case, and potential parameters will
+be chopped off and returned as a separate value if in an array context.
+If there is no such header field, then the empty string is returned.
+This makes it safe to do the following: if ($h-&gt;content_type eq
+text/html) { # we enter this place even if the real header value happens
+to # be TEXT/HTML; version=3.0 ... }</p>
+</dd>
+<dt>$h-&gt;content_type_charset</dt>
+<dd>
+<p>Returns the upper-cased charset specified in the Content-Type header.
+In list context return the lower-cased bare content type followed by the
+upper-cased charset. Both values will be <code>undef</code> if not
+specified in the header.</p>
+</dd>
+<dt>$h-&gt;content_is_text</dt>
+<dd>
+<p>Returns TRUE if the Content-Type header field indicate that the
+content is textual.</p>
+</dd>
+<dt>$h-&gt;content_is_html</dt>
+<dd>
+<p>Returns TRUE if the Content-Type header field indicate that the
+content is some kind of HTML (including XHTML). This method can't be
+used to set Content-Type.</p>
+</dd>
+<dt>$h-&gt;content_is_xhtml</dt>
+<dd>
+<p>Returns TRUE if the Content-Type header field indicate that the
+content is XHTML. This method can't be used to set Content-Type.</p>
+</dd>
+<dt>$h-&gt;content_is_xml</dt>
+<dd>
+<p>Returns TRUE if the Content-Type header field indicate that the
+content is XML. This method can't be used to set Content-Type.</p>
+</dd>
+<dt>$h-&gt;content_encoding</dt>
+<dd>
+<p>The Content-Encoding header field is used as a modifier to the media
+type. When present, its value indicates what additional encoding
+mechanism has been applied to the resource.</p>
+</dd>
+<dt>$h-&gt;content_length</dt>
+<dd>
+<p>A decimal number indicating the size in bytes of the message
+content.</p>
+</dd>
+<dt>$h-&gt;content_language</dt>
+<dd>
+<p>The natural language(s) of the intended audience for the message
+content. The value is one or more language tags as defined by RFC 1766.
+Eg. no for some kind of Norwegian and en-US for English the way it is
+written in the US.</p>
+</dd>
+<dt>$h-&gt;title</dt>
+<dd>
+<p>The title of the document. In libwww-perl this header will be
+initialized automatically from the &lt;TITLE&gt;...&lt;/TITLE&gt;
+element of HTML documents. <em>This header is no longer part of the
+HTTP</em> standard.</p>
+</dd>
+<dt>$h-&gt;user_agent</dt>
+<dd>
+<p>This header field is used in request messages and contains
+information about the user agent originating the request. <em>E.g.</em>:
+$h-&gt;user_agent(Mozilla/5.0 (compatible; MSIE 7.0; Windows NT
+6.0));</p>
+</dd>
+<dt>$h-&gt;server</dt>
+<dd>
+<p>The server header field contains information about the software being
+used by the originating server program handling the request.</p>
+</dd>
+<dt>$h-&gt;from</dt>
+<dd>
+<p>This header should contain an Internet e-mail address for the human
+user who controls the requesting user agent. The address should be
+machine-usable, as defined by RFC822. E.g.: $h-&gt;from(King Kong
+&lt;king@kong.com&gt;); <em>This header is no longer part of the HTTP
+standard.</em></p>
+</dd>
+<dt>$h-&gt;referer</dt>
+<dd>
+<p>Used to specify the address (URI) of the document from which the
+requested resource address was obtained. The Free On-line Dictionary of
+Computing as this to say about the word <em>referer</em>: &lt;World-Wide
+Web&gt; A misspelling of "referrer" which somehow made it into the
+{HTTP} standard. A given {web page}s referer (sic) is the {URL} of
+whatever web page contains the link that the user followed to the
+current page. Most browsers pass this information as part of a request.
+(1998-10-19) By popular demand <code>referrer</code> exists as an alias
+for this method so you can avoid this misspelling in your programs and
+still send the right thing on the wire. When setting the referrer, this
+method removes the fragment from the given URI if it is present, as
+mandated by RFC2616. Note that the removal does <em>not</em> happen
+automatically if using the <strong>header()</strong>,
+<strong>push_header()</strong> or <strong>init_header()</strong> methods
+to set the referrer.</p>
+</dd>
+<dt>$h-&gt;www_authenticate</dt>
+<dd>
+<p>This header must be included as part of a
+<code>401 Unauthorized</code> response. The field value consist of a
+challenge that indicates the authentication scheme and parameters
+applicable to the requested URI.</p>
+</dd>
+<dt>$h-&gt;proxy_authenticate</dt>
+<dd>
+<p>This header must be included in a
+<code>407 Proxy Authentication Required</code> response.</p>
+</dd>
+<dt>$h-&gt;authorization</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$h-&gt;proxy_authorization</dt>
+<dd>
+
+</dd>
+</dl>
+<p>A user agent that wishes to authenticate itself with a server or a
+proxy, may do so by including these headers.</p>
+<dl>
+<dt>$h-&gt;authorization_basic</dt>
+<dd>
+<p>This method is used to get or set an authorization header that use
+the Basic Authentication Scheme. In array context it will return two
+values; the user name and the password. In scalar context it will return
+<em>uname:password</em> as a single string value. When used to set the
+header value, it expects two arguments. <em>E.g.</em>:
+$h-&gt;authorization_basic($uname, $password); The method will croak if
+the <code>$uname</code> contains a colon ':'.</p>
+</dd>
+<dt>$h-&gt;proxy_authorization_basic</dt>
+<dd>
+<p>Same as <strong>authorization_basic()</strong> but will set the
+Proxy-Authorization header instead.</p>
+</dd>
+</dl>
+<h1>NON-CANONICALIZED FIELD NAMES</h1>
+<p>The header field name spelling is normally canonicalized including
+the '_' to '-' translation. There are some application where this is not
+appropriate. Prefixing field names with ':' allow you to force a
+specific spelling. For example if you really want a header field name to
+show up as <code>foo_bar</code> instead of Foo-Bar, you might set it
+like this:</p>
+<p>$h-&gt;header(":foo_bar" =&gt; 1);</p>
+<p>These field names are returned with the ':' intact for
+<code>$h</code>-&gt;header_field_names and the <code>$h</code>-&gt;scan
+callback, but the colons do not show in
+<code>$h</code>-&gt;as_string.</p>
+<h1>AUTHOR</h1>
+<p>Gisle Aas &lt;gisle@activestate.com&gt;</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 1994 by Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

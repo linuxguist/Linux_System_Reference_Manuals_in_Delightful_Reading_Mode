@@ -1,0 +1,52 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>X11::Protocol::Connection - Perl module abstract base class for X11
+client to server connections</p>
+<h1>SYNOPSIS</h1>
+<p># In connection object module package
+X11::Protocol::Connection::CarrierPigeon; use X11::Protocol::Connection;
+@ISA = (X11::Protocol::Connection); sub open { ... } sub give { ... }
+sub get { ... } sub fh { ... } ... # In program $connection =
+X11::Protocol::Connection::CarrierPigeon -&gt;open($host,
+$display_number); $x = X11::Protocol-&gt;new($connection);
+$connection-&gt;give($data); $reply = unpack("I",
+$connection-&gt;get(4)); use IO::Select; $sel =
+IO::select-&gt;new($connection-&gt;fh); if ($sel-&gt;can_read ==
+$connection-&gt;fh) ...</p>
+<h1>DESCRIPTION</h1>
+<p>This module is an abstract base class for the various
+X11::Protocol::Connection::* modules that provide connections to X
+servers for the X11::Protocol module. It provides stubs for the
+following methods:</p>
+<h2>open</h2>
+<p>$conn = X11::Protocol::Connection::Foo-&gt;open($host,
+$display_num)</p>
+<p>Open a connection to the specified display (numbered from 0) on the
+specified <code>$host</code>.</p>
+<h2>give</h2>
+<p>$conn-&gt;give($data)</p>
+<p>Send the given data to the server. Normally, this method is used only
+by the protocol module itself.</p>
+<h2>get</h2>
+<p>$data = $conn-&gt;get($n)</p>
+<p>Read <code>$n</code> bytes of data from the server. Normally, this
+method is used only by the protocol module itself.</p>
+<h2>fh</h2>
+<p>$filehandle = $conn-&gt;fh</p>
+<p>Return an object suitable for use as a filehandle. This is mainly
+useful for doing <strong>select()</strong> and other such system
+calls.</p>
+<h1>AUTHOR</h1>
+<p>Stephen McCamant &lt;SMCCAM@cpan.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>perl</strong> (1), X11::Protocol,
+X11::Protocol::Connection::Socket,
+X11::Protocol::Connection::FileHandle,
+X11::Protocol::Connection::INETSocket,
+X11::Protocol::Connection::UNIXSocket,
+X11::Protocol::Connection::INETFH,
+X11::Protocol::Connection::UNIXFH.</p>

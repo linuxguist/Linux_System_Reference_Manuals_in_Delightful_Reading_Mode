@@ -1,0 +1,51 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>bogolexer - Utility program for separating email messages into
+tokens</p>
+<h1>SYNOPSIS</h1>
+<p><strong>bogolexer</strong> [-p] [-q] [-h] [-n] [-v] [-x
+<em>flags</em>] [-c <em>file</em>] [-C] [-D] [-I <em>file</em>] [-O
+<em>file</em>] [-V]</p>
+<h1>DESCRIPTION</h1>
+<p>Bogolexer is part of the bogofilter Bayesian spam filter package.</p>
+<p>It is used to separate messages into tokens and to test new versions
+of the lexer.l code.</p>
+<h1>OPTIONS</h1>
+<p>The <strong>-p</strong> option tells bogolexer to print just the
+tokens read from stdin, without any extra messages.</p>
+<p>The <strong>-q</strong> option tells bogolexer to print a token
+count, without printing the actual tokens.</p>
+<p>The <strong>-h</strong> option prints the help message and exits.</p>
+<p>The <strong>-n</strong> option tells bogolexer to map non-ascii
+characters to the question point ?.</p>
+<p>The <strong>-v</strong> option increases the verbosity level.</p>
+<p>The <strong>-x</strong> <em>flags</em> option allows setting of debug
+flags for printing debug messages.</p>
+<p>The <strong>-c</strong><em>filename</em> option tells bogolexer to
+read the config file named.</p>
+<p>The <strong>-C</strong> option prevents bogolexer from reading
+configuration files.</p>
+<p>The <strong>-D</strong> option redirects the debugging output to
+stdout (it defaults to stderr).</p>
+<p>The <strong>-I</strong> <em>filename</em> option tells bogolexer to
+read its input from the specified file, rather than from
+<em>stdin</em>.</p>
+<p>The <strong>-O</strong> <em>filename</em> option tells bogolexer to
+write its output to the specified file, rather than to
+<em>stdout</em>.</p>
+<p>The <strong>-V</strong> option prints the version number and
+exits.</p>
+<h1>AUTHOR</h1>
+<p>The bogofilter developer team.</p>
+<p>For updates, see <strong>the bogofilter project page</strong>[1].</p>
+<h1>SEE ALSO</h1>
+<p>bogofilter(1), bogotune(1), bogoupgrade(1), bogoutil(1)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>the bogofilter project page</p>
+<p>http://bogofilter.sourceforge.net/</p>
+</dd>
+</dl>

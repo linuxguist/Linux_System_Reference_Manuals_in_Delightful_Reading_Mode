@@ -1,0 +1,132 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::SSLeay::Handle - Perl module that lets SSL (HTTPS) sockets be
+handled as standard file handles.</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::SSLeay::Handle qw/shutdown/; my ($host, $port) =
+("localhost", 443); tie(*SSL, "Net::SSLeay::Handle", $host, $port);
+print SSL "GET / HTTP/1.0\r\n"; shutdown(\*SSL, 1); print while
+(&lt;SSL&gt;); close SSL;</p>
+<h1>DESCRIPTION</h1>
+<p>Net::SSLeay::Handle allows you to request and receive HTTPS web pages
+using old-fashion file handles as in:</p>
+<p>print SSL "GET / HTTP/1.0\r\n";</p>
+<p>and</p>
+<p>print while (&lt;SSL&gt;);</p>
+<p>If you export the shutdown routine, then the only extra code that you
+need to add to your program is the tie function as in:</p>
+<p>my $socket; if ($scheme eq "https") { tie(*S2, "Net::SSLeay::Handle",
+$host, $port); $socket = \*S2; else { $socket =
+Net::SSLeay::Handle-&gt;make_socket($host, $port); } print $socket
+$request_headers; ...</p>
+<h1>FUNCTIONS</h1>
+<dl>
+<dt>shutdown</dt>
+<dd>
+<p> shutdown(\*SOCKET, $mode) Calls to the main
+<strong>shutdown()</strong> don't work with tied sockets created with
+this module. This shutdown should be able to distinquish between tied
+and untied sockets and do the right thing.</p>
+</dd>
+<dt>debug</dt>
+<dd>
+<p> my $debug = Net::SSLeay::Handle-&gt;debug()
+Net::SSLeay::Handle-&gt;debug(1) Get/set debugging mode. Always returns
+the debug value before the function call. if an additional argument is
+given the debug option will be set to this value.</p>
+</dd>
+<dt>make_socket</dt>
+<dd>
+<p> my $sock = Net::SSLeay::Handle-&gt;make_socket($host, $port);
+Creates a socket that is connected to <code>$post</code> using
+<code>$port</code>. It uses <code>$Net::SSLeay::proxyhost</code> and
+proxyport if set and authentificates itself against this proxy depending
+on <code>$Net::SSLeay::proxyauth</code>. It also turns autoflush on for
+the created socket.</p>
+</dd>
+</dl>
+<h2>USING EXISTING SOCKETS</h2>
+<p>One of the motivations for writing this module was to avoid
+duplicating socket creation code (which is mostly error handling). The
+calls to <strong>tie()</strong> above where it is passed a
+<code>$host</code> and <code>$port</code> is provided for convenience
+testing. If you already have a socket connected to the right host and
+port, S1, then you can do something like:</p>
+<p>my $socket \*S1; if ($scheme eq "https") { tie(*S2,
+"Net::SSLeay::Handle", $socket); $socket = \*S2; } my $last_sel =
+select($socket); $| = 1; select($last_sel); print $socket
+$request_headers; ...</p>
+<p>Note: As far as I know you must be careful with the globs in the
+<strong>tie()</strong> function. The first parameter must be a glob
+(*SOMETHING) and the last parameter must be a reference to a glob
+(\*SOMETHING_ELSE) or a scaler that was assigned to a reference to a
+glob (as in the example above)</p>
+<p>Also, the two globs must be different. When I tried to use the same
+glob, I got a core dump.</p>
+<h2>EXPORT</h2>
+<p>None by default.</p>
+<p>You can export the <strong>shutdown()</strong> function.</p>
+<p>It is suggested that you do export <strong>shutdown()</strong> or use
+the fully qualified <strong>Net::SSLeay::Handle::shutdown()</strong>
+function to shutdown SSL sockets. It should be smart enough to
+distinguish between SSL and non-SSL sockets and do the right thing.</p>
+<h1>EXAMPLES</h1>
+<p>use Net::SSLeay::Handle qw/shutdown/; my ($host, $port) =
+("localhost", 443); tie(*SSL, "Net::SSLeay::Handle", $host, $port);
+print SSL "GET / HTTP/1.0\r\n"; shutdown(\*SSL, 1); print while
+(&lt;SSL&gt;); close SSL;</p>
+<h1>TODO</h1>
+<p>Better error handling. Callback routine?</p>
+<h1>CAVEATS</h1>
+<p>Tying to a file handle is a little tricky (for me at least).</p>
+<p>The first parameter to <strong>tie()</strong> must be a glob
+(*SOMETHING) and the last parameter must be a reference to a glob
+(\*SOMETHING_ELSE) or a scaler that was assigned to a reference to a
+glob ($s = \*SOMETHING_ELSE). Also, the two globs must be different.
+When I tried to use the same glob, I got a core dump.</p>
+<p>I was able to associate attributes to globs created by this module
+(like *SSL above) by making a hash of hashes keyed by the file
+head1.</p>
+<h1>CHANGES</h1>
+<p>Please see Net-SSLeay-Handle-0.50/Changes file.</p>
+<h1>BUGS</h1>
+<p>If you encounter a problem with this module that you believe is a
+bug, please create a new issue
+&lt;https://github.com/radiator-software/p5-net-ssleay/issues/new&gt; in
+the Net-SSLeay GitHub repository. Please make sure your bug report
+includes the following information:</p>
+<ul>
+<li><p>the code you are trying to run;</p></li>
+<li><p>your operating system name and version;</p></li>
+<li><p>the output of <code>perl -V</code>;</p></li>
+<li><p>the version of OpenSSL or LibreSSL you are using.</p></li>
+</ul>
+<h1>AUTHOR</h1>
+<p>Originally written by Jim Bowlin.</p>
+<p>Maintained by Sampo Kellomäki between July 2001 and August 2003.</p>
+<p>Maintained by Florian Ragwitz between November 2005 and January
+2010.</p>
+<p>Maintained by Mike McCauley between November 2005 and June 2018.</p>
+<p>Maintained by Chris Novakovic, Tuure Vartiainen and Heikki Vatiainen
+since June 2018.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 2001 Jim Bowlin &lt;jbowlin@linklint.org&gt;</p>
+<p>Copyright (c) 2001-2003 Sampo Kellomäki &lt;sampo@iki.fi&gt;</p>
+<p>Copyright (c) 2005-2010 Florian Ragwitz &lt;rafl@debian.org&gt;</p>
+<p>Copyright (c) 2005-2018 Mike McCauley &lt;mikem@airspayce.com&gt;</p>
+<p>Copyright (c) 2018- Chris Novakovic &lt;chris@chrisn.me.uk&gt;</p>
+<p>Copyright (c) 2018- Tuure Vartiainen
+&lt;vartiait@radiatorsoftware.com&gt;</p>
+<p>Copyright (c) 2018- Heikki Vatiainen
+&lt;hvn@radiatorsoftware.com&gt;</p>
+<p>All rights reserved.</p>
+<h1>LICENSE</h1>
+<p>This module is released under the terms of the Artistic License 2.0.
+For details, see the <code>LICENSE</code> file distributed with
+Net-SSLeay's source code.</p>
+<h1>SEE ALSO</h1>
+<p>Net::SSLeay, <strong>perl</strong> (1), http://openssl.org/</p>

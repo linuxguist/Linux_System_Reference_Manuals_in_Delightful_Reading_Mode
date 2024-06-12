@@ -1,0 +1,164 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>bogoutil - Dumps, loads, and maintains bogofilter database files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>bogoutil</strong> {-h | -V}</p>
+<p><strong>bogoutil</strong> [options] {-d <em>file</em> | -H
+<em>file</em> | -l <em>file</em> | -m <em>file</em> | -w <em>file</em> |
+-p <em>file</em>}</p>
+<p><strong>bogoutil</strong> {-r <em>file</em> | -R <em>file</em>}</p>
+<p><strong>bogoutil</strong> {--db-print-leafpage-count <em>file</em> |
+--db-print-pagesize <em>file</em> | --db-verify <em>file</em> |
+--db-checkpoint <em>directory</em> [flag...] | --db-list-logfiles
+<em>directory</em> | --db-prune <em>directory</em> | --db-recover
+<em>directory</em> | --db-recover-harder <em>directory</em> |
+--db-remove-environment <em>directory</em>}</p>
+<p>where <strong>options</strong> is</p>
+<p><strong>bogoutil</strong> [-v] [-n] [-C] [-D] [-a <em>age</em>] [-c
+<em>count</em>] [-s <em>min,max</em>] [-y <em>date</em>] [-I
+<em>file</em>] [-O <em>file</em>] [-x <em>flags</em>] [--config-file
+<em>file</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Bogoutil is part of the bogofilter Bayesian spam filter package.</p>
+<p>It is used to dump and load bogofilters Berkeley DB databases to and
+from text files, perform database maintenance functions, and to display
+the values for specific words.</p>
+<h1>OPTIONS</h1>
+<p>The <strong>-d</strong> <em>file</em> option tells bogoutil to print
+the contents of the database file to <strong>stdout</strong>.</p>
+<p>The <strong>-H</strong> <em>file</em> option tells bogoutil to print
+a histogram of the database file to <strong>stdout</strong>. The output
+is similar to bogofilter -vv. Finally, hapaxes (tokens which were only
+seen once) and pure tokens (tokens which were encountered only in ham or
+only in spam) are counted.</p>
+<p>The <strong>-l</strong> <em>file</em> option tells bogoutil to load
+the data from <strong>stdin</strong> into the database file. If the
+database file exists, <strong>stdin</strong> data is merged into the
+database file, with counts added up.</p>
+<p>The <strong>-m</strong> option tells bogoutil to perform maintenance
+functions on the specified database, i.e. discard tokens that are older
+than desired, have counts that are too small, or sizes (lengths) that
+are too long or too short.</p>
+<p>The <strong>-w</strong> <em>file</em> option tells bogoutil to
+display token information from the database file. The option takes an
+argument, which is either the name of the wordlist (usually wordlist.db)
+or the name of the directory containing it. Tokens can be listed on the
+command line or piped to bogoutil. When there are extra arguments on the
+command line, bogoutil will use them as the tokens to lookup. If there
+are no extra arguments, bogoutil will read tokens from
+<strong>stdin</strong>.</p>
+<p>The <strong>-p</strong> <em>file</em> option tells bogoutil to
+display the database information for one or more tokens. The display
+includes a probability column with the tokens spam score (computed using
+bogofilters default values). Option <strong>-p</strong> takes the same
+arguments as option <strong>-w</strong> .</p>
+<p>The <strong>-r</strong> <em>file</em> option tells bogoutil to
+recalculate the ROBX value and print it as a six-digit fraction.</p>
+<p>The <strong>-R</strong> <em>file</em> option does the same as
+<strong>-r</strong>, but saves the result in the training database
+without printing it.</p>
+<p>The <strong>-I</strong> <em>file</em> option tells bogoutil to read
+its input from <em>file</em> rather than stdin.</p>
+<p>The <strong>-O</strong> <em>file</em> option tells bogoutil to write
+its output to <em>file</em> rather than stdout.</p>
+<p>The <strong>-v</strong> option produces verbose output on
+<strong>stderr</strong>. This option is primarily useful for
+debugging.</p>
+<p>The <strong>-C</strong> inhibits reading configuration files and lets
+bogoutil go with the defaults.</p>
+<p>The <strong>--config-file</strong> <em>file</em> option tells
+bogoutil to read <em>file</em> instead of the standard configuration
+file.</p>
+<p>The <strong>-D</strong> redirects debug output to stdout (it usually
+goes to stderr).</p>
+<p>The <strong>-x</strong> <em>flags</em> option sets debugging
+flags.</p>
+<p>Option <strong>-n</strong> stands for "replace non-ascii characters".
+It will replace characters with the high bit (0x80) by question marks.
+This can be useful if a word list has lots of unreadable tokens, for
+example from Asian spam. The "bad" characters will be converted to
+question marks and matching tokens will be combined when used with
+<strong>-m</strong> or <strong>-l</strong>, but not with
+<strong>-d</strong>.</p>
+<p>Option <strong>-a age</strong> indicates an acceptable token age,
+with older ones being discarded. The age can be a date (in form
+YYYYMMMDD) or a day count, i.e. discard tokens older than
+<strong>age</strong> days.</p>
+<p>Option <strong>-c value</strong> indicates that tokens with counts
+less than or equal to <strong>value</strong> are to be discarded.</p>
+<p>Option <strong>-s min,max</strong> is used to discard tokens based on
+their size, i.e. length. All tokens shorter than <strong>min</strong> or
+longer than <strong>max</strong> will be discarded.</p>
+<p>Option <strong>-y date</strong> is specifies the date to give to
+tokens that dont have dates. The format is YYYYMMDD.</p>
+<p>The <strong>-h</strong> option prints the help message and exits.</p>
+<p>The <strong>-V</strong> option prints the version number and
+exits.</p>
+<h1>ENVIRONMENT MAINTENANCE</h1>
+<p>The <strong>--db-checkpoint</strong> <em>dir</em> option causes
+bogoutil to flush the buffer caches and checkpoint the database
+environment.</p>
+<p>The <strong>--db-list-logfiles</strong> <em>dir</em> option causes
+bogoutil to list the log files in the environment. Zero or more keywords
+can be added or combined (separated by whitespace) to modify the
+behavior of this mode. The default behavior is to list only inactive log
+files with relative paths. You can add <strong>all</strong> to list all
+log files (inactive and active). You can add <strong>absolute</strong>
+to switch the listing to absolute paths.</p>
+<p>The <strong>--db-prune</strong> <em>dir</em> option causes bogoutil
+to checkpoint the database environment and remove inactive log
+files.</p>
+<p>The <strong>--db-recover</strong> <em>dir</em> option runs a regular
+database recovery in the specified database directory. If that fails, it
+will retry with a (usually slower) catastrophic database recovery. If
+that fails, too, your database cannot be repaired and must be rebuilt
+from scratch. This is only supported when compiled with Berkeley DB
+support with transactions enabled. Trying recovery with QDBM or SQLite3
+support will result in an error.</p>
+<p>The <strong>--db-recover-harder</strong> <em>dir</em> option runs a
+catastrophic data base recovery in the specified database directory. If
+that fails, your database cannot be repaired and must be rebuilt from
+scratch. This is only supported when compiled with Berkeley DB support
+with transactions enabled. Trying recovery with QDBM or SQLite3 support
+will result in an error.</p>
+<p>The <strong>--db-remove-environment</strong> <em>directory</em>
+option has no short option equivalent. It runs recovery in the given
+directory and then removes the database environment. Use this
+<em>before</em> upgrading to a new Berkeley DB version if the new
+version to be installed requires a log file format update.</p>
+<p>The <strong>--db-print-leafpage-count</strong> <em>file</em> option
+prints the number of leaf pages in the database file <em>file</em> as a
+decimal number, or UNKNOWN if the database does not support querying
+this figure.</p>
+<p>The <strong>--db-print-pagesize</strong> <em>file</em> option prints
+the size of a database page in <em>file</em> as a decimal number, or
+UNKNOWN for databases with variable page size or databases that do not
+allow a query of the database page size.</p>
+<p>The <strong>--db-verify</strong> <em>file</em> option requests that
+bogofilter verifies the database file. It prints only errors, unless in
+verbose mode.</p>
+<h1>DATA FORMAT</h1>
+<p>Bogoutil reads and writes text files where each nonblank line
+consists of a word, any amount of horizontal whitespace, a numeric word
+count, more whitespace, and (optionally) a date in form YYYYMMDD. Blank
+lines are skipped.</p>
+<h1>RETURN VALUES</h1>
+<p>0 for successful operation. 1 for most errors. 3 for I/O or other
+errors. Error 3 usually means that something is seriously wrong with the
+database files.</p>
+<h1>AUTHOR</h1>
+<p>Gyepi Sam &lt;gyepi@praxis-sw.com&gt;.</p>
+<p>Matthias Andree &lt;matthias.andree@gmx.de&gt;.</p>
+<p>David Relson &lt;relson@osagesoftware.com&gt;.</p>
+<p>For updates, see <strong>the bogofilter project page</strong>[1].</p>
+<h1>SEE ALSO</h1>
+<p>bogofilter(1), bogolexer(1), bogotune(1), bogoupgrade(1)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>the bogofilter project page</p>
+<p>http://bogofilter.sourceforge.net/</p>
+</dd>
+</dl>

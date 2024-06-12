@@ -1,0 +1,35 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>aa-remove-unknown - remove unknown AppArmor profiles</p>
+<h1>SYNOPSIS</h1>
+<p><strong>aa-remove-unknown</strong> [option]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>aa-remove-unknown</strong> will inventory all profiles in
+/etc/apparmor.d/, compare that list to the profiles currently loaded
+into the kernel, and then remove all of the loaded profiles that were
+not found in /etc/apparmor.d/. It will also report the name of each
+profile that it removes on standard out.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-h, --help</dt>
+<dd>
+<p>displays a short usage statement.</p>
+</dd>
+<dt>-n</dt>
+<dd>
+<p>dry run; only prints the names of profiles that would be removed</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>$ sudo ./aa-remove-unknown -n Would remove test//null-/usr/bin/whoami
+Would remove test $ sudo ./aa-remove-unknown Removing
+test//null-/usr/bin/whoami Removing test</p>
+<h1>BUGS</h1>
+<p>None. Please report any you find to Gitlab at
+&lt;https://gitlab.com/apparmor/apparmor/-/issues&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>apparmor</strong> (7)</p>

@@ -1,0 +1,48 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>airscan-discover</strong> - Discover sane-airscan compatible
+scanners</p>
+<h1>SYNOPSIS</h1>
+<p><strong>airscan-discover [-h] [-d] [-t]</strong></p>
+<h1>DESCRIPTION</h1>
+<p><strong>airscan-discover</strong> is a command-line tool to find eSCL
+and WSD scanners on a local network</p>
+<p>It uses Avahi to discover DNS-SD devices and its own implementation
+of WS-Discovery to discover WSD devices.</p>
+<p>On success, it outputs a fragment of sane-airscan configuration file,
+that can be directly added to
+<strong>/etc/sane.d/airscan.conf</strong></p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-h</strong></dt>
+<dd>
+<p>Print help screen</p>
+</dd>
+<dt><strong>-d</strong></dt>
+<dd>
+<p>Print debug messages to console</p>
+</dd>
+<dt><strong>-t</strong></dt>
+<dd>
+<p>Write a very detailed protocol trace to
+<strong>airscan-discover-zeroconf.log</strong> and
+<strong>airscan-discover-zeroconf.tar</strong></p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<dl>
+<dt><strong>airscan-discover-zeroconf.log</strong></dt>
+<dd>
+<p>Protocol trace</p>
+</dd>
+<dt><strong>airscan-discover-zeroconf.tar</strong></dt>
+<dd>
+<p>Non-textual messages, if any, saved here. Textual (i.e., XML)
+messages included directly into the .log file</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>sane(7), sane-airscan(5)</p>
+<h1>AUTHOR</h1>
+<p>Alexander Pevzner &lt;pzz@apevzner.com&gt;</p>

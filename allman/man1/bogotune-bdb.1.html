@@ -1,0 +1,91 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>bogotune - find optimum parameter settings for bogofilter</p>
+<h1>SYNOPSIS</h1>
+<p><strong>bogotune</strong> [-v] [-c <em>config</em>] [-C] [-d
+<em>dir</em>] [-D] [-r <em>value</em>] [-T <em>value</em>] -n
+<em>okfile</em> [[-n] <em>okfile</em> [...]] -s <em>spamfile</em> [[-s]
+<em>spamfile</em> [...]] [-M <em>file</em>]</p>
+<p><strong>bogotune</strong> [-h]</p>
+<h1>DESCRIPTION</h1>
+<p>Bogotune tries to find optimum parameter settings for bogofilter. It
+needs at least one set each of spam and non-spam messages. The
+production wordlist is normally used, but it can be directed to read a
+different wordlist, or to build its own from half the supplied
+messages.</p>
+<p>In order to produce useful results, bogotune has minimum message
+count requirements. The wordlist it uses must have at least 2,000 spam
+and 2,000 non-spam in it and the message files must contain at least 500
+spam and 500 non-spam messages. Also, the ratio of spam to non-spam
+should be in the range 0.2 to 5. If you direct bogotune to build its own
+wordlist, it will use the half the input or 2000 messages (whichever is
+larger) for the wordlist.</p>
+<p>Message files may be in mbox, maildir, or MH folder or any
+combination. Msg-count files can also be used, but not mixed with other
+formats.</p>
+<h1>OPTIONS</h1>
+<p>The <strong>-h</strong> option prints the help message and exits.</p>
+<p>The <strong>-v</strong> option increases the verbosity level. Level 1
+displays the scan output in detail instead of using a progress
+meter.</p>
+<p>The <strong>-c</strong> <em>filename</em> option tells bogofilter to
+read the config file named.</p>
+<p>The <strong>-C</strong> option prevents bogotune from reading a
+configuration file.</p>
+<p>The <strong>-d</strong> <em>dir</em> option specifies the directory
+for the database. See the ENVIRONMENT section for other directory
+setting options.</p>
+<p>The <strong>-D</strong> option tells bogotune to build a wordlist in
+memory using the input messages. The messages are read and divided into
+two groups. The first group is used to build a wordlist (in ram) and the
+second is used for tuning. To meet the minimum requirements of 2000
+messages in the wordlist and 500 messages for testing, when
+<strong>-D</strong> is used, there must be 2500 non-spam and 2500 spam
+in the input files. If there are enough messages (more than 4000), they
+will be split evenly between wordlist and testing. Otherwise, they will
+be split proportionately.</p>
+<p>The <strong>-n</strong> option tells bogotune that the following
+argument is a file (or folder) containing non-spam. Since version 1.0.3,
+multiple arguments to the <strong>-n</strong> option can be given. All
+non-option arguments until the next <strong>-s</strong> option will be
+treated as though they had been preceded by <strong>-n</strong></p>
+<p>The <strong>-s</strong> option tells bogotune that the following
+argument is a file (or folder) containing spam. It can be repeated as
+often as necessary. Since version 1.0.3, multiple arguments to the
+<strong>-s</strong> can be given. All non-option arguments until the
+next <strong>-n</strong> option will be treated as though they had been
+preceded by <strong>-s</strong>.</p>
+<p>The <strong>-r</strong> <em>value</em> option tells bogotune to use
+the following parameter as the robx value.</p>
+<p>The <strong>-T</strong> <em>value</em> option tells bogotune to use
+the following parameter as fp target value.</p>
+<p>The <strong>-M</strong> <em>file</em> option tells bogotune to
+convert the file to message count format. This format provides a sorted
+list of each messages unique tokens, along with their ham and spam
+counts. Sorting hides the sense of the messages quite effectively, thus
+protecting privacy. The message-count format allows bogotune and
+bogofilter to score messages quickly without needing the original token
+database.</p>
+<h1>ENVIRONMENT</h1>
+<p>Bogofilter uses a database directory, which can be set in the config
+file. If not set there, bogofilter will use the value of
+<strong>BOGOFILTER_DIR</strong>. Both can be overridden by the
+<strong>-d</strong><em>dir</em> option. If none of that is available,
+bogofilter will use directory $HOME/.bogofilter.</p>
+<h1>BUGS</h1>
+<p>Bogotune is not particularly robust when presented with garbage
+input.</p>
+<h1>AUTHOR</h1>
+<p>The bogofilter developer team.</p>
+<p>For updates, see <strong>the bogofilter project page</strong>[1].</p>
+<h1>SEE ALSO</h1>
+<p>bogofilter(1), bogolexer(1), bogoupgrade(1), bogoutil(1)</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>the bogofilter project page</p>
+<p>http://bogofilter.sourceforge.net/</p>
+</dd>
+</dl>

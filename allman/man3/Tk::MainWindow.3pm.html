@@ -1,0 +1,50 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::MainWindow - Root widget of a widget tree</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk; my $mw = MainWindow-&gt;new( ... options ... ); my $this =
+$mw-&gt;ThisWidget -&gt; pack ; my $that = $mw-&gt;ThatWidget; ...
+MainLoop;</p>
+<h1>DESCRIPTION</h1>
+<p>Perl/Tk applications (which have windows associated with them) create
+one or more <strong>MainWindow</strong>s which act as the containers and
+parents of the other widgets.</p>
+<p><strong>Tk::MainWindow</strong> is a special kind of Toplevel widget.
+It is the root of a widget tree. Therefore <code>$mw-&gt;Parent</code>
+returns <code>undef</code>.</p>
+<p>The default title of a MainWindow is the basename of the script
+(actually the Class name used for options lookup, i.e. with basename
+with inital caps) or 'Ptk' as the fallback value. If more than one
+MainWindow is created or several instances of the script are running at
+the same time the string <code>" #n"</code> is appended where the number
+<code>n</code> is set to get a unique value.</p>
+<p>Unlike the standard Tcl/Tk's wish, perl/Tk allows you to create
+several MainWindows. When the <em>last</em> <strong>MainWindow</strong>
+is destroyed the Tk eventloop exits (the eventloop is entered with the
+call of <code>MainLoop</code>). Various resources (bindings, fonts,
+images, colors) are maintained or cached for each MainWindow, so each
+MainWindow consumes more resources than a Toplevel. However multiple
+MainWindows can make sense when the user can destroy them
+independently.</p>
+<h1>METHODS</h1>
+<p>You can apply all methods that a Toplevel widget accepts.</p>
+<p>The method <em><code>$w</code></em>-&gt;<strong>MainWindow</strong>
+applied to any widget will return the <strong>MainWindow</strong> to
+which the widget belongs (the MainWindow belongs to itself).</p>
+<h1>MISSING</h1>
+<p>Documentation is incomplete. Here are <em>some</em> missing items
+that should be explained in more detail:</p>
+<ul>
+<li><p>The new mechanism for MainWindows is slightly different to other
+widgets.</p></li>
+<li><p>There no explanation about what resources are bound to a
+MainWindow (e.g., ClassInit done per MainWindow)</p></li>
+<li><p>Passing of command line options to override or augment arguments
+of the <code>new</code> method (see Tk::CmdLine).</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Tk::Toplevel Tk::CmdLine</p>

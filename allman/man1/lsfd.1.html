@@ -1,0 +1,547 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lsfd - list file descriptors</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lsfd</strong> [option]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>lsfd</strong> is intended to be a modern replacement for
+<strong>lsof</strong>(8) on Linux systems. Unlike <strong>lsof</strong>,
+<strong>lsfd</strong> is specialized to Linux kernel; it supports Linux
+specific features like namespaces with simpler code.
+<strong>lsfd</strong> is not a drop-in replacement for
+<strong>lsof</strong>; they are different in the command line interface
+and output formats.</p>
+<p><strong>lsfd</strong> uses Libsmartcols for output formatting and
+filtering. See the description of <strong>--output</strong> option for
+customizing the output format, and <strong>--filter</strong> option for
+filtering.</p>
+<h1>OPTIONS</h1>
+<p><strong>-l</strong>, <strong>--threads</strong></p>
+<blockquote>
+<p>List in threads level.</p>
+</blockquote>
+<p><strong>-J</strong>, <strong>--json</strong></p>
+<blockquote>
+<p>Use JSON output format.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--noheadings</strong></p>
+<blockquote>
+<p>Don’t print headings.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Specify which output columns to print. See the <strong>OUTPUT
+COLUMNS</strong> section for details of available columns.</p>
+<p>The default list of columns may be extended if <em>list</em> is
+specified in the format <em>+list</em> (e.g., <strong>lsfd -o
++DELETED</strong>).</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--raw</strong></p>
+<blockquote>
+<p>Use raw output format.</p>
+</blockquote>
+<p><strong>--notruncate</strong></p>
+<blockquote>
+<p>Don’t truncate text in columns.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--pid</strong> <em>pids</em></p>
+<blockquote>
+<p>Collect information only for specified processes. <em>pids</em> is a
+list of pids. A comma or whitespaces can be used as separators. You can
+use this option with <strong>pidof</strong>(1). See <strong>FILTER
+EXAMPLES</strong>.</p>
+<p>Both <strong>-Q</strong> option with an expression including PID,
+e.g. -Q (PID == 1), and <strong>-p</strong> option, e.g. -p 1, may print
+the same output but using <strong>-p</strong> option is much more
+efficient because <strong>-p</strong> option works at a much earlier
+stage of processing than the <strong>-Q</strong> option.</p>
+</blockquote>
+<p><strong>-Q</strong>, <strong>--filter</strong> <em>expr</em></p>
+<blockquote>
+<p>Print only the files matching the condition represented by the
+<em>expr</em>. See also <strong>FILTER EXAMPLES</strong>.</p>
+</blockquote>
+<p><strong>-C</strong>, <strong>--counter</strong>
+<em>label</em>:<em>filter_expr</em></p>
+<blockquote>
+<p>Define a custom counter used in <strong>--summary</strong> output.
+<strong>lsfd</strong> makes a counter named <em>label</em>. During
+collect information, <strong>lsfd</strong> counts files matching
+<em>filter_expr</em>, and stores the counted number to the counter named
+<em>label</em>. <strong>lsfd</strong> applies filters defined with
+<strong>--filter</strong> options before counting; files excluded by the
+filters are not counted.</p>
+<p>See <strong>FILTER EXPRESSION</strong> about <em>filter_expr</em>.
+<em>label</em> should not include <em>{</em> nor <em>:</em>. You can
+define multiple counters by specifying this option multiple times.</p>
+<p>See also <strong>COUNTER EXAMPLES</strong>.</p>
+</blockquote>
+<p><strong>--summary</strong>[=<em>when</em>]</p>
+<blockquote>
+<p>This option controls summary lines output. The optional argument
+<em>when</em> can be <strong>only</strong>, <strong>append</strong> or
+<strong>never</strong>. If the <em>when</em> argument is omitted, it
+defaults to <strong>only</strong>.</p>
+<p>The summary reports counters. A counter consists of a label and an
+integer value. <strong>--counter</strong> is the option for defining a
+counter. If a user defines no counter, <strong>lsfd</strong> uses the
+definitions of pre-defined built-in counters (default counters) to make
+the summary output.</p>
+<p>CAUTION: Using <strong>--summary</strong> and <strong>--json</strong>
+may make the output broken. Only combining
+<strong>--summary</strong>=<strong>only</strong> and
+<strong>--json</strong> is valid.</p>
+</blockquote>
+<p><strong>--debug-filter</strong></p>
+<blockquote>
+<p>Dump the internal data structure for the filter and exit. This is
+useful only for <strong>lsfd</strong> developers.</p>
+</blockquote>
+<p><strong>--dump-counters</strong></p>
+<blockquote>
+<p>Dump the definition of counters used in <strong>--summary</strong>
+output.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>OUTPUT COLUMNS</h1>
+<p>Each column has a type. Types are surround by &lt; and &gt;.</p>
+<p>CAUTION: The names and types of columns are not stable yet. They may
+be changed in the future releases.</p>
+<p>ASSOC &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Association between file and process.</p>
+</blockquote>
+<p>BLKDRV &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Block device driver name resolved by <em>/proc/devices</em>.</p>
+</blockquote>
+<p>CHRDRV &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Character device driver name resolved by <em>/proc/devices</em>.</p>
+</blockquote>
+<p>COMMAND &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Command of the process opening the file.</p>
+</blockquote>
+<p>DELETED &lt;<em>boolean</em>&gt;</p>
+<blockquote>
+<p>Reachability from the file system.</p>
+</blockquote>
+<p>DEV &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>ID of the device containing the file.</p>
+</blockquote>
+<p>DEVTYPE &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Device type (<em>blk</em>, <em>char</em>, or <em>nodev</em>).</p>
+</blockquote>
+<p>FD &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>File descriptor for the file.</p>
+</blockquote>
+<p>FLAGS &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Flags specified when opening the file.</p>
+</blockquote>
+<p>FUID &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>User ID number of the file’s owner.</p>
+</blockquote>
+<p>INODE &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>Inode number.</p>
+</blockquote>
+<p>KTHREAD &lt;<em>boolean</em>&gt;</p>
+<blockquote>
+<p>Whether the process is a kernel thread or not.</p>
+</blockquote>
+<p>MAJ:MIN &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Device ID for special, or ID of device containing file.</p>
+</blockquote>
+<p>MAPLEN &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>Length of file mapping (in page).</p>
+</blockquote>
+<p>MISCDEV &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Misc character device name resolved by <em>/proc/misc</em>.</p>
+</blockquote>
+<p>MNTID &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>Mount ID.</p>
+</blockquote>
+<p>MODE &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Access mode (rwx).</p>
+</blockquote>
+<p>NAME &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Name of the file.</p>
+</blockquote>
+<p>NLINK &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>Link count.</p>
+</blockquote>
+<p>OWNER &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Owner of the file.</p>
+</blockquote>
+<p>PARTITION &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Block device name resolved by <em>/proc/partition</em>.</p>
+</blockquote>
+<p>PID &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>PID of the process opening the file.</p>
+</blockquote>
+<p>POS &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>File position.</p>
+</blockquote>
+<p>PROTONAME &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Protocol name.</p>
+</blockquote>
+<p>RDEV &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>Device ID (if special file).</p>
+</blockquote>
+<p>SIZE &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>File size.</p>
+</blockquote>
+<p>SOURCE &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>File system, partition, or device containing the file.</p>
+</blockquote>
+<p>TID &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>Thread ID of the process opening the file.</p>
+</blockquote>
+<p>TYPE &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>File type.</p>
+</blockquote>
+<p>UID &lt;<em>number</em>&gt;</p>
+<blockquote>
+<p>User ID number.</p>
+</blockquote>
+<p>USER &lt;<em>string</em>&gt;</p>
+<blockquote>
+<p>User of the process.</p>
+</blockquote>
+<h1>FILTER EXPRESSION</h1>
+<p><strong>lsfd</strong> evaluates the expression passed to
+<strong>--filter</strong> option every time before printing a file line.
+<strong>lsfd</strong> prints the line only if the result of evaluation
+is <em>true</em>.</p>
+<p>An expression consists of column names, literals and, operators like:
+<code>DELETED</code>, <code>(PID == 1)</code>,
+<code>(NAME == "/etc/passwd")</code>,
+<code>(PID == 1) &amp;&amp; DELETED</code>. <code>DELETED</code>,
+<code>PID</code>, and <code>NAME</code> are column names in the example.
+<code>1</code> and "/etc/passwd" are literals. <code>==</code> and
+<code>&amp;&amp;</code> are operators.</p>
+<p>Before evaluation, <strong>lsfd</strong> substitutes column names in
+the given expression with actual column values in the line. There are
+three different data types: <em>boolean</em>, <em>string</em>, and
+<em>number</em>. For columns with a <em>boolean</em> type, the value can
+be stand-alone. For <em>string</em> and <em>number</em> values, the
+value must be an operand of an operator, for example,
+<code>(PID == 1)</code>. See the "OUTPUT COLUMNS" about the types of
+columns.</p>
+<p>Literal is for representing a value directly. See BOOLLIT, STRLIT,
+and NUMLIT. Different data types have different literal syntax.</p>
+<p>An operator works with one or two operand(s). An operator has an
+expectation about the data type(s) of its operands. Giving an unexpected
+data type to an operator causes a syntax error.</p>
+<p>Operators taking two operands are <em>and</em>, <em>or</em>,
+<em>eq</em>, <em>ne</em>, <em>le</em>, <em>lt</em>, <em>ge</em>,
+<em>gt</em>, <em>=~</em>, <em>!~</em>. Alphabetically named operators
+have C-language flavored aliases: <em>&amp;&amp;</em>, <em>||</em>,
+<em>==</em>, <em>!=</em>, <em>&lt;</em>, <em>⇐</em>, <em>&gt;=</em>, and
+<em>&gt;</em>.</p>
+<p><em>!</em> is the only operator that takes one operand.</p>
+<p><em>eq</em>, <em>ne</em>, and their aliases expect operands have the
+same data type. Applying these operators return a <em>boolean</em>.</p>
+<p><em>and</em>, <em>or</em>, <em>not</em> and their aliases expect
+operands have <em>bool</em> data type. Applying these operators return a
+<em>boolean</em>.</p>
+<p><em>lt</em>, <em>le</em>, <em>gt</em>, <em>ge</em>, and their aliases
+expect operands have <em>number</em> data types. Applying these
+operators return a <em>boolean</em>.</p>
+<p><em>=~</em> is for regular expression matching; if a string at the
+right side matches a regular expression at the left side, the result is
+true. The right side operand must be a string literal. See STRLIT about
+the syntax.</p>
+<p><em>!~</em> is a short-hand version of <code>not (STR =~ PAT)</code>;
+it inverts the result of <em>=~</em>.</p>
+<h2>Limitations</h2>
+<p>The current implementation does not define precedences within
+operators. Use <em>(</em> and <em>)</em> explicitly for grouping the
+sub-expressions if your expression uses more than two operators.</p>
+<p>About <em>number</em> typed values, the filter engine supports only
+non-negative integers.</p>
+<h2>Semi-formal syntax</h2>
+<p>EXPR</p>
+<blockquote>
+<p>BOOLEXP</p>
+</blockquote>
+<p>BOOLEXP0</p>
+<blockquote>
+<p>COLUMN &lt;<em>boolean</em>&gt; | BOOLLIT | <em>(</em> BOOLEXP
+<em>)</em></p>
+</blockquote>
+<p>BOOLEXP</p>
+<blockquote>
+<p>BOOLEXP0 | BOOLOP1 | BOOLOP2 | BOOLOP2BL | BOOLOP2CMP |
+BOOLOP2REG</p>
+</blockquote>
+<p>COLUMN</p>
+<blockquote>
+<p>[_A-Za-z][-_:A-Za-z0-9]*</p>
+</blockquote>
+<p>BOOLOP1</p>
+<blockquote>
+<p><em>!</em> BOOLEXP0 | <em>not</em> BOOLEXP0</p>
+</blockquote>
+<p>STREXP</p>
+<blockquote>
+<p>COLUMN &lt;<em>string</em>&gt; | STRLIT</p>
+</blockquote>
+<p>NUMEXP</p>
+<blockquote>
+<p>COLUMN &lt;<em>number</em>&gt; | NUMLIT</p>
+</blockquote>
+<p>BOOLLIT</p>
+<blockquote>
+<p><em>true</em> | <em>false</em></p>
+</blockquote>
+<p>CHARS</p>
+<blockquote>
+<p>( [^\] | <em>\\</em> | <em>\'</em> | <em>\"</em> )*</p>
+</blockquote>
+<p>STRLIT</p>
+<blockquote>
+<p><em>'</em> CHARS <em>'</em> | <em>"</em> CHARS <em>"</em></p>
+</blockquote>
+<p>NUMLIT</p>
+<blockquote>
+<p>[1-9][0-9]* | <em>0</em></p>
+</blockquote>
+<p>BOOLOP2</p>
+<blockquote>
+<p>STREXP OP2 STREXP | NUMEXP OP2 NUMEXP | BOOLEXP0 OP2 BOOLEXP0</p>
+</blockquote>
+<p>OP2</p>
+<blockquote>
+<p><em>==</em> | <em>eq</em> | <em>!=</em> | <em>ne</em></p>
+</blockquote>
+<p>BOOLOP2BL</p>
+<blockquote>
+<p>BOOLEXP0 OP2BL BOOLEXP0</p>
+</blockquote>
+<p>OP2BL</p>
+<blockquote>
+<p><em>&amp;&amp;</em> | <em>and</em> | <em>||</em> | <em>or</em></p>
+</blockquote>
+<p>BOOLOP2CMP</p>
+<blockquote>
+<p>NUMEXP OP2CMP NUMEXP</p>
+</blockquote>
+<p>OP2CMP</p>
+<blockquote>
+<p><em>&lt;</em> | <em>lt</em> | <em>&lt;=</em> | <em>le</em> |
+<em>&gt;</em> | <em>gt</em> | <em>&gt;=</em> | <em>ge</em></p>
+</blockquote>
+<p>BOOLOP2REG</p>
+<blockquote>
+<p>STREXP OP2REG STRLIT</p>
+</blockquote>
+<p>OP2REG</p>
+<blockquote>
+<p><em>=~</em> | <em>!~</em></p>
+</blockquote>
+<h1>FILTER EXAMPLES</h1>
+<p><strong>lsfd</strong> has few options for filtering. In most of
+cases, what you should know is <strong>-Q</strong> (or
+<strong>--filter</strong>) option. Combined with <strong>-o</strong> (or
+<strong>--output</strong>) option, you can customize the output as you
+want.</p>
+<p>List files associated with PID 1 and PID 2 processes:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;(PID == 1) or (PID == 2)&#39;</code></pre>
+</blockquote>
+<p>Do the same in an alternative way:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;(PID == 1) || (PID == 2)&#39;</code></pre>
+</blockquote>
+<p>Do the same in a more efficient way:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd --pid 1,2</code></pre>
+</blockquote>
+<p>Whitescapes can be used instead of a comma:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd --pid &#39;1 2&#39;</code></pre>
+</blockquote>
+<p>Utilize <strong>pidof</strong>(1) for list the files associated with
+"firefox":</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd --pid &quot;$(pidof firefox)&quot;</code></pre>
+</blockquote>
+<p>List the 1st file descriptor opened by PID 1 process:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;(PID == 1) and (FD == 1)&#39;</code></pre>
+</blockquote>
+<p>Do the same in an alternative way:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;(PID == 1) &amp;&amp; (FD == 1)&#39;</code></pre>
+</blockquote>
+<p>List all running executables:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;ASSOC == &quot;exe&quot;&#39;</code></pre>
+</blockquote>
+<p>Do the same in an alternative way:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;ASSOC eq &quot;exe&quot;&#39;</code></pre>
+</blockquote>
+<p>Do the same but print only file names:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -o NAME -Q &#39;ASSOC eq &quot;exe&quot;&#39; | sort -u</code></pre>
+</blockquote>
+<p>List deleted files associated to processes:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;DELETED&#39;</code></pre>
+</blockquote>
+<p>List non-regular files:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;TYPE != &quot;REG&quot;&#39;</code></pre>
+</blockquote>
+<p>List block devices:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;DEVTYPE == &quot;blk&quot;&#39;</code></pre>
+</blockquote>
+<p>Do the same with TYPE column:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;TYPE == &quot;BLK&quot;&#39;</code></pre>
+</blockquote>
+<p>List files including "dconf" directory in their names:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;NAME =~ &quot;.\*/dconf/.*&quot;&#39;</code></pre>
+</blockquote>
+<p>List files opened in a QEMU virtual machine:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;(COMMAND =~ &quot;.\*qemu.*&quot;) and (FD &gt;= 0)&#39;</code></pre>
+</blockquote>
+<p>Hide files associated to kernel threads:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd -Q &#39;!KTHREAD&#39;</code></pre>
+</blockquote>
+<h1>COUNTER EXAMPLES</h1>
+<p>Report the numbers of netlink socket descriptors and unix socket
+descriptors:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd --summary=only \
+        -C &#39;netlink sockets&#39;:&#39;(NAME =~ &quot;NETLINK:.*&quot;)&#39; \
+        -C &#39;unix sockets&#39;:&#39;(NAME =~ &quot;UNIX:.*&quot;)&#39;
+VALUE COUNTER
+   57 netlink sockets
+ 1552 unix sockets</code></pre>
+</blockquote>
+<p>Do the same but print in JSON format:</p>
+<blockquote>
+
+</blockquote>
+<blockquote>
+<pre><code># lsfd --summary=only --json \
+        -C &#39;netlink sockets&#39;:&#39;(NAME =~ &quot;NETLINK:.*&quot;)&#39; \
+        -C &#39;unix sockets&#39;:&#39;(NAME =~ &quot;UNIX:.*&quot;)&#39;
+{
+   &quot;lsfd-summary&quot;: [
+      {
+         &quot;value&quot;: 15,
+         &quot;counter&quot;: &quot;netlink sockets&quot;
+      },{
+         &quot;value&quot;: 798,
+         &quot;counter&quot;: &quot;unix sockets&quot;
+      }
+   ]
+}</code></pre>
+</blockquote>
+<h1>HISTORY</h1>
+<p>The <strong>lsfd</strong> command is part of the util-linux package
+since v2.38.</p>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>lsof</strong>(8) <strong>pidof</strong>(1)
+<strong>proc</strong>(5)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>lsfd</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

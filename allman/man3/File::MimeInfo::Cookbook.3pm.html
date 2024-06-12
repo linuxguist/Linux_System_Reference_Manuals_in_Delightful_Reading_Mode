@@ -1,0 +1,71 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>File::MimeInfo::Cookbook - various code snippets</p>
+<h1>DESCRIPTION</h1>
+<p>Some code snippets for non-basic uses of the File::MimeInfo
+module:</p>
+<dl>
+<dt>Matching an extension</dt>
+<dd>
+<p>A file does not have to actually exist in order to get a mimetype for
+it. This means that the following will work: my $extension = *.txt; my
+$mimetype = mimetype( $extension );</p>
+</dd>
+<dt>Mimetyping an scalar</dt>
+<dd>
+<p>If you want to find the mimetype of a scalar value you need magic
+mimetyping; after all a scalar doesn't have a filename or inode. What
+you need to do is to use IO::Scalar : use File::MimeInfo::Magic; use
+IO::Scalar; my $io_scalar = new IO::Scalar \$data; my $mimetype =
+mimetype( $io_scalar ); In fact most other <code>IO::</code> will work
+as long as they support the <code>seek()</code> and <code>read()</code>
+methods. Of course if you want really obscure things to happen you can
+always write your own IO object and feed it in there. Be aware that when
+using a filehandle like this you need to set the <code>:utf8</code>
+binmode yourself if appropriate.</p>
+</dd>
+<dt>Mimetyping a filehandle</dt>
+<dd>
+<p>Regrettably for non-seekable filehandles like STDIN simply using an
+<code>IO::</code> object will not work. You will need to buffer enough
+of the data for a proper mimetyping. For example you could mimetype data
+from STDIN like this: use File::MimeInfo::Magic; use IO::Scalar; my
+$data; read(STDIN, $data, $File::MimeInfo::Magic::max_buffer); my
+$io_scalar = new IO::Scalar \$data; my $mimetype = mimetype( $io_scalar
+); Be aware that when using a filehandle like this you need to set the
+<code>:utf8</code> binmode yourself if appropriate.</p>
+</dd>
+<dt>Creating a new filename</dt>
+<dd>
+<p>Say you have a temporary file that you want to save with a more
+proper filename. use File::MimeInfo::Magic qw#mimetype extensions#; use
+File::Copy; my $tmpfile = /tmp/foo; my $mimetype = mimetype($tmpfile);
+my $extension = extensions($mimetype); my $newfile = untitled1; $newfile
+.= ..$extension if length $extension; move($tmpfile, $newfile);</p>
+</dd>
+<dt>Force the use of a certain database directory</dt>
+<dd>
+<p>Normally you just need to add the dir where your mime database lives
+to either the XDG_DATA_HOME or XDG_DATA_DIRS environment variables for
+it to be found. But in some rare cases you may want to by-pass this
+system all together. Try one of the following: @File::MimeInfo::DIRS =
+(/home/me/share/mime); eval use File::MimeInfo; die if $@; or: use
+File::MimeInfo; @File::MimeInfo::DIRS = (/home/me/share/mime);
+File::MimeInfo-&gt;rehash(); This can also be used for switching between
+databases at run time while leaving other XDG configuration stuff
+alone.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Jaap Karssenberg &lt;pardus@cpan.org&gt; Maintained by Michiel Beijen
+&lt;mb@x14.nl&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 2005, 2012 Jaap G Karssenberg. All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.</p>
+<h1>SEE ALSO</h1>
+<p>File::MimeInfo</p>

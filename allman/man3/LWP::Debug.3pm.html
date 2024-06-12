@@ -1,0 +1,36 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>LWP::Debug - deprecated</p>
+<h1>DESCRIPTION</h1>
+<p>This module has been deprecated. Please see LWP::ConsoleLogger for
+your debugging needs.</p>
+<p>LWP::Debug is used to provide tracing facilities, but these are not
+used by LWP any more. The code in this module is kept around
+(undocumented) so that 3rd party code that happens to use the old
+interfaces continue to run.</p>
+<p>One useful feature that LWP::Debug provided (in an imprecise and
+troublesome way) was network traffic monitoring. The following section
+provides some hints about recommended replacements.</p>
+<h2>Network traffic monitoring</h2>
+<p>The best way to monitor the network traffic that LWP generates is to
+use an external TCP monitoring program. The WireShark
+&lt;http://www.wireshark.org/&gt; program is highly recommended for
+this.</p>
+<p>Another approach it to use a debugging HTTP proxy server and make LWP
+direct all its traffic via this one. Call <code>$ua-&gt;proxy</code> to
+set it up and then just use LWP as before.</p>
+<p>For less precise monitoring needs just setting up a few simple
+handlers might do. The following example sets up handlers to dump the
+request and response objects that pass through LWP:</p>
+<p>use LWP::UserAgent; $ua = LWP::UserAgent-&gt;new;
+$ua-&gt;default_header(Accept-Encoding =&gt; scalar
+HTTP::Message::decodable()); $ua-&gt;add_handler("request_send", sub {
+shift-&gt;dump; return }); $ua-&gt;add_handler("response_done", sub {
+shift-&gt;dump; return }); $ua-&gt;get("http://www.example.com");</p>
+<h1>SEE ALSO</h1>
+<p>LWP::ConsoleLogger, LWP::ConsoleLogger::Everywhere,
+LWP::UserAgent</p>

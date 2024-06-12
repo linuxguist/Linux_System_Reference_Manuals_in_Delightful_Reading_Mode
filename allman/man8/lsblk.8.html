@@ -1,0 +1,294 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lsblk - list block devices</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lsblk</strong> [options] [<em>device</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>lsblk</strong> lists information about all available or the
+specified block devices. The <strong>lsblk</strong> command reads the
+<strong>sysfs</strong> filesystem and <strong>udev db</strong> to gather
+information. If the udev db is not available or <strong>lsblk</strong>
+is compiled without udev support, then it tries to read LABELs, UUIDs
+and filesystem types from the block device. In this case root
+permissions are necessary.</p>
+<p>The command prints all block devices (except RAM disks) in a
+tree-like format by default. Use <strong>lsblk --help</strong> to get a
+list of all available columns.</p>
+<p>The default output, as well as the default output from options like
+<strong>--fs</strong> and <strong>--topology</strong>, is subject to
+change. So whenever possible, you should avoid using default outputs in
+your scripts. Always explicitly define expected columns by using
+<strong>--output</strong> <em>columns-list</em> and
+<strong>--list</strong> in environments where a stable output is
+required.</p>
+<p>Note that <strong>lsblk</strong> might be executed in time when
+<strong>udev</strong> does not have all information about recently added
+or modified devices yet. In this case it is recommended to use
+<strong>udevadm settle</strong> before <strong>lsblk</strong> to
+synchronize with udev.</p>
+<p>The relationship between block devices and filesystems is not always
+one-to-one. The filesystem may use more block devices, or the same
+filesystem may be accessible by more paths. This is the reason why
+<strong>lsblk</strong> provides MOUNTPOINT and MOUNTPOINTS (pl.)
+columns. The column MOUNTPOINT displays only one mount point (usually
+the last mounted instance of the filesystem), and the column MOUNTPOINTS
+displays by multi-line cell all mount points associated with the
+device.</p>
+<h1>OPTIONS</h1>
+<p><strong>-A</strong>, <strong>--noempty</strong></p>
+<blockquote>
+<p>Don’t print empty devices.</p>
+</blockquote>
+<p><strong>-a</strong>, <strong>--all</strong></p>
+<blockquote>
+<p>Disable all built-in filters and list all empty devices and RAM disk
+devices too.</p>
+</blockquote>
+<p><strong>-b</strong>, <strong>--bytes</strong></p>
+<blockquote>
+<p>Print the sizes in bytes rather than in a human-readable format.</p>
+<p>By default, the unit, sizes are expressed in, is byte, and unit
+prefixes are in power of 2^10 (1024). Abbreviations of symbols are
+exhibited truncated in order to reach a better readability, by
+exhibiting alone the first letter of them; examples: "1 KiB" and "1 MiB"
+are respectively exhibited as "1 K" and "1 M", then omitting on purpose
+the mention "iB", which is part of these abbreviations.</p>
+</blockquote>
+<p><strong>-D</strong>, <strong>--discard</strong></p>
+<blockquote>
+<p>Print information about the discarding capabilities (TRIM, UNMAP) for
+each device.</p>
+</blockquote>
+<p><strong>-d</strong>, <strong>--nodeps</strong></p>
+<blockquote>
+<p>Do not print holder devices or slaves. For example, <strong>lsblk
+--nodeps /dev/sda</strong> prints information about the sda device
+only.</p>
+</blockquote>
+<p><strong>-E</strong>, <strong>--dedup</strong> <em>column</em></p>
+<blockquote>
+<p>Use <em>column</em> as a de-duplication key to de-duplicate output
+tree. If the key is not available for the device, or the device is a
+partition and parental whole-disk device provides the same key than the
+device is always printed.</p>
+<p>The usual use case is to de-duplicate output on system multi-path
+devices, for example by <strong>-E WWN</strong>.</p>
+</blockquote>
+<p><strong>-e</strong>, <strong>--exclude</strong> <em>list</em></p>
+<blockquote>
+<p>Exclude the devices specified by the comma-separated <em>list</em> of
+major device numbers. Note that RAM disks (major=1) are excluded by
+default if <strong>--all</strong> is not specified. The filter is
+applied to the top-level devices only. This may be confusing for
+<strong>--list</strong> output format where hierarchy of the devices is
+not obvious.</p>
+</blockquote>
+<p><strong>-f</strong>, <strong>--fs</strong></p>
+<blockquote>
+<p>Output info about filesystems. This option is equivalent to
+<strong>-o
+NAME,FSTYPE,FSVER,LABEL,UUID,FSAVAIL,FSUSE%,MOUNTPOINTS</strong>. The
+authoritative information about filesystems and raids is provided by the
+<strong>blkid</strong>(8) command.</p>
+</blockquote>
+<p><strong>-I</strong>, <strong>--include</strong> <em>list</em></p>
+<blockquote>
+<p>Include devices specified by the comma-separated <em>list</em> of
+major device numbers. The filter is applied to the top-level devices
+only. This may be confusing for <strong>--list</strong> output format
+where hierarchy of the devices is not obvious.</p>
+</blockquote>
+<p><strong>-i</strong>, <strong>--ascii</strong></p>
+<blockquote>
+<p>Use ASCII characters for tree formatting.</p>
+</blockquote>
+<p><strong>-J</strong>, <strong>--json</strong></p>
+<blockquote>
+<p>Use JSON output format. It’s strongly recommended to use
+<strong>--output</strong> and also <strong>--tree</strong> if
+necessary.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--list</strong></p>
+<blockquote>
+<p>Produce output in the form of a list. The output does not provide
+information about relationships between devices and since version 2.34
+every device is printed only once if <strong>--pairs</strong> or
+<strong>--raw</strong> not specified (the parsable outputs are
+maintained in backwardly compatible way).</p>
+</blockquote>
+<p><strong>-M</strong>, <strong>--merge</strong></p>
+<blockquote>
+<p>Group parents of sub-trees to provide more readable output for RAIDs
+and Multi-path devices. The tree-like output is required.</p>
+</blockquote>
+<p><strong>-m</strong>, <strong>--perms</strong></p>
+<blockquote>
+<p>Output info about device owner, group and mode. This option is
+equivalent to <strong>-o NAME,SIZE,OWNER,GROUP,MODE</strong>.</p>
+</blockquote>
+<p><strong>-n</strong>, <strong>--noheadings</strong></p>
+<blockquote>
+<p>Do not print a header line.</p>
+</blockquote>
+<p><strong>-o</strong>, <strong>--output</strong> <em>list</em></p>
+<blockquote>
+<p>Specify which output columns to print. Use <strong>--help</strong> to
+get a list of all supported columns. The columns may affect tree-like
+output. The default is to use tree for the column 'NAME' (see also
+<strong>--tree</strong>).</p>
+<p>The default list of columns may be extended if <em>list</em> is
+specified in the format <em>+list</em> (e.g., <strong>lsblk -o
++UUID</strong>).</p>
+</blockquote>
+<p><strong>-O</strong>, <strong>--output-all</strong></p>
+<blockquote>
+<p>Output all available columns.</p>
+</blockquote>
+<p><strong>-P</strong>, <strong>--pairs</strong></p>
+<blockquote>
+<p>Produce output in the form of key="value" pairs. The output lines are
+still ordered by dependencies. All potentially unsafe value characters
+are hex-escaped (\x&lt;code&gt;). See also option
+<strong>--shell</strong>.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--paths</strong></p>
+<blockquote>
+<p>Print full device paths.</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--raw</strong></p>
+<blockquote>
+<p>Produce output in raw format. The output lines are still ordered by
+dependencies. All potentially unsafe characters are hex-escaped
+(\x&lt;code&gt;) in the NAME, KNAME, LABEL, PARTLABEL and MOUNTPOINT
+columns.</p>
+</blockquote>
+<p><strong>-S</strong>, <strong>--scsi</strong></p>
+<blockquote>
+<p>Output info about SCSI devices only. All partitions, slaves and
+holder devices are ignored.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--inverse</strong></p>
+<blockquote>
+<p>Print dependencies in inverse order. If the <strong>--list</strong>
+output is requested then the lines are still ordered by
+dependencies.</p>
+</blockquote>
+<p><strong>-T</strong>,
+<strong>--tree</strong>[<strong>=</strong><em>column</em>]</p>
+<blockquote>
+<p>Force tree-like output format. If <em>column</em> is specified, then
+a tree is printed in the column. The default is NAME column.</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--topology</strong></p>
+<blockquote>
+<p>Output info about block-device topology. This option is equivalent
+to</p>
+<p><strong>-o
+NAME,ALIGNMENT,MIN-IO,OPT-IO,PHY-SEC,LOG-SEC,ROTA,SCHED,RQ-SIZE,RA,WSAME</strong>.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<p><strong>-w</strong>, <strong>--width</strong> <em>number</em></p>
+<blockquote>
+<p>Specifies output width as a number of characters. The default is the
+number of the terminal columns, and if not executed on a terminal, then
+output width is not restricted at all by default. This option also
+forces <strong>lsblk</strong> to assume that terminal control characters
+and unsafe characters are not allowed. The expected use-case is for
+example when <strong>lsblk</strong> is used by the
+<strong>watch</strong>(1) command.</p>
+</blockquote>
+<p><strong>-x</strong>, <strong>--sort</strong> <em>column</em></p>
+<blockquote>
+<p>Sort output lines by <em>column</em>. This option enables
+<strong>--list</strong> output format by default. It is possible to use
+the option <strong>--tree</strong> to force tree-like output and than
+the tree branches are sorted by the <em>column</em>.</p>
+</blockquote>
+<p><strong>-y</strong>, <strong>--shell</strong></p>
+<blockquote>
+<p>The column name will be modified to contain only characters allowed
+for shell variable identifiers, for example, MIN_IO and FSUSE_PCT
+instead of MIN-IO and FSUSE%. This is usable, for example, with
+<strong>--pairs</strong>. Note that this feature has been automatically
+enabled for <strong>--pairs</strong> in version 2.37, but due to
+compatibility issues, now it’s necessary to request this behavior by
+<strong>--shell</strong>.</p>
+</blockquote>
+<p><strong>-z</strong>, <strong>--zoned</strong></p>
+<blockquote>
+<p>Print the zone related information for each device.</p>
+</blockquote>
+<p><strong>--sysroot</strong> <em>directory</em></p>
+<blockquote>
+<p>Gather data for a Linux instance other than the instance from which
+the <strong>lsblk</strong> command is issued. The specified directory is
+the system root of the Linux instance to be inspected. The real device
+nodes in the target directory can be replaced by text files with udev
+attributes.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p>0</p>
+<blockquote>
+<p>success</p>
+</blockquote>
+<p>1</p>
+<blockquote>
+<p>failure</p>
+</blockquote>
+<p>32</p>
+<blockquote>
+<p>none of specified devices found</p>
+</blockquote>
+<p>64</p>
+<blockquote>
+<p>some specified devices found, some not found</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p><strong>LSBLK_DEBUG</strong>=all</p>
+<blockquote>
+<p>enables <strong>lsblk</strong> debug output.</p>
+</blockquote>
+<p><strong>LIBBLKID_DEBUG</strong>=all</p>
+<blockquote>
+<p>enables <strong>libblkid</strong> debug output.</p>
+</blockquote>
+<p><strong>LIBMOUNT_DEBUG</strong>=all</p>
+<blockquote>
+<p>enables <strong>libmount</strong> debug output.</p>
+</blockquote>
+<p><strong>LIBSMARTCOLS_DEBUG</strong>=all</p>
+<blockquote>
+<p>enables <strong>libsmartcols</strong> debug output.</p>
+</blockquote>
+<p><strong>LIBSMARTCOLS_DEBUG_PADDING</strong>=on</p>
+<blockquote>
+<p>use visible padding characters.</p>
+</blockquote>
+<h1>NOTES</h1>
+<p>For partitions, some information (e.g., queue attributes) is
+inherited from the parent device.</p>
+<p>The <strong>lsblk</strong> command needs to be able to look up each
+block device by major:minor numbers, which is done by using
+<em>/sys/dev/block</em>. This sysfs block directory appeared in kernel
+2.6.27 (October 2008). In case of problems with a new enough kernel,
+check that <strong>CONFIG_SYSFS</strong> was enabled at the time of the
+kernel build.</p>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>ls</strong>(1), <strong>blkid</strong>(8),
+<strong>findmnt</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>lsblk</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

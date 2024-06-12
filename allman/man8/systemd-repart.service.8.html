@@ -1,0 +1,382 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-repart, systemd-repart.service - Automatically grow and add
+partitions</p>
+<h1>SYNOPSIS</h1>
+<p><strong>systemd-repart</strong> [OPTIONS...]
+[<em>[BLOCKDEVICE]</em>...]</p>
+<p>systemd-repart.service</p>
+<h1>DESCRIPTION</h1>
+<p><strong>systemd-repart</strong> grows and adds partitions to a
+partition table, based on the configuration files described in
+<strong>repart.d</strong>(5).</p>
+<p>If invoked with no arguments, it operates on the block device backing
+the root file system partition of the running OS, thus growing and
+adding partitions of the booted OS image itself. If <em>--image=</em> is
+used it will operate on the specified image file. When called in the
+initrd it operates on the block device backing /sysroot/ instead, i.e.
+on the block device the system will soon transition into. The
+systemd-repart.service service is generally run at boot in the initrd,
+in order to augment the partition table of the OS before its partitions
+are mounted. <strong>systemd-repart</strong> (mostly) operates in a
+purely incremental mode: it only grows existing and adds new partitions;
+it does not shrink, delete or move existing partitions. The service is
+intended to be run on every boot, but when it detects that the partition
+table already matches the installed repart.d/*.conf configuration files,
+it executes no operation.</p>
+<p><strong>systemd-repart</strong> is intended to be used when deploying
+OS images, to automatically adjust them to the system they are running
+on, during first boot. This way the deployed image can be minimal in
+size and may be augmented automatically at boot when needed, taking
+possession of disk space available but not yet used. Specifically the
+following use cases are among those covered:</p>
+<blockquote>
+<p>·</p>
+<p>The root partition may be grown to cover the whole available disk
+space.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>A /home/, swap or /srv/ partition can be added.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>A second (or third, ...) root partition may be added, to cover A/B
+style setups where a second version of the root file system is
+alternatingly used for implementing update schemes. The deployed image
+would carry only a single partition ("A") but on first boot a second
+partition ("B") for this purpose is automatically created.</p>
+</blockquote>
+<p>The algorithm executed by <strong>systemd-repart</strong> is roughly
+as follows:</p>
+<blockquote>
+<p>1.</p>
+<p>The repart.d/*.conf configuration files are loaded and parsed, and
+ordered by filename (without the directory prefix). For each
+configuration file, drop-in files are looked for in directories with
+same name as the configuration file with a suffix ".d" added.</p>
+</blockquote>
+<blockquote>
+<p>2.</p>
+<p>The partition table already existing on the block device is loaded
+and parsed.</p>
+</blockquote>
+<blockquote>
+<p>3.</p>
+<p>The existing partitions in the partition table are matched up with
+the repart.d/*.conf files by GPT partition type UUID. The first existing
+partition of a specific type is assigned the first configuration file
+declaring the same type. The second existing partition of a specific
+type is then assigned the second configuration file declaring the same
+type, and so on. After this iterative assigning is complete any
+left-over existing partitions that have no matching configuration file
+are considered "foreign" and left as they are. And any configuration
+files for which no partition currently exists are understood as a
+request to create such a partition.</p>
+</blockquote>
+<blockquote>
+<p>4.</p>
+<p>Taking the size constraints and weights declared in the configuration
+files into account, all partitions that shall be created are now
+allocated to the disk, taking up all free space, always respecting the
+size and padding requests. Similarly, existing partitions that should be
+grown are grown. New partitions are always appended to the end of the
+partition table, taking the first partition table slot whose index is
+greater than the indexes of all existing partitions. Partition table
+slots are never reordered and thus partition numbers are ensured to
+remain stable. Note that this allocation happens in memory only, the
+partition table on disk is not updated yet.</p>
+</blockquote>
+<blockquote>
+<p>5.</p>
+<p>All existing partitions for which configuration files exist and which
+currently have no GPT partition label set will be assigned a label,
+either explicitly configured in the configuration or — if thats missing
+— derived automatically from the partition type. The same is done for
+all partitions that are newly created. These assignments are done in
+memory only, too, the disk is not updated yet.</p>
+</blockquote>
+<blockquote>
+<p>6.</p>
+<p>Similarly, all existing partitions for which configuration files
+exist and which currently have an all-zero identifying UUID will be
+assigned a new UUID. This UUID is cryptographically hashed from a common
+seed value together with the partition type UUID (and a counter in case
+multiple partitions of the same type are defined), see below. The same
+is done for all partitions that are created anew. These assignments are
+done in memory only, too, the disk is not updated yet.</p>
+</blockquote>
+<blockquote>
+<p>7.</p>
+<p>Similarly, if the disks volume UUID is all zeroes it is also
+initialized, also cryptographically hashed from the same common seed
+value. This is done in memory only too.</p>
+</blockquote>
+<blockquote>
+<p>8.</p>
+<p>The disk space assigned to new partitions (i.e. what was previously
+free space) is now erased. Specifically, all file system signatures are
+removed, and if the device supports it, the <strong>BLKDISCARD</strong>
+I/O control command is issued to inform the hardware that the space is
+now empty. In addition any "padding" between partitions and at the end
+of the device is similarly erased.</p>
+</blockquote>
+<blockquote>
+<p>9.</p>
+<p>The new partition table is finally written to disk. The kernel is
+asked to reread the partition table.</p>
+</blockquote>
+<p>As exception to the normally strictly incremental operation, when
+called in a special "factory reset" mode,
+<strong>systemd-repart</strong> may also be used to erase existing
+partitions to reset an installation back to vendor defaults. This mode
+of operation is used when either the
+<strong>--factory-reset=yes</strong> switch is passed on the tools
+command line, or the <strong>systemd.factory_reset=yes</strong> option
+specified on the kernel command line, or the <em>FactoryReset</em> EFI
+variable (vendor UUID
+<strong>8cf2644b-4b0b-428f-9387-6d876050dc67</strong>) is set to "yes".
+It alters the algorithm above slightly: between the 3rd and the 4th step
+above any partition marked explicitly via the <em>FactoryReset=</em>
+boolean is deleted, and the algorithm restarted, thus immediately
+re-creating these partitions anew empty.</p>
+<p>Note that <strong>systemd-repart</strong> only changes partition
+tables, it does not create or resize any file systems within these
+partitions. A separate mechanism should be used for that, for example
+<strong>systemd-growfs</strong>(8) and
+<strong>systemd-makefs</strong>.</p>
+<p>The UUIDs identifying the new partitions created (or assigned to
+existing partitions that have no UUID yet), as well as the disk as a
+whole are hashed cryptographically from a common seed value. This seed
+value is usually the <strong>machine-id</strong>(5) of the system, so
+that the machine ID reproducibly determines the UUIDs assigned to all
+partitions. If the machine ID cannot be read (or the user passes
+<strong>--seed=random</strong>, see below) the seed is generated
+randomly instead, so that the partition UUIDs are also effectively
+random. The seed value may also be set explicitly, formatted as UUID via
+the <strong>--seed=</strong> option. By hashing these UUIDs from a
+common seed images prepared with this tool become reproducible and the
+result of the algorithm above deterministic.</p>
+<p>The positional argument should specify the block device to operate
+on. Instead of a block device node path a regular file may be specified
+too, in which case the command operates on it like it would if a
+loopback block device node was specified with the file attached. If
+<strong>--empty=create</strong> is specified the specified path is
+created as regular file, which is useful for generating disk images from
+scratch.</p>
+<h1>OPTIONS</h1>
+<p>The following options are understood:</p>
+<p><strong>--dry-run=</strong></p>
+<blockquote>
+<p>Takes a boolean. If this switch is not specified
+<strong>--dry-run=yes</strong> is the implied default. Controls whether
+systemd-repart executes the requested re-partition operations or whether
+it should only show what it would do. Unless
+<strong>--dry-run=no</strong> is specified systemd-repart will not
+actually touch the devices partition table.</p>
+</blockquote>
+<p><strong>--empty=</strong></p>
+<blockquote>
+<p>Takes one of "refuse", "allow", "require", "force" or "create".
+Controls how to operate on block devices that are entirely empty, i.e.
+carry no partition table/disk label yet. If this switch is not specified
+the implied default is "refuse".</p>
+<p>If "refuse" <strong>systemd-repart</strong> requires that the block
+device it shall operate on already carries a partition table and refuses
+operation if none is found. If "allow" the command will extend an
+existing partition table or create a new one if none exists. If
+"require" the command will create a new partition table if none exists
+so far, and refuse operation if one already exists. If "force" it will
+create a fresh partition table unconditionally, erasing the disk fully
+in effect. If "force" no existing partitions will be taken into account
+or survive the operation. Hence: use with care, this is a great way to
+lose all your data. If "create" a new loopback file is create under the
+path passed via the device node parameter, of the size indicated with
+<strong>--size=</strong>, see below.</p>
+</blockquote>
+<p><strong>--discard=</strong></p>
+<blockquote>
+<p>Takes a boolean. If this switch is not specified
+<strong>--discard=yes</strong> is the implied default. Controls whether
+to issue the <strong>BLKDISCARD</strong> I/O control command on the
+space taken up by any added partitions or on the space in between them.
+Usually, its a good idea to issue this request since it tells the
+underlying hardware that the covered blocks shall be considered empty,
+improving performance. If operating on a regular file instead of a block
+device node, a sparse file is generated.</p>
+</blockquote>
+<p><strong>--size=</strong></p>
+<blockquote>
+<p>Takes a size in bytes, using the usual K, M, G, T suffixes, or the
+special value "auto". If used the specified device node path must refer
+to a regular file, which is then grown to the specified size if smaller,
+before any change is made to the partition table. If specified as "auto"
+the minimal size for the disk image is automatically determined (i.e.
+the minimal sizes of all partitions are summed up, taking space for
+additional metadata into account). This switch is not supported if the
+specified node is a block device. This switch has no effect if the file
+is already as large as the specified size or larger. The specified size
+is implicitly rounded up to multiples of 4096. When used with
+<strong>--empty=create</strong> this specifies the initial size of the
+loopback file to create.</p>
+<p>The <strong>--size=auto</strong> option takes the sizes of
+pre-existing partitions into account. However, it does not accommodate
+for partition tables that are not tightly packed: the configured
+partitions might still not fit into the backing device if empty space
+exists between pre-existing partitions (or before the first partition)
+that cannot be fully filled by partitions to grow or create.</p>
+<p>Also note that the automatic size determination does not take files
+or directories specified with <strong>CopyFiles=</strong> into account:
+operation might fail if the specified files or directories require more
+disk space then the configured per-partition minimal size limit.</p>
+</blockquote>
+<p><strong>--factory-reset=</strong></p>
+<blockquote>
+<p>Takes boolean. If this switch is not specified
+<strong>--factory=reset=no</strong> is the implied default. Controls
+whether to operate in "factory reset" mode, see above. If set to true
+this will remove all existing partitions marked with
+<em>FactoryReset=</em> set to yes early while executing the
+re-partitioning algorithm. Use with care, this is a great way to lose
+all your data. Note that partition files need to explicitly turn
+<em>FactoryReset=</em> on, as the option defaults to off. If no
+partitions are marked for factory reset this switch has no effect. Note
+that there are two other methods to request factory reset operation: via
+the kernel command line and via an EFI variable, see above.</p>
+</blockquote>
+<p><strong>--can-factory-reset</strong></p>
+<blockquote>
+<p>If this switch is specified the disk is not re-partitioned. Instead
+it is determined if any existing partitions are marked with
+<em>FactoryReset=</em>. If there are the tool will exit with exit status
+zero, otherwise non-zero. This switch may be used to quickly determine
+whether the running system supports a factory reset mechanism built on
+<strong>systemd-repart</strong>.</p>
+</blockquote>
+<p><strong>--root=</strong></p>
+<blockquote>
+<p>Takes a path to a directory to use as root file system when searching
+for repart.d/*.conf files, for the machine ID file to use as seed and
+for the <em>CopyFiles=</em> and <em>CopyBlocks=</em> source files and
+directories. By default when invoked on the regular system this defaults
+to the hosts root file system /. If invoked from the initrd this
+defaults to /sysroot/, so that the tool operates on the configuration
+and machine ID stored in the root file system later transitioned into
+itself.</p>
+</blockquote>
+<p><strong>--image=</strong></p>
+<blockquote>
+<p>Takes a path to a disk image file or device to mount and use in a
+similar fashion to <strong>--root=</strong>, see above.</p>
+</blockquote>
+<p><strong>--seed=</strong></p>
+<blockquote>
+<p>Takes a UUID as argument or the special value
+<strong>random</strong>. If a UUID is specified the UUIDs to assign to
+partitions and the partition table itself are derived via cryptographic
+hashing from it. If not specified it is attempted to read the machine ID
+from the host (or more precisely, the root directory configured via
+<strong>--root=</strong>) and use it as seed instead, falling back to a
+randomized seed otherwise. Use <strong>--seed=random</strong> to force a
+randomized seed. Explicitly specifying the seed may be used to generated
+strictly reproducible partition tables.</p>
+</blockquote>
+<p><strong>--pretty=</strong></p>
+<blockquote>
+<p>Takes a boolean argument. If this switch is not specified, it
+defaults to on when called from an interactive terminal and off
+otherwise. Controls whether to show a user friendly table and graphic
+illustrating the changes applied.</p>
+</blockquote>
+<p><strong>--definitions=</strong></p>
+<blockquote>
+<p>Takes a file system path. If specified the *.conf files are read from
+the specified directory instead of searching in
+/usr/lib/repart.d/*.conf, /etc/repart.d/*.conf,
+/run/repart.d/*.conf.</p>
+<p>This parameter can be specified multiple times.</p>
+</blockquote>
+<p><strong>--key-file=</strong></p>
+<blockquote>
+<p>Takes a file system path. Configures the encryption key to use when
+setting up LUKS2 volumes configured with the <em>Encrypt=key-file</em>
+setting in partition files. Should refer to a regular file containing
+the key, or an <strong>AF_UNIX</strong> stream socket in the file
+system. In the latter case a connection is made to it and the key read
+from it. If this switch is not specified the empty key (i.e. zero length
+key) is used. This behaviour is useful for setting up encrypted
+partitions during early first boot that receive their user-supplied
+password only in a later setup step.</p>
+</blockquote>
+<p><strong>--private-key=</strong></p>
+<blockquote>
+<p>Takes a file system path. Configures the signing key to use when
+creating verity signature partitions with the <em>Verity=signature</em>
+setting in partition files.</p>
+</blockquote>
+<p><strong>--certificate=</strong></p>
+<blockquote>
+<p>Takes a file system path. Configures the PEM encoded X.509
+certificate to use when creating verity signature partitions with the
+<em>Verity=signature</em> setting in partition files.</p>
+</blockquote>
+<p><strong>--tpm2-device=</strong>, <strong>--tpm2-pcrs=</strong></p>
+<blockquote>
+<p>Configures the TPM2 device and list of PCRs to use for LUKS2 volumes
+configured with the <em>Encrypt=tpm2</em> option. These options take the
+same parameters as the identically named options to
+<strong>systemd-cryptenroll</strong>(1) and have the same effect on
+partitions where TPM2 enrollment is requested.</p>
+</blockquote>
+<p><strong>--tpm2-public-key=</strong> [PATH],
+<strong>--tpm2-public-key-pcrs=</strong> [PCR...]</p>
+<blockquote>
+<p>Configures a TPM2 signed PCR policy to bind encryption to. See
+<strong>systemd-cryptenroll</strong>(1) for details on these two
+options.</p>
+</blockquote>
+<p><strong>--split=</strong> [BOOL]</p>
+<blockquote>
+<p>Enables generation of split artifacts from partitions configured with
+<em>SplitName=</em>. If enabled, for each partition with
+<em>SplitName=</em> set, a separate output file containing just the
+contents of that partition is generated. The output filename consists of
+the loopback filename suffixed with the name configured with
+<em>SplitName=</em>. If the loopback filename ends with ".raw", the
+suffix is inserted before the ".raw" extension instead.</p>
+<p>Note that <strong>--split</strong> is independent from
+<strong>--dry-run</strong>. Even if <strong>--dry-run</strong> is
+enabled, split artifacts will still be generated from an existing image
+if <strong>--split</strong> is enabled.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Print a short help text and exit.</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Print a short version string and exit.</p>
+</blockquote>
+<p><strong>--no-pager</strong></p>
+<blockquote>
+<p>Do not pipe output into a pager.</p>
+</blockquote>
+<p><strong>--no-legend</strong></p>
+<blockquote>
+<p>Do not print the legend, i.e. column headers and the footer with
+hints.</p>
+</blockquote>
+<p><strong>--json=</strong><em>MODE</em></p>
+<blockquote>
+<p>Shows output formatted as JSON. Expects one of "short" (for the
+shortest possible output without any redundant whitespace or line
+breaks), "pretty" (for a pretty version of the same, with indentation
+and line breaks) or "off" (to turn off JSON output, the default).</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p>On success, 0 is returned, a non-zero failure code otherwise.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>repart.d</strong>(5),
+<strong>machine-id</strong>(5),
+<strong>systemd-cryptenroll</strong>(1)</p>

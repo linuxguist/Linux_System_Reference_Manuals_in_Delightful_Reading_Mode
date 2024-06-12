@@ -1,0 +1,147 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::after - Execute a command after a time delay</p>
+<h1>SYNOPSIS</h1>
+<p>  <em><code>$widget</code></em>-&gt;<strong>after</strong>(<em>ms</em>)</p>
+<p>  <em><code>$id</code></em> =
+<em><code>$widget</code></em>-&gt;<strong>after</strong>(<em>ms</em>?,<em>callback</em>?)</p>
+<p>  <em><code>$id</code></em> =
+<em><code>$widget</code></em>-&gt;<strong>repeat</strong>(<em>ms</em>?,<em>callback</em>?)</p>
+<p>  <em><code>$widget</code></em>-&gt;<strong>afterCancel</strong>(<em><code>$id</code></em>)</p>
+<p>  <em><code>$id</code></em> =
+<em><code>$widget</code></em>-&gt;<strong>afterIdle</strong>(<em>callback</em>)</p>
+<p>  <em><code>$widget</code></em>-&gt;<strong>afterInfo</strong>?(<em><code>$id</code></em>)?</p>
+<p>  <em><code>$id</code></em>-&gt;<strong>time</strong>(?<em>delay</em>?)</p>
+<h1>DESCRIPTION</h1>
+<p>This method is used to delay execution of the program or to execute a
+callback in background sometime in the future.</p>
+<p>In perl/Tk <em><code>$widget</code></em>-&gt;<strong>after</strong>
+is implemented via the class <code>Tk::After</code>, and callbacks are
+associated with <em><code>$widget</code></em>, and are automatically
+cancelled when the widget is destroyed. An almost identical interface,
+but without automatic cancel, and without repeat is provided via
+Tk::after method.</p>
+<h2>Internal Details</h2>
+<p>The internal Tk::After class has the following synopsis:</p>
+<p>$id = Tk::After-&gt;new($widget, tid, $time, once, callback); $id =
+Tk::After-&gt;new($widget, tid, $time, repeat, callback);
+$id-&gt;cancel; $id-&gt;time(?delay?);</p>
+<p><code>$id</code> is a Tk::After object, an array of 5 elements:</p>
+<p><em><code>$widget</code></em> is the parent widget reference.</p>
+<p><em>tid</em> is the internal timer id, a unique string.</p>
+<p><em><code>$time</code></em> is the string 'idle', representing an
+idle queue timer, or a integer millisecond value.</p>
+<p><em>once</em> or <em>repeat</em> specifies whether the timer is a
+one-time <strong>after</strong> event, or a repeating
+<strong>repeat</strong> event.</p>
+<p><em>callback</em> specifies a Perl/Tk Tk::Callback object.</p>
+<h1>Changing a <strong>repeat</strong> timer interval</h1>
+<p>It's possible to change a <strong>repeat</strong> timer's delay
+value, or even cancel any timer, using the <strong>time</strong> method.
+If <em>delay</em> is specified and non-zero, a new timer delay is
+established. If <em>delay</em> is zero the timer event is canceled just
+as if <em><code>$id</code></em>-&gt;<strong>cancel</strong> were
+invoked. In all cases the current millisecond timer delay is
+returned.</p>
+<p>Note: the new timer delay will take effect on the <em>subsequent</em>
+timer event - this command will not cancel the pending timer event and
+re-issue it with the new delay time.</p>
+<h1>The <strong>after()</strong> method has several forms as
+follows:</h1>
+<dl>
+<dt>$widget-&gt;after(ms)</dt>
+<dd>
+<p>The value <em>ms</em> must be an integer giving a time in
+milliseconds. The command sleeps for <em>ms</em> milliseconds and then
+returns. While the command is sleeping the application does not respond
+to events.</p>
+</dd>
+<dt>$widget-&gt;after(ms,callback)</dt>
+<dd>
+<p>In this form the command returns immediately, but it arranges for
+<em>callback</em> be executed <em>ms</em> milliseconds later as an event
+handler. The callback will be executed exactly once, at the given time.
+The command will be executed in context of
+<em><code>$widget</code></em>. If an error occurs while executing the
+delayed command then the Tk::Error mechanism is used to report the
+error. The <strong>after</strong> command returns an identifier (an
+object in the perl/Tk case) that can be used to cancel the delayed
+command using <strong>afterCancel</strong>.</p>
+</dd>
+<dt>$widget-&gt;repeat(ms,callback)</dt>
+<dd>
+<p>In this form the command returns immediately, but it arranges for
+<em>callback</em> be executed <em>ms</em> milliseconds later as an event
+handler. After <em>callback</em> has executed it is re-scheduled, to be
+executed in a futher <em>ms</em>, and so on until it is cancelled.</p>
+</dd>
+<dt>$widget-&gt;afterCancel($id)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>$id-&gt;cancel</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Cancels the execution of a delayed command that was previously
+scheduled. <em><code>$id</code></em> indicates which command should be
+canceled; it must have been the return value from a previous
+<strong>after</strong> command. If the command given by
+<em><code>$id</code></em> has already been executed (and is not
+scheduled to be executed again) then <strong>afterCancel</strong> has no
+effect.</p>
+<dl>
+<dt>$widget-&gt;afterCancel(callback)</dt>
+<dd>
+<p><em>This form is not robust in perl/Tk - its use is deprecated.</em>
+This command should also cancel the execution of a delayed command. The
+<em>callback</em> argument is compared with pending callbacks, if a
+match is found, that callback is cancelled and will never be executed;
+if no such callback is currently pending then the
+<strong>afterCancel</strong> has no effect.</p>
+</dd>
+<dt>$widget-&gt;afterIdle(callback)</dt>
+<dd>
+<p>Arranges for <em>callback</em> to be evaluated later as an idle
+callback. The script will be run exactly once, the next time the event
+loop is entered and there are no events to process. The command returns
+an identifier that can be used to cancel the delayed command using
+<strong>afterCancel</strong>. If an error occurs while executing the
+script then the Tk::Error mechanism is used to report the error.</p>
+</dd>
+<dt>$widget-&gt;afterInfo?($id)?</dt>
+<dd>
+<p>This command returns information about existing event handlers. If no
+<em><code>$id</code></em> argument is supplied, the command returns a
+list of the identifiers for all existing event handlers created by the
+<strong>after</strong> and <strong>repeat</strong> commands for
+<em><code>$widget</code></em>. If <em><code>$id</code></em> is supplied,
+it specifies an existing handler; <em><code>$id</code></em> must have
+been the return value from some previous call to <strong>after</strong>
+or <strong>repeat</strong> and it must not have triggered yet or been
+cancelled. In this case the command returns a list with three elements.
+The first element of the list is the callback associated with
+<em><code>$id</code></em>, the second element is either
+<strong>idle</strong> or the <em>integer</em> timer millisecond value to
+indicate what kind of event handler it is, and the third is a string
+<em>once</em> or <em>repeat</em> to differentiate an
+<strong>after</strong> from a <strong>repeat</strong> event.</p>
+</dd>
+</dl>
+<p>The <strong>after</strong>(<em>ms</em>) and
+<strong>afterIdle</strong> forms of the command assume that the
+application is event driven: the delayed commands will not be executed
+unless the application enters the event loop. In applications that are
+not normally event-driven, the event loop can be entered with the
+<strong>vwait</strong> and <strong>update</strong> commands.</p>
+<h1>SEE ALSO</h1>
+<p>Tk::Error Tk::callbacks</p>
+<h1>KEYWORDS</h1>
+<p>cancel, delay, idle callback, sleep, time</p>

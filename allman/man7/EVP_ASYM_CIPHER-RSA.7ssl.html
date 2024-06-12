@@ -1,0 +1,128 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_ASYM_CIPHER-RSA - RSA Asymmetric Cipher algorithm support</p>
+<h1>DESCRIPTION</h1>
+<p>Asymmetric Cipher support for the <strong>RSA</strong> key type.</p>
+<h2>RSA Asymmetric Cipher parameters</h2>
+<dl>
+<dt>"pad-mode" (OSSL_ASYM_CIPHER_PARAM_PAD_MODE) &lt;UTF8
+string&gt;</dt>
+<dd>
+<p>The default provider understands these RSA padding modes in string
+form:</p>
+<dl>
+<dt>"none" (OSSL_PKEY_RSA_PAD_MODE_NONE)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"oaep" (OSSL_PKEY_RSA_PAD_MODE_OAEP)</dt>
+<dd>
+
+</dd>
+<dt>"pkcs1" (OSSL_PKEY_RSA_PAD_MODE_PKCSV15)</dt>
+<dd>
+
+</dd>
+<dt>"x931" (OSSL_PKEY_RSA_PAD_MODE_X931)</dt>
+<dd>
+
+</dd>
+</dl>
+</dd>
+<dt>"pad-mode" (OSSL_ASYM_CIPHER_PARAM_PAD_MODE) &lt;integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The default provider understands these RSA padding modes in integer
+form:</p>
+<blockquote>
+<dl>
+<dt>1 (RSA_PKCS1_PADDING)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>3 (RSA_NO_PADDING)</dt>
+<dd>
+
+</dd>
+<dt>4 (RSA_PKCS1_OAEP_PADDING)</dt>
+<dd>
+
+</dd>
+<dt>5 (RSA_X931_PADDING)</dt>
+<dd>
+
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<p>See <strong>EVP_PKEY_CTX_set_rsa_padding</strong> (3) for further
+details.</p>
+</blockquote>
+<dl>
+<dt>"digest" (OSSL_ASYM_CIPHER_PARAM_OAEP_DIGEST) &lt;UTF8
+string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"digest-props" (OSSL_ASYM_CIPHER_PARAM_OAEP_DIGEST_PROPS) &lt;UTF8
+string&gt;</dt>
+<dd>
+
+</dd>
+<dt>"mgf1-digest" (OSSL_ASYM_CIPHER_PARAM_MGF1_DIGEST) &lt;UTF8
+string&gt;</dt>
+<dd>
+
+</dd>
+<dt>"mgf1-digest-props" (OSSL_ASYM_CIPHER_PARAM_MGF1_DIGEST_PROPS)
+&lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+<dt>"oaep-label" (OSSL_ASYM_CIPHER_PARAM_OAEP_LABEL) &lt;octet
+string&gt;</dt>
+<dd>
+
+</dd>
+<dt>"tls-client-version" (OSSL_ASYM_CIPHER_PARAM_TLS_CLIENT_VERSION)
+&lt;unsigned integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See <strong>RSA_PKCS1_WITH_TLS_PADDING</strong> on the page
+<strong>EVP_PKEY_CTX_set_rsa_padding</strong> (3).</p>
+<dl>
+<dt>"tls-negotiated-version" (OSSL_ASYM_CIPHER_PARAM_TLS_CLIENT_VERSION)
+&lt;unsigned integer&gt;</dt>
+<dd>
+<p>See <strong>RSA_PKCS1_WITH_TLS_PADDING</strong> on the page
+<strong>EVP_PKEY_CTX_set_rsa_padding</strong> (3). See Asymmetric Cipher
+Parameters in <strong>provider-asym_cipher</strong> (7) for more
+information.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_PKEY-RSA</strong> (7), <strong>EVP_PKEY</strong> (3),
+<strong>provider-asym_cipher</strong> (7),
+<strong>provider-keymgmt</strong> (7),
+<strong>OSSL_PROVIDER-default</strong> (7)
+<strong>OSSL_PROVIDER-FIPS</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2022 The OpenSSL Project Authors. All Rights Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

@@ -1,0 +1,52 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gdm3 - GNOME Display Manager</p>
+<h1>SYNOPSIS</h1>
+<p>gdm3</p>
+<h1>DESCRIPTION</h1>
+<p><strong>gdm3</strong> is the equivalent of <strong>xdm</strong> (1x)
+or <strong>wdm</strong> (1x), but uses the GNOME libraries to provide a
+GNOME look-and-feel. It provides the GNOME equivalent of a login:
+prompt.</p>
+<p><strong>gdm3</strong> reads <em>/etc/gdm3/daemon.conf</em> for its
+configuration. For each local display, gdm starts an X server and runs a
+minimal GNOME session including a graphical greeter. If configured so,
+the main gdm process also listens for XDMCP requests from remote
+displays. These requests can either be direct, causing
+<strong>gdm3</strong> to start a session on the remote display, or
+indirect, causing a chooser to be opened.</p>
+<p>When managing a display, <strong>gdm3</strong> attempts to execute
+<em>/etc/gdm3/Init/display</em>, or <em>/etc/gdm3/Init/Default</em> if
+that does not exist. When a user logs in, <strong>gdm3</strong> first
+attempts <em>/etc/gdm3/PreSession/display</em> (or
+<em>/etc/gdm3/PreSession/Default</em>), and then one of the sessions
+defined in <em>/usr/share/xsessions</em>. When the session has
+completed, <strong>gdm</strong> attempts to run
+<em>/etc/gdm3/PostSession/display</em>, or
+<em>/etc/gdm3/PostSession/Default</em>.</p>
+<p><strong>gdm3</strong> maintains information about the displays it is
+managing in <em>/var/lib/gdm3</em>. This includes xauth information, so
+this directory is not readable to normal users.</p>
+<p><strong>gdm3</strong> uses PAM to perform authentication using the
+config file <em>/etc/pam.d/gdm3</em>.</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt>XAUTHORITY</dt>
+<dd>
+<p>Upon session startup, GDM sets the XAUTHORITY environment variable to
+a session-specific file in <em>/run/gdm3</em>. Applications and scripts
+that assume this file is set to <em>~/.Xauthority</em> will not work. To
+access the display you need both DISPLAY and XAUTHORITY variables.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Martin Kasper Petersen &lt;mkp@SunSITE.auc.dk&gt;</p>
+<p>This manual page written by Steve Haslam &lt;araqnid@debian.org&gt;
+for Debian GNU/Linux. Updated by Raphae\k:.l Hertzog
+&lt;hertzog@debian.org&gt;, Ryan Murray &lt;rmurray@debian.org&gt;,
+Josselin Mouette &lt;joss@debian.org&gt; and Vincent Lefevre
+&lt;vincent@vinc17.net&gt;.</p>

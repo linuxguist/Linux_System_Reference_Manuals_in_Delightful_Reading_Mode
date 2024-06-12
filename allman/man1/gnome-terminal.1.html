@@ -1,0 +1,204 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gnome-terminal - A terminal emulator for GNOME</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gnome-terminal</strong> [<em>OPTION</em>...] [--
+<em>PROGRAM</em> [<em>ARG</em>...]]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>gnome-terminal</strong> is a terminal emulator application
+for accessing a UNIX shell environment which can be used to run programs
+available on your system. It supports several profiles, multiple tabs
+and implements several keyboard shortcuts.</p>
+<h1>OPTIONS</h1>
+<p><strong>--help, -h</strong></p>
+<blockquote>
+<p>Show a brief overview of all the options.</p>
+</blockquote>
+<p><strong>--help-all</strong></p>
+<blockquote>
+<p>Show all the options in detail.</p>
+</blockquote>
+<p><strong>--help-gtk</strong></p>
+<blockquote>
+<p>Show all the GTK options.</p>
+</blockquote>
+<p><strong>--help-terminal</strong></p>
+<blockquote>
+<p>Show all the options to select between new terminal tabs or
+windows.</p>
+</blockquote>
+<p><strong>--help-terminal-options</strong></p>
+<blockquote>
+<p>Show all the options to change the attributes of terminals regardless
+of whether they are in separate tabs or windows.</p>
+</blockquote>
+<p><strong>--help-window-options</strong></p>
+<blockquote>
+<p>Show all the options to change the attributes of windows containing
+terminals.</p>
+</blockquote>
+<p><strong>--load-config=FILE</strong></p>
+<blockquote>
+<p>Restore the application to a previously saved state by loading it
+from a configuration file.</p>
+</blockquote>
+<p><strong>--preferences</strong></p>
+<blockquote>
+<p>Show the preferences window.</p>
+</blockquote>
+<p><strong>--print-environment, -p</strong></p>
+<blockquote>
+<p>Print the environment variables to interact with newly created
+terminals.</p>
+</blockquote>
+<p><strong>--quiet, -q</strong></p>
+<blockquote>
+<p>Suppress diagnostics.</p>
+</blockquote>
+<p><strong>--verbose, -v</strong></p>
+<blockquote>
+<p>Increase diagnostic verbosity.</p>
+</blockquote>
+<p><strong>--tab</strong></p>
+<blockquote>
+<p>Open a new tab containing a terminal in the last-opened window with
+the default profile.</p>
+</blockquote>
+<p><strong>--window</strong></p>
+<blockquote>
+<p>Open a new window with a tab containing a terminal with the default
+profile.</p>
+</blockquote>
+<p><strong>--command, -e=COMMAND</strong></p>
+<blockquote>
+<p>Split the argument to this option into a program and arguments in the
+same way a shell would, and execute the resulting command-line inside
+the terminal.</p>
+<p>This option is deprecated. Instead, use <strong>--</strong> to
+terminate the options, and put the program and arguments to execute
+after it: for example, instead of <strong>gnome-terminal -e "python3
+-q"</strong>, prefer to use <strong>gnome-terminal -- python3
+-q</strong>.</p>
+<p>Note that the <em>COMMAND</em> is not run via a shell: it is split
+into words and executed as a program. If shell syntax is required, use
+the form <strong>gnome-terminal -- sh -c ...</strong>.</p>
+</blockquote>
+<p><strong>--execute PROGRAM [ARGS], -x PROGRAM [ARGS]</strong></p>
+<blockquote>
+<p>Stop parsing options at this point, and interpret all subsequent
+options as a program and arguments to execute inside the terminal.</p>
+<p>This option is deprecated: use <strong>--</strong> instead. For
+example, instead of <strong>gnome-terminal -x python3 -q</strong>,
+prefer to use <strong>gnome-terminal -- python3 -q</strong>.</p>
+</blockquote>
+<p><strong>--fd=FD</strong></p>
+<blockquote>
+<p>Forward file descriptor.</p>
+</blockquote>
+<p><strong>--profile=PROFILE-NAME</strong></p>
+<blockquote>
+<p>Use the given profile instead of the default profile.</p>
+</blockquote>
+<p><strong>--title, -t=TITLE</strong></p>
+<blockquote>
+<p>Set the initial terminal title.</p>
+</blockquote>
+<p><strong>--wait</strong></p>
+<blockquote>
+<p>Wait until the terminals child exits.</p>
+</blockquote>
+<p><strong>--working-directory=DIRNAME</strong></p>
+<blockquote>
+<p>Set the terminals working directory.</p>
+</blockquote>
+<p><strong>--zoom=ZOOM</strong></p>
+<blockquote>
+<p>Set the terminals zoom factor. 1.0 is normal size.</p>
+</blockquote>
+<p><strong>--active</strong></p>
+<blockquote>
+<p>Set the last specified tab as the active one in its window.</p>
+</blockquote>
+<p><strong>--full-screen</strong></p>
+<blockquote>
+<p>Full-screen the window.</p>
+</blockquote>
+<p><strong>--geometry=GEOMETRY</strong></p>
+<blockquote>
+<p>Set the window size as COLSxROWS+X+Y. For example, 80x24 or
+80x24+200+200.</p>
+</blockquote>
+<p><strong>--hide-menubar</strong></p>
+<blockquote>
+<p>Turn off the menubar for the window.</p>
+</blockquote>
+<p><strong>--show-menubar</strong></p>
+<blockquote>
+<p>Turn on the menubar for the window.</p>
+</blockquote>
+<p><strong>--maximize</strong></p>
+<blockquote>
+<p>Maximize the window.</p>
+</blockquote>
+<p><strong>--role=ROLE</strong></p>
+<blockquote>
+<p>Set the X window role.</p>
+</blockquote>
+<p><strong>--class=CLASS</strong></p>
+<blockquote>
+<p>Program class as used by the window manager.</p>
+</blockquote>
+<p><strong>--display=DISPLAY</strong></p>
+<blockquote>
+<p>X display to use.</p>
+</blockquote>
+<p><strong>--g-fatal-warnings</strong></p>
+<blockquote>
+<p>Make all warnings fatal.</p>
+</blockquote>
+<p><strong>--gdk-debug=FLAGS</strong></p>
+<blockquote>
+<p>GDK debugging flags to set.</p>
+</blockquote>
+<p><strong>--gdk-no-debug=FLAGS</strong></p>
+<blockquote>
+<p>GDK debugging flags to unset.</p>
+</blockquote>
+<p><strong>--gtk-debug=FLAGS</strong></p>
+<blockquote>
+<p>GTK debugging flags to set.</p>
+</blockquote>
+<p><strong>--gtk-no-debug=FLAGS</strong></p>
+<blockquote>
+<p>GTK debugging flags to unset.</p>
+</blockquote>
+<p><strong>--gtk-module=MODULES</strong></p>
+<blockquote>
+<p>Load additional GTK modules.</p>
+</blockquote>
+<p><strong>--name=NAME</strong></p>
+<blockquote>
+<p>Program name as used by the window manager.</p>
+</blockquote>
+<h1>BUGS</h1>
+<p>Please read
+<strong>https://wiki.gnome.org/Apps/Terminal/ReportingBugs</strong> on
+how to report bugs.</p>
+<h1>EXAMPLES</h1>
+<p>To run a terminal containing an interactive Python prompt:</p>
+<blockquote>
+<pre><code>        gnome-terminal --title=Python -- python3 -q
+      </code></pre>
+</blockquote>
+<p>To interpret shell syntax in a terminal, either write it in a
+separate shell script, or use sh -c:</p>
+<blockquote>
+<pre><code>        gnome-terminal -- sh -c if [ &quot;$(id -u)&quot; = 0 ]; then ...
+      </code></pre>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p>For further information, visit the website
+<strong>https://wiki.gnome.org/Apps/Terminal</strong>. Theres a list of
+frequently asked questions at
+<strong>https://wiki.gnome.org/Apps/Terminal/FAQ</strong>.</p>

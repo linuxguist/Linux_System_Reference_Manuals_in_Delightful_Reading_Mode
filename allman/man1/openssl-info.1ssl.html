@@ -1,0 +1,72 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-info - print OpenSSL built-in information</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl info</strong> [<strong>-help</strong>]
+[<strong>-configdir</strong>] [<strong>-enginesdir</strong>]
+[<strong>-modulesdir</strong> ] [<strong>-dsoext</strong>]
+[<strong>-dirnamesep</strong>] [<strong>-listsep</strong>]
+[<strong>-seeds</strong>] [<strong>-cpusettings</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command is used to print out information about OpenSSL. The
+information is written exactly as it is with no extra text, which makes
+useful for scripts.</p>
+<p>As a consequence, only one item may be chosen for each run of this
+command.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-configdir</dt>
+<dd>
+<p>Outputs the default directory for OpenSSL configuration files.</p>
+</dd>
+<dt>-enginesdir</dt>
+<dd>
+<p>Outputs the default directory for OpenSSL engine modules.</p>
+</dd>
+<dt>-modulesdir</dt>
+<dd>
+<p>Outputs the default directory for OpenSSL dynamically loadable
+modules other than engine modules.</p>
+</dd>
+<dt>-dsoext</dt>
+<dd>
+<p>Outputs the DSO extension OpenSSL uses.</p>
+</dd>
+<dt>-dirnamesep</dt>
+<dd>
+<p>Outputs the separator character between a directory specification and
+a filename. Note that on some operating systems, this is not the same as
+the separator between directory elements.</p>
+</dd>
+<dt>-listsep</dt>
+<dd>
+<p>Outputs the OpenSSL list separator character. This is typically used
+to construct <code>$PATH</code> (<code>%PATH%</code> on Windows) style
+lists.</p>
+</dd>
+<dt>-seeds</dt>
+<dd>
+<p>Outputs the randomness seed sources.</p>
+</dd>
+<dt>-cpusettings</dt>
+<dd>
+<p>Outputs the OpenSSL CPU settings info.</p>
+</dd>
+</dl>
+<h1>HISTORY</h1>
+<p>This command was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2019-2020 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

@@ -1,0 +1,132 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>apache2 - Apache Hypertext Transfer Protocol Server</p>
+<h1>SYNOPSIS</h1>
+<p><strong>apache2</strong> [ -<strong>d</strong> <em>serverroot</em> ]
+[ -<strong>f</strong> <em>config</em> ] [ -<strong>C</strong>
+<em>directive</em> ] [ -<strong>c</strong> <em>directive</em> ] [
+-<strong>D</strong> <em>parameter</em> ] [ -<strong>e</strong>
+<em>level</em> ] [ -<strong>E</strong> <em>file</em> ] [
+<strong>-k</strong> start|restart|graceful|stop|graceful-stop ] [
+-<strong>R</strong> <em>directory</em> ] [ -<strong>h</strong> ] [
+-<strong>l</strong> ] [ -<strong>L</strong> ] [ -<strong>S</strong> ] [
+-<strong>t</strong> ] [ -<strong>v</strong> ] [ -<strong>V</strong> ] [
+-<strong>X</strong> ] [ -<strong>M</strong> ]</p>
+<h1>SUMMARY</h1>
+<p>apache2 is the Apache HyperText Transfer Protocol (HTTP) server
+program. It is designed to be run as a standalone daemon process. When
+used like this it will create a pool of child processes or threads to
+handle requests.</p>
+<p>In general, apache2 should not be invoked directly, but rather should
+be invoked via /etc/init.d/apache2 or apache2ctl. The default Debian
+configuration requires environment variables that are defined in
+/etc/apache2/envvars and are not available if apache2 is started
+directly. However, apache2ctl can be used to pass arbitrary arguments to
+apache2.</p>
+<h1>DOCUMENTATION</h1>
+<p>The full documentation is available in the apache2-doc package or at
+http://httpd.apache.org/docs/2.2/ . Information about Debian specific
+changes and configuration can be found in
+/usr/share/doc/apache2/README.Debian.gz .</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-d <em>serverroot</em></dt>
+<dd>
+<p>Set the initial value for the ServerRoot directive to
+<em>serverroot</em>. This can be overridden by the ServerRoot directive
+in the configuration file.</p>
+</dd>
+<dt>-f <em>config</em></dt>
+<dd>
+<p>Uses the directives in the file <em>config</em> on startup. If
+<em>config</em> does not begin with a /, then it is taken to be a path
+relative to the ServerRoot. The default is
+/etc/apache2/apache2.conf.</p>
+</dd>
+<dt>-k start|restart|graceful|stop|graceful-stop</dt>
+<dd>
+<p>Signals apache2 to start, restart, or stop. See Stopping Apache for
+more information.</p>
+</dd>
+<dt>-C <em>directive</em></dt>
+<dd>
+<p>Process the configuration <em>directive</em> before reading config
+files.</p>
+</dd>
+<dt>-c <em>directive</em></dt>
+<dd>
+<p>Process the configuration <em>directive</em> after reading config
+files.</p>
+</dd>
+<dt>-D <em>parameter</em></dt>
+<dd>
+<p>Sets a configuration <em>parameter</em> which can be used with
+&lt;IfDefine&gt; sections in the configuration files to conditionally
+skip or process commands at server startup and restart.</p>
+</dd>
+<dt>-e <em>level</em></dt>
+<dd>
+<p>Sets the LogLevel to <em>level</em> during server startup. This is
+useful for temporarily increasing the verbosity of the error messages to
+find problems during startup.</p>
+</dd>
+<dt>-E <em>file</em></dt>
+<dd>
+<p>Send error messages during server startup to <em>file</em>.</p>
+</dd>
+<dt>-R <em>directory</em></dt>
+<dd>
+<p>When the server is compiled using the SHARED_CORE rule, this
+specifies the <em>directory</em> for the shared object files.</p>
+</dd>
+<dt>-h</dt>
+<dd>
+<p>Output a short summary of available command line options.</p>
+</dd>
+<dt>-l</dt>
+<dd>
+<p>Output a list of modules compiled into the server. This will
+<strong>not</strong> list dynamically loaded modules included using the
+LoadModule directive.</p>
+</dd>
+<dt>-L</dt>
+<dd>
+<p>Output a list of directives together with expected arguments and
+places where the directive is valid.</p>
+</dd>
+<dt>-M</dt>
+<dd>
+<p>Dump a list of loaded Static and Shared Modules.</p>
+</dd>
+<dt>-S</dt>
+<dd>
+<p>Show the settings as parsed from the config file (currently only
+shows the virtualhost settings).</p>
+</dd>
+<dt>-t</dt>
+<dd>
+<p>Run syntax tests for configuration files only. The program
+immediately exits after these syntax parsing tests with either a return
+code of 0 (Syntax OK) or return code not equal to 0 (Syntax Error). If
+-D <em>DUMP</em>_<em>VHOSTS</em> is also set, details of the virtual
+host configuration will be printed. If -D <em>DUMP</em>_<em>MODULES</em>
+is set, all loaded modules will be printed.</p>
+</dd>
+<dt>-v</dt>
+<dd>
+<p>Print the version of apache2, and then exit.</p>
+</dd>
+<dt>-V</dt>
+<dd>
+<p>Print the version and build parameters of apache2, and then exit.</p>
+</dd>
+<dt>-X</dt>
+<dd>
+<p>Run apache2 in debug mode. Only one worker will be started and the
+server will not detach from the console.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>apache2ctl</strong>(8),
+<strong>/usr/share/doc/apache2/README.Debian.gz</strong></p>

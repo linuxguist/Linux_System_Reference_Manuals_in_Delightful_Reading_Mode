@@ -1,0 +1,72 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>vpddecode - VPD structure decoder</p>
+<h1>SYNOPSIS</h1>
+<p><strong>vpddecode</strong> [<em>OPTIONS</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>vpddecode</strong> prints the "vital product data"
+information that can be found in almost all IBM and Lenovo computers.
+Available items are:</p>
+<ul>
+<li><p>BIOS Build ID</p></li>
+<li><p>Box Serial Number</p></li>
+<li><p>Motherboard Serial Number</p></li>
+<li><p>Machine Type/Model</p></li>
+</ul>
+<p>Some systems have these additional items:</p>
+<ul>
+<li><p>BIOS Release Date</p></li>
+<li><p>Default Flash Image File Name</p></li>
+</ul>
+<p>Note that these additional items are not documented by IBM, so this
+is guess work, and as such should not be blindly trusted. Feedback about
+the accuracy of these labels is welcome.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-d</strong>, <strong>--dev-mem <em>FILE</em></strong></dt>
+<dd>
+<p>Read memory from device <em>FILE</em> (default:
+<em>/dev/mem</em>)</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--string <em>KEYWORD</em></strong></dt>
+<dd>
+<p>Only display the value of the VPD string identified by
+<em>KEYWORD</em>. It must be a keyword from the following list:</p>
+</dd>
+</dl>
+<p><strong>bios-build-id</strong>, <strong>box-serial-number</strong>,
+<strong>motherboard-serial-number</strong>,
+<strong>machine-type-model</strong>,
+<strong>bios-release-date</strong>.</p>
+<p>Each keyword corresponds to an offset and a length within the VPD
+record. Not all strings may be defined on all VPD-enabled systems. If
+<em>KEYWORD</em> is not provided or not valid, a list of all valid
+keywords is printed and <strong>vpddecode</strong> exits with an error.
+This option cannot be used more than once. Mutually exclusive with
+<strong>--dump</strong>.</p>
+<dl>
+<dt><strong>-u</strong>, <strong>--dump</strong></dt>
+<dd>
+<p>Do not decode the VPD records, dump their contents as hexadecimal
+instead. Note that this is still a text output, no binary data will be
+thrown upon you. ASCII equivalent is displayed when possible. This
+option is mainly useful for debugging. Mutually exclusive with
+<strong>--string</strong>.</p>
+</dd>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Display usage information and exit</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Display the version and exit</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<p><em>/dev/mem</em></p>
+<h1>AUTHOR</h1>
+<p>Jean Delvare</p>
+<h1>SEE ALSO</h1>
+<p><strong>biosdecode</strong>(8), <strong>dmidecode</strong>(8),
+<strong>mem</strong>(4), <strong>ownership</strong>(8)</p>

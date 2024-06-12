@@ -1,0 +1,48 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-reboot - set the default boot entry for GRUB, for the next boot
+only</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-reboot</strong> [<em>OPTION</em>]
+<em>MENU_ENTRY</em></p>
+<h1>DESCRIPTION</h1>
+<p>Set the default boot menu entry for GRUB, for the next boot only.</p>
+<dl>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>print this message and exit</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print the version information and exit</p>
+</dd>
+<dt><strong>--boot-directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>expect GRUB images under the directory DIR/grub instead of the
+<em>/boot/grub</em> directory</p>
+</dd>
+</dl>
+<p>MENU_ENTRY is a number, a menu item title or a menu item identifier.
+Please note that menu items in submenus or sub-submenus require
+specifying the submenu components and then the menu item component. The
+titles should be separated using the greater-than character (&gt;) with
+no extra spaces. Depending on your shell some characters including &gt;
+may need escaping. More information about this is available in the GRUB
+Manual in the section about the 'default' command.</p>
+<p>NOTE: In cases where GRUB cannot write to the environment block, such
+as when it is stored on an MDRAID or LVM device, the chosen boot menu
+entry will remain the default even after reboot.</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-set-default</strong>(8),
+<strong>grub-editenv</strong>(1)</p>
+<p>The full documentation for <strong>grub-reboot</strong> is maintained
+as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-reboot</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-reboot</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

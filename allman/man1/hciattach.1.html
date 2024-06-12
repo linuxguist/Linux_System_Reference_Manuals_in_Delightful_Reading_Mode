@@ -1,0 +1,314 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>hciattach - attach serial devices via UART HCI to BlueZ stack</p>
+<h1>SYNOPSIS</h1>
+<p><strong>hciattach</strong> [<em>OPTIONS</em>] &lt;<em>tty</em>&gt;
+&lt;<em>type|id</em>&gt; [<em>speed</em>] [<em>flow</em>]
+[<em>sleep</em>] [<em>bdaddr</em>]</p>
+<p><strong>hciattach</strong> -1</p>
+<h1>DESCRIPTION</h1>
+<p><strong>hciattach(1)</strong> is used to attach a serial UART to the
+Bluetooth stack as HCI transport interface.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-i</strong></dt>
+<dd>
+<p>Send break</p>
+</dd>
+<dt><strong>-n</strong></dt>
+<dd>
+<p>Don't detach from controlling terminal.</p>
+</dd>
+<dt><strong>-p</strong></dt>
+<dd>
+<p>Print the PID when detaching.</p>
+</dd>
+<dt><strong>-t</strong><em> timeout</em></dt>
+<dd>
+<p>Specify an initialization timeout. Default is 5 seconds.</p>
+</dd>
+<dt><strong>-s</strong><em> speed</em></dt>
+<dd>
+<p>Specify an initial speed instead of the hardware default.</p>
+</dd>
+<dt><strong>-l</strong></dt>
+<dd>
+<p>List all available configurations.</p>
+</dd>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Set the HCI device into raw mode. The kernel and bluetooth daemon
+will ignore it.</p>
+</dd>
+<dt><strong>-h<strong>,</strong> --help</strong></dt>
+<dd>
+<p>Show help options</p>
+</dd>
+</dl>
+</blockquote>
+<h1>ARGUMENTS</h1>
+<blockquote>
+<dl>
+<dt><strong><em>show</em></strong></dt>
+<dd>
+<p>This specifies the serial device to attach. A leading /dev can be
+omitted.</p>
+<p>Examples: <strong>/dev/ttyS1 ttyS2</strong></p>
+</dd>
+<dt><strong><em>type|id</em></strong></dt>
+<dd>
+<p>The <em>type</em> <strong>or</strong> <em>id</em> <strong>of the
+Bluetooth device that is to be attached,</strong> i.e. vendor or other
+device specific identifier. Currently supported types are</p>
+</dd>
+</dl>
+</blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>type</em></td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">any</td>
+<td style="text-align: left;">Unspecified HCI_UART interface, no vendor
+specific options</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ericsson</td>
+<td style="text-align: left;">Ericsson based modules</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">digi</td>
+<td style="text-align: left;">Digianswer based cards</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">xircom</td>
+<td style="text-align: left;">Xircom PCMCIA cards: Credit Card Adapter
+and Real Port Adapter</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">csr</td>
+<td style="text-align: left;">CSR Casira serial adapter or BrainBoxes
+serial dongle (BL642)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bboxes</td>
+<td style="text-align: left;">BrainBoxes PCMCIA card (BL620)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">swave</td>
+<td style="text-align: left;">Silicon Wave kits</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bcsp</td>
+<td style="text-align: left;">Serial adapters using CSR chips with BCSP
+serial protocol</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ath3k</td>
+<td style="text-align: left;">Atheros AR300x based serial Bluetooth
+device</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">intel</td>
+<td style="text-align: left;">Intel Bluetooth device</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><pre><code>Supported ID
+(manufacturer id, product id)</code></pre></td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x0105, 0x080a</td>
+<td style="text-align: left;">Xircom PCMCIA cards: Credit Card Adapter
+and Real Port Adapter</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x0160, 0x0002</td>
+<td style="text-align: left;">BrainBoxes PCMCIA card (BL620)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<dl>
+<dt><strong><em>speed</em></strong></dt>
+<dd>
+<p>The <em>speed</em> <strong>specifies the UART speed to use. Baudrates
+higher than 115200bps</strong> require vendor specific initializations
+that are not implemented for all types of devices. In general the
+following speeds are supported:</p>
+<p>Supported vendor devices are automatically initialised to their
+respective best settings.</p>
+</dd>
+</dl>
+</blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">19200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">38400</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">57600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">115200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">230400</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">460800</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">921600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<dl>
+<dt><strong><em>flow</em></strong></dt>
+<dd>
+<p>If the <em>flow</em> <strong>is appended to the list of options then
+hardware flow control</strong> is forced on the serial link
+(<strong>CRTSCTS). All above mentioned device</strong> types have flow
+set by default. To force no flow control use <em>noflow</em>
+instead.</p>
+</dd>
+<dt><strong><em>sleep|nosleep</em></strong></dt>
+<dd>
+<p>Enables hardware specific power management feature. If <em>sleep</em>
+<strong>is appended</strong> to the list of options then this feature is
+enabled. To disable this feature use <em>nosleep</em> <strong>instead.
+All above mentioned device types have</strong> <em>nosleep</em>
+<strong>set by default.</strong></p>
+<p>Note: This option will only be valid for hardware which support
+hardware specific power management enable option from host.</p>
+</dd>
+<dt><strong><em>bdaddr</em></strong></dt>
+<dd>
+<p>The bdaddr specifies the Bluetooth Address to use. Some devices (like
+the STLC2500) do not store the Bluetooth address in hardware memory.
+Instead it must be uploaded during the initialization process. If this
+argument is specified, then the address will be used to initialize the
+device. Otherwise, a default address will be used.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;, Nils Faerber
+&lt;nils@kernelconcepts.de&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

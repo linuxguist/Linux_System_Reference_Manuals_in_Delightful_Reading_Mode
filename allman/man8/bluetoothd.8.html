@@ -1,0 +1,104 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>bluetoothd - Bluetooth daemon</p>
+<h1>SYNOPSIS</h1>
+<p><strong>bluetoothd</strong> [--version] | [--help]</p>
+<p><strong>bluetoothd</strong> [--nodetach] [--compat] [--experimental]
+[--debug=&lt;<em>files</em>&gt;] [--plugin=&lt;<em>plugins</em>&gt;]
+[--noplugin=&lt;<em>plugins</em>&gt;]</p>
+<h1>DESCRIPTION</h1>
+<p>This manual page documents briefly the <strong>bluetoothd</strong>
+daemon, which manages all the Bluetooth devices.
+<strong>bluetoothd</strong> can also provide a number of services via
+the D-Bus message bus system.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-v<strong>,</strong> --version</strong></dt>
+<dd>
+<p>Print bluetoothd version and exit.</p>
+</dd>
+<dt><strong>-h<strong>,</strong> --help</strong></dt>
+<dd>
+<p>Print bluetoothd options and exit.</p>
+</dd>
+<dt><strong>-n<strong>,</strong> --nodetach</strong></dt>
+<dd>
+<p>Enable logging in foreground. Directs log output to the controlling
+terminal in addition to syslog.</p>
+</dd>
+<dt><strong>-f<strong>,</strong> --configfile</strong></dt>
+<dd>
+<p>Specifies an explicit config file path instead of relying on the
+default path(<em>/etc/bluetooth/main.conf</em><strong>)</strong> for the
+config file.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-d, --debug=&lt;file1&gt;:&lt;file2&gt;:...</strong></dt>
+<dd>
+<p>Sets how much information bluetoothd sends to the log destination
+(usually syslog's "daemon" facility). If the file options are omitted,
+then debugging information from all the source files are printed. If
+file options are present, then only debug prints from that source file
+are printed. The option can be a pattern containing "*" and "?"
+characters.</p>
+<p>Example: --debug=src/adapter.c:src/agent.c</p>
+</dd>
+<dt><strong>-p,
+--plugin=&lt;plugin1&gt;,&lt;plugin2&gt;,..</strong></dt>
+<dd>
+<p>Load these plugins only. The option can be a pattern containing "*"
+and "?" characters.</p>
+</dd>
+<dt><strong>-P,
+--noplugin=&lt;plugin1&gt;,&lt;plugin2&gt;,..</strong></dt>
+<dd>
+<p>Never load these plugins. The option can be a pattern containing "*"
+and "?" characters.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-C<em>,</em> --compat</strong></dt>
+<dd>
+<p>Provide deprecated command line interfaces.</p>
+</dd>
+<dt><strong>-E<em>,</em> --experimental</strong></dt>
+<dd>
+<p>Enable experimental interfaces. Those interfaces are not guaranteed
+to be compatible or present in future releases.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>-K, --kernel=&lt;uuid1&gt;,&lt;uuid2&gt;,...</strong></dt>
+<dd>
+<p>Enable Kernel experimental features. Kernel experimental features are
+considered unstable and may be removed from future kernel releases.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>FILES</h1>
+<blockquote>
+<dl>
+<dt><strong><em>/etc/bluetooth/main.conf</em></strong></dt>
+<dd>
+<p>Location of the global configuration file.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Marcel Holtmann, Philipp Matthias Hahn, Fredrik Noring</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

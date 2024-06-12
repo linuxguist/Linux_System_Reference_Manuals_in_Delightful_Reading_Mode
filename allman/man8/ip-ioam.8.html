@@ -1,0 +1,37 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ip-ioam - IPv6 In-situ OAM (IOAM)</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ip ioam</strong> { <em>COMMAND</em> | <strong>help</strong>
+}</p>
+<p><strong>ip ioam namespace show</strong></p>
+<p><strong>ip ioam namespace add</strong> <em>ID</em> <strong> [
+</strong> <strong>data</strong> <em>DATA32</em> <strong>]</strong>
+<strong> [ </strong> <strong>wide</strong> <em>DATA64</em>
+<strong>]</strong></p>
+<p><strong>ip ioam namespace del</strong> <em>ID</em></p>
+<p><strong>ip ioam schema show</strong></p>
+<p><strong>ip ioam schema add</strong> <em>ID DATA</em></p>
+<p><strong>ip ioam schema del</strong> <em>ID</em></p>
+<p><strong>ip ioam namespace set</strong> <em>ID</em>
+<strong>schema</strong> { <em>ID</em> | <strong>none</strong> }</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>ip ioam</strong> command is used to configure IPv6
+In-situ OAM (IOAM6) internal parameters, namely IOAM namespaces and
+schemas.</p>
+<p>Those parameters also include the mapping between an IOAM namespace
+and an IOAM schema.</p>
+<h1>EXAMPLES</h1>
+<h2>Configure an IOAM namespace (ID = 1) with both data (32 bits) and
+wide data (64 bits)</h2>
+<pre><code># ip ioam namespace add 1 data 0xdeadbeef wide 0xcafec0caf00dc0de
+</code></pre>
+<h2>Link an existing IOAM schema (ID = 7) to an existing IOAM namespace
+(ID = 1)</h2>
+<pre><code># ip ioam namespace set 1 schema 7</code></pre>
+<h1>SEE ALSO</h1>
+<p><br />
+<strong>ip-route</strong>(8)</p>
+<h1>AUTHOR</h1>
+<p>Justin Iurman &lt;justin.iurman@uliege.be&gt;</p>

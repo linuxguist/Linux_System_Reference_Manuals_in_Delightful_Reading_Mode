@@ -1,0 +1,88 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>File::UserDirs - Find extra media and documents directories</p>
+<h1>VERSION</h1>
+<p>version 0.09</p>
+<h1>SYNOPSIS</h1>
+<p>use File::UserDirs qw(:all); print xdg_desktop_dir; # e.g.
+/home/user/Desktop</p>
+<h1>DESCRIPTION</h1>
+<p>This module can be used to find directories as informally specified
+by the Freedesktop.org xdg-user-dirs software. This gives a mechanism to
+locate extra directories for media and documents files.</p>
+<h1>FUNCTIONS</h1>
+<p>May be exported on request. Also the group <code>:all</code> is
+defined which exports all methods.</p>
+<h2>xdg_desktop_dir</h2>
+<p>my $dir = xdg_desktop_dir;</p>
+<p>Returns the desktop directory. Unless changed by the user, this is
+the directory <em>Desktop</em> in the home directory.</p>
+<h2>xdg_documents_dir</h2>
+<p>my $dir = xdg_documents_dir;</p>
+<p>Returns the documents directory. Unless changed by the user, this is
+the home directory.</p>
+<h2>xdg_download_dir</h2>
+<p>my $dir = xdg_download_dir;</p>
+<p>Returns the download directory. Unless changed by the user, this is
+the home directory.</p>
+<h2>xdg_music_dir</h2>
+<p>my $dir = xdg_music_dir;</p>
+<p>Returns the music directory. Unless changed by the user, this is the
+home directory.</p>
+<h2>xdg_pictures_dir</h2>
+<p>my $dir = xdg_pictures_dir;</p>
+<p>Returns the pictures directory. Unless changed by the user, this is
+the home directory.</p>
+<h2>xdg_publicshare_dir</h2>
+<p>my $dir = xdg_publicshare_dir;</p>
+<p>Returns the public share directory. Unless changed by the user, this
+is the home directory.</p>
+<h2>xdg_templates_dir</h2>
+<p>my $dir = xdg_templates_dir;</p>
+<p>Returns the templates directory. Unless changed by the user, this is
+the home directory.</p>
+<h2>xdg_videos_dir</h2>
+<p>my $dir = xdg_videos_dir;</p>
+<p>Returns the videos directory. Unless changed by the user, this is the
+home directory.</p>
+<h1>DIAGNOSTICS</h1>
+<dl>
+<dt>""xdg-user-dir" failed to start: %s"</dt>
+<dd>
+<p>The executable <code>xdg-user-dir</code> could not be run, most
+likely because it was not installed. See DEPENDENCIES.</p>
+</dd>
+</dl>
+<h1>CONFIGURATION AND ENVIRONMENT</h1>
+<p>The location of the directories can be specified by the user in the
+file <em><code>$XDG_CONFIG_HOME</code>/user-dirs.dirs</em>. It is a
+shell file setting a number of environment variables. To find the exact
+pathname from Perl, run:</p>
+<p>use File::BaseDir qw(config_home); print
+config_home(user-dirs.dirs);</p>
+<h2>Example customised <em>user-dirs.dirs</em></h2>
+<p>XDG_DESKTOP_DIR="$HOME/Workspace" XDG_DOCUMENTS_DIR="$HOME/Files"
+XDG_DOWNLOAD_DIR="$HOME/Files/Downloads"
+XDG_MUSIC_DIR="$HOME/Files/Audio" XDG_PICTURES_DIR="$HOME/Files/Images"
+XDG_PUBLICSHARE_DIR="$HOME/public_html"
+XDG_TEMPLATES_DIR="$HOME/Files/Document templates"
+XDG_VIDEOS_DIR="$HOME/Files/Video"</p>
+<h1>DEPENDENCIES</h1>
+<p>This module requires the executable <em>xdg-user-dir</em> from the
+package <code>xdg-user-dirs</code>. Source code is available from
+&lt;http://cgit.freedesktop.org/xdg/xdg-user-dirs/&gt;.</p>
+<h1>AUTHORS</h1>
+<ul>
+<li><p>Jaap Karssenberg || Pardus [Larus]
+&lt;pardus@cpan.org&gt;</p></li>
+<li><p>Graham Ollis &lt;plicease@cpan.org&gt;</p></li>
+</ul>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2003-2021 by Jaap Karssenberg ||
+Pardus [Larus] &lt;pardus@cpan.org&gt;.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

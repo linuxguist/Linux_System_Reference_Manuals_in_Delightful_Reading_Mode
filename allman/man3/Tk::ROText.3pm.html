@@ -1,0 +1,31 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::ROText - 'readonly' perl/Tk Text widget</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::ROText; ... $ro = $mw-&gt;ROText(?options,...?);</p>
+<h1>DESCRIPTION</h1>
+<p>This "<em>IS A</em>" text widget with all bindings removed that would
+alter the contents of the text widget. The contents can still be
+modified via method calls.</p>
+<h2>BINDINGS</h2>
+<p>Only read-only bindings from Tk::Text are available in
+<strong>Tk::ROText</strong>. Additionally the following bindings are
+defined:</p>
+<dl>
+<dt>&lt;space&gt;</dt>
+<dd>
+<p>Move the cursor forward by one screenful.</p>
+</dd>
+<dt>&lt;BackSpace&gt;</dt>
+<dd>
+<p>Move the cursor backward by one screenful.</p>
+</dd>
+</dl>
+<h1>KEYWORDS</h1>
+<p>widget, text, readonly</p>
+<h1>SEE ALSO</h1>
+<p>Tk::Text</p>

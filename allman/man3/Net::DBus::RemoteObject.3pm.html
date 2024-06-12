@@ -1,0 +1,94 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::RemoteObject - Access objects provided on the bus</p>
+<h1>SYNOPSIS</h1>
+<p>my $service = $bus-&gt;get_service("org.freedesktop.DBus"); my
+$object = $service-&gt;get_object("/org/freedesktop/DBus"); print "Names
+on the bus {\n"; foreach my $name (sort @{$object-&gt;ListNames}) {
+print " ", $name, "\n"; } print "}\n";</p>
+<h1>DESCRIPTION</h1>
+<p>This module provides the API for accessing remote objects available
+on the bus. It uses the autoloader to fake the presence of methods based
+on the API of the remote object. There is also support for setting
+callbacks against signals, and accessing properties of the object.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $object = Net::DBus::RemoteObject-&gt;new($service,
+$object_path[, $interface], \%params);</dt>
+<dd>
+<p>Creates a new handle to a remote object. The <code>$service</code>
+parameter is an instance of the Net::DBus::RemoteService method, and
+<code>$object_path</code> is the identifier of an object exported by
+this service, for example <code>/org/freedesktop/DBus</code>. For remote
+objects which implement more than one interface it is possible to
+specify an optional name of an interface as the third parameter. This is
+only really required, however, if two interfaces in the object provide
+methods with the same name, since introspection data can be used to
+automatically resolve the correct interface to call cases where method
+names are unique. Rather than using this constructor directly, it is
+preferable to use the <code>get_object</code> method on
+Net::DBus::RemoteService, since this caches handles to remote objects,
+eliminating unnecessary introspection data lookups. The
+<code>%params</code> parameter contains extra configuration parameters
+for the object. Currently a single parameter is supported,
+<code>timeout</code> which takes a value in milliseconds to use as the
+timeout for method calls on the object.</p>
+</dd>
+<dt>my $object = $object-&gt;as_interface($interface);</dt>
+<dd>
+<p>Casts the object to a specific interface, returning a new instance of
+the Net::DBus::RemoteObject specialized to the desired interface. It is
+only necessary to cast objects to a specific interface, if two
+interfaces export methods or signals with the same name, or the remote
+object does not support introspection.</p>
+</dd>
+<dt>my $service = $object-&gt;get_service</dt>
+<dd>
+<p>Retrieves a handle for the remote service on which this object is
+attached. The returned object is an instance of
+Net::DBus::RemoteService</p>
+</dd>
+<dt>my $path = $object-&gt;get_object_path</dt>
+<dd>
+<p>Retrieves the unique path identifier for this object within the
+service.</p>
+</dd>
+<dt>my $object = $object-&gt;get_child_object($subpath,
+[$interface])</dt>
+<dd>
+<p>Retrieves a handle to a child of this object, identified by the
+relative path <code>$subpath</code>. The returned object is an instance
+of <code>Net::DBus::RemoteObject</code>. The optional
+<code>$interface</code> parameter can be used to immediately cast the
+object to a specific type.</p>
+</dd>
+<dt>my $sigid = $object-&gt;connect_to_signal($name, $coderef);</dt>
+<dd>
+<p>Connects a callback to a signal emitted by the object. The
+<code>$name</code> parameter is the name of the signal within the
+object, and <code>$coderef</code> is a reference to an anonymous
+subroutine. When the signal <code>$name</code> is emitted by the remote
+object, the subroutine <code>$coderef</code> will be invoked, and passed
+the parameters from the signal. A unique <code>$sigid</code> will be
+returned, which can be later passed to
+<code>disconnect_from_signal</code> to remove the handler</p>
+</dd>
+<dt>$object-&gt;disconnect_from_signal($name, $sigid);</dt>
+<dd>
+<p>Disconnects from a signal emitted by the object. The
+<code>$name</code> parameter is the name of the signal within the
+object. The <code>$sigid</code> must be the unique signal handler ID
+returned by a previous <code>connect_to_signal</code> method call.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel Berrange &lt;dan@berrange.com&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copright (C) 2004-2011, Daniel Berrange.</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::RemoteService, Net::DBus::Object,
+Net::DBus::Annotation</p>

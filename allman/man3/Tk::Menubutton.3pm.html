@@ -1,0 +1,285 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Menubutton - Create and manipulate Menubutton widgets</p>
+<h1>SYNOPSIS</h1>
+<p><em><code>$menubutton</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>Menubutton</strong>(?<em>options</em>?);</p>
+<h1>STANDARD OPTIONS</h1>
+<p><strong>-activebackground</strong> <strong>-cursor</strong>
+<strong>-highlightthickness</strong> <strong>-takefocus</strong>
+<strong>-activeforeground</strong> <strong>-disabledforeground</strong>
+<strong>-image</strong> <strong>-text</strong> <strong>-anchor</strong>
+<strong>-font</strong> <strong>-justify</strong>
+<strong>-textvariable</strong> <strong>-background</strong>
+<strong>-foreground</strong> <strong>-padx</strong>
+<strong>-underline</strong> <strong>-bitmap</strong>
+<strong>-highlightbackground</strong> <strong>-pady</strong>
+<strong>-wraplength</strong> <strong>-borderwidth</strong>
+<strong>-highlightcolor</strong> <strong>-relief</strong></p>
+<p>See Tk::options for details of the standard options.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Command-Line Name: -compound</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Database Name: compound</dt>
+<dd>
+
+</dd>
+<dt>Database Class: Compound</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies whether the button should display both an image and text,
+and if so, where the image should be placed relative to the text. Valid
+values for this option are <strong>bottom</strong>,
+<strong>center</strong>, <strong>left</strong>, <strong>none</strong>,
+<strong>right</strong> and <strong>top</strong>. The default value is
+<strong>none</strong>, meaning that the button will display either an
+image or text, depending on the values of the -image and -bitmap
+options.</p>
+<dl>
+<dt>Name: direction</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Height</dt>
+<dd>
+
+</dd>
+<dt>Switch: -direction</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies where the menu is going to be popup up.
+<strong>above</strong> tries to pop the menu above the menubutton.
+<strong>below</strong> tries to pop the menu below the menubutton.
+<strong>left</strong> tries to pop the menu to the left of the
+menubutton. <strong>right</strong> tries to pop the menu to the right of
+the menu button. <strong>flush</strong> pops the menu directly over the
+menubutton.</p>
+<dl>
+<dt>Name: height</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Height</dt>
+<dd>
+
+</dd>
+<dt>Switch: -height</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a desired height for the menubutton. If an image or bitmap
+is being displayed in the menubutton then the value is in screen units
+(i.e. any of the forms acceptable to <strong>Tk_GetPixels</strong>); for
+text it is in lines of text. If this option isn't specified, the
+menubutton's desired height is computed from the size of the image or
+bitmap or text being displayed in it.</p>
+<dl>
+<dt>Name: indicatorOn</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: IndicatorOn</dt>
+<dd>
+
+</dd>
+<dt>Switch: -indicatoron</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The value must be a proper boolean value. If it is true then a small
+indicator rectangle will be displayed on the right side of the
+menubutton and the default menu bindings will treat this as an option
+menubutton. If false then no indicator will be displayed.</p>
+<dl>
+<dt>Name: menu</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: MenuName</dt>
+<dd>
+
+</dd>
+<dt>Switch: -menu</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the path name of the menu associated with this menubutton.
+The menu must be a child of the menubutton.</p>
+<dl>
+<dt>Name: state</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: State</dt>
+<dd>
+
+</dd>
+<dt>Switch: -state</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies one of three states for the menubutton:
+<strong>normal</strong>, <strong>active</strong>, or
+<strong>disabled</strong>. In normal state the menubutton is displayed
+using the <strong>foreground</strong> and <strong>background</strong>
+options. The active state is typically used when the pointer is over the
+menubutton. In active state the menubutton is displayed using the
+<strong>activeForeground</strong> and <strong>activeBackground</strong>
+options. Disabled state means that the menubutton should be insensitive:
+the default bindings will refuse to activate the widget and will ignore
+mouse button presses. In this state the
+<strong>disabledForeground</strong> and <strong>background</strong>
+options determine how the button is displayed.</p>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+<dt>Switch: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a desired width for the menubutton. If an image or bitmap
+is being displayed in the menubutton then the value is in screen units
+(i.e. any of the forms acceptable to <strong>Tk_GetPixels</strong>); for
+text it is in characters. If this option isn't specified, the
+menubutton's desired width is computed from the size of the image or
+bitmap or text being displayed in it.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>Menubutton</strong> method creates a new window (given by
+the <code>$widget</code> argument) and makes it into a menubutton
+widget. Additional options, described above, may be specified on the
+command line or in the option database to configure aspects of the
+menubutton such as its colors, font, text, and initial relief. The
+<strong>menubutton</strong> command returns its <code>$widget</code>
+argument. At the time this command is invoked, there must not exist a
+window named <code>$widget</code>, but <code>$widget</code>'s parent
+must exist.</p>
+<p>A menubutton is a widget that displays a textual string, bitmap, or
+image and is associated with a menu widget. If text is displayed, it
+must all be in a single font, but it can occupy multiple lines on the
+screen (if it contains newlines or if wrapping occurs because of the
+<strong>wrapLength</strong> option) and one of the characters may
+optionally be underlined using the <strong>underline</strong> option. In
+normal usage, pressing mouse button 1 over the menubutton causes the
+associated menu to be posted just underneath the menubutton. If the
+mouse is moved over the menu before releasing the mouse button, the
+button release causes the underlying menu entry to be invoked. When the
+button is released, the menu is unposted.</p>
+<p>Menubuttons are typically organized into groups called menu bars that
+allow scanning: if the mouse button is pressed over one menubutton
+(causing it to post its menu) and the mouse is moved over another
+menubutton in the same menu bar without releasing the mouse button, then
+the menu of the first menubutton is unposted and the menu of the new
+menubutton is posted instead.</p>
+<p>There are several interactions between menubuttons and menus; see the
+<strong>menu</strong> manual entry for information on various menu
+configurations, such as pulldown menus and option menus.</p>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>Menubutton</strong> method creates a widget object. This
+object supports the <strong>configure</strong> and <strong>cget</strong>
+methods described in Tk::options which can be used to enquire and modify
+the options described above. The <strong>menu</strong> method returns
+the menu associated with the widget. The widget also inherits all the
+methods provided by the generic Tk::Widget class.</p>
+<h1>DEFAULT BINDINGS</h1>
+<p>Tk automatically creates class bindings for menubuttons that give
+them the following default behavior:</p>
+<dl>
+<dt>[1]</dt>
+<dd>
+<p>A menubutton activates whenever the mouse passes over it and
+deactivates whenever the mouse leaves it.</p>
+</dd>
+<dt>[2]</dt>
+<dd>
+<p>Pressing mouse button 1 over a menubutton posts the menubutton: its
+relief changes to raised and its associated menu is posted under the
+menubutton. If the mouse is dragged down into the menu with the button
+still down, and if the mouse button is then released over an entry in
+the menu, the menubutton is unposted and the menu entry is invoked.</p>
+</dd>
+<dt>[3]</dt>
+<dd>
+<p>If button 1 is pressed over a menubutton and then released over that
+menubutton, the menubutton stays posted: you can still move the mouse
+over the menu and click button 1 on an entry to invoke it. Once a menu
+entry has been invoked, the menubutton unposts itself.</p>
+</dd>
+<dt>[4]</dt>
+<dd>
+<p>If button 1 is pressed over a menubutton and then dragged over some
+other menubutton, the original menubutton unposts itself and the new
+menubutton posts.</p>
+</dd>
+<dt>[5]</dt>
+<dd>
+<p>If button 1 is pressed over a menubutton and released outside any
+menubutton or menu, the menubutton unposts without invoking any menu
+entry.</p>
+</dd>
+<dt>[6]</dt>
+<dd>
+<p>When a menubutton is posted, its associated menu claims the input
+focus to allow keyboard traversal of the menu and its submenus. See the
+<strong>menu</strong> documentation for details on these bindings.</p>
+</dd>
+<dt>[7]</dt>
+<dd>
+<p>If the <strong>underline</strong> option has been specified for a
+menubutton then keyboard traversal may be used to post the menubutton:
+Alt+<em>x</em>, where <em>x</em> is the underlined character (or its
+lower-case or upper-case equivalent), may be typed in any window under
+the menubutton's toplevel to post the menubutton.</p>
+</dd>
+<dt>[8]</dt>
+<dd>
+<p>The F10 key may be typed in any window to post the first menubutton
+under its toplevel window that isn't disabled.</p>
+</dd>
+<dt>[9]</dt>
+<dd>
+<p>If a menubutton has the input focus, the space and return keys post
+the menubutton. If the menubutton's state is <strong>disabled</strong>
+then none of the above actions occur: the menubutton is completely
+non-responsive. The behavior of menubuttons can be changed by defining
+new bindings for individual widgets or by redefining the class
+bindings.</p>
+</dd>
+</dl>
+<h1>KEYWORDS</h1>
+<p>menubutton, widget</p>

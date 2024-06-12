@@ -1,0 +1,41 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gdk-pixbuf-query-loaders - GdkPixbuf loader registration utility</p>
+<h1>SYNOPSIS</h1>
+<pre><code>gdk-pixbuf-query-loaders [OPTIONS...] [MODULES..]</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>gdk-pixbuf-query-loaders</strong> collects information about
+loadable modules for <strong>gdk-pixbuf</strong> and writes it to the
+default cache file location, or to <strong>stdout</strong>.</p>
+<p>If called without arguments, it looks for modules in the
+<strong>gdk-pixbuf</strong> loader directory.</p>
+<p>If called with arguments, it looks for the specified modules. The
+arguments may be absolute or relative paths.</p>
+<p>Normally, the output of <strong>gdk-pixbuf-query-loaders</strong> is
+written to <strong>$libdir/gdk-pixbuf-2.0/2.10.0/loaders.cache</strong>,
+where <strong>gdk-pixbuf</strong> looks for it by default. If it is
+written to some other location, the environment variable
+<strong>GDK_PIXBUF_MODULE_FILE</strong> can be set to point
+<strong>gdk-pixbuf</strong> at the file.</p>
+<h1>OPTIONS</h1>
+<p><strong>--update-cache</strong></p>
+<blockquote>
+<blockquote>
+<p>Writes the output to the default cache location instead of the
+standard output.</p>
+</blockquote>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p>The environment variable <strong>GDK_PIXBUF_MODULEDIR</strong> can be
+used to specify a different loader directory.</p>
+<p>The default <strong>gdk-pixbuf</strong> loader directory is
+<strong>LIBDIR/gdk-pixbuf-2.0/VERSION/loaders</strong>, where:</p>
+<blockquote>
+<ul>
+<li><p><strong>LIBDIR</strong> is the libdir used when building
+<strong>gdk-pixbuf</strong></p></li>
+<li><p><strong>VERSION</strong> is the ABI version for
+<strong>gdk-pixbuf</strong> loaders</p></li>
+</ul>
+</blockquote>

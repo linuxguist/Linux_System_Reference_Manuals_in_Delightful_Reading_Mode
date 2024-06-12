@@ -1,0 +1,39 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>fc-conflist - list the configuration files processed by
+Fontconfig</p>
+<h1>SYNOPSIS</h1>
+<p><strong>fc-conflist</strong> [ <strong>-Vh</strong> ]</p>
+<p>[ <strong>--version</strong> ] [ <strong>--help</strong> ]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>fc-conflist</strong> prints an annotated list of all the
+configuration files processed by Fontconfig.</p>
+<p>The output is a `-' or `+' depending on whether the file is ignored
+or processed, a space, the file's path, a colon and space, and the
+description from the file or `No description' if none is present.</p>
+<p>The order of files looks like how fontconfig acautlly process them
+except one contains &lt;include&gt; element. In that case, it will be
+shown after processing all the sub directories where is targeted by
+&lt;include&gt;.</p>
+<h1>OPTIONS</h1>
+<p>This program follows the usual GNU command line syntax, with long
+options starting with two dashes (`-'). A summary of options is included
+below.</p>
+<dl>
+<dt><strong>-V</strong></dt>
+<dd>
+<p>Show version of the program and exit.</p>
+</dd>
+<dt><strong>-h</strong></dt>
+<dd>
+<p>Show summary of options.</p>
+</dd>
+</dl>
+<h1>RETURN CODES</h1>
+<p><strong>fc-conflist</strong> returns error code 0 for successful
+parsing, or 1 if any errors occurred or if at least one font face could
+not be opened.</p>
+<h1>AUTHOR</h1>
+<p>This manual page was updated by Akira TAGOH
+&lt;akira@tagoh.org&gt;.</p>

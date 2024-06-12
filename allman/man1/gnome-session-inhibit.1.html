@@ -1,0 +1,51 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gnome-session-inhibit - inhibit gnome-session functionality</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gnome-session-inhibit</strong> [OPTION...] [COMMAND]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>gnome-session-inhibit</strong> can inhibit certain
+gnome-session functionality while executing the given COMMAND. To
+achieve this, it calls the Inhibit() method of the gnome-session D-Bus
+API and creates an inhibitor. The inhibitor is automatically removed
+when gnome-session-inhibit exits.</p>
+<p>A typical use case is to prevent the session from going idle (and
+thus locking the screen) while a movie player is running.</p>
+<h1>OPTIONS</h1>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>print help and exit</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>print version information and exit</p>
+</blockquote>
+<p><strong>--app-id</strong> ID</p>
+<blockquote>
+<p>The application id to use when calling the gnome-session Inhibit()
+method. If this option is not specified, "unknown" is used.</p>
+</blockquote>
+<p><strong>--reason</strong> REASON</p>
+<blockquote>
+<p>A human-readable reason to pass along when calling the gnome-session
+Inhibit() method. If this option is not specified, "not specified" is
+used.</p>
+</blockquote>
+<p><strong>--inhibit</strong> ARG</p>
+<blockquote>
+<p>ARG specifies the things to inhibit, as a colon-separated list. The
+possible values are logout, switch-user, suspend, idle, automount. If
+this option is used more than once, the values are combined. If this
+option is not specified, "idle" is assumed.</p>
+</blockquote>
+<p><strong>--inhibit-only</strong></p>
+<blockquote>
+<p>Do not launch COMMAND and wait forever instead</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--list</strong></p>
+<blockquote>
+<p>list the existing inhibitions and exit</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>systemd-inhibit</strong>(1)</p>

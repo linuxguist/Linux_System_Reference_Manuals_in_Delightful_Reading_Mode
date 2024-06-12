@@ -1,0 +1,240 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>IO::Scalar - IO:: interface for reading/writing a scalar</p>
+<h1>SYNOPSIS</h1>
+<p>Perform I/O on strings, using the basic OO interface...</p>
+<p>use 5.005; use IO::Scalar; $data = "My message:\n"; ### Open a handle
+on a string, and append to it: $SH = new IO::Scalar \$data;
+$SH-&gt;print("Hello"); $SH-&gt;print(", world!\nBye now!\n"); print
+"The string is now: ", $data, "\n"; ### Open a handle on a string, read
+it line-by-line, then close it: $SH = new IO::Scalar \$data; while
+(defined($_ = $SH-&gt;getline)) { print "Got line: $_"; } $SH-&gt;close;
+### Open a handle on a string, and slurp in all the lines: $SH = new
+IO::Scalar \$data; print "All lines:\n", $SH-&gt;getlines; ### Get the
+current position (either of two ways): $pos = $SH-&gt;getpos; $offset =
+$SH-&gt;tell; ### Set the current position (either of two ways):
+$SH-&gt;setpos($pos); $SH-&gt;seek($offset, 0); ### Open an anonymous
+temporary scalar: $SH = new IO::Scalar; $SH-&gt;print("Hi there!");
+print "I printed: ", ${$SH-&gt;sref}, "\n"; ### get at value</p>
+<p>Don't like OO for your I/O? No problem. Thanks to the magic of an
+invisible <strong>tie()</strong>, the following now works out of the
+box, just as it does with IO::Handle:</p>
+<p>use 5.005; use IO::Scalar; $data = "My message:\n"; ### Open a handle
+on a string, and append to it: $SH = new IO::Scalar \$data; print $SH
+"Hello"; print $SH ", world!\nBye now!\n"; print "The string is now: ",
+$data, "\n"; ### Open a handle on a string, read it line-by-line, then
+close it: $SH = new IO::Scalar \$data; while (&lt;$SH&gt;) { print "Got
+line: $_"; } close $SH; ### Open a handle on a string, and slurp in all
+the lines: $SH = new IO::Scalar \$data; print "All lines:\n",
+&lt;$SH&gt;; ### Get the current position (WARNING: requires 5.6):
+$offset = tell $SH; ### Set the current position (WARNING: requires
+5.6): seek $SH, $offset, 0; ### Open an anonymous temporary scalar: $SH
+= new IO::Scalar; print $SH "Hi there!"; print "I printed: ",
+${$SH-&gt;sref}, "\n"; ### get at value</p>
+<p>And for you folks with 1.x code out there: the old
+<strong>tie()</strong> style still works, though this is <em>unnecessary
+and deprecated</em>:</p>
+<p>use IO::Scalar; ### Writing to a scalar... my $s; tie *OUT,
+IO::Scalar, \$s; print OUT "line 1\nline 2\n", "line 3\n"; print "String
+is now: $s\n" ### Reading and writing an anonymous scalar... tie *OUT,
+IO::Scalar; print OUT "line 1\nline 2\n", "line 3\n";
+tied(OUT)-&gt;seek(0,0); while (&lt;OUT&gt;) { print "Got line: ", $_;
+}</p>
+<p>Stringification works, too!</p>
+<p>my $SH = new IO::Scalar \$data; print $SH "Hello, "; print $SH
+"world!"; print "I printed: $SH\n";</p>
+<h1>DESCRIPTION</h1>
+<p>This class is part of the IO::Stringy distribution; see IO::Stringy
+for change log and general information.</p>
+<p>The IO::Scalar class implements objects which behave just like
+IO::Handle (or FileHandle) objects, except that you may use them to
+write to (or read from) scalars. These handles are automatically
+tiehandle'd (though please see WARNINGS for information relevant to your
+Perl version).</p>
+<p>Basically, this:</p>
+<p>my $s; $SH = new IO::Scalar \$s; $SH-&gt;print("Hel", "lo, "); ### OO
+style $SH-&gt;print("world!\n"); ### ditto</p>
+<p>Or this:</p>
+<p>my $s; $SH = tie *OUT, IO::Scalar, \$s; print OUT "Hel", "lo, "; ###
+non-OO style print OUT "world!\n"; ### ditto</p>
+<p>Causes <code>$s</code> to be set to:</p>
+<p>"Hello, world!\n"</p>
+<h1>PUBLIC INTERFACE</h1>
+<h2>Construction</h2>
+<dl>
+<dt>new [ARGS...]</dt>
+<dd>
+<p><em>Class method.</em> Return a new, unattached scalar handle. If any
+arguments are given, they're sent to <strong>open()</strong>.</p>
+</dd>
+<dt>open [SCALARREF]</dt>
+<dd>
+<p><em>Instance method.</em> Open the scalar handle on a new scalar,
+pointed to by SCALARREF. If no SCALARREF is given, a private scalar is
+created to hold the file data. Returns the self object on success,
+undefined on error.</p>
+</dd>
+<dt>opened</dt>
+<dd>
+<p><em>Instance method.</em> Is the scalar handle opened on
+something?</p>
+</dd>
+<dt>close</dt>
+<dd>
+<p><em>Instance method.</em> Disassociate the scalar handle from its
+underlying scalar. Done automatically on destroy.</p>
+</dd>
+</dl>
+<h2>Input and output</h2>
+<dl>
+<dt>flush</dt>
+<dd>
+<p><em>Instance method.</em> No-op, provided for OO compatibility.</p>
+</dd>
+<dt>fileno</dt>
+<dd>
+<p><em>Instance method.</em> No-op, returns undef</p>
+</dd>
+<dt>getc</dt>
+<dd>
+<p><em>Instance method.</em> Return the next character, or undef if none
+remain.</p>
+</dd>
+<dt>getline</dt>
+<dd>
+<p><em>Instance method.</em> Return the next line, or undef on end of
+string. Can safely be called in an array context. Currently, lines are
+delimited by \n.</p>
+</dd>
+<dt>getlines</dt>
+<dd>
+<p><em>Instance method.</em> Get all remaining lines. It will
+<strong>croak()</strong> if accidentally called in a scalar context.</p>
+</dd>
+<dt>print ARGS...</dt>
+<dd>
+<p><em>Instance method.</em> Print ARGS to the underlying scalar.
+<strong>Warning:</strong> this continues to always cause a seek to the
+end of the string, but if you perform <strong>seek()</strong>s and
+<strong>tell()</strong>s, it is still safer to explicitly seek-to-end
+before subsequent <strong>print()</strong>s.</p>
+</dd>
+<dt>read BUF, NBYTES, [OFFSET]</dt>
+<dd>
+<p><em>Instance method.</em> Read some bytes from the scalar. Returns
+the number of bytes actually read, 0 on end-of-file, undef on error.</p>
+</dd>
+<dt>write BUF, NBYTES, [OFFSET]</dt>
+<dd>
+<p><em>Instance method.</em> Write some bytes to the scalar.</p>
+</dd>
+<dt>sysread BUF, LEN, [OFFSET]</dt>
+<dd>
+<p><em>Instance method.</em> Read some bytes from the scalar. Returns
+the number of bytes actually read, 0 on end-of-file, undef on error.</p>
+</dd>
+<dt>syswrite BUF, NBYTES, [OFFSET]</dt>
+<dd>
+<p><em>Instance method.</em> Write some bytes to the scalar.</p>
+</dd>
+</dl>
+<h2>Seeking/telling and other attributes</h2>
+<dl>
+<dt>autoflush</dt>
+<dd>
+<p><em>Instance method.</em> No-op, provided for OO compatibility.</p>
+</dd>
+<dt>binmode</dt>
+<dd>
+<p><em>Instance method.</em> No-op, provided for OO compatibility.</p>
+</dd>
+<dt>clearerr</dt>
+<dd>
+<p><em>Instance method.</em> Clear the error and EOF flags. A no-op.</p>
+</dd>
+<dt>eof</dt>
+<dd>
+<p><em>Instance method.</em> Are we at end of file?</p>
+</dd>
+<dt>seek OFFSET, WHENCE</dt>
+<dd>
+<p><em>Instance method.</em> Seek to a given position in the stream.</p>
+</dd>
+<dt>sysseek OFFSET, WHENCE</dt>
+<dd>
+<p><em>Instance method.</em> Identical to
+<code>seek OFFSET, WHENCE</code>, <em>q.v.</em></p>
+</dd>
+<dt>tell</dt>
+<dd>
+<p><em>Instance method.</em> Return the current position in the stream,
+as a numeric offset.</p>
+</dd>
+<dt>setpos POS</dt>
+<dd>
+<p><em>Instance method.</em> Set the current position, using the opaque
+value returned by <code>getpos()</code>.</p>
+</dd>
+<dt>getpos</dt>
+<dd>
+<p><em>Instance method.</em> Return the current position in the string,
+as an opaque object.</p>
+</dd>
+<dt>sref</dt>
+<dd>
+<p><em>Instance method.</em> Return a reference to the underlying
+scalar.</p>
+</dd>
+</dl>
+<h1>WARNINGS</h1>
+<p>Perl's TIEHANDLE spec was incomplete prior to 5.005_57; it was
+missing support for <code>seek()</code>, <code>tell()</code>, and
+<code>eof()</code>. Attempting to use these functions with an IO::Scalar
+will not work prior to 5.005_57. IO::Scalar will not have the relevant
+methods invoked; and even worse, this kind of bug can lie dormant for a
+while. If you turn warnings on (via <code>$^W</code> or
+<code>perl -w</code>), and you see something like this...</p>
+<p>attempt to seek on unopened filehandle</p>
+<p>...then you are probably trying to use one of these functions on an
+IO::Scalar with an old Perl. The remedy is to simply use the OO version;
+e.g.:</p>
+<p>$SH-&gt;seek(0,0); ### GOOD: will work on any 5.005 seek($SH,0,0);
+### WARNING: will only work on 5.005_57 and beyond</p>
+<h1>VERSION</h1>
+<p><code>$Id:</code> Scalar.pm,v 1.6 2005/02/10 21:21:53 dfs Exp $</p>
+<h1>AUTHORS</h1>
+<h2>Primary Maintainer</h2>
+<p>Dianne Skoll (<em>dfs@roaringpenguin.com</em>).</p>
+<h2>Principal author</h2>
+<p>Eryq (<em>eryq@zeegee.com</em>). President, ZeeGee Software Inc
+(<em>http://www.zeegee.com</em>).</p>
+<h2>Other contributors</h2>
+<p>The full set of contributors always includes the folks mentioned in
+CHANGE LOG in IO::Stringy. But just the same, special thanks to the
+following individuals for their invaluable contributions (if I've
+forgotten or misspelled your name, please email me!):</p>
+<p><em>Andy Glew,</em> for contributing <code>getc()</code>.</p>
+<p><em>Brandon Browning,</em> for suggesting <code>opened()</code>.</p>
+<p><em>David Richter,</em> for finding and fixing the bug in
+<code>PRINTF()</code>.</p>
+<p><em>Eric L. Brine,</em> for his offset-using <strong>read()</strong>
+and <strong>write()</strong> implementations.</p>
+<p><em>Richard Jones,</em> for his patches to massively improve the
+performance of <code>getline()</code> and add <code>sysread</code> and
+<code>syswrite</code>.</p>
+<p><em>B. K. Oxley (binkley),</em> for stringification and inheritance
+improvements, and sundry good ideas.</p>
+<p><em>Doug Wilson,</em> for the IO::Handle inheritance and automatic
+tie-ing.</p>
+<h1>SEE ALSO</h1>
+<p>IO::String, which is quite similar but which was designed
+more-recently and with an IO::Handle-like interface in mind, so you
+could mix OO- and native-filehandle usage without using
+<strong>tied()</strong>.</p>
+<p><em>Note:</em> as of version 2.x, these classes all work like their
+IO::Handle counterparts, so we have comparable functionality to
+IO::String.</p>

@@ -1,0 +1,89 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::Flags - methods and overloaded operators for flags</p>
+<h1>HIERARCHY</h1>
+<p>Glib::Flags</p>
+<h1>DESCRIPTION</h1>
+<p>Glib maps flag and enum values to the nicknames strings provided by
+the underlying C libraries. Representing flags this way in Perl is an
+interesting problem, which Glib solves by using some cool overloaded
+operators.</p>
+<p>The functions described here actually do the work of those overloaded
+operators. See the description of the flags operators in the This Is Now
+That section of Glib for more info.</p>
+<h1>METHODS</h1>
+<h2>scalar = $class-&gt;<strong>new</strong> ($a)</h2>
+<ul>
+<li><p><code>$a</code> (scalar)</p></li>
+</ul>
+<p>Create a new flags object with given bits. This is for use from a
+subclass, it's not possible to create a <code>Glib::Flags</code> object
+as such. For example,</p>
+<p>my $f1 = Glib::ParamFlags-&gt;new (readable); my $f2 =
+Glib::ParamFlags-&gt;new ([readable,writable]);</p>
+<p>An object like this can then be used with the overloaded
+operators.</p>
+<h2>scalar = $a-&gt;<strong>all</strong> ($b, $swap)</h2>
+<ul>
+<li><p><code>$b</code> (scalar)</p></li>
+<li><p><code>$swap</code> (scalar)</p></li>
+</ul>
+<h2>aref = $f-&gt;<strong>as_arrayref</strong></h2>
+<p>Return the bits of <code>$f</code> as a reference to an array of
+strings, like ['flagbit1','flagbit2']. This is the overload function for
+<code>@{}</code>, ie. arrayizing <code>$f</code>. You can call it
+directly as a method too.</p>
+<p>Note that @$f gives the bits as a list, but as_arrayref gives an
+arrayref. If an arrayref is what you want then the method style
+<strong>somefunc()</strong>-&gt;as_arrayref can be more readable than
+[@{<strong>somefunc()</strong>}].</p>
+<h2>bool = $f-&gt;<strong>bool</strong></h2>
+<p>Return 1 if any bits are set in <code>$f</code>, or 0 if none are
+set. This is the overload for <code>$f</code> in boolean context (like
+<code>if</code>, etc). You can call it as a method to get a true/false
+directly too.</p>
+<h2>integer = $a-&gt;<strong>eq</strong> ($b, $swap)</h2>
+<ul>
+<li><p><code>$b</code> (scalar)</p></li>
+<li><p><code>$swap</code> (integer)</p></li>
+</ul>
+<h2>integer = $a-&gt;<strong>ge</strong> ($b, $swap)</h2>
+<ul>
+<li><p><code>$b</code> (scalar)</p></li>
+<li><p><code>$swap</code> (integer)</p></li>
+</ul>
+<h2>scalar = $a-&gt;<strong>intersect</strong> ($b, $swap)</h2>
+<ul>
+<li><p><code>$b</code> (scalar)</p></li>
+<li><p><code>$swap</code> (scalar)</p></li>
+</ul>
+<h2>integer = $a-&gt;<strong>ne</strong> ($b, $swap)</h2>
+<ul>
+<li><p><code>$b</code> (scalar)</p></li>
+<li><p><code>$swap</code> (integer)</p></li>
+</ul>
+<h2>scalar = $a-&gt;<strong>sub</strong> ($b, $swap)</h2>
+<ul>
+<li><p><code>$b</code> (scalar)</p></li>
+<li><p><code>$swap</code> (scalar)</p></li>
+</ul>
+<h2>scalar = $a-&gt;<strong>union</strong> ($b, $swap)</h2>
+<ul>
+<li><p><code>$b</code> (scalar)</p></li>
+<li><p><code>$swap</code> (scalar)</p></li>
+</ul>
+<h2>scalar = $a-&gt;<strong>xor</strong> ($b, $swap)</h2>
+<ul>
+<li><p><code>$b</code> (scalar)</p></li>
+<li><p><code>$swap</code> (scalar)</p></li>
+</ul>
+<h1>SEE ALSO</h1>
+<p>Glib</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

@@ -1,0 +1,193 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>rygel - a collection of DLNA/UPnP AV services</p>
+<h1>SYNOPSIS</h1>
+<p><strong>rygel</strong> [<strong>options</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>rygel</strong> is a home media solution that allows you to
+easily share audio, video and pictures, and control of media player on
+your home network. In technical terms it is both a UPnP AV MediaServer
+and MediaRenderer implemented through a plug-in mechanism.
+Interoperability with other devices in the market is achieved by
+conformance to very strict requirements of DLNA and on the fly
+conversion of media to format that client devices are capable of
+handling.</p>
+<h1>OPTIONS</h1>
+<p>The program follows the usual GNU command line syntax, with long
+options starting with two dashes (`-). A summary of options is included
+below.</p>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Show summary of options.</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Show version of program.</p>
+</blockquote>
+<p><strong>-n</strong>,
+<strong>--network-interface=</strong><em>INTERFACE</em></p>
+<blockquote>
+<p>Set the network interfaces rygel listens on. Can be used multiple
+times for to configure multiple interfaces. <strong>INTERFACE</strong>
+can be an IP, a device name or an ESSID (Linux only).</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--port=</strong><em>PORT</em></p>
+<blockquote>
+<p>Set the listen-port.</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--disable-transcoding</strong></p>
+<blockquote>
+<p>Disable any transcoding.</p>
+</blockquote>
+<p><strong>-U</strong>, <strong>--disallow-upload</strong></p>
+<blockquote>
+<p>Disable uploading of media files via UPnP.</p>
+</blockquote>
+<p><strong>-D</strong>, <strong>--disallow-deletion</strong></p>
+<blockquote>
+<p>UPnP clients are not allowed to delete media files on the server.</p>
+</blockquote>
+<p><strong>-g</strong>, <strong>--log-level=</strong><em>LEVEL</em></p>
+<blockquote>
+<p>Comma-separated list of <em>DOMAIN</em>:<em>LEVEL</em> pairs,
+allowing to set the log level individually for each domain, where
+<em>DOMAIN</em> is eiher <strong>"*"</strong>, "<strong>rygel</strong>"
+or the name of a plugin. Allowed log levels are 1=critical, 2=error,
+3=warning, 4=message/info, 5=debug.</p>
+</blockquote>
+<p><strong>-u</strong>, <strong>--plugin-path=</strong><em>PATH</em></p>
+<blockquote>
+<p>Set the plugin search path.</p>
+</blockquote>
+<p><strong>-e</strong>,
+<strong>--engine-path=</strong><em>ENGINE_PATH</em></p>
+<blockquote>
+<p>Set the media streaming and transcoding engine search path.</p>
+</blockquote>
+<p><strong>-d</strong>,
+<strong>--disable-plugin=</strong><em>PLUGIN_NAME</em></p>
+<blockquote>
+<p>Disable the plugin <em>PLUGIN_NAME</em>.</p>
+</blockquote>
+<p><strong>-i</strong>,
+<strong>--title=</strong><em>PLUGIN_NAME</em><strong>:</strong><em>TITLE</em></p>
+<blockquote>
+<p>Set the title of plugin <em>PLUGIN_NAME</em> to <em>TITLE</em> You
+can use this option more than once for every plugin you want to set the
+name of.</p>
+</blockquote>
+<p><strong>-o</strong>,
+<strong>--plugin-option=</strong><em>PLUGIN_NAME</em><strong>:</strong>
+<em>OPTION</em><strong>:</strong><em>VALUE1[,VALUE2,...]</em></p>
+<blockquote>
+<p>Set options for a plugin.</p>
+</blockquote>
+<p><strong>-P</strong>, <strong>--disable-upnp</strong></p>
+<blockquote>
+<p>Disable advertisement via UPnP and set rygel into streaming-only
+mode.</p>
+</blockquote>
+<p><strong>-c</strong>,
+<strong>--config=</strong><em>CONFIG_FILE</em></p>
+<blockquote>
+<p>Use <em>CONFIG_FILE</em> instead of ${XDG_CONFIG_DIR}/rygel.conf.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--shutdown</strong></p>
+<blockquote>
+<p>Shutdown a currently running instance of rygel</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--replace</strong></p>
+<blockquote>
+<p>Replace the currently running instance of rygel with this instance.
+Short for <strong>rygel -s &amp;&amp; rygel</strong></p>
+</blockquote>
+<h1>FILES</h1>
+<p>/etc/rygel.conf</p>
+<blockquote>
+<p>The system-wide configuration file to control the behaviour of rygel.
+See <strong>rygel.conf</strong>(5) for further details.</p>
+</blockquote>
+<p>${XDG_CONFIG_DIR}/rygel.conf</p>
+<blockquote>
+<p>The per-user configuration file to control the behaviour of rygel.
+See <strong>rygel.conf</strong>(5) for further details.</p>
+</blockquote>
+<p>${XDG_CONFIG_DIR}/Rygel/*.xml</p>
+<blockquote>
+<p>Cached UPnP device description files.</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p><strong>RYGEL_DISABLE_UPNP</strong></p>
+<blockquote>
+<p>Disable advertisement via UPnP and set rygel into streaming-only
+mode.</p>
+</blockquote>
+<p><strong>RYGEL_IFACE</strong></p>
+<blockquote>
+<p>Set the network interfaces to bind to.</p>
+</blockquote>
+<p><strong>RYGEL_PORT</strong></p>
+<blockquote>
+<p>Define the network port to bind to.</p>
+</blockquote>
+<p><strong>RYGEL_DISABLE_TRANSCODING</strong></p>
+<blockquote>
+<p>Disable transcoding globally.</p>
+</blockquote>
+<p><strong>RYGEL_LOG</strong></p>
+<blockquote>
+<p>Set the log level of rygel.</p>
+</blockquote>
+<p><strong>RYGEL_PLUGIN_PATH</strong></p>
+<blockquote>
+<p>Set the plugin search path of rygel.</p>
+</blockquote>
+<p><strong>RYGEL_ENGINE_PATH</strong></p>
+<blockquote>
+<p>Set the media streaming and transcoding engine search path for
+rygel.</p>
+</blockquote>
+<p><strong>RYGEL_MEDIA_ENGINE</strong></p>
+<blockquote>
+<p>Set a specific media streaming engine to pick up from the media
+engine search path.</p>
+</blockquote>
+<p><strong>RYGEL_DISABLE_UPLOAD</strong></p>
+<blockquote>
+<p>Disable media file upload via UPnP.</p>
+</blockquote>
+<p><strong>RYGEL_DISABLE_DELETION</strong></p>
+<blockquote>
+<p>Disable remote file deletion via UPnP.</p>
+</blockquote>
+<p><strong>RYGEL_PLUGIN_TIMEOUT</strong></p>
+<blockquote>
+<p>Set the time-out for finding the plugins. Useful to increase when
+running inside valgrind.</p>
+</blockquote>
+<p><strong>RYGEL_DATABASE_DEBUG</strong></p>
+<blockquote>
+<p>If set to 1, the database library will print the used SQL
+statements.</p>
+</blockquote>
+<p>Also for every plugin you can set the following environment
+variables:</p>
+<p><strong>RYGEL_PLUGIN_NAME_TITLE</strong></p>
+<blockquote>
+<p>Set the title of the plugin.</p>
+</blockquote>
+<p><strong>RYGEL_PLUGIN_NAME_ENABLED</strong></p>
+<blockquote>
+<p>Enable or disable the plugin.</p>
+</blockquote>
+<h1>BUGS</h1>
+<p>The BTS can be found at
+<strong>https://gitlab.gnome.org/GNOME/rygel/issues</strong>.</p>
+<h1>SEE ALSO</h1>
+<p><strong>rygel.conf</strong>(5)</p>
+<h1>AUTHOR</h1>
+<p><strong>Jens Georg</strong> &lt;mail@jensge.org&gt;</p>
+<blockquote>
+<p>Wrote this manpage.</p>
+</blockquote>

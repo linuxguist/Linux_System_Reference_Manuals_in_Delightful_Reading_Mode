@@ -1,0 +1,72 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::Wm::Popup - popup dialog windows.</p>
+<h1>SYNOPSIS</h1>
+<p>$dialog-&gt;Popup(qw/ -popover =&gt; cursor | $widget | undef,
+-overanchor =&gt; c | n | ne | e | se | s | sw | w | nw, -popanchor
+=&gt; c | n | ne | e | se | s | sw | w | nw, /);</p>
+<h1>DESCRIPTION</h1>
+<p>You've probably had occasion to use a Dialog (or DialogBox) widget.
+These widgets are derived from a Toplevel (which is a subclass of
+Tk::Wm, the window manager) and spend most of their time in a withdrawn
+state. It's also common to use Toplevels as containers for custom built
+popup windows. Menus, too, are dialogs derived from the window manager
+class. For this discussion, we'll use the simple term <em>dialog</em> to
+refer any widget that pops up and awaits user interaction, whether it be
+a Menu, a special purpose Toplevel, or any of the dialog-type widgets,
+including, but not limited to, ColorEditor, Dialog, DialogBox,
+ErrorDialog, FileSelect, FBox, getOpenFile and getSaveFile.</p>
+<p>When it's time to display these dialogs, we call the Perl/Tk window
+manager <strong>Popup</strong> method. <strong>Popup</strong> accepts
+three special purpose options that specify placement information in
+high-level terms rather than numerical coordinates. It is
+<strong>Popup</strong>'s responsibility to take our human specifications
+and turn them into actual screen coordinates before displaying the
+dialog.</p>
+<p>We can direct the dialog to appear in two general locations, either
+over another window (e.g. the root window (screen) or a particular
+widget), or over the cursor. This is called the <em>popover</em>
+location. Once we've made this decision we can further refine the exact
+placement of the dialog relative to the popover location by specifying
+the intersection of two <em>anchor points</em>. The <em>popanchor</em>
+point is associated with the dialog and the <em>overanchor point</em> is
+associated with the popover location (whether it be a window or the
+cursor). The point where the two anchor points coincide is the
+<em>popup</em> locus. Anchor points are string values and can be
+<em>c</em> (for center), or any of the eight cardinal compass points:
+<em>n</em>, <em>ne</em>, <em>e</em>, <em>se</em>, <em>s</em>,
+<em>sw</em>, <em>w</em> or <em>nw</em>.</p>
+<p>For example, if <em>-popover</em> specifies a widget,
+<em>-popanchor</em> is <em>sw</em>, and <em>-overanchor</em> is
+<em>ne</em>, the the dialog's southwest corner pops up at the widget's
+northeast corner.</p>
+<h1>OPTIONS</h1>
+<p>The options recognized by <strong>Popup</strong> are as follows:</p>
+<dl>
+<dt>-popover</dt>
+<dd>
+<p>Specifies whether the dialog pops over a window or the cursor. It may
+be the string <em>cursor</em>, a widget reference, or undef for the root
+window.</p>
+</dd>
+<dt>-popanchor</dt>
+<dd>
+<p>Specifies the anchor point of the dialog. For instance, if <em>e</em>
+is specified, the right side of the dialog is the anchor.</p>
+</dd>
+<dt>-overanchor</dt>
+<dd>
+<p>Specifies where the dialog should anchor relative to the popover
+location. For instance, if <em>e</em> is specified the dialog appears
+over the right side of the popover location and if it's <em>ne</em> the
+the dialog is positioned at the upper-right corner of the popover
+location.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Nick Ing-Simmons, Steve Lidie</p>
+<p>This code is distributed under the same terms as Perl.</p>

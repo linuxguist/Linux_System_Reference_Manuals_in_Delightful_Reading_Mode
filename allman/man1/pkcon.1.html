@@ -1,0 +1,281 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>pkcon - PackageKit console client</p>
+<h1>SYNOPSIS</h1>
+<p><strong>pkcon</strong> [<strong>OPTION</strong>...]
+[<strong>COMMAND</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p>This manual page documents briefly the <strong>pkcon</strong>
+command.</p>
+<p><strong>pkcon</strong> is the command line client for PackageKit.</p>
+<h1>COMMANDS</h1>
+<p>pkcon knows about the following commands. Depending on the backend in
+use, not all of them may be available.</p>
+<p>backend-details</p>
+<blockquote>
+<p>Print information about the PackageKit backend in use.</p>
+</blockquote>
+<p>get-roles</p>
+<blockquote>
+<p>List the roles that a transaction can have.</p>
+</blockquote>
+<p>get-groups</p>
+<blockquote>
+<p>List the available package groups.</p>
+</blockquote>
+<p>get-filters</p>
+<blockquote>
+<p>List the available filters.</p>
+</blockquote>
+<p>get-transactions</p>
+<blockquote>
+<p>List known transactions.</p>
+</blockquote>
+<p>get-time <em>ROLE</em></p>
+<blockquote>
+<p>Print the time that has passed since the last transaction with the
+given role.</p>
+</blockquote>
+<p>search [name|details|group|file] <em>DATA</em></p>
+<blockquote>
+<p>Search for a package matching the given data. The search is performed
+in the package information that is indicated by the first argument:
+name, details, group or files.</p>
+</blockquote>
+<p>install <em>PACKAGES</em></p>
+<blockquote>
+<p>Install the given packages from repositories.</p>
+</blockquote>
+<p>install-local <em>FILES</em></p>
+<blockquote>
+<p>Install the given packages from the local filesystem.</p>
+</blockquote>
+<p>download <em>DIRECTORY</em> <em>PACKAGES</em></p>
+<blockquote>
+<p>Download the given packages from repositories, and store them in the
+given directory.</p>
+</blockquote>
+<p>install-sig <em>TYPE</em> <em>KEY_ID</em> <em>PACKAGE</em></p>
+<blockquote>
+<p>Install a package signature. Only GPG signatures are supported at
+this time.</p>
+</blockquote>
+<p>remove <em>PACKAGE</em></p>
+<blockquote>
+<p>Remove the given package.</p>
+</blockquote>
+<p>update [<em>PACKAGES</em>]</p>
+<blockquote>
+<p>Update the system by installing available updates. If a list of
+packages is specified, only install updates for these packages.</p>
+</blockquote>
+<p>refresh [force]</p>
+<blockquote>
+<p>Refresh the cached information about available updates.</p>
+</blockquote>
+<p>resolve <em>PACKAGE</em></p>
+<blockquote>
+<p>Resolve the given package name and print information about installed
+or available packages and updates.</p>
+</blockquote>
+<p>upgrade-system <em>DISTRIBUTION</em> [minimal|default|complete]</p>
+<blockquote>
+<p>Upgrade the system to the given distribution.</p>
+</blockquote>
+<p>get-updates</p>
+<blockquote>
+<p>List available updates.</p>
+</blockquote>
+<p>get-distro-upgrades</p>
+<blockquote>
+<p>List available distribution upgrades.</p>
+</blockquote>
+<p>depends-on <em>PACKAGE</em></p>
+<blockquote>
+<p>List dependencies fo the given package.</p>
+</blockquote>
+<p>required-by <em>PACKAGE</em></p>
+<blockquote>
+<p>List packages that require the given package.</p>
+</blockquote>
+<p>get-details <em>PACKAGE</em></p>
+<blockquote>
+<p>Print details about the available or installed package with the given
+name.</p>
+</blockquote>
+<p>get-details-local <em>FILE</em></p>
+<blockquote>
+<p>Print details about the local package.</p>
+</blockquote>
+<p>get-files <em>PACKAGE</em></p>
+<blockquote>
+<p>List the files contained in the given package.</p>
+</blockquote>
+<p>get-files-local <em>FILE</em></p>
+<blockquote>
+<p>List the files contained in the local package.</p>
+</blockquote>
+<p>get-update-detail <em>PACKAGE</em></p>
+<blockquote>
+<p>Print the package changelog for the given package.</p>
+</blockquote>
+<p>get-packages</p>
+<blockquote>
+<p>List all available and installed packages.</p>
+</blockquote>
+<p>repo-list</p>
+<blockquote>
+<p>List all configured package repositories.</p>
+</blockquote>
+<p>repo-enable <em>REPOSITORY</em></p>
+<blockquote>
+<p>Enable the given repository.</p>
+</blockquote>
+<p>repo-disable <em>REPOSITORY</em></p>
+<blockquote>
+<p>Disable the given repository.</p>
+</blockquote>
+<p>repo-set-data <em>REPOSITORY</em> <em>PARAMETER</em>
+<em>DATA</em></p>
+<blockquote>
+<p>Set the given parameter to the given value for the repository.</p>
+</blockquote>
+<p>repo-remove <em>REPOSITORY</em> <em>PARAMETER</em></p>
+<blockquote>
+<p>Removes the repository and optionally any packages installed from
+it.</p>
+</blockquote>
+<p>what-provides <em>STRING</em></p>
+<blockquote>
+<p>List packages that provide the given string.</p>
+</blockquote>
+<p>accept-eula <em>EULA_ID</em></p>
+<blockquote>
+<p>Accept the EULA with the given id.</p>
+</blockquote>
+<p>get-categories</p>
+<blockquote>
+<p>List available categories.</p>
+</blockquote>
+<p>repair</p>
+<blockquote>
+<p>Attempt to repair the system package database.</p>
+</blockquote>
+<p>offline-get-prepared</p>
+<blockquote>
+<p>Print information about the prepared offline update. If no offline
+update is prepared, exit with an exit code of 1.</p>
+</blockquote>
+<p>offline-trigger</p>
+<blockquote>
+<p>Trigger an offline update.</p>
+</blockquote>
+<p>offline-status</p>
+<blockquote>
+<p>Print information about the result of the last offline update.</p>
+</blockquote>
+<h1>OPTIONS</h1>
+<p>The following options can be used to influence the behavior of
+<strong>pkcon</strong>.</p>
+<p>--version</p>
+<blockquote>
+<p>Print the program version and exit.</p>
+</blockquote>
+<p>-h, --help</p>
+<blockquote>
+<p>Show help options.</p>
+</blockquote>
+<p>--help-all</p>
+<blockquote>
+<p>Show all help options.</p>
+</blockquote>
+<p>--filter <em>FILTER</em></p>
+<blockquote>
+<p>Set the filter to use.</p>
+</blockquote>
+<p>-y, --noninteractive</p>
+<blockquote>
+<p>Install packages without asking for confirmation.</p>
+</blockquote>
+<p>--only-download</p>
+<blockquote>
+<p>Prepare the transaction by downloading packages only.</p>
+</blockquote>
+<p>-n, --background</p>
+<blockquote>
+<p>Run the command using idle network bandwidth and also using less
+power.</p>
+</blockquote>
+<p>-p, --plain</p>
+<blockquote>
+<p>Print to screen a machine-readable output, rather than using animated
+widgets.</p>
+</blockquote>
+<p>-v, --verbose</p>
+<blockquote>
+<p>Show debugging information.</p>
+</blockquote>
+<p>-c, --cache-age <em>AGE</em></p>
+<blockquote>
+<p>Set the maximum acceptable age for cached metadata, in seconds. Use
+-1 for never.</p>
+</blockquote>
+<p>--allow-untrusted</p>
+<blockquote>
+<p>Allow untrusted packages to be installed.</p>
+</blockquote>
+<p>--allow-downgrade</p>
+<blockquote>
+<p>Allow packages to be downgraded during transaction.</p>
+</blockquote>
+<p>--allow-reinstall</p>
+<blockquote>
+<p>Allow packages to be reinstalled during transaction.</p>
+</blockquote>
+<h1>RETURN VALUES</h1>
+<p><strong>0</strong></p>
+<blockquote>
+<p>Success</p>
+</blockquote>
+<p><strong>1</strong></p>
+<blockquote>
+<p>Failed with miscellaneous internal error.</p>
+</blockquote>
+<p><strong>3</strong></p>
+<blockquote>
+<p>Failed with syntax error, or failed to parse command.</p>
+</blockquote>
+<p><strong>4</strong></p>
+<blockquote>
+<p>Failed as a file or directory was not found.</p>
+</blockquote>
+<p><strong>5</strong></p>
+<blockquote>
+<p>Nothing useful was done.</p>
+</blockquote>
+<p><strong>6</strong></p>
+<blockquote>
+<p>The initial setup failed, e.g. setting the network proxy.</p>
+</blockquote>
+<p><strong>7</strong></p>
+<blockquote>
+<p>The transaction failed, see the detailed error for more
+information.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p>pkmon (1).</p>
+<p>The programs are documented fully on
+https://www.freedesktop.org/software/PackageKit.</p>
+<h1>AUTHOR</h1>
+<p>This manual page was written by Richard Hughes
+&lt;richard@hughsie.com&gt;.</p>
+<h1>AUTHOR</h1>
+<p><strong>Richard Hughes</strong></p>
+<blockquote>
+<p>Author.</p>
+</blockquote>
+<h1>COPYRIGHT</h1>
+<p><br />
+Copyright © 2007 - 2013 Richard Hughes<br />
+</p>

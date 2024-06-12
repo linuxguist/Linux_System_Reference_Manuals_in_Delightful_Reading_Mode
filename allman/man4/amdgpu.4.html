@@ -1,0 +1,168 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>amdgpu - AMD RADEON GPU video driver</p>
+<h1>SYNOPSIS</h1>
+<pre><code>Section Device
+ Identifier devname
+ Driver amdgpu
+  ...
+EndSection</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>amdgpu</strong> is an Xorg driver for AMD RADEON-based video
+cards with the following features:</p>
+<dl>
+<dt>·</dt>
+<dd>
+<p>Support for 8-, 15-, 16-, 24- and 30-bit pixel depths;</p>
+</dd>
+<dt>·</dt>
+<dd>
+<p>RandR support up to version 1.4;</p>
+</dd>
+<dt>·</dt>
+<dd>
+<p>3D acceleration;</p>
+</dd>
+</dl>
+<h1>SUPPORTED HARDWARE</h1>
+<p>The <strong>amdgpu</strong> driver supports SI and newer families'
+video cards.</p>
+<h1>CONFIGURATION DETAILS</h1>
+<p>Please refer to xorg.conf(5) for general configuration details. This
+section only covers configuration details specific to this driver.</p>
+<p>The following driver <strong>Options</strong> are supported:</p>
+<dl>
+<dt><strong>Option SWcursor
+</strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>Selects software cursor. The default is <strong>off.</strong></p>
+</dd>
+<dt><strong>Option Accel </strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>Enables or disables all hardware acceleration.<br />
+The default is <strong>on.</strong></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>Option ZaphodHeads
+</strong><em>string</em><strong></strong></dt>
+<dd>
+<p>Specify the RandR output(s) to use with zaphod mode for a particular
+driver instance. If you use this option you must use this option for all
+instances of the driver.<br />
+For example: <strong>Option ZaphodHeads LVDS,VGA-0</strong> will assign
+xrandr outputs LVDS and VGA-0 to this instance of the driver.</p>
+</dd>
+<dt><strong>Option DRI </strong><em>integer</em><strong></strong></dt>
+<dd>
+<p>Define the maximum level of DRI to enable. Valid values are 2 for
+DRI2 or 3 for DRI3. The default is <strong>3 for DRI3</strong> if the
+Xorg version is &gt;= 1.18.3, otherwise <strong>2 for DRI2.</strong></p>
+</dd>
+<dt><strong>Option EnablePageFlip
+</strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>Enable DRI2 page flipping. The default is <strong>on.</strong></p>
+</dd>
+<dt><strong>Option TearFree
+</strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>Set the default value of the per-output 'TearFree' property, which
+controls tearing prevention using the hardware page flipping mechanism.
+TearFree is on for any CRTC associated with one or more outputs with
+TearFree on. Two separate scanout buffers need to be allocated for each
+CRTC with TearFree on. If this option is set, the default value of the
+property is 'on' or 'off' accordingly. If this option isn't set, the
+default value of the property is <strong>auto,</strong> which means that
+TearFree is on for rotated outputs, outputs with RandR transforms
+applied and for RandR 1.4 secondary outputs, otherwise off.</p>
+</dd>
+<dt><strong>Option VariableRefresh
+</strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>Enables support for enabling variable refresh on the Screen's CRTCs
+when an suitable application is flipping via the Present
+extension.<br />
+The default is <strong>off.</strong></p>
+</dd>
+<dt><strong>Option AsyncFlipSecondaries
+</strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>Use async flips for secondary video outputs on multi-display setups.
+If a screen has multiple displays attached and DRI3 page flipping is
+used, then only one of the displays will have its page flip synchronized
+to vblank for tear-free presentation. This is the display that is used
+for presentation timing and timestamping, usually the one covering the
+biggest pixel area of the screen. All other displays ("Secondaries")
+will not synchronize their flips. This may cause some tearing on these
+displays, but it prevents a permanent or periodic slowdown or irritating
+judder of animations if not all video outputs are running synchronized
+with each other and with the same refresh rate. There is no perfect
+solution apart from perfectly synchronized outputs, but this option may
+give preferrable results if the displays in a multi-display setup mirror
+or clone each other. The default is <strong>off.</strong></p>
+</dd>
+<dt><strong>Option AccelMethod
+</strong><em>string</em><strong></strong></dt>
+<dd>
+<p>Setting this option to <strong>none</strong> disables use of the
+glamor acceleration architecture. In that case, all 2D rendering is done
+by the CPU, but 3D and video hardware acceleration can still work. This
+is mainly useful for OpenGL driver bring-up.<br />
+The default is to use glamor.</p>
+</dd>
+</dl>
+<p>The following driver <strong>Option</strong> is supported for
+<strong>glamor</strong> :</p>
+<dl>
+<dt><strong>Option ShadowPrimary
+</strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>This option enables a so-called "shadow primary" buffer for fast CPU
+access to pixel data, and separate scanout buffers for each display
+controller (CRTC). This may improve performance for some 2D workloads,
+potentially at the expense of other (e.g. 3D, video) workloads. Note in
+particular that enabling this option currently disables page flipping.
+The default is <strong>off.</strong></p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>Xorg(1), xorg.conf(5), Xserver(1), X(7)</p>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>Wiki page:</p>
+<p>https://www.x.org/wiki/radeon</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>Overview about amdgpu development code:</p>
+<p>https://gitlab.freedesktop.org/xorg/driver/xf86-video-amdgpu</p>
+</dd>
+<dt> 3.</dt>
+<dd>
+<p>Mailing list:</p>
+<p>https://lists.freedesktop.org/mailman/listinfo/amd-gfx</p>
+</dd>
+<dt> 4.</dt>
+<dd>
+<p>IRC channel:</p>
+<p>#radeon on irc.freenode.net</p>
+</dd>
+<dt> 5.</dt>
+<dd>
+<p>The bugtracker for amdgpu bugs:</p>
+<p>https://gitlab.freedesktop.org/xorg/driver/xf86-video-amdgpu/-/issues</p>
+</dd>
+<dt> 6.</dt>
+<dd>
+<p>Submit merge requests:</p>
+<p>https://gitlab.freedesktop.org/xorg/driver/xf86-video-amdgpu/-/merge_requests</p>
+</dd>
+</dl>
+<h1>AUTHORS</h1>
+<pre><code>Authors include:
+Michel Dänzer            michel@daenzer.net
+Alex Deucher             alexdeucher@gmail.com
+</code></pre>

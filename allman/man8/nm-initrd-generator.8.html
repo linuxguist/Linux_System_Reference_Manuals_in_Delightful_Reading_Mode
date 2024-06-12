@@ -1,0 +1,165 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>nm-initrd-generator - early boot NetworkManager configuration
+generator</p>
+<h1>SYNOPSIS</h1>
+<p><strong>nm-initrd-generator</strong> [<em>OPTIONS</em>...] --
+[<em>CMDLINE</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>nm-initrd-generator</strong> scans the command line for
+options relevant to network configuration and creates configuration
+files for an early instance of NetworkManager run from the initial
+ramdisk during early boot.</p>
+<h1>OPTIONS</h1>
+<p><strong>-c</strong> | <strong>--connections-dir</strong>
+<em>path</em></p>
+<blockquote>
+<p>Output connection directory.</p>
+</blockquote>
+<p><strong>-p</strong> | <strong>--persistent-connections-dir</strong>
+<em>path</em></p>
+<blockquote>
+<p>Persistent connection directory. If it exists, rd.neednet will not
+cause a default connection to be generated in absence of other
+options.</p>
+</blockquote>
+<p><strong>-i</strong> | <strong>--initrd-data-dir</strong>
+<em>path</em></p>
+<blockquote>
+<p>Output directory for initrd data (e.g. hostname).</p>
+</blockquote>
+<p><strong>-d</strong> | <strong>--sysfs-dir</strong> <em>path</em></p>
+<blockquote>
+<p>The sysfs mount point.</p>
+</blockquote>
+<p><strong>-r</strong> | <strong>--run-config-dir</strong>
+<em>path</em></p>
+<blockquote>
+<p>Output directory for config files.</p>
+</blockquote>
+<p><strong>-s</strong> | <strong>--stdout</strong></p>
+<blockquote>
+<p>Dump connections to standard output. Useful for debugging.</p>
+</blockquote>
+<p><em>CMDLINE</em></p>
+<blockquote>
+<p>The options that appear on the kernel command line. The following
+options are recognized:</p>
+<blockquote>
+<p><strong>ip</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.route</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>bridge</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>bond</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>team</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>vlan</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>ib.pkey</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>bootdev</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>nameserver</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>net.ifnames</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.peerdns</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.iscsi.ibft</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.bootif</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.neednet</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.ethtool</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.net.timeout.dhcp</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.net.dhcp.retry</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.net.dhcp.vendor-class</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.net.timeout.carrier</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.znet</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>rd.znet_ifname</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>BOOTIF</strong></p>
+</blockquote>
+<p>Please consult the <strong>dracut.cmdline</strong>(7) manual for the
+documentation of the precise format of the values supported.</p>
+</blockquote>
+<h1>DIFFERENCES FROM THE NETWORK-LEGACY DRACUT MODULE</h1>
+<p><strong>nm-initrd-generator</strong> generates a set of connections
+that are then configured by the NetworkManager instance running in the
+initrd. There are some differences in behavior compared to the
+network-legacy dracut module:</p>
+<blockquote>
+<p>·</p>
+<p>When an interface is configured with a static address and a gateway,
+the network-legacy module waits that the gateway responds to arping
+requests before proceeding, while NetworkManager doesnt.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>network-legacy configures interfaces one by one in the order in which
+they are announced by udev. If multiple interfaces specify a hostname
+(from command line or from DHCP), the one from the last interface
+activated wins. With NetworkManager, hostnames from command line have
+higher precedence over ones from DHCP, and the last that appears in the
+command line wins.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>NetworkManager supports the
+<strong>ib.pkey</strong>=<em>PARENT</em>.<em>PKEY</em> argument to set
+up an Infiniband partition on IPoIB parent device <em>PARENT</em> using
+the specified partition key <em>PKEY</em>. The partition key must be in
+hexadecimal notation without leading "0x", for example
+"ib.pkey=ib0.8004".</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>NetworkManager supports the
+<strong>rd.ethtool</strong>=<em>INTERFACE</em>:<em>AUTONEG</em>:<em>SPEED</em>
+kernel command line option to set up ethtool NIC configuration
+parameters <em>AUTONEG</em> and <em>SPEED</em>. The <em>INTERFACE</em>
+being configured must be specified, and the other parameters are
+optional and can be left blank. When <em>SPEED</em> is set, duplex mode
+is automatically set to full. <em>INTERFACE</em> accepts string values,
+<em>AUTONEG</em> accepts boolean values (true and false / on or off / 0
+or 1), and <em>SPEED</em> accepts positive integer values.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>nm-initrd-generator</strong> exits with status 0. It ignores
+unrecognized options and prints an error message if it encounters a
+malformed option.</p>
+<h1>SEE ALSO</h1>
+<p><strong>dracut.cmdline</strong>(7),
+<strong>NetworkManager</strong>(8).</p>

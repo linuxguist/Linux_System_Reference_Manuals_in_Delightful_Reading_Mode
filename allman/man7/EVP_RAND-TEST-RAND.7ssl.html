@@ -1,0 +1,127 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_RAND-TEST-RAND - The test EVP_RAND implementation</p>
+<h1>DESCRIPTION</h1>
+<p>Support for a test generator through the <strong>EVP_RAND</strong>
+API. This generator is for test purposes only, it does not generate
+random numbers.</p>
+<h2>Identity</h2>
+<p>TEST-RAND is the name for this implementation; it can be used with
+the <strong>EVP_RAND_fetch()</strong> function.</p>
+<h2>Supported parameters</h2>
+<p>The supported parameters are:</p>
+<dl>
+<dt>"state" (OSSL_RAND_PARAM_STATE) &lt;integer&gt;</dt>
+<dd>
+<p>These parameter works as described in PARAMETERS in
+<strong>EVP_RAND</strong> (3).</p>
+</dd>
+<dt>"strength" (OSSL_RAND_PARAM_STRENGTH) &lt;unsigned integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"reseed_requests" (OSSL_DRBG_PARAM_RESEED_REQUESTS) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"reseed_time_interval" (OSSL_DRBG_PARAM_RESEED_TIME_INTERVAL)
+&lt;integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"max_request" (OSSL_DRBG_PARAM_RESEED_REQUESTS) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"min_entropylen" (OSSL_DRBG_PARAM_MIN_ENTROPYLEN) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"max_entropylen" (OSSL_DRBG_PARAM_MAX_ENTROPYLEN) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"min_noncelen" (OSSL_DRBG_PARAM_MIN_NONCELEN) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"max_noncelen" (OSSL_DRBG_PARAM_MAX_NONCELEN) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"max_perslen" (OSSL_DRBG_PARAM_MAX_PERSLEN) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"max_adinlen" (OSSL_DRBG_PARAM_MAX_ADINLEN) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"reseed_counter" (OSSL_DRBG_PARAM_RESEED_COUNTER) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These parameters work as described in PARAMETERS in
+<strong>EVP_RAND</strong> (3), except that they can all be set as well
+as read.</p>
+<dl>
+<dt>"test_entropy" (OSSL_RAND_PARAM_TEST_ENTROPY) &lt;octet
+string&gt;</dt>
+<dd>
+<p>Sets the bytes returned when the test generator is sent an entropy
+request. The current position is remembered across generate calls. If
+there are insufficient data present to satisfy a call, an error is
+returned.</p>
+</dd>
+<dt>"test_nonce" (OSSL_RAND_PARAM_TEST_NONCE) &lt;octet string&gt;</dt>
+<dd>
+<p>Sets the bytes returned when the test generator is sent a nonce
+request. Each nonce request will return all of the bytes.</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>A context for a test generator can be obtained by calling:</p>
+<p>EVP_RAND *rand = EVP_RAND_fetch(NULL, "TEST-RAND", NULL);
+EVP_RAND_CTX *rctx = EVP_RAND_CTX_new(rand);</p>
+<h1>EXAMPLES</h1>
+<p>EVP_RAND *rand; EVP_RAND_CTX *rctx; unsigned char bytes[100];
+OSSL_PARAM params[4], *p = params; unsigned char entropy[1000] = { ...
+}; unsigned char nonce[20] = { ... }; unsigned int strength = 48; rand =
+EVP_RAND_fetch(NULL, "TEST-RAND", NULL); rctx = EVP_RAND_CTX_new(rand,
+NULL); EVP_RAND_free(rand); *p++ =
+OSSL_PARAM_construct_uint(OSSL_RAND_PARAM_STRENGTH, &amp;strength); *p++
+= OSSL_PARAM_construct_octet_string(OSSL_RAND_PARAM_TEST_ENTROPY,
+entropy, sizeof(entropy)); *p++ =
+OSSL_PARAM_construct_octet_string(OSSL_RAND_PARAM_TEST_NONCE, nonce,
+sizeof(nonce)); *p = OSSL_PARAM_construct_end();
+EVP_RAND_instantiate(rctx, strength, 0, NULL, 0, params);
+EVP_RAND_generate(rctx, bytes, sizeof(bytes), strength, 0, NULL, 0);
+EVP_RAND_CTX_free(rctx);</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_RAND</strong> (3), PARAMETERS in
+<strong>EVP_RAND</strong> (3)</p>
+<h1>HISTORY</h1>
+<p>This functionality was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

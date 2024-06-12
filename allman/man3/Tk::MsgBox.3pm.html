@@ -1,0 +1,66 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::MsgBox - create and manipulate a message dialog</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk::MsgBox ... $d = $top-&gt;MsgBox(-title =&gt; "Title", -type
+=&gt; "okcancel"); ... $button = $d-&gt;Show;</p>
+<h1>DESCRIPTION</h1>
+<p><strong>MsgBox</strong> is a simple dialog with predefined
+buttons.</p>
+<h1>OPTIONS</h1>
+<p>The options recognized by <strong>MsgBox</strong> are as follows:</p>
+<dl>
+<dt>-icon</dt>
+<dd>
+<p>Specify the icon of the MsgBox. Valid values are
+<strong>error</strong>, <strong>info</strong>,
+<strong>question</strong>, or <strong>warning</strong>.</p>
+</dd>
+<dt>-type</dt>
+<dd>
+<p>Specify the type of the MsgBox. Valid values are
+<strong>abortretryignore</strong>, <strong>ok</strong>,
+<strong>okcancel</strong>, <strong>retrycancel</strong>,
+<strong>yesno</strong>, or <strong>yesnocancel</strong>. The type
+determines the buttons to be shown.</p>
+</dd>
+<dt>-default</dt>
+<dd>
+<p>Specify the default button. This must be one of
+<strong>abort</strong>, <strong>retry</strong>, <strong>ignore</strong>,
+<strong>ok</strong>, <strong>cancel</strong>, <strong>yes</strong>, or
+<strong>no</strong>, depending on the type of the MsgBox previously
+specified.</p>
+</dd>
+<dt>-detail</dt>
+<dd>
+<p>Specify text for the detail region of the MsgBox.</p>
+</dd>
+<dt>-message</dt>
+<dd>
+<p>Specify the message text of the MsgBox.</p>
+</dd>
+<dt>-title</dt>
+<dd>
+<p>Specify the title of the MsgBox.</p>
+</dd>
+</dl>
+<h1>METHODS</h1>
+<p><strong>MsgBox</strong> supports only one method as of now:</p>
+<dl>
+<dt>Show()</dt>
+<dd>
+<p>Displays the MsgBox until the user invokes one of the buttons.
+Returns the name of the button invoked.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Translated from Tcl/Tk by <strong>Slaven Rezic</strong>
+srezic@cpan.org</p>
+<p>This code is distributed under the same terms as Perl.</p>
+<h1>SEE ALSO</h1>
+<p>Tk::messageBox, Tk::DialogBox, Tk::Dialog.</p>

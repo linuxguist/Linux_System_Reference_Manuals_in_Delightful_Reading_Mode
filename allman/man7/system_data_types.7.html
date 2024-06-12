@@ -1,0 +1,163 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>system_data_types - overview of system data types</p>
+<h1>DESCRIPTION</h1>
+<dl>
+<dt><em>sigevent</em></dt>
+<dd>
+<blockquote>
+<p><em>Include</em>: <em>&lt;signal.h&gt;</em>. Alternatively,
+<em>&lt;aio.h&gt;</em>, <em>&lt;mqueue.h&gt;</em>, or
+<em>&lt;time.h&gt;</em>.</p>
+<pre><code>struct sigevent {
+    int             sigev_notify; /* Notification type */
+    int             sigev_signo;  /* Signal number */
+    union sigval    sigev_value;  /* Signal value */
+    void          (*sigev_notify_function)(union sigval);
+                                  /* Notification function */
+    pthread_attr_t *sigev_notify_attributes;
+                                  /* Notification attributes */
+};</code></pre>
+<p>For further details about this type, see
+<strong>sigevent</strong>(7).</p>
+<p><em>Versions</em>: <em>&lt;aio.h&gt;</em> and <em>&lt;time.h&gt;</em>
+define <em>sigevent</em> since POSIX.1-2008.</p>
+<p><em>Conforming to</em>: POSIX.1-2001 and later.</p>
+<p><em>See also</em>: <strong>timer_create</strong>(2),
+<strong>getaddrinfo_a</strong>(3), <strong>lio_listio</strong>(3),
+<strong>mq_notify</strong>(3)</p>
+<p>See also the <em>aiocb</em> structure in this page.</p>
+</blockquote>
+</dd>
+<dt><em>siginfo_t</em></dt>
+<dd>
+<blockquote>
+<p><em>Include</em>: <em>&lt;signal.h&gt;</em>. Alternatively,
+<em>&lt;sys/wait.h&gt;</em>.</p>
+<pre><code>typedef struct {
+    int      si_signo;  /* Signal number */
+    int      si_code;   /* Signal code */
+    pid_t    si_pid;    /* Sending process ID */
+    uid_t    si_uid;    /* Real user ID of sending process */
+    void    *si_addr;   /* Address of faulting instruction */
+    int      si_status; /* Exit value or signal */
+    union sigval si_value;  /* Signal value */
+} siginfo_t;</code></pre>
+<p>Information associated with a signal. For further details on this
+structure (including additional, Linux-specific fields), see
+<strong>sigaction</strong>(2).</p>
+<p><em>Conforming to</em>: POSIX.1-2001 and later.</p>
+<p><em>See also</em>: <strong>pidfd_send_signal</strong>(2),
+<strong>rt_sigqueueinfo</strong>(2), <strong>sigaction</strong>(2),
+<strong>sigwaitinfo</strong>(2), <strong>psiginfo</strong>(3)</p>
+</blockquote>
+</dd>
+<dt><em>sigset_t</em></dt>
+<dd>
+<blockquote>
+<p><em>Include</em>: <em>&lt;signal.h&gt;</em>. Alternatively,
+<em>&lt;spawn.h&gt;</em>, or <em>&lt;sys/select.h&gt;</em>.</p>
+<p>This is a type that represents a set of signals. According to POSIX,
+this shall be an integer or structure type.</p>
+<p><em>Conforming to</em>: POSIX.1-2001 and later.</p>
+<p><em>See also</em>: <strong>epoll_pwait</strong>(2),
+<strong>ppoll</strong>(2), <strong>pselect</strong>(2),
+<strong>sigaction</strong>(2), <strong>signalfd</strong>(2),
+<strong>sigpending</strong>(2), <strong>sigprocmask</strong>(2),
+<strong>sigsuspend</strong>(2), <strong>sigwaitinfo</strong>(2),
+<strong>signal</strong>(7)</p>
+</blockquote>
+</dd>
+<dt><em>sigval</em></dt>
+<dd>
+<blockquote>
+<p><em>Include</em>: <em>&lt;signal.h&gt;</em>.</p>
+<pre><code>union sigval {
+    int     sigval_int; /* Integer value */
+    void   *sigval_ptr; /* Pointer value */
+};</code></pre>
+<p>Data passed with a signal.</p>
+<p><em>Conforming to</em>: POSIX.1-2001 and later.</p>
+<p><em>See also</em>: <strong>pthread_sigqueue</strong>(3),
+<strong>sigqueue</strong>(3), <strong>sigevent</strong>(7)</p>
+<p>See also the <em>sigevent</em> structure and the <em>siginfo_t</em>
+type in this page.</p>
+</blockquote>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>The structures described in this manual page shall contain, at least,
+the members shown in their definition, in no particular order.</p>
+<p>Most of the integer types described in this page don't have a
+corresponding length modifier for the <strong>printf</strong>(3) and the
+<strong>scanf</strong>(3) families of functions. To print a value of an
+integer type that doesn't have a length modifier, it should be converted
+to <em>intmax_t</em> or <em>uintmax_t</em> by an explicit cast. To scan
+into a variable of an integer type that doesn't have a length modifier,
+an intermediate temporary variable of type <em>intmax_t</em> or
+<em>uintmax_t</em> should be used. When copying from the temporary
+variable to the destination variable, the value could overflow. If the
+type has upper and lower limits, the user should check that the value is
+within those limits, before actually copying the value. The example
+below shows how these conversions should be done.</p>
+<h2>Conventions used in this page</h2>
+<p>In "Conforming to" we only concern ourselves with C99 and later and
+POSIX.1-2001 and later. Some types may be specified in earlier versions
+of one of these standards, but in the interests of simplicity we omit
+details from earlier standards.</p>
+<p>In "Include", we first note the "primary" header(s) that define the
+type according to either the C or POSIX.1 standards. Under
+"Alternatively", we note additional headers that the standards specify
+shall define the type.</p>
+<h1>EXAMPLES</h1>
+<p>The program shown below scans from a string and prints a value stored
+in a variable of an integer type that doesn't have a length modifier.
+The appropriate conversions from and to <em>intmax_t</em>, and the
+appropriate range checks, are used as explained in the notes section
+above.</p>
+<pre><code>#include &lt;stdint.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+
+int
+main (void)
+{
+    static const char *const str = &quot;500000 us in half a second&quot;;
+    suseconds_t us;
+    intmax_t    tmp;
+
+    /* Scan the number from the string into the temporary variable. */
+
+    sscanf(str, &quot;%jd&quot;, &amp;tmp);
+
+    /* Check that the value is within the valid range of suseconds_t. */
+
+    if (tmp &lt; -1 || tmp &gt; 1000000) {
+        fprintf(stderr, &quot;Scanned value outside valid range!\n&quot;);
+        exit(EXIT_FAILURE);
+    }
+
+    /* Copy the value to the suseconds_t variable &#39;us&#39;. */
+
+    us = tmp;
+
+    /* Even though suseconds_t can hold the value -1, this isn&#39;t
+       a sensible number of microseconds. */
+
+    if (us &lt; 0) {
+        fprintf(stderr, &quot;Scanned value shouldn&#39;t be negative!\n&quot;);
+        exit(EXIT_FAILURE);
+    }
+
+    /* Print the value. */
+
+    printf(&quot;There are %jd microseconds in half a second.\n&quot;,
+            (intmax_t) us);
+
+    exit(EXIT_SUCCESS);
+}</code></pre>
+<h1>SEE ALSO</h1>
+<p><strong>feature_test_macros</strong>(7),
+<strong>standards</strong>(7)</p>

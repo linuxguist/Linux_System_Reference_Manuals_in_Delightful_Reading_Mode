@@ -1,0 +1,97 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-endpoint - Create a SPARQL endpoint</p>
+<h1>SYNOPSIS</h1>
+<pre><code>tracker3 endpoint [--dbus-service | -b] &lt;service_name&gt;
+                  [--database-path | -d] &lt;database_path&gt;
+                  [[--ontology | -o] &lt;ontology_name&gt; |
+                   [--ontology-path | -p] &lt;ontology_path&gt;]
+                  [--http-port] &lt;port&gt;
+                  [--loopback]
+                  [[--system | --session]]</code></pre>
+<h1>DESCRIPTION</h1>
+<p>This command allows creating SPARQL endpoints. The endpoint will be
+able to handle SPARQL select and update queries, and notify about
+changes in it.</p>
+<p>The endpoint is exported via DBus, accessible through the given
+<em>service_name</em>, either using it in a <strong>SERVICE</strong>
+clause, or by creating a dedicated bus-based SPARQL connection.</p>
+<p>When creating a database, the <em>ontology_name</em> (or
+alternatively, a <em>ontology_path</em>) must be provided in order to
+generate the database. If <em>ontology_name</em> is used, the ontology
+must exist in <em>$datadir/tracker/ontologies</em></p>
+<p>Users should be careful about the --http-port option, consider using
+it only combined with the --loopback option.</p>
+<p>The database itself will be stored according to
+<em>database_path</em>.</p>
+<h1>OPTIONS</h1>
+<p><strong>-b,
+--dbus-service=&lt;</strong><em>service_name</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Service name to use on the endpoint.</p>
+</blockquote>
+<p><strong>-d,
+--database-path=&lt;</strong><em>database_path</em><strong>&gt;</strong></p>
+<blockquote>
+<p>The path where the database will be stored.</p>
+</blockquote>
+<p><strong>-o, --ontology</strong></p>
+<blockquote>
+<p>The name of an ontology in <em>$datadir/tracker/ontologies</em> to
+use on the constructed database.</p>
+</blockquote>
+<p><strong>-p, --ontology-path</strong></p>
+<blockquote>
+<p>Full path to an ontology to use on the constructed database.</p>
+</blockquote>
+<p><strong>--session</strong></p>
+<blockquote>
+<p>Use the session bus. This is the default.</p>
+</blockquote>
+<p><strong>--system</strong></p>
+<blockquote>
+<p>Use the system bus.</p>
+</blockquote>
+<p><strong>-l, --list</strong></p>
+<blockquote>
+<p>List all SPARQL endpoints available in DBus</p>
+</blockquote>
+<p><strong>--http-port</strong></p>
+<blockquote>
+<p>Creates a HTTP endpoint that listens in the specified port</p>
+</blockquote>
+<p><strong>--loopback</strong></p>
+<blockquote>
+<p>Allows only HTTP connections in the loopback device. Only effective
+with HTTP endpoints.</p>
+</blockquote>
+<h1>EXAMPLES</h1>
+<p>Export a Nepomuk endpoint with the <em>org.example.Example1</em> bus
+name.</p>
+<blockquote>
+<pre><code>$ tracker3 endpoint -b org.example.Example1 -o nepomuk -d /tmp/example1</code></pre>
+</blockquote>
+<p>Access this endpoint with the <strong>tracker3-sparql(1)</strong>
+subcommand.</p>
+<blockquote>
+<pre><code>$ tracker3 sparql --dbus-service org.example.Example1 -q &quot;
+  SELECT ?s ?o
+  WHERE {
+    ?u a ?o
+  }&quot;</code></pre>
+</blockquote>
+<p>Export a Nepomuk endpoint via HTTP.</p>
+<blockquote>
+<pre><code>$ tracker3 endpoint --http-port 8080 -o nepomuk --loopback</code></pre>
+</blockquote>
+<p>Access this endpoint via HTTP.</p>
+<blockquote>
+<pre><code>$ tracker3 sparql --remote-service http://127.0.0.1:8080/sparql -q &quot;
+  SELECT ?u {
+    ?u a rdfs:Resource
+  }&quot;</code></pre>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-sparql</strong>(1),</p>
+<p>https://www.w3.org/TR/sparql11-query/</p>

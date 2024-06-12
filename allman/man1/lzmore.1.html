@@ -1,0 +1,34 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xzmore, lzmore - view xz or lzma compressed (text) files</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xzmore</strong> [<em>file...</em>]<br />
+<strong>lzmore</strong> [<em>file...</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>xzmore</strong> is a filter which allows examination of
+<strong>xz</strong>(1) or <strong>lzma</strong>(1) compressed text files
+one screenful at a time on a soft-copy terminal.</p>
+<p>To use a pager other than the default <strong>more,</strong> set
+environment variable <strong>PAGER</strong> to the name of the desired
+program. The name <strong>lzmore</strong> is provided for backward
+compatibility with LZMA Utils.</p>
+<dl>
+<dt><strong>e</strong> or <strong>q</strong></dt>
+<dd>
+<p>When the prompt --More--(Next file: <em>file</em>) is printed, this
+command causes <strong>xzmore</strong> to exit.</p>
+</dd>
+<dt><strong>s</strong></dt>
+<dd>
+<p>When the prompt --More--(Next file: <em>file</em>) is printed, this
+command causes <strong>xzmore</strong> to skip the next file and
+continue.</p>
+</dd>
+</dl>
+<p>For list of keyboard commands supported while actually viewing the
+content of a file, refer to manual of the pager you use, usually
+<strong>more</strong>(1).</p>
+<h1>SEE ALSO</h1>
+<p><strong>more</strong>(1), <strong>xz</strong>(1),
+<strong>xzless</strong>(1), <strong>zmore</strong>(1)</p>

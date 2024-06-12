@@ -1,0 +1,347 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::BookmarkFile - Parser for bookmark files</p>
+<h1>SYNOPSIS</h1>
+<p>use Glib; $date .= $_ while (&lt;DATA&gt;); $b =
+Glib::BookmarkFile-&gt;new; $b-&gt;load_from_data($data); $uri =
+file:///some/path/to/a/file.txt; if ($b-&gt;has_item($uri)) { $title =
+$b-&gt;get_title($uri); $desc = $b-&gt;get_description($uri); print
+"Bookmark for `$uri ($title):\n"; print " $desc\n"; } 0; _ _DATA_ _
+&lt;?xml version="1.0" encoding="UTF-8"?&gt; &lt;xbel version="1.0"
+xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
+xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"&gt;
+&lt;bookmark href="file:///tmp/test-file.txt"
+added="2006-03-22T18:54:00Z" modified="2006-03-22T18:54:00Z"
+visited="2006-03-22T18:54:00Z"&gt; &lt;title&gt;Test File&lt;/title&gt;
+&lt;desc&gt;Some test file&lt;/desc&gt; &lt;info&gt; &lt;metadata
+owner="http://freedesktop.org"&gt; &lt;mime:mime-type
+type="text/plain"/&gt; &lt;bookmark:applications&gt;
+&lt;bookmark:application name="Gedit" exec="gedit %u"
+timestamp="1143053640" count="1"/&gt; &lt;/bookmark:applications&gt;
+&lt;/metadata&gt; &lt;/info&gt; &lt;/bookmark&gt; &lt;/xbel&gt;</p>
+<h1>DESCRIPTION</h1>
+<p><strong>Glib::BookmarkFile</strong> lets you parse, edit or create
+files containing lists of bookmarks to resources pointed to by URIs,
+with some meta-data bound to them, following the Desktop Bookmark
+Specification. The recent files support inside GTK+ uses this type of
+files to store the list of recently used files.</p>
+<p>The syntax of bookmark files is described in detail in the Desktop
+Bookmarks Specification, here is a quick summary: bookmark files use a
+subclass of the XML Bookmark Exchange Language (XBEL) document format,
+defining meta-data such as the MIME type of the resource pointed by a
+bookmark, the list of applications that have registered the same URI and
+the visibility of the bookmark.</p>
+<h1>METHODS</h1>
+<h2>bookmarkfile = Glib::BookmarkFile-&gt;<strong>new</strong></h2>
+<h2>$bookmark_file-&gt;<strong>add_application</strong> ($uri, $name,
+$exec)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$name</code> (string or undef)</p></li>
+<li><p><code>$exec</code> (string or undef)</p></li>
+</ul>
+<p>Adds the application with <code>$name</code> and <code>$exec</code>
+to the list of applications that have registered a bookmark for
+<code>$uri</code> into <code>$bookmark_file</code>.</p>
+<p>Every bookmark inside a <code>Glib::BookmarkFile</code> must have at
+least an application registered. Each application must provide a name, a
+command line useful for launching the bookmark, the number of times the
+bookmark has been registered by the application and the last time the
+application registered this bookmark.</p>
+<p>If <code>$name</code> is undef, the name of the application will be
+the same returned by <strong>Glib::get_application_name()</strong>; if
+<code>$exec</code> is undef, the command line will be a composition of
+the program name as returned by <strong>Glib::get_prgname()</strong> and
+the %u modifier, which will be expanded to the bookmark's URI.</p>
+<p>This function will automatically take care of updating the
+registrations count and timestamping in case an application with the
+same <code>$name</code> had already registered a bookmark for
+<code>$uri</code> inside the bookmark file. If no bookmark for
+<code>$uri</code> is found one is created.</p>
+<h2>$bookmark_file-&gt;<strong>add_group</strong> ($uri, $group)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$group</code> (string)</p></li>
+</ul>
+<p>Adds <code>$group</code> to the list of groups to which the bookmark
+for <code>$uri</code> belongs to. If no bookmark for <code>$uri</code>
+is found one is created.</p>
+<h2>unix timestamp = $bookmark_file-&gt;<strong>get_added</strong>
+($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<h2>$bookmark_file-&gt;<strong>set_added</strong> ($uri, $value)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$value</code> (unix timestamp)</p></li>
+</ul>
+<p>Sets the time the bookmark for <code>$uri</code> was added. If no
+bookmark for <code>$uri</code> is found one is created.</p>
+<h2>($exec, $count, $stamp) =
+$bookmark_file-&gt;<strong>get_app_info</strong> ($uri, $name)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$name</code> (string)</p></li>
+</ul>
+<p>Gets the registration information of <code>$name</code> for the
+bookmark for <code>$uri</code>. See
+<strong>Glib::BookmarkFile::set_app_info()</strong> for more information
+about the returned data.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>set_app_info</strong> ($uri, $name,
+$exec, $count, $stamp)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$name</code> (string)</p></li>
+<li><p><code>$exec</code> (string)</p></li>
+<li><p><code>$count</code> (integer)</p></li>
+<li><p><code>$stamp</code> (unix timestamp)</p></li>
+</ul>
+<p>Sets the meta-data of application <code>$name</code> inside the list
+of applications that have registered a bookmark for <code>$uri</code>
+inside <code>$bookmark_file</code>.</p>
+<p>You should rarely use this method; use
+<strong>Glib::BookmarkFile::add_application()</strong> and
+<strong>Glib::BookmarkFile::remove_application()</strong> instead.</p>
+<p><code>$name</code> can be any UTF-8 encoded string used to identify
+an application. <code>$exec</code> can have one of these two modifiers:
+%f, which will be expanded as the local file name retrieved from the
+bookmark's URI; %u, which will be expanded as the bookmark's URI. The
+expansion is done automatically when retrieving the stored command line
+using the <strong>Glib::BookmarkFile::get_app_info()</strong> method.
+<code>$count</code> is the number of times the application has
+registered the bookmark; if it is &lt; 0, the current registration count
+will be increased by one, if it is 0, the application with
+<code>$name</code> will be removed from the list of registered
+applications. <code>$stamp</code> is the Unix time of the last
+registration, as returned by <strong>time()</strong>; if it is -1, the
+current time will be used.</p>
+<p>If you try to remove an application by setting its registration count
+to zero, and no bookmark for <code>$uri</code> is found,
+<code>%FALSE</code> is returned and an exception is fired.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>list = $bookmark_file-&gt;<strong>get_applications</strong>
+($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>Retrieves the names of the applications that have registered the
+bookmark for <code>$uri</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>get_description</strong> ($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>Gets the description of the bookmark for <code>$uri</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>set_description</strong> ($uri,
+$description)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$description</code> (string)</p></li>
+</ul>
+<p>Sets the description of the bookmark for <code>$uri</code>. If no
+bookmark for <code>$uri</code> is found one is created.</p>
+<h2>list = $bookmark_file-&gt;<strong>get_groups</strong> ($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>Retrieves the list of group names of the bookmark for
+<code>$uri</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>set_groups</strong> ($uri, ...)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p>... (list) one or more group names</p></li>
+</ul>
+<p>Sets a list of group names for the item with URI <code>$uri</code>.
+Each previously set group name list is removed. If no bookmark for
+<code>$uri</code> is found one is created.</p>
+<h2>boolean = $bookmark_file-&gt;<strong>has_application</strong> ($uri,
+$name)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$name</code> (string)</p></li>
+</ul>
+<p>Checks whether the bookmark for <code>$uri</code> inside
+<code>$bookmark_file</code> has been registered by application
+<code>$name</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>boolean = $bookmark_file-&gt;<strong>has_group</strong> ($uri,
+$group)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$group</code> (string)</p></li>
+</ul>
+<p>Checks whether <code>$group</code> appears in the list of groups to
+which the bookmark for <code>$uri</code> belongs to.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>boolean = $bookmark_file-&gt;<strong>has_item</strong> ($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>Looks whether the bookmark file has a bookmark for
+<code>$uri</code>.</p>
+<h2>($href, $mime_type) = $bookmark_file-&gt;<strong>get_icon</strong>
+($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>Gets the icon of the bookmark for <code>$uri</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>set_icon</strong> ($uri, $href,
+$mime_type)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$href</code> (string or undef)</p></li>
+<li><p><code>$mime_type</code> (string or undef)</p></li>
+</ul>
+<p>Sets the icon for the bookmark for <code>$uri</code>. If
+<code>$href</code> is undef, unsets the currently set icon.</p>
+<h2>boolean = $bookmark_file-&gt;<strong>get_is_private</strong>
+($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>set_is_private</strong> ($uri,
+$is_private)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$is_private</code> (boolean)</p></li>
+</ul>
+<h2>$bookmark_file-&gt;<strong>load_from_data</strong> ($buf)</h2>
+<ul>
+<li><p><code>$buf</code> (scalar)</p></li>
+</ul>
+<p>Parses a string containing a bookmark file structure.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>($full_path) =
+$bookmark_file-&gt;<strong>load_from_data_dirs</strong> ($file)</h2>
+<ul>
+<li><p><code>$file</code> (localized file name)</p></li>
+</ul>
+<p>Parses a bookmark file, searching for it inside the data directories.
+If a file is found, it returns the full path.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>load_from_file</strong> ($file)</h2>
+<ul>
+<li><p><code>$file</code> (localized file name)</p></li>
+</ul>
+<p>Parses a bookmark file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>string = $bookmark_file-&gt;<strong>get_mime_type</strong>
+($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>Gets the MIME type of the bookmark for <code>$uri</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>set_mime_type</strong> ($uri,
+$mime_type)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$mime_type</code> (string)</p></li>
+</ul>
+<p>Sets the MIME type of the bookmark for <code>$uri</code>. If no
+bookmark for <code>$uri</code> is found one is created.</p>
+<h2>unix timestamp = $bookmark_file-&gt;<strong>get_modified</strong>
+($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<h2>$bookmark_file-&gt;<strong>set_modified</strong> ($uri, $value)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$value</code> (unix timestamp)</p></li>
+</ul>
+<p>Sets the time the bookmark for <code>$uri</code> was last modified.
+If no bookmark for <code>$uri</code> is found one is created.</p>
+<h2>$bookmark_file-&gt;<strong>move_item</strong> ($old_uri,
+$new_uri)</h2>
+<ul>
+<li><p><code>$old_uri</code> (string)</p></li>
+<li><p><code>$new_uri</code> (string or undef)</p></li>
+</ul>
+<p>Changes the URI of a bookmark item from <code>$old_uri</code> to
+<code>$new_uri</code>. Any existing bookmark for <code>$new_uri</code>
+will be overwritten. If <code>$new_uri</code> is undef, then the
+bookmark is removed.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>remove_application</strong> ($uri,
+$name)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$name</code> (string)</p></li>
+</ul>
+<p>Removes application registered with <code>$name</code> from the list
+of applications that have registered a bookmark for <code>$uri</code>
+inside <code>$bookmark_file</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>remove_group</strong> ($uri, $group)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$group</code> (string)</p></li>
+</ul>
+<p>Removes <code>$group</code> from the list of groups to which the
+bookmark for <code>$uri</code> belongs to.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>remove_item</strong> ($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>Removes the bookmark for <code>$uri</code> from the bookmark
+file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>integer = $bookmark_file-&gt;<strong>get_size</strong></h2>
+<p>Gets the number of bookmarks inside the bookmark file.</p>
+<h2>$bookmark_file-&gt;<strong>get_title</strong> ($uri, $title)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<p>Gets the title of the bookmark for <code>$uri</code>.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>set_title</strong> ($uri, $title)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$title</code> (string)</p></li>
+</ul>
+<p>Sets the title of the bookmark for <code>$uri</code>. If no bookmark
+for <code>$uri</code> is found one is created.</p>
+<h2>string = $bookmark_file-&gt;<strong>to_data</strong></h2>
+<p>Returns the bookmark file as a string.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>$bookmark_file-&gt;<strong>to_file</strong> ($file)</h2>
+<ul>
+<li><p><code>$file</code> (localized file name)</p></li>
+</ul>
+<p>Saves the contents of a bookmark file into a file. The write
+operation is guaranteed to be atomic by writing the contents of the
+bookmark file to a temporary file and then moving the file to the target
+file.</p>
+<p>May croak with a Glib::Error in $@ on failure.</p>
+<h2>list = $bookmark_file-&gt;<strong>get_uris</strong></h2>
+<p>Returns the URI of all the bookmarks in the bookmark file.</p>
+<h2>unix timestamp = $bookmark_file-&gt;<strong>get_visited</strong>
+($uri)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+</ul>
+<h2>$bookmark_file-&gt;<strong>set_visited</strong> ($uri, $value)</h2>
+<ul>
+<li><p><code>$uri</code> (string)</p></li>
+<li><p><code>$value</code> (unix timestamp)</p></li>
+</ul>
+<p>Sets the time the bookmark for <code>$uri</code> was last visited. If
+no bookmark for <code>$uri</code> is found one is created.</p>
+<h1>SEE ALSO</h1>
+<p>Glib</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

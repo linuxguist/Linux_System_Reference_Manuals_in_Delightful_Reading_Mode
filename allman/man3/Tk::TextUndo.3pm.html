@@ -1,0 +1,57 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::TextUndo - perl/tk text widget with bindings to undo changes.</p>
+<h1>SYNOPSIS</h1>
+<p>    <strong>use Tk::TextUndo;</strong></p>
+<p>    <em><code>$testundo</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>TextUndo</strong>(?<em>-option</em>=&gt;<em>value</em>,
+...?);</p>
+<h1>DESCRIPTION</h1>
+<p>This IS-A text widget with an unlimited 'undo' history but without a
+re'undo' capability.</p>
+<h2>Bindings</h2>
+<p>The <code>TextUndo</code> widget has the same bindings as the Text
+widget. In addition there are the following bindings:</p>
+<dl>
+<dt>Event &lt;L4&gt; &lt;&lt;Undo&gt;&gt;</dt>
+<dd>
+<p>undo the last change. Pressing &lt;L4&gt; several times undo step by
+step the changes made to the text widget.</p>
+</dd>
+</dl>
+<h2>Methods</h2>
+<p>The <code>TextUndo</code> widget has the same methods as
+<code>Text</code> widget. Additional methods for the
+<code>TextUndo</code> widget are:</p>
+<dl>
+<dt>$text-&gt;Load($filename);</dt>
+<dd>
+<p>Loads the contents of the <code>$filename</code> into the text
+widget. <strong>Load()</strong> delete the previous contents of the text
+widget as well as its undo history of the previous file.</p>
+</dd>
+<dt>$text-&gt;Save(?$otherfilename?)</dt>
+<dd>
+<p>Save contents of the text widget to a file. If the
+<code>$otherfilename</code> is not specified, the text widget contents
+writes the file of <code>$filename</code> used in the last
+<strong>Load()</strong> call. If no file was previously
+<strong>Load()</strong>'ed an error message pops up. The default
+filename of the last <strong>Load()</strong> call is not overwriten by
+<code>$otherfilename</code>.</p>
+</dd>
+<dt>$text-&gt;FileName(?$otherfilename?)</dt>
+<dd>
+<p>If passed an argument sets the file name associated with the loaded
+document. Returns the current file name associated with the
+document.</p>
+</dd>
+</dl>
+<h1>KEYS</h1>
+<p>widget, text, undo</p>
+<h1>SEE ALSO</h1>
+<p>Tk::Text, Tk::ROText</p>

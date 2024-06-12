@@ -1,0 +1,54 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>debconf - run a debconf-using program</p>
+<h1>SYNOPSIS</h1>
+<p>debconf [options] command [args]</p>
+<h1>DESCRIPTION</h1>
+<p>Debconf is a configuration system for Debian packages. For a debconf
+overview and documentation for sysadmins, see
+<strong>debconf</strong> (7) (in the debconf-doc package).</p>
+<p>The <strong>debconf</strong> program runs a program under debconf's
+control, setting it up to talk with debconf on stdio. The program's
+output is expected to be debconf protocol commands, and it is expected
+to read result codes on stdin. See <strong>debconf-devel</strong> (7)
+for details about the debconf protocol.</p>
+<p>The command to be run under debconf must be specified in a way that
+will let your PATH find it.</p>
+<p>This command is not the usual way that debconf is used. It's more
+typical for debconf to be used via
+<strong>dpkg-preconfigure</strong> (8) or
+<strong>dpkg-reconfigure</strong> (8).</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-opackage, --owner=package</dt>
+<dd>
+<p>Tell debconf what package the command it is running is a part of.
+This is necessary to get ownership of registered questions right, and to
+support unregister and purge commands properly.</p>
+</dd>
+<dt>-ftype, --frontend=type</dt>
+<dd>
+<p>Select the frontend to use.</p>
+</dd>
+<dt>-pvalue, --priority=value</dt>
+<dd>
+<p>Specify the minimum priority of question that will be displayed.</p>
+</dd>
+<dt>--terse</dt>
+<dd>
+<p>Enables terse output mode. This affects only some frontends.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>To debug a shell script that uses debconf, you might use:</p>
+<p>DEBCONF_DEBUG=developer debconf my-shell-prog</p>
+<p>Or, you might use this:</p>
+<p>debconf --frontend=readline sh -x my-shell-prog</p>
+<h1>SEE ALSO</h1>
+<p><strong>debconf-devel</strong> (7), <strong>debconf</strong> (7)</p>
+<h1>AUTHOR</h1>
+<p>Joey Hess &lt;joeyh@debian.org&gt;</p>

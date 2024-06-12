@@ -1,0 +1,49 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>update-locale - Modify global locale settings</p>
+<h1>SYNTAX</h1>
+<p>update-locale [<em>OPTIONS</em>] [<em>var</em>=<em>locale</em> |
+<em>var</em>] [...]</p>
+<h1>DESCRIPTION</h1>
+<p>This program can be called by maintainer scripts when Debian packages
+are installed or removed, it updates the <em>/etc/default/locale</em>
+file to reflect changes in system configuration related to global locale
+settings. When variables have no value assigned, they are removed from
+the locale file. Some basic checks are performed to ensure that
+requested settings are valid.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>Display an help message and exit.</p>
+</dd>
+<dt><strong>--reset</strong></dt>
+<dd>
+<p>Variables which are not set on command-line are cleared out.</p>
+</dd>
+<dt><strong>--locale-file</strong><em> FILE</em></dt>
+<dd>
+<p>Define file containing locale variables. (Default:
+<em>/etc/default/locale</em>)</p>
+</dd>
+<dt><strong>--no-checks</strong></dt>
+<dd>
+<p>Do not perform sanity checks on locale variables.</p>
+</dd>
+</dl>
+<h1>EXAMPLE</h1>
+<pre><code>The command
+        update-locale LANG=en_CA.UTF-8 LANGUAGE
+sets LANG to en_CA.UTF-8 and removes definitions for LANGUAGE.</code></pre>
+<h1>FILES</h1>
+<dl>
+<dt><em>/etc/default/locale</em></dt>
+<dd>
+<p>File where global locale settings are stored.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Denis Barbier &lt;barbier@linuxfr.org&gt;</p>
+<h1>SEE ALSO</h1>
+<p><strong>locale-gen</strong>(8), <strong>locale</strong>(1)</p>

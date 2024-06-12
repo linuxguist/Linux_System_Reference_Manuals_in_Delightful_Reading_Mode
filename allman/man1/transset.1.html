@@ -1,0 +1,130 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>transset - Set transparency on a window</p>
+<h1>SYNOPSIS</h1>
+<p><strong>transset</strong> [<em>-options ...</em>]
+[<em>opacity</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>transset</strong> is a simple program for X servers
+supporting the XFIXES, DAMAGE, and COMPOSITE extensions. It lets the
+user set the transparency on a window.</p>
+<p>The <em>opacity</em> value is a number from 0 to 1, with zero being
+fully transparent and 1 being fully opaque. If no <em>opacity</em>
+argument is given, a default value of 0.75 is used for the opacity
+value. If neither <strong>--inc</strong> nor <strong>--dec</strong> are
+given, the opacity is treated as an absolute value and set to the given
+opacity value. If <strong>--inc</strong> or <strong>--dec</strong> is
+specified, then the opacity is treated as a relative value to increase
+or decrease the current opacity by.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-display <em>display</em></strong></dt>
+<dd>
+<p>This option specifies the server to use; see <em>X(7)</em>.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>This option displays a help message and exits.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-t</strong>, <strong>--toggle</strong></dt>
+<dd>
+<p>This option forces a toggle of opacity. If the current opacity is not
+set to fully opaque (opacity 1.0), it will be reset to fully opaque. If
+the window is already fully opaque, the opacity will be set
+normally.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-c</strong>, <strong>--click</strong></dt>
+<dd>
+<p>This option selects the target window by waiting for the user to
+click the mouse - the topmost window under the mouse cursor when the
+mouse click occurs will be used as the target.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-p</strong>, <strong>--point</strong></dt>
+<dd>
+<p>This option selects the window currently under the cursor to be the
+target.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-a</strong>, <strong>--actual</strong></dt>
+<dd>
+<p>This option selects the window that currently has input focus to be
+the target.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-n</strong>, <strong>--name</strong> <em>name</em></dt>
+<dd>
+<p>This option selects the target window by name, where <em>name</em> is
+matched as a regular expression, unless <strong>--no-regex</strong> is
+also specified.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--no-regex</strong></dt>
+<dd>
+<p>This option disables treating the <em>name</em> argument to
+<strong>--name</strong> as a regular expression.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-i</strong>, <strong>--id</strong></dt>
+<dd>
+<p>This option selects the target window by window id.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--inc</strong></dt>
+<dd>
+<p>This option increases the window opacity by the given
+<em>opacity</em> argument.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--dec</strong></dt>
+<dd>
+<p>This option decreases the window opacity by the given
+<em>opacity</em> argument.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-m</strong>, <strong>--min</strong> <em>opacity</em></dt>
+<dd>
+<p>This option sets the minimum possible opacity value. It defaults to 0
+if this option is not given.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-x</strong>, <strong>--max</strong> <em>opacity</em></dt>
+<dd>
+<p>This option sets the maximum possible opacity value. It defaults to 1
+if this option is not given.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>This option prints some additional debug info as the program
+operates.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>This option prints the program version number and exits.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>Probably. Please report any you find to
+https://bugs.freedesktop.org/enter_bug.cgi?product=xorg.</p>
+<h1>AUTHORS</h1>
+<p>Matthew Hawn</p>

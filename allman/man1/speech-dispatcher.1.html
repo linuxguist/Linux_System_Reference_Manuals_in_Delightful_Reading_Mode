@@ -1,0 +1,94 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>speech-dispatcher - speech synthesis daemon</p>
+<h1>SYNOPSIS</h1>
+<p><strong>speech-dispatcher</strong> [<em>-{d|s}</em>] [<em>-l
+{1|2|3|4|5}</em>] [<em>-c com_method</em>] [<em>-S socket_path</em>]
+[<em>-p port</em>] [<em>-t timeout</em>] <em>|</em> [<em>-v</em>]
+<em>|</em> [<em>-h</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Speech Dispatcher <strong>--</strong> Common interface for Speech
+Synthesis (GNU GPL)</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-d</strong>, <strong>--run-daemon</strong></dt>
+<dd>
+<p>Run as a daemon</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--run-single</strong></dt>
+<dd>
+<p>Run as single application</p>
+</dd>
+<dt><strong>-a</strong>, <strong>--spawn</strong></dt>
+<dd>
+<p>Start only if autospawn is not disabled</p>
+</dd>
+<dt><strong>-l</strong>, <strong>--log-level</strong></dt>
+<dd>
+<p>Set log level (between 1 and 5)</p>
+</dd>
+<dt><strong>-L</strong>, <strong>--log-dir</strong></dt>
+<dd>
+<p>Set path to logging</p>
+</dd>
+<dt><strong>-c</strong>, <strong>--communication-method</strong></dt>
+<dd>
+<p>Communication method to use ('unix_socket' or 'inet_socket')</p>
+</dd>
+<dt><strong>-S</strong>, <strong>--socket-path</strong></dt>
+<dd>
+<p>Socket path to use for 'unix_socket' method (filesystem path or
+'default')</p>
+</dd>
+<dt><strong>-p</strong>, <strong>--port</strong></dt>
+<dd>
+<p>Specify a port number for 'inet_socket' method</p>
+</dd>
+<dt><strong>-t</strong>, <strong>--timeout</strong></dt>
+<dd>
+<p>Set time in seconds for the server to wait before it shuts down, if
+it has no clients connected. Setting to 0 disables such shutdown</p>
+</dd>
+<dt><strong>-P</strong>, <strong>--pid-file</strong></dt>
+<dd>
+<p>Set path to pid file</p>
+</dd>
+<dt><strong>-C</strong>, <strong>--config-dir</strong></dt>
+<dd>
+<p>Set path to configuration</p>
+</dd>
+<dt><strong>-m</strong>, <strong>--module-dir</strong></dt>
+<dd>
+<p>Set path to modules</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--version</strong></dt>
+<dd>
+<p>Report version of this program</p>
+</dd>
+<dt><strong>-D</strong>, <strong>--debug</strong></dt>
+<dd>
+<p>Output debugging information into <em>$TMPDIR/speechd-debug</em> if
+TMPDIR is exported, otherwise to <em>/tmp/speechd-debug</em></p>
+</dd>
+<dt><strong>-h</strong>, <strong>--help</strong></dt>
+<dd>
+<p>Print this info</p>
+</dd>
+</dl>
+<p>Please report bugs to speechd-discuss@nongnu.org</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2002-2012 Brailcom, o.p.s.<br />
+This is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version. Please see COPYING for more details.</p>
+<h1>SEE ALSO</h1>
+<p>The full documentation for <strong>speech-dispatcher</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>speech-dispatcher</strong> programs are properly installed at
+your site, the command</p>
+<blockquote>
+<p><strong>info speech-dispatcher</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

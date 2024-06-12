@@ -1,0 +1,330 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>reportbug.conf</strong> - The configuration file for
+reportbug</p>
+<h1>SYNOPSIS</h1>
+<p><strong>/etc/reportbug.conf</strong> - The configuration file for
+reportbug, a program designed to report bugs in the Debian
+distribution</p>
+<h1>DESCRIPTION</h1>
+<p>This manual page describes the layout of the
+<strong>reportbug</strong> and <strong>querybts</strong> configuration
+file and the available configuration options. The default location of
+the file is <strong>/etc/reportbug.conf</strong> and the options may be
+overriding in <strong>$HOME/.reportbugrc</strong> (which follows the
+same format as <strong>reportbug.conf</strong>).</p>
+<p>Please note that any configuration file has to be a valid UTF-8
+document, and not in a different locale; this is particularly important
+in situations where localized characters have to be used (like for
+realname).</p>
+<h1>FILE FORMAT</h1>
+<p>Configuration options can be specified in the form</p>
+<p><strong>option-name</strong> <em>option-value</em></p>
+<p>True/False (boolean) options can be specified as</p>
+<p><strong>boolean-option</strong></p>
+<p>(if it's present, it's a <strong>True</strong>).</p>
+<p>Usually, <strong>no-option</strong> will disable
+<strong>option</strong> if <strong>option</strong> is boolean.</p>
+<p>Options can be specified in any order.</p>
+<h1>OPTIONS</h1>
+<p>The summary of possible options (in alphabetical order) is as
+follows:</p>
+<dl>
+<dt><strong>bts</strong></dt>
+<dd>
+<p>The bug tracking system to use, see <strong>reportbug
+--bts=help</strong> for a list of currently supported BTSes.</p>
+</dd>
+<dt><strong>cc (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Whether the reporter should be Cc:ed on the bug report.</p>
+</dd>
+<dt><strong>check-available (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Whether <strong>packages.debian.org</strong> should be queried for
+newer releases of the package. In <strong>advanced</strong> and
+<strong>expert</strong> mode,
+<strong>http://ftp-master.debian.org/new.html</strong> is also
+checked.</p>
+</dd>
+<dt><strong>compress (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Whether modified configuration files included in the bug report
+should be stripped down.</p>
+</dd>
+<dt><strong>config-files (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Whether modified configuration files should be included with the bug
+report.</p>
+</dd>
+<dt><strong>draftpath</strong></dt>
+<dd>
+<p>The directory where unsubmitted reports should be saved. The default
+is /tmp.</p>
+</dd>
+<dt><strong>editor</strong></dt>
+<dd>
+<p>The editor to use to edit the bug report. Example:</p>
+<p><strong>editor</strong> <em>"emacs -nw"</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>email</strong></dt>
+<dd>
+<p>Default <strong>From</strong> address of the bug email (override with
+environment variables, see <strong>reportbug(1)</strong>). Example:</p>
+<p><strong>email</strong> <em>"humberto@example.com"</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>envelopefrom</strong></dt>
+<dd>
+<p>Specify the Envelope From mail header (also known as Return-path); by
+default it's the From address but it can be selected a different one in
+case the MTA doesn't canonicalize local users to public addresses. This
+can be set to the empty string if the MTA does not allow setting the
+Envelope From.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>list-cc-me (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Send a carbon copy of the report to your automatically detected email
+address after a report number is assigned, like the
+<em>--list-cc-me</em> option.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>mbox_reader_cmd</strong></dt>
+<dd>
+<p>Specify a command to open the bug reports mbox file. You can use
+<strong>%s</strong> to substitute the mbox file to be used, and
+<strong>%%</strong> to insert a literal percent sign. If no
+<strong>%s</strong> is specified, the mbox file name is supplied at the
+end of the argument list. Example:</p>
+<p><strong>mbox_reader_cmd</strong> <em>"mutt -f %s"</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>header</strong></dt>
+<dd>
+<p>Additional headers to add to the bug email. Like:</p>
+<p><strong>header</strong> <em>"X-Silly-Header: I haven't edited my
+/etc/reportbug.conf"</em><br />
+<strong>header</strong> <em>"X-Debbugs-No-Ack: please" # to suppress
+acknowledgments</em></p>
+<p>Note that setting additional headers may not work reliably if the bug
+email is passed to an external MUA for submission.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>http_proxy</strong></dt>
+<dd>
+<p>Default HTTP proxy used to query the BTS (override with environment
+variables, see <strong>reportbug(1)</strong>). Example:</p>
+<p><strong>http_proxy</strong>
+<em>http://proxy.example.com:3128/</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>justification</strong></dt>
+<dd>
+<p>The justification in case of a Release Critical bug (severity either
+'critical', 'serious' or 'grave'). Example:</p>
+<p><strong>justification</strong> <em>"text here"</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>keyid</strong></dt>
+<dd>
+<p>The GPG key to use, if different from the default one on the system.
+Example:</p>
+<p><strong>keyid</strong> <em>12345678</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>maintonly</strong></dt>
+<dd>
+<p>See the <strong>--maintonly</strong> entry in
+<strong>reportbug(1)</strong>.</p>
+</dd>
+<dt><strong>max_attachment_size</strong></dt>
+<dd>
+<p>The max size any attachment can have. Example:</p>
+<p><strong>max_attachment_size</strong> <em>5000000</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>mh</strong></dt>
+<dd>
+<p>Use the <strong>mh</strong> mailer.</p>
+</dd>
+<dt><strong>mirror</strong></dt>
+<dd>
+<p>The address of a BTS mirror. Example:</p>
+<p><strong>mirror</strong> <em>http://mirror.address/</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>mode
+[<em>novice</em>|<em>standard</em>|<em>advanced</em>|<em>expert</em>]</strong></dt>
+<dd>
+<p>The default operating mode for <strong>reportbug(1)</strong>.</p>
+</dd>
+<dt><strong>mta</strong></dt>
+<dd>
+<p>The path to the MTA used. Any SMTP server on Debian should be OK with
+the default:</p>
+<p><strong>mta</strong> <em>/usr/sbin/sendmail</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>mua</strong></dt>
+<dd>
+<p>The mail user agent to use (the default is empty, to use an internal
+mailer). Example:</p>
+<p><strong>mua</strong> <em>'mutt -H'</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>mutt</strong></dt>
+<dd>
+<p>Use the <strong>mutt</strong> mailer.</p>
+</dd>
+<dt><strong>nmh</strong></dt>
+<dd>
+<p>Use the <strong>nmh</strong> mailer.</p>
+</dd>
+<dt><strong>no-check-uid (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Disables checking whether the UIDs are outside admin range
+(<em>root</em> is still checked).</p>
+</dd>
+<dt><strong>no-debconf (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Disables adding the <strong>debconf-show</strong> output to the bug
+report.</p>
+</dd>
+<dt><strong>no-query-source (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Disables querying the source packages for bugs.</p>
+</dd>
+<dt><strong>offline</strong></dt>
+<dd>
+<p>Disables all external queries.</p>
+</dd>
+<dt><strong>paranoid</strong></dt>
+<dd>
+<p>Paranoid mode: print the whole email envelope before sending it.</p>
+</dd>
+<dt><strong>printonly</strong></dt>
+<dd>
+<p>Print the report on screen, don't sent it.</p>
+</dd>
+<dt><strong>query-bts (<em>boolean</em>)</strong></dt>
+<dd>
+<p>Whether the BTS should be queried for existing bug reports.</p>
+</dd>
+<dt><strong>quiet</strong></dt>
+<dd>
+<p>See the <strong>--report-quiet</strong> entry in
+<strong>reportbug(1)</strong>.</p>
+</dd>
+<dt><strong>realname</strong></dt>
+<dd>
+<p>The default real-name in the <strong>From</strong> address of the bug
+email (override with environment variables, see
+<strong>reportbug(1)</strong>). Example:</p>
+<p><strong>realname</strong> <em>"Humberto Flores III"</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>replyto</strong></dt>
+<dd>
+<p>The default <strong>Reply-To</strong> in the bug email (override with
+environment variables, see <strong>reportbug(1)</strong>. Example:</p>
+<p><strong>replyto</strong> <em>"Humberto Flores
+&lt;humflores@example.org&gt;"</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>severity
+[<em>critical</em>|<em>grave</em>|<em>serious</em>|<em>important</em>|<em>normal</em>|<em>minor</em>|<em>wishlist</em>]</strong></dt>
+<dd>
+<p>The default severity level of the bug reported. Setting this in the
+configuration file will disable prompting while running
+<strong>reportbug</strong>.</p>
+</dd>
+<dt><strong>sign
+[<em>gpg</em>|<em>pgp</em>|<em>gnupg</em>|<em>none</em>]</strong></dt>
+<dd>
+<p>Program used to digitally sign bug reports automatically ('none' to
+disable it).</p>
+</dd>
+<dt><strong>smtphost</strong></dt>
+<dd>
+<p>Use an MTA different from <strong>/usr/sbin/sendmail</strong>. A port
+number other than 25 can also be specified. Example:</p>
+<p><strong>smtphost</strong> <em>mail.example.com:2525</em></p>
+<p>Use "<strong>smtphost</strong> <em>localhost</em>" to enable the
+internal MTA.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>smtppasswd</strong></dt>
+<dd>
+<p>The password to use for SMTP. Example:</p>
+<p><strong>smtppasswd</strong> <em>f10r35</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>smtpuser</strong></dt>
+<dd>
+<p>The username to use for SMTP. Example:</p>
+<p><strong>smtpuser</strong> <em>hflores</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>smtptls</strong></dt>
+<dd>
+<p>Enables TLS encryption for the SMTP connection, using STARTTLS. This
+setting is ignored if you connect to port 465, in which case SSL/TLS
+will always be used.</p>
+</dd>
+<dt><strong>submit</strong></dt>
+<dd>
+<p>Use <em>submit</em> as the bug submission address.</p>
+</dd>
+<dt><strong>template</strong></dt>
+<dd>
+<p>Use the template mode, bypasses all prompts and the output it sent to
+stdout.</p>
+</dd>
+<dt><strong>timeout</strong></dt>
+<dd>
+<p>The number of seconds to wait for a network resource to respond. The
+default is 60 seconds. Example:</p>
+<p><strong>timeout</strong> <em>30</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>ui [<em>text</em>|<em>urwid</em>|<em>gtk</em>]</strong></dt>
+<dd>
+<p>The user interface that <strong>querybts(1)</strong> and
+<strong>reportbug(1)</strong> should use.</p>
+</dd>
+<dt><strong>verify</strong></dt>
+<dd>
+<p>Enables automatic verification of package installation before
+reporting using <strong>debsums</strong>, if available.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>reportbug(1), querybts(1)</p>
+<h1>AUTHOR</h1>
+<p>reportbug was written by Chris Lawrence &lt;lawrencc@debian.org&gt;
+and it's now maintained by Sandro Tosi &lt;morph@debian.org&gt;.</p>
+<p>This manual page was written by Y Giridhar Appaji Nag
+&lt;giridhar@appaji.net&gt; for the Debian project, but may be used by
+others.</p>

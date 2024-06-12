@@ -1,0 +1,109 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>OSSL_PROVIDER-base - OpenSSL base provider</p>
+<h1>DESCRIPTION</h1>
+<p>The OpenSSL base provider supplies the encoding for OpenSSL's
+asymmetric cryptography.</p>
+<h2>Properties</h2>
+<p>The implementations in this provider specifically have this property
+defined:</p>
+<dl>
+<dt>"provider=base"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>It may be used in a property query string with fetching
+functions.</p>
+<p>It isn't mandatory to query for this property, except to make sure to
+get implementations of this provider and none other.</p>
+<dl>
+<dt>"type=parameters"</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"type=private"</dt>
+<dd>
+
+</dd>
+<dt>"type=public"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These may be used in a property query string with fetching functions
+to select which data are to be encoded. Either the private key material,
+the public key material or the domain parameters can be selected.</p>
+<dl>
+<dt>"format=der"</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"format=pem"</dt>
+<dd>
+
+</dd>
+<dt>"format=text"</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These may be used in a property query string with fetching functions
+to select the encoding output format. Either the DER, PEM and plaintext
+are currently permitted.</p>
+<h1>OPERATIONS AND ALGORITHMS</h1>
+<p>The OpenSSL base provider supports these operations and
+algorithms:</p>
+<h2>Asymmetric Key Encoder</h2>
+<p>In addition to provider=base, some of these encoders define the
+property fips=yes, to allow them to be used together with the FIPS
+provider.</p>
+<dl>
+<dt>RSA, see OSSL_ENCODER-RSA (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>DH, see OSSL_ENCODER-DH (7)</dt>
+<dd>
+
+</dd>
+<dt>DSA, see OSSL_ENCODER-DSA (7)</dt>
+<dd>
+
+</dd>
+<dt>EC, see OSSL_ENCODER-EC (7)</dt>
+<dd>
+
+</dd>
+<dt>X25519, see OSSL_ENCODER-X25519 (7)</dt>
+<dd>
+
+</dd>
+<dt>X448, see OSSL_ENCODER-X448 (7)</dt>
+<dd>
+
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>OSSL_PROVIDER-default</strong> (7),
+<strong>openssl-core.h</strong> (7),
+<strong>openssl-core_dispatch.h</strong> (7),
+<strong>provider</strong> (7)</p>
+<h1>HISTORY</h1>
+<p>This functionality was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2020 The OpenSSL Project Authors. All Rights Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

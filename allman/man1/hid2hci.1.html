@@ -1,0 +1,47 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>hid2hci - Bluetooth HID to HCI mode switching utility</p>
+<h1>SYNOPSIS</h1>
+<p><strong>hid2hci</strong> [<em>OPTIONS</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>hid2hci(1)</strong> is used to set up switch supported
+Bluetooth devices into the HCI mode and back.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>--mode=[<em>mode</em>] Sets the mode to the device into. The
+possible values</strong></dt>
+<dd>
+<p>for <em>mode</em> are <strong>hid</strong>, <strong>hci</strong>.</p>
+</dd>
+<dt><strong>--method=[<em>method</em>] Which vendor method to use for
+switching the device.</strong></dt>
+<dd>
+<p>The possible values for <em>method</em> are <strong>csr</strong>,
+<strong>csr2</strong>, <strong>logitech-hdi</strong>,
+<strong>dell</strong>.</p>
+</dd>
+</dl>
+</blockquote>
+<blockquote>
+<dl>
+<dt><strong>--devpath</strong></dt>
+<dd>
+<p>Specifies the device path in /sys</p>
+</dd>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>Gives a list of possible options.</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Marcel Holtmann &lt;marcel@holtmann.org&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

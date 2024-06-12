@@ -1,0 +1,306 @@
+<h1>Name</h1>
+<p>libreoffice - LibreOffice office suite</p>
+<h1>SYNOPSIS</h1>
+<p><strong>libreoffice</strong>
+[<strong>--accept=</strong><em>accept-string</em>]
+[<strong>--base</strong>] [<strong>--calc</strong>]
+[<strong>--convert-to</strong>
+output_file_extension[:output_filter_name] [--outdir output_dir]
+<em>file</em>]... [<strong>--display</strong> <em>display</em>]
+[<strong>--draw</strong>] [<strong>--global</strong>]
+[<strong>--headless</strong>]
+[<strong>--help</strong>|<strong>-h</strong>|<strong>-?</strong>]
+[<strong>--impress</strong>] [<strong>--invisible</strong>]
+[<strong>--infilter="&lt;filter&gt;"</strong>] [<strong>--math</strong>]
+[<strong>--minimized</strong>] [<strong>-n</strong> <em>file</em>]...
+[<strong>--nodefault</strong>] [<strong>--nolockcheck</strong>]
+[<strong>--nologo</strong>] [<strong>--norestore</strong>]
+[<strong>-o</strong> <em>file</em>]... [<strong>-p</strong>
+<em>file</em>...] [<strong>--print-to-file [--printer-name printer_name]
+[--outdir output_dir] file]...</strong> [<strong>--pt</strong>
+<em>printername</em> <em>file</em>...] [<strong>--show</strong>
+<em>Impress file</em>]...
+[<strong>--unaccept=</strong><em>accept-string</em>]
+[<strong>--terminate_after_init</strong>] [<strong>--view</strong>
+<em>file</em>]... [<strong>--web</strong>] [<strong>--writer</strong>]
+[<em>file</em>...]<br />
+<strong>lobase</strong><br />
+<strong>localc</strong><br />
+<strong>lodraw</strong><br />
+<strong>lofromtemplate</strong><br />
+<strong>loimpress</strong><br />
+<strong>lomath</strong><br />
+<strong>loweb</strong><br />
+<strong>lowriter</strong><br />
+</p>
+<h1>DESCRIPTION</h1>
+<p>LibreOffice (LO for short) is a multi-platform office productivity
+suite. It was derived from OpenOffice.org 3.3 Beta on September 28,
+2010.</p>
+<p><strong>libreoffice</strong> is a shell script that sets up the
+environment and passes the command line arguments to the
+<strong>soffice.bin</strong> binary.</p>
+<p>Alternatively, the following helper scripts start the respective
+module:</p>
+<p>sbase, scalc, sdraw, simpress, smath, sofficerc, swriter</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>--accept=</strong><em>accept-string</em></dt>
+<dd>
+<p>Specifies a UNO-URL connect-string to create a UNO acceptor through
+which other programs can connect to access the API. Note that API access
+allows execution of arbitrary commands. The syntax of a UNO-URL
+connect-string is:
+<em>uno:connection-type,params;protocol-name,params;ObjectName</em></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--base</strong></dt>
+<dd>
+<p>Starts the wizard for a new Base document.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--calc</strong></dt>
+<dd>
+<p>Starts with a new Calc document.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--convert-to</strong>
+output_file_extension[:output_filter_name] [--outdir output_dir]
+<em>file</em>...</dt>
+<dd>
+<p>Batch converts files. If <em>--outdir</em> is not specified then the
+current working directory is used as the output directory for the
+converted files. It implies <em>--headless</em>.</p>
+<p>Examples:</p>
+<p><strong>--convert-to</strong> pdf *.doc</p>
+<p>Converts all .doc files to PDFs.</p>
+<p><strong>--convert-to</strong> pdf:writer_pdf_Export --outdir
+/home/user *.doc</p>
+<p>Converts all .doc files to PDFs using the settings in the Writer PDF
+export dialog and saving them in /home/user.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--display</strong> <em>display</em></dt>
+<dd>
+<p>This option specifies the X server to use; see
+<strong>X</strong>(7)</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--draw</strong></dt>
+<dd>
+<p>Starts with a new Draw document.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--global</strong></dt>
+<dd>
+<p>Starts with a new Global document.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--headless</strong></dt>
+<dd>
+<p>Starts in "headless mode", which allows using the application without
+user a interface.</p>
+<p>This special mode can be used when the application is controlled by
+external clients via the API.</p>
+<p>It implies --invisible and strictly ignores any GUI environment.
+--quickstart does not work with this parameter.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--help</strong>|<strong>-h</strong>|<strong>-?</strong></dt>
+<dd>
+<p>Lists LibreOffice command line parameters.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--impress</strong></dt>
+<dd>
+<p>Starts with a new Impress document.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--invisible</strong></dt>
+<dd>
+<p>Starts in invisible mode.</p>
+<p>Neither the start-up logo nor the initial program window will be
+visible. LO can be controlled and documents and dialogs can be opened
+via the API.</p>
+<p>When started with this parameter, it can only be quit using the
+taskmanager (Windows) or the kill command (UNIX based systems).</p>
+<p>--quickstart does not work with this parameter.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--infilter="&lt;filter&gt;"</strong></dt>
+<dd>
+<p>Force an input filter type if possible. For example --infilter="Calc
+Office Open XML" only</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--math</strong></dt>
+<dd>
+<p>Starts with a new Math document.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--minimized</strong></dt>
+<dd>
+<p>Keeps the splash screen minimized.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-n</strong> <em>template</em>...</dt>
+<dd>
+<p>Creates the a new document from the given templates.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--nodefault</strong></dt>
+<dd>
+<p>Starts LO without creating a new document. The next time you start
+LO, the welcome screen is shown.</p>
+<p>It's used together with <strong>--nologo</strong> by quick starters.
+Note that <strong>--quickstart</strong> has no longer been supported
+since OpenOffice.org 2.0.0.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--nolockcheck</strong></dt>
+<dd>
+<p>Disables the check for remote instances using the installation.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--nologo</strong></dt>
+<dd>
+<p>Disables the splash screen at program start.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--norestore</strong></dt>
+<dd>
+<p>Disables restart and file recovery after a system crash. It is
+possible that LO will try to restore a file it keeps crashing on, if
+that happens <strong>--norestore</strong> is the only way to start
+LO.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--nosplash</strong></dt>
+<dd>
+<p>Disables the splash screen at program start.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-o</strong> <em>file</em>...</dt>
+<dd>
+<p>Opens the given files for editing, even templates.</p>
+<p>Without <strong>-o</strong> a template file would create a new
+document derived from that template.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>-p</strong> <em>file</em>...</dt>
+<dd>
+<p>Prints the given files to the default printer and ends. The splash
+screen does not appear.</p>
+<p>If the file name contains spaces, then it must be enclosed in
+quotation marks.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--print-to-file [--printer-name printer_name] [--outdir
+output_dir] file...</strong></dt>
+<dd>
+<p>Batch print files to file. If --printer-name is not specified the
+default printer is used. If --outdir is not specified then the current
+working directory is used as the output directory for the converted
+files.</p>
+<p>Examples:</p>
+<p>--print-to-file *.doc</p>
+<p>Prints all .doc files to the current working directory using the
+default printer.</p>
+<p>--print-to-file --printer-name nasty_lowres_printer --outdir
+/home/user *.doc</p>
+<p>Prints all .doc files to /home/user directory using the
+nasty_lowres_printer.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--pt</strong> <em>printername</em> <em>file</em>...</dt>
+<dd>
+<p>Prints the given files to the printer <em>printername</em> and ends.
+The splash screen does not appear.</p>
+<p>If a file name contains spaces, then it must be enclosed in quotation
+marks.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--quickstart --quickstart=no</strong></dt>
+<dd>
+<p>Starts LO with its quick starter. <strong>--quickstart disable the
+quick starter.</strong></p>
+<p>Does not work with --invisible or --headless.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--show</strong> <em>Impress file</em>...</dt>
+<dd>
+<p>Opens the given Impress files, starts the presentation and quits
+after they have finished.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--unaccept=</strong><em>accept-string</em></dt>
+<dd>
+<p>Closes an acceptor that was created with <strong>--accept</strong>
+option.</p>
+<p>Use <strong>--unaccept</strong>=<em>all</em> to close all open
+acceptors.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--terminate_after_init</strong></dt>
+<dd>
+<p>Starts LO and terminates after it registers some UNO services.
+Doesn't show the splash during startup.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--view</strong> <em>file</em>...</dt>
+<dd>
+<p>Opens the given files read-only creating a temporary copy of them at
+$TMPDIR.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--web</strong></dt>
+<dd>
+<p>Starts with a new HTML document.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>--writer</strong></dt>
+<dd>
+<p>Starts with a new Writer document.</p>
+</dd>
+</dl>
+<h1>TROUBLESHOOTING PROBLEMS</h1>
+<p>See <strong>http://wiki.documentfoundation.org/BugReport</strong> for
+more details on how to report bugs in LibreOffice.</p>
+<h1>SEE ALSO</h1>
+<p><strong>http://www.documentfoundation.org/</strong></p>
+<h1>AUTHOR</h1>
+<p>This manual page was created by Rene Engelhard
+&lt;rene@debian.org&gt; for the Debian GNU/Linux Distribution, because
+the original package does not have one. It was updated for Novell by
+Petr Mladek &lt;petr.mladek@novell.com&gt; and adapted for LibreOffice
+by Philipp Weissenbacher &lt;philipp.weissenbacher@gmail.com&gt;.</p>

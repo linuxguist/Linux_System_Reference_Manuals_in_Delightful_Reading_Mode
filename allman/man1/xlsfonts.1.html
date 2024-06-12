@@ -1,0 +1,110 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xlsfonts - server font list displayer for X</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xlsfonts</strong> [<strong>-display host:dpy</strong>]
+[<strong>-l</strong>] [<strong>-ll</strong>] [<strong>-lll</strong>]
+[<strong>-m</strong>] [<strong>-C</strong>] [<strong>-1</strong>]
+[<strong>-w width</strong>] [<strong>-n columns</strong>]
+[<strong>-u</strong>] [<strong>-o</strong>] [<strong>-fn
+pattern</strong>] [<strong>-v</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p>xlsfonts lists the fonts that match the given pattern. The wildcard
+character "*" may be used to match any sequence of characters (including
+none), and "?" to match any single character. If no pattern is given,
+"*" is assumed.</p>
+<p>The "*" and "?" characters must be quoted to prevent them from being
+expanded by the shell.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-display</strong> <em>host:dpy</em></dt>
+<dd>
+<p>This option specifies the X server to contact.</p>
+</dd>
+<dt><strong>-d</strong> <em>host:dpy</em></dt>
+<dd>
+<p>Same as <strong>-display</strong> <em>host:dpy</em>.</p>
+</dd>
+<dt><strong>-l</strong></dt>
+<dd>
+<p>Lists some attributes of the font on one line in addition to its
+name.</p>
+</dd>
+<dt><strong>-ll</strong></dt>
+<dd>
+<p>Lists font properties in addition to <strong>-l</strong> output.</p>
+</dd>
+<dt><strong>-lll</strong></dt>
+<dd>
+<p>Lists character metrics in addition to <strong>-ll</strong>
+output.</p>
+</dd>
+<dt><strong>-m</strong></dt>
+<dd>
+<p>This option indicates that long listings should also print the
+minimum and maximum bounds of each font.</p>
+</dd>
+<dt><strong>-C</strong></dt>
+<dd>
+<p>This option indicates that listings should use multiple columns. This
+is the same as <strong>-n 0</strong>.</p>
+</dd>
+<dt><strong>-1</strong></dt>
+<dd>
+<p>This option indicates that listings should use a single column. This
+is the same as <strong>-n 1</strong>.</p>
+</dd>
+<dt><strong>-w</strong> <em>width</em></dt>
+<dd>
+<p>This option specifies the width in characters that should be used in
+figuring out how many columns to print. The default is 79.</p>
+</dd>
+<dt><strong>-n</strong> <em>columns</em></dt>
+<dd>
+<p>This option specifies the number of columns to use in displaying the
+output. By default, it will attempt to fit as many columns of font names
+into the number of character specified by <strong>-w</strong> width.</p>
+</dd>
+<dt><strong>-u</strong></dt>
+<dd>
+<p>This option indicates that the output should be left unsorted.</p>
+</dd>
+<dt><strong>-o</strong></dt>
+<dd>
+<p>This option indicates that xlsfonts should do an OpenFont (and
+QueryFont, if appropriate) rather than a ListFonts. This is useful if
+ListFonts or ListFontsWithInfo fail to list a known font (as is the case
+with some scaled font systems).</p>
+</dd>
+<dt><strong>-fn</strong> <em>pattern</em></dt>
+<dd>
+<p>This option specifies the font name pattern to match.</p>
+</dd>
+<dt><strong>-v</strong></dt>
+<dd>
+<p>This option indicates that xlsfonts should print out the program
+version and exit.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>X</strong>(7), <strong>Xserver</strong>(1),
+<strong>xset</strong>(1), <strong>xfd</strong>(1), X Logical Font
+Description Conventions</p>
+<h1>ENVIRONMENT</h1>
+<dl>
+<dt><strong>DISPLAY</strong></dt>
+<dd>
+<p><strong>DISPLAY</strong> must be set to get the default host and
+display to use.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>Doing ``xlsfonts -l'' can tie up your server for a very long time.
+This is really a bug with single-threaded non-preemptable servers, not
+with this program.</p>
+<h1>AUTHOR</h1>
+<p>Mark Lillibridge</p>
+<p>Jim Fulton</p>
+<p>Phil Karlton</p>
+<p>Roland Mainz</p>

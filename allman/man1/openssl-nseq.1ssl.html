@@ -1,0 +1,74 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-nseq - create or examine a Netscape certificate sequence</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl</strong> <strong>nseq</strong>
+[<strong>-help</strong>] [<strong>-in</strong> <em>filename</em>]
+[<strong>-out</strong> <em>filename</em>] [<strong>-toseq</strong>]
+[<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command takes a file containing a Netscape certificate sequence
+and prints out the certificates contained in it or takes a file of
+certificates and converts it into a Netscape certificate sequence.</p>
+<p>A Netscape certificate sequence is an old Netscape-specific format
+that can be sometimes be sent to browsers as an alternative to the
+standard PKCS#7 format when several certificates are sent to the
+browser, for example during certificate enrollment. It was also used by
+Netscape certificate server.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-in filename</dt>
+<dd>
+<p>This specifies the input filename to read or standard input if this
+option is not specified.</p>
+</dd>
+<dt>-out filename</dt>
+<dd>
+<p>Specifies the output filename or standard output by default.</p>
+</dd>
+<dt>-toseq</dt>
+<dd>
+<p>Normally a Netscape certificate sequence will be input and the output
+is the certificates contained in it. With the <strong>-toseq</strong>
+option the situation is reversed: a Netscape certificate sequence is
+created from a file of certificates.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<h1>EXAMPLES</h1>
+<p>Output the certificates in a Netscape certificate sequence</p>
+<p>openssl nseq -in nseq.pem -out certs.pem</p>
+<p>Create a Netscape certificate sequence</p>
+<p>openssl nseq -in certs.pem -toseq -out nseq.pem</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2020 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

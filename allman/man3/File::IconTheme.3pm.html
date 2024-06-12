@@ -1,0 +1,39 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>File::IconTheme - Find icon directories</p>
+<h1>VERSION</h1>
+<p>version 0.09</p>
+<h1>SYNOPSIS</h1>
+<p>use File::IconTheme qw(xdg_icon_theme_search_dirs); print join "\n",
+xdg_icon_theme_search_dirs;</p>
+<h1>DESCRIPTION</h1>
+<p>This module can be used to find directories as specified by the
+Freedesktop.org Icon Theme Specification. Currently only a tiny (but
+most useful) part of the specification is implemented.</p>
+<p>In case you want to <strong>store</strong> an icon theme, use the
+directory returned by:</p>
+<p>use File::BaseDir qw(data_dirs); print scalar data_dirs(icons);</p>
+<h1>FUNCTIONS</h1>
+<p>Can be exported on request.</p>
+<h2>xdg_icon_theme_search_dirs</h2>
+<p>my @dirs = xdg_icon_theme_search_dir;</p>
+<p>Returns a list of the base directories of icon themes.</p>
+<h1>CONFIGURATION AND ENVIRONMENT</h1>
+<p><code>$XDG_DATA_HOME</code>, <code>$XDG_DATA_DIRS</code></p>
+<h1>SEE ALSO</h1>
+<p>&lt;http://standards.freedesktop.org/icon-theme-spec/&gt;</p>
+<h1>AUTHORS</h1>
+<ul>
+<li><p>Jaap Karssenberg || Pardus [Larus]
+&lt;pardus@cpan.org&gt;</p></li>
+<li><p>Graham Ollis &lt;plicease@cpan.org&gt;</p></li>
+</ul>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 2003-2021 by Jaap Karssenberg ||
+Pardus [Larus] &lt;pardus@cpan.org&gt;.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

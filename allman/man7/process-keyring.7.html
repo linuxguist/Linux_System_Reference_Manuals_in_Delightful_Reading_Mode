@@ -1,0 +1,32 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>process-keyring - per-process shared keyring</p>
+<h1>DESCRIPTION</h1>
+<p>The process keyring is a keyring used to anchor keys on behalf of a
+process. It is created only when a process requests it. The process
+keyring has the name (description) <em>_pid</em>.</p>
+<p>A special serial number value,
+<strong>KEY_SPEC_PROCESS_KEYRING</strong>, is defined that can be used
+in lieu of the actual serial number of the calling process's process
+keyring.</p>
+<p>From the <strong>keyctl</strong>(1) utility, '<strong>@p</strong>'
+can be used instead of a numeric key ID in much the same way, but since
+<strong>keyctl</strong>(1) is a program run after forking, this is of no
+utility.</p>
+<p>A thread created using the <strong>clone</strong>(2)
+<strong>CLONE_THREAD</strong> flag has the same process keyring as the
+caller of <strong>clone</strong>(2). When a new process is created using
+<strong>fork</strong>() it initially has no process keyring. A process's
+process keyring is cleared on <strong>execve</strong>(2). The process
+keyring is destroyed when the last thread that refers to it
+terminates.</p>
+<p>If a process doesn't have a process keyring when it is accessed, then
+the process keyring will be created if the keyring is to be modified;
+otherwise, the error <strong>ENOKEY</strong> results.</p>
+<h1>SEE ALSO</h1>
+<p><strong>keyctl</strong>(1), <strong>keyctl</strong>(3),
+<strong>keyrings</strong>(7), <strong>persistent-keyring</strong>(7),
+<strong>session-keyring</strong>(7), <strong>thread-keyring</strong>(7),
+<strong>user-keyring</strong>(7),
+<strong>user-session-keyring</strong>(7)</p>

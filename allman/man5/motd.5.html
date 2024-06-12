@@ -1,0 +1,19 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>motd - message of the day</p>
+<h1>DESCRIPTION</h1>
+<p>The contents of <em>/etc/motd</em> are displayed by
+<strong>pam_motd</strong>(8) <strong>login</strong>(1) after a
+successful login but just before it executes the login shell.</p>
+<p>The abbreviation "motd" stands for "message of the day", and this
+file has been traditionally used for exactly that (it requires much less
+disk space than mail to all users).</p>
+<p>On Debian GNU/Linux, dynamic content configured at
+<em>/etc/pam.d/login</em> is also displayed by <em>pam_exec</em>.</p>
+<h1>FILES</h1>
+<p><em>/etc/motd</em><br />
+<em>/etc/pam.d/login</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>login</strong>(1), <strong>issue</strong>(5)
+<strong>pam_motd</strong>(8)</p>

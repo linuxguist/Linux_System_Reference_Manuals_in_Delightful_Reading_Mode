@@ -1,0 +1,228 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>/etc/adduser.conf - configuration file for
+<strong>adduser</strong>(8) and <strong>addgroup</strong>(8)</p>
+<h1>DESCRIPTION</h1>
+<p>The file <em>/etc/adduser.conf</em> contains defaults for the
+programs <strong>adduser</strong>(8), <strong>addgroup</strong>(8),
+<strong>deluser</strong>(8) and <strong>delgroup</strong>(8). Each line
+holds a single value pair in the form <em>option</em> = <em>value</em>.
+Double or single quotes are allowed around the value, as is whitespace
+around the equals sign. Comment lines must have a hash sign (#) in the
+first column.</p>
+<p>The valid configuration options are:</p>
+<dl>
+<dt><strong>ADD_EXTRA_GROUPS</strong></dt>
+<dd>
+<p>Setting this to something other than 0 will cause
+<strong>adduser</strong> to add newly created non-system users to the
+list of groups defined by <strong>EXTRA_GROUPS</strong> (below).
+Defaults to <em>0</em>.</p>
+</dd>
+<dt><strong>DIR_MODE</strong></dt>
+<dd>
+<p>The permissions mode for home directories of non-system users that
+are created by <strong>adduser</strong>(8). Defaults to <em>0700</em>.
+Note that there are potential configurations (such as /~user web
+services, or in-home mail delivery) which will require changes to the
+default. See also <strong>SYS_DIR_MODE</strong>.</p>
+</dd>
+<dt><strong>DHOME</strong></dt>
+<dd>
+<p>The directory in which new home directories should be created.
+Defaults to <em>/home</em>.</p>
+</dd>
+<dt><strong>DSHELL</strong></dt>
+<dd>
+<p>The login shell to be used for all new users. Defaults to
+<em>/bin/bash</em>.</p>
+</dd>
+<dt><strong>EXTRA_GROUPS</strong></dt>
+<dd>
+<p>This is the space-separated list of groups that new non-system users
+will be added to. Defaults to <em>users</em>.</p>
+</dd>
+<dt><strong>FIRST_SYSTEM_GID and LAST_SYSTEM_GID</strong></dt>
+<dd>
+<p>specify an inclusive range of GIDs from which GIDs for system groups
+can be dynamically allocated. Defaults to <em>100</em> -
+<em>999</em>.</p>
+</dd>
+<dt><strong>FIRST_GID and LAST_GID</strong></dt>
+<dd>
+<p>specify an inclusive range of GIDs from which GIDs for non-system
+groups can be dynamically allocated. Defaults to <em>1000</em> -
+<em>59999</em>.</p>
+</dd>
+<dt><strong>FIRST_SYSTEM_UID and LAST_SYSTEM_UID</strong></dt>
+<dd>
+<p>specify an inclusive range of UIDs from which UIDs for system users
+can be dynamically allocated. Defaults to <em>100</em> - <em>999</em>.
+Please note that system software, such as the users allocated by the
+<em>base-passwd</em> package, may assume that UIDs less than 100 are
+unallocated.</p>
+</dd>
+<dt><strong>FIRST_UID and LAST_UID</strong></dt>
+<dd>
+<p>specify an inclusive range of UIDs from which UIDs for non-system
+users can be dynamically allocated. Defaults to <em>1000</em> -
+<em>59999</em>.</p>
+</dd>
+<dt><strong>GID_POOL</strong></dt>
+<dd>
+<p>See <strong>UID_POOL</strong>.</p>
+</dd>
+<dt><strong>GROUPHOMES</strong></dt>
+<dd>
+<p>If this is set to <em>yes</em>, the home directories will be created
+as <em>/home/groupname/user</em>. Defaults to <em>no</em>. This option
+is <strong>deprecated</strong> and will be removed.</p>
+</dd>
+<dt><strong>LAST_GID</strong><br />
+<strong>LAST_SYSTEM_GID</strong><br />
+<strong>LAST_UID</strong><br />
+<strong>LAST_SYSTEM_UID</strong></dt>
+<dd>
+<p>See the <strong>FIRST_</strong> variants of the option.</p>
+</dd>
+<dt><strong>LETTERHOMES</strong></dt>
+<dd>
+<p>If this is set to <em>yes</em>, then the home directories created
+will have an extra directory inserted which is the first letter of the
+loginname. For example: <em>/home/u/user</em>. Defaults to <em>no</em>.
+This option is <strong>deprecated</strong> and will be removed.</p>
+</dd>
+<dt><strong>NAME_REGEX</strong></dt>
+<dd>
+<p>Non-system user- and groupnames are checked against this regular
+expression. If the name doesn't match this regexp, user and group
+creation in <strong>adduser</strong>(8) is refused unless
+<strong>--allow-bad-names</strong> is set. With
+<strong>--allow-bad-names</strong> set, weaker checks are performed.
+Defaults to the most conservative <em>^[a-z][-a-z0-9_]*$</em>. See
+<strong>SYS_NAME_REGXEX</strong> and <strong>Valid names</strong>,
+below, for more information.</p>
+</dd>
+<dt><strong>QUOTAUSER</strong></dt>
+<dd>
+<p>If set to a nonempty value, new users will have quotas copied from
+that user using <em>edquota -p QUOTAUSER newuser</em>. Defaults to
+<em>the empty string</em>.</p>
+</dd>
+<dt><strong>SETGID_HOME</strong></dt>
+<dd>
+<p>If this is set to <em>yes</em>, then home directories for users with
+their own group (<strong>USERGROUPS</strong> = yes) will have the
+set-group-ID bit set. Note that this feature is
+<strong>deprecated</strong> and will be removed in a future version of
+<strong>adduser</strong>(8). Please use <strong>DIR_MODE</strong>
+instead. Defaults to <em>no</em>.</p>
+</dd>
+<dt><strong>SKEL</strong></dt>
+<dd>
+<p>The directory from which skeletal user configuration files will be
+copied. Defaults to <em>/etc/skel</em>.</p>
+</dd>
+<dt><strong>SKEL_IGNORE_REGEX</strong></dt>
+<dd>
+<p>When populating the newly created home directory of a non-system
+user, files in SKEL matching this regex are not copied. Defaults to to
+<em>(.(dpkg|ucf)-(old|new|dist)$)</em>, the regular expression matching
+files left over from unmerged config files.</p>
+</dd>
+<dt><strong>SYS_DIR_MODE</strong></dt>
+<dd>
+<p>The permissions mode for home directories of system users that are
+created by <strong>adduser</strong>(8). Defaults to <em>0755</em>. Note
+that changing the default permissions for system users may cause some
+packages to behave unreliably, if the program relies on the default
+setting. See also <strong>DIR_MODE</strong>.</p>
+</dd>
+<dt><strong>SYS_NAME_REGEX</strong></dt>
+<dd>
+<p>System user- and groupnames are checked against this regular
+expression. If the name doesn't match this regexp, system user and group
+creation in adduser is refused unless <strong>--allow-bad-names</strong>
+is set. With <strong>--allow-bad-names</strong> set, weaker checks are
+performed. Defaults to the most conservative
+<em>^[a-z_][-a-z0-9_]*$</em>. See <strong>NAME_REGEX</strong>, above,
+and <strong>Valid names</strong>, below, for more information.</p>
+</dd>
+<dt><strong>UID_POOL and GID_POOL</strong></dt>
+<dd>
+<p>specify a file or a directory containing UID and GID pool files. See
+UID and GID POOLS in the NOTES section. Both default to
+<em>empty</em>.</p>
+</dd>
+<dt><strong>USERGROUPS</strong></dt>
+<dd>
+<p>Specify whether each created non-system user will be given their own
+group to use. Defaults to <em>yes</em>.</p>
+</dd>
+<dt><strong>USERS_GID and USERS_GROUP</strong></dt>
+<dd>
+<p>Defines the groupname or GID of the group all newly-created
+non-system users are placed into. If <strong>USERGROUPS</strong> is
+<em>yes,</em> the group will be added as a supplementary group; if
+<strong>USERGROUPS</strong> is <em>no,</em>, it will be the primary
+group. If you don't want all your users to be in one group, set
+<strong>USERGROUPS</strong>=<em>yes</em>, leave
+<strong>USERS_GROUP</strong> empty and set <strong>USERS_GID</strong> to
+"-1". <strong>USERS_GROUP</strong> defaults to <em>users</em>, which has
+GID 100 on all Debian systems since it's defined statically by the
+<em>base-passwd</em> package. It is a configuration error to define both
+variables even if the values are consistent.</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<h2>VALID NAMES</h2>
+<p>Historically, <strong>adduser</strong>(8) and
+<strong>addgroup</strong>(8) enforced conformity to IEEE Std
+1003.1-2001, which allows only the following characters to appear in
+group- and usernames: letters, digits, underscores, periods, at signs
+(@) and dashes. The name may not start with a dash or @. The "$" sign is
+allowed at the end of usernames to allow typical Samba machine
+accounts.</p>
+<p>The default settings for <strong>NAME_REGEX</strong> and
+<strong>SYS_NAME_REGEX</strong> allow usernames to contain lowercase
+letters and numbers, plus dash (-) and underscore (_); the name must
+begin with a letter (or an underscore for system users).</p>
+<p>The least restrictive policy, available by using the
+<strong>--allow-all-names</strong> option, simply makes the same checks
+as <strong>useradd</strong>(8): cannot start with a dash, plus sign, or
+tilde; and cannot contain a colon, comma, slash, or whitespace.</p>
+<p>This option can be used to create confusing or misleading names; use
+it with caution.</p>
+<p>Please note that regardless of the regular expressions used to
+evaluate the username, it may be a maximum of 32 bytes; this may be less
+than 32 visual characters when using Unicode glyphs in the username.</p>
+<h2>UID AND GID POOLS</h2>
+<p>Some installations desire that a non-system account gets
+preconfigured properties when it is generated. Commonly, the local admin
+wants to make sure that even without using a directory service, an
+account or a group with a certain name has the same numeric UID/GID on
+all systems where it exists.</p>
+<p>To enable this feature, define configuration variables
+<strong>UID_POOL</strong> (for user accounts) and/or
+<strong>GID_POOL</strong> (for groups) in <em>/etc/adduser.conf</em> and
+install the respective files in the configured places. The value is
+either a file or a directory. In the latter case all files named
+<em>*.conf</em> in that directory are considered.</p>
+<p>The file format is similar to <em>/etc/passwd</em>: Text lines,
+fields separated by a colon. The values are username/groupname
+(mandatory), UID/GID (mandatory), comment field (optional, useful for
+user IDs only), home directory (ditto), shell (ditto).</p>
+<p>It is possible to use the same file/directory for
+<strong>UID_POOL</strong> and <strong>GID_POOL</strong>.</p>
+<p>If an account / group is created, <strong>adduser</strong>(8)
+searches in all UID/GID pool files for a line matching the name of the
+newly created account and uses the data found there to initialize the
+new account instead of using the defaults. Settings may be overridden
+from the command line.</p>
+<h1>FILES</h1>
+<p><em>/etc/adduser.conf</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>deluser.conf</strong>(5), <strong>addgroup</strong>(8),
+<strong>adduser</strong>(8), <strong>delgroup</strong>(8),
+<strong>deluser</strong>(8)</p>

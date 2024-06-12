@@ -1,0 +1,51 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>vesa - Generic VESA video driver</p>
+<h1>SYNOPSIS</h1>
+<pre><code>Section Device
+ Identifier devname
+ Driver vesa
+  ...
+EndSection</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>vesa</strong> is an Xorg driver for generic VESA video cards.
+It can drive most VESA-compatible video cards, but only makes use of the
+basic standard VESA core that is common to these cards. The driver
+supports depths 8, 15 16 and 24.</p>
+<h1>SUPPORTED HARDWARE</h1>
+<p>The <strong>vesa</strong> driver supports most VESA-compatible video
+cards. There are some known exceptions, and those should be listed
+here.</p>
+<h1>CONFIGURATION DETAILS</h1>
+<p>Please refer to xorg.conf(5) for general configuration details. This
+section only covers configuration details specific to this driver.</p>
+<p>The driver auto-detects the presence of VESA-compatible hardware. The
+<strong>ChipSet</strong> name may optionally be specified in the config
+file <strong>Device</strong> section, and will override the
+auto-detection:</p>
+<blockquote>
+<p>"vesa"</p>
+</blockquote>
+<p>The following driver <strong>Options</strong> are supported:</p>
+<dl>
+<dt><strong>Option ShadowFB
+</strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>Enable or disable use of the shadow framebuffer layer. Default:
+on.</p>
+<p>This option is recommended for performance reasons.</p>
+</dd>
+<dt><strong>Option ModeSetClearScreen
+</strong><em>boolean</em><strong></strong></dt>
+<dd>
+<p>Clear the screen on mode set. Some BIOSes seem to be broken in the
+sense that the newly set video mode is bogus if they are asked to clear
+the screen during mode setting. If you experience problems try to turn
+this option off. Default: on.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>Xorg(1), xorg.conf(5), Xserver(1), X(7)</p>
+<h1>AUTHORS</h1>
+<p>Authors include: Paulo Ce'sar Pereira de Andrade.</p>

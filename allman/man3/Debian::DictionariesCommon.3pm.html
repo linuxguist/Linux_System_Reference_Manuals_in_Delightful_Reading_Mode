@@ -1,0 +1,78 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Debian::DictionariesCommon.pm - dictionaries-common library</p>
+<h1>SYNOPSIS</h1>
+<p>use Debian::DictionariesCommon q(:all) $dictionaries = parseinfo
+(/var/lib/dictionaries-common/ispell/iwolof); loaddb (ispell) updatedb
+(wordlist)</p>
+<h1>DESCRIPTION</h1>
+<p>Common functions for use from the dictionaries-common system.</p>
+<h1>CALLING FUNCTIONS</h1>
+<dl>
+<dt>"dico_checkroot"</dt>
+<dd>
+<p>Check for rootness and fail if not.</p>
+</dd>
+<dt>"build_emacsen_support"</dt>
+<dd>
+<p>Put info from dicts info files into emacsen-ispell-dicts.el</p>
+</dd>
+<dt>"build_jed_support"</dt>
+<dd>
+<p>Put info from dicts info files into jed-ispell-dicts.sl</p>
+</dd>
+<dt>"build_squirrelmail_support"</dt>
+<dd>
+<p>Build support file for squirrelmail with a list of available
+dictionaries and associated spellchecker calls, in php format.</p>
+</dd>
+<dt>"$libdir = getlibdir($class)"</dt>
+<dd>
+<p>Return info dir for given class.</p>
+</dd>
+<dt>"$default = dico_getsysdefault($class)"</dt>
+<dd>
+<p>Return system default value for given class.</p>
+</dd>
+<dt>"$libdir = getuserdefault"</dt>
+<dd>
+<p>Return value for user default ispell dictionary.</p>
+</dd>
+<dt>"dico_get_spellchecker_params($class,\%language)"</dt>
+<dd>
+<p>Get right params for <code>$class</code> (currently unused) and
+<code>$language</code></p>
+</dd>
+<dt>"\%dictionaries = loaddb($class)"</dt>
+<dd>
+<p>Read class .db file and return a reference to a hash with its
+contents.</p>
+</dd>
+<dt>"\%result = parseinfo($file)"</dt>
+<dd>
+<p>Parse given info file and return a reference to a hash with the
+relevant data.</p>
+</dd>
+<dt>"setsysdefault($value)"</dt>
+<dd>
+<p>Set value for system default ispell dictionary.</p>
+</dd>
+<dt>"setuserdefault"</dt>
+<dd>
+<p>Set value for user default ispell dictionary, after asking to select
+it from the available values.</p>
+</dd>
+<dt>"updatedb($class)"</dt>
+<dd>
+<p>Parse info files for given class and update class .db file under
+dictionaries-common cache dir.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>Debian dictionaries-common policy.</p>
+<h1>AUTHORS</h1>
+<p>Rafael Laboissiere Agustin Martin</p>

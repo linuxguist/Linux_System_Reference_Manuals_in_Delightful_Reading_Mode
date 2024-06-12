@@ -1,0 +1,111 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>piconv -- iconv(1), reinvented in perl</p>
+<h1>SYNOPSIS</h1>
+<p>piconv [-f from_encoding] [-t to_encoding]
+[-p|--perlqq|--htmlcref|--xmlcref] [-C N|-c] [-D] [-S scheme] [-s
+string|file...] piconv -l piconv -r encoding_alias piconv -h</p>
+<h1>DESCRIPTION</h1>
+<p><strong>piconv</strong> is perl version of <strong>iconv</strong>, a
+character encoding converter widely available for various Unixen today.
+This script was primarily a technology demonstrator for Perl 5.8.0, but
+you can use piconv in the place of iconv for virtually any case.</p>
+<p>piconv converts the character encoding of either STDIN or files
+specified in the argument and prints out to STDOUT.</p>
+<p>Here is the list of options. Some options can be in short format (-f)
+or long (--from) one.</p>
+<dl>
+<dt>-f,--from from_encoding</dt>
+<dd>
+<p>Specifies the encoding you are converting from. Unlike
+<strong>iconv</strong>, this option can be omitted. In such cases, the
+current locale is used.</p>
+</dd>
+<dt>-t,--to to_encoding</dt>
+<dd>
+<p>Specifies the encoding you are converting to. Unlike
+<strong>iconv</strong>, this option can be omitted. In such cases, the
+current locale is used. Therefore, when both -f and -t are omitted,
+<strong>piconv</strong> just acts like <strong>cat</strong>.</p>
+</dd>
+<dt>-s,--string string</dt>
+<dd>
+<p>uses <em>string</em> instead of file for the source of text.</p>
+</dd>
+<dt>-l,--list</dt>
+<dd>
+<p>Lists all available encodings, one per line, in case-insensitive
+order. Note that only the canonical names are listed; many aliases
+exist. For example, the names are case-insensitive, and many standard
+and common aliases work, such as latin1 for ISO-8859-1, or ibm850
+instead of cp850, or winlatin1 for cp1252. See Encode::Supported for a
+full discussion.</p>
+</dd>
+<dt>-r,--resolve encoding_alias</dt>
+<dd>
+<p>Resolve <em>encoding_alias</em> to Encode canonical encoding
+name.</p>
+</dd>
+<dt>-C,--check N</dt>
+<dd>
+<p>Check the validity of the stream if <em>N</em> = 1. When <em>N</em> =
+-1, something interesting happens when it encounters an invalid
+character.</p>
+</dd>
+<dt>-c</dt>
+<dd>
+<p>Same as <code>-C 1</code>.</p>
+</dd>
+<dt>-p,--perlqq</dt>
+<dd>
+<p>Transliterate characters missing in encoding to \x{HHHH} where HHHH
+is the hexadecimal Unicode code point.</p>
+</dd>
+<dt>--htmlcref</dt>
+<dd>
+<p>Transliterate characters missing in encoding to &amp;#NNN; where NNN
+is the decimal Unicode code point.</p>
+</dd>
+<dt>--xmlcref</dt>
+<dd>
+<p>Transliterate characters missing in encoding to &amp;#xHHHH; where
+HHHH is the hexadecimal Unicode code point.</p>
+</dd>
+<dt>-h,--help</dt>
+<dd>
+<p>Show usage.</p>
+</dd>
+<dt>-D,--debug</dt>
+<dd>
+<p>Invokes debugging mode. Primarily for Encode hackers.</p>
+</dd>
+<dt>-S,--scheme scheme</dt>
+<dd>
+<p>Selects which scheme is to be used for conversion. Available schemes
+are as follows:</p>
+<dl>
+<dt>from_to</dt>
+<dd>
+<p>Uses Encode::from_to for conversion. This is the default.</p>
+</dd>
+<dt>decode_encode</dt>
+<dd>
+<p>Input strings are <strong>decode()</strong>d then
+<strong>encode()</strong>d. A straight two-step implementation.</p>
+</dd>
+<dt>perlio</dt>
+<dd>
+<p>The new perlIO layer is used. NI-S' favorite. You should use this
+option if you are using UTF-16 and others which linefeed is not $/.</p>
+</dd>
+</dl>
+<p>Like the <em>-D</em> option, this is also for Encode hackers.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>iconv</strong> (1) <strong>locale</strong> (3) Encode
+Encode::Supported Encode::Alias PerlIO</p>

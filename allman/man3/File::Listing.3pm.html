@@ -1,0 +1,141 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>File::Listing - Parse directory listing</p>
+<h1>VERSION</h1>
+<p>version 6.15</p>
+<h1>SYNOPSIS</h1>
+<p>use File::Listing qw(parse_dir); $ENV{LANG} = "C"; # dates in
+non-English locales not supported foreach my $file (parse_dir(`ls -l`))
+{ my ($name, $type, $size, $mtime, $mode) = @$file; next if $type ne f;
+# plain file #... } # directory listing can also be read from a file
+open my $listing, "zcat ls-lR.gz|"; $dir = parse_dir($listing,
++0000);</p>
+<h1>DESCRIPTION</h1>
+<p>This module exports a single function called <code>parse_dir</code>,
+which can be used to parse directory listings.</p>
+<h1>FUNCTIONS</h1>
+<h2>parse_dir</h2>
+<p>my $dir = parse_dir( $listing ); my $dir = parse_dir( $listing,
+$time_zone ); my $dir = parse_dir( $listing, $time_zone, $type ); my
+$dir = parse_dir( $listing, $time_zone, $type, $error ); my @files =
+parse_dir( $listing ); my @files = parse_dir( $listing, $time_zone ); my
+@files = parse_dir( $listing, $time_zone, $type ); my @files =
+parse_dir( $listing, $time_zone, $type, $error );</p>
+<p>The first parameter (<code>$listing</code>) is the directory listing
+to parse. It can be a scalar, a reference to an array of directory lines
+or a glob representing a filehandle to read the directory listing
+from.</p>
+<p>The second parameter (<code>$time_zone</code>) is the time zone to
+use when parsing time stamps in the listing. If this value is undefined,
+then the local time zone is assumed.</p>
+<p>The third parameter (<code>$type</code>) is the type of listing to
+assume. Currently supported formats are <code>unix</code>,
+<code>apache</code> and <code>dosftp</code>. The default value is
+<code>unix</code>. Ideally, the listing type should be determined
+automatically.</p>
+<p>The fourth parameter (<code>$error</code>) specifies how unparseable
+lines should be treated. Values can be <code>ignore</code>,
+<code>warn</code> or a code reference. Warn means that the perl
+<strong>warn()</strong> function will be called. If a code reference is
+passed, then this routine will be called and the return value from it
+will be incorporated in the listing. The default is
+<code>ignore</code>.</p>
+<p>Only the first parameter is mandatory.</p>
+<p># list context foreach my $file (parse_dir($listing)) { my($name,
+$type, $size, $mtime, $mode) = @$file; } # scalar context my $dir =
+parse_dir($listing); foreach my $file (@$dir) { my($name, $type, $size,
+$mtime, $mode) = @$file; }</p>
+<p>The return value from <strong>parse_dir()</strong> is a list of
+directory entries. In a scalar context the return value is a reference
+to the list. The directory entries are represented by an array
+consisting of:</p>
+<dl>
+<dt>name</dt>
+<dd>
+<p>The name of the file.</p>
+</dd>
+<dt>type</dt>
+<dd>
+<p>One of: <code>f</code> file, <code>d</code> directory, <code>l</code>
+symlink, <code>?</code> unknown.</p>
+</dd>
+<dt>size</dt>
+<dd>
+<p>The size of the file.</p>
+</dd>
+<dt>time</dt>
+<dd>
+<p>The number of seconds since January 1, 1970.</p>
+</dd>
+<dt>mode</dt>
+<dd>
+<p>Bitmask a la the mode returned by <code>stat</code>.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<dl>
+<dt>File::Listing::Ftpcopy</dt>
+<dd>
+<p>Provides the same interface but uses XS and the parser implementation
+from <code>ftpcopy</code>.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Original author: Gisle Aas</p>
+<p>Current maintainer: Graham Ollis &lt;plicease@cpan.org&gt;</p>
+<p>Contributors:</p>
+<p>Adam Kennedy</p>
+<p>Adam Sjogren</p>
+<p>Alex Kapranoff</p>
+<p>Alexey Tourbin</p>
+<p>Andreas J. Koenig</p>
+<p>Bill Mann</p>
+<p>Bron Gondwana</p>
+<p>DAVIDRW</p>
+<p>Daniel Hedlund</p>
+<p>David E. Wheeler</p>
+<p>David Steinbrunner</p>
+<p>Erik Esterer</p>
+<p>FWILES</p>
+<p>Father Chrysostomos</p>
+<p>Gavin Peters</p>
+<p>Graeme Thompson</p>
+<p>Hans-H. Froehlich</p>
+<p>Ian Kilgore</p>
+<p>Jacob J</p>
+<p>Mark Stosberg</p>
+<p>Mike Schilli</p>
+<p>Ondrej Hanak</p>
+<p>Peter John Acklam</p>
+<p>Peter Rabbitson</p>
+<p>Robert Stone</p>
+<p>Rolf Grossmann</p>
+<p>Sean M. Burke</p>
+<p>Simon Legner</p>
+<p>Slaven Rezic</p>
+<p>Spiros Denaxas</p>
+<p>Steve Hay</p>
+<p>Todd Lipcon</p>
+<p>Tom Hukins</p>
+<p>Tony Finch</p>
+<p>Toru Yamaguchi</p>
+<p>Ville Skyttä</p>
+<p>Yuri Karaban</p>
+<p>Zefram</p>
+<p>amire80</p>
+<p>jefflee</p>
+<p>john9art</p>
+<p>mschilli</p>
+<p>murphy</p>
+<p>phrstbrn</p>
+<p>ruff</p>
+<p>sasao</p>
+<p>uid39246</p>
+<h1>COPYRIGHT AND LICENSE</h1>
+<p>This software is copyright (c) 1996-2020 by Gisle Aas.</p>
+<p>This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.</p>

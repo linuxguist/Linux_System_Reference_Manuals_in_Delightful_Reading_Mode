@@ -1,0 +1,33 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>adduser.local, deluser.local - hook for local actions in adduser and
+deluser</p>
+<h1>SYNOPSIS</h1>
+<p><strong>adduser.local</strong> [ <strong>username</strong> ] [
+<strong>uid</strong> ] [ <strong>gid</strong> ] [
+<strong>home-directory</strong> ] <strong>deluser.local</strong> [
+<strong>username</strong> ] [ <strong>uid</strong> ] [
+<strong>gid</strong> ] [ <strong>home-directory</strong> ]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>adduser.local</strong> and <strong>deluser.local</strong> can
+be placed by the local admin into <em>/usr/local/sbin</em> and will be
+called by <strong>adduser</strong> and <strong>deluser</strong>
+respectively in order to do locally relevant setup and cleanup
+actions.</p>
+<p>The hooks are called while the adduser/deluser lock is active. They
+must therefore not call back to adduser/deluser themselves.</p>
+<h1>RETURN VALUE</h1>
+<p>Return values from the hooks are ignored.</p>
+<h1>ENVIRONMENT</h1>
+<p><strong>VERBOSE</strong></p>
+<ol start="0" type="1">
+<li><p>if --quiet is specified</p></li>
+<li><p>if neither --quiet nor --debug is specified</p></li>
+<li><p>if --debug is specified</p></li>
+</ol>
+<h1>SEE ALSO</h1>
+<p><strong>adduser.conf</strong>(5), <strong>deluser.conf</strong>(5),
+<strong>adduser</strong>(8), <strong>deluser</strong>(8),
+<strong>groupadd</strong>(8), <strong>useradd</strong>(8),
+<strong>usermod</strong>(8), Debian Policy 9.2.2.</p>

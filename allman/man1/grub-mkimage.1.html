@@ -1,0 +1,107 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>grub-mkimage - make a bootable image of GRUB</p>
+<h1>SYNOPSIS</h1>
+<p><strong>grub-mkimage</strong> [<em>OPTION</em>...]
+[<em>OPTION</em>]... [<em>MODULES</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>Make a bootable image of GRUB.</p>
+<dl>
+<dt><strong>-c</strong>, <strong>--config</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed FILE as an early config</p>
+</dd>
+<dt><strong>-C</strong>,
+<strong>--compression=</strong>(xz|none|auto)</dt>
+<dd>
+<p>choose the compression to use for core image</p>
+</dd>
+<dt><strong>-d</strong>, <strong>--directory</strong>=<em>DIR</em></dt>
+<dd>
+<p>use images and modules under DIR
+[default=/usr/lib/grub/&lt;platform&gt;]</p>
+</dd>
+<dt><strong>--disable-shim-lock</strong></dt>
+<dd>
+<p>disable shim_lock verifier</p>
+</dd>
+<dt><strong>-D</strong>, <strong>--dtb</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed FILE as a device tree (DTB)</p>
+</dd>
+<dt><strong>-k</strong>, <strong>--pubkey</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed FILE as public key for signature checking</p>
+</dd>
+<dt><strong>-m</strong>, <strong>--memdisk</strong>=<em>FILE</em></dt>
+<dd>
+<p>embed FILE as a memdisk image</p>
+</dd>
+</dl>
+<p>Implies `-p (memdisk)/boot/grub' and overrides</p>
+<dl>
+<dt>any prefix supplied previously, but the prefix</dt>
+<dd>
+<p>itself can be overridden by later options</p>
+</dd>
+<dt><strong>-n</strong>, <strong>--note</strong></dt>
+<dd>
+<p>add NOTE segment for CHRP IEEE1275</p>
+</dd>
+<dt><strong>-o</strong>, <strong>--output</strong>=<em>FILE</em></dt>
+<dd>
+<p>output a generated image to FILE [default=stdout]</p>
+</dd>
+<dt><strong>-O</strong>, <strong>--format</strong>=<em>FORMAT</em></dt>
+<dd>
+<p>generate an image in FORMAT available formats: i386-coreboot,
+i386-multiboot, i386-pc, i386-xen_pvh, i386-pc-pxe, i386-pc-eltorito,
+i386-efi, i386-ieee1275, i386-qemu, x86_64-efi, i386-xen, x86_64-xen,
+mipsel-yeeloong-flash, mipsel-fuloong2f-flash, mipsel-loongson-elf,
+powerpc-ieee1275, sparc64-ieee1275-raw, sparc64-ieee1275-cdcore,
+sparc64-ieee1275-aout, ia64-efi, mips-arc, mipsel-arc,
+mipsel-qemu_mips-elf, mips-qemu_mips-flash, mipsel-qemu_mips-flash,
+mips-qemu_mips-elf, arm-uboot, arm-coreboot-vexpress,
+arm-coreboot-veyron, arm-efi, arm64-efi, riscv32-efi, riscv64-efi</p>
+</dd>
+<dt><strong>-p</strong>, <strong>--prefix</strong>=<em>DIR</em></dt>
+<dd>
+<p>set prefix directory</p>
+</dd>
+<dt><strong>-s</strong>, <strong>--sbat</strong>=<em>FILE</em></dt>
+<dd>
+<p>SBAT metadata</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>print verbose messages.</p>
+</dd>
+<dt>-?, <strong>--help</strong></dt>
+<dd>
+<p>give this help list</p>
+</dd>
+<dt><strong>--usage</strong></dt>
+<dd>
+<p>give a short usage message</p>
+</dd>
+<dt><strong>-V</strong>, <strong>--version</strong></dt>
+<dd>
+<p>print program version</p>
+</dd>
+</dl>
+<p>Mandatory or optional arguments to long options are also mandatory or
+optional for any corresponding short options.</p>
+<h1>REPORTING BUGS</h1>
+<p>Report bugs to &lt;bug-grub@gnu.org&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>grub-install</strong>(8), <strong>grub-mkrescue</strong>(1),
+<strong>grub-mknetdir</strong>(8)</p>
+<p>The full documentation for <strong>grub-mkimage</strong> is
+maintained as a Texinfo manual. If the <strong>info</strong> and
+<strong>grub-mkimage</strong> programs are properly installed at your
+site, the command</p>
+<blockquote>
+<p><strong>info grub-mkimage</strong></p>
+</blockquote>
+<p>should give you access to the complete manual.</p>

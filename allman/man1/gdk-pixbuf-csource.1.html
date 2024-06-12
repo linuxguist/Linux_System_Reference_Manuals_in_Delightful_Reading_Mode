@@ -1,0 +1,118 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gdk-pixbuf-csource - C code generation utility for GdkPixbuf
+images</p>
+<h1>SYNOPSIS</h1>
+<pre><code>gdk-pixbuf-csource [OPTIONS...] &lt;IMAGE&gt;</code></pre>
+<h1>DESCRIPTION</h1>
+<p><strong>gdk-pixbuf-csource</strong> is a small utility that generates
+C code containing images, useful for compiling images directly into
+programs.</p>
+<p><strong>gdk-pixbuf-csource</strong> either takes as input one image
+file name to generate code for, or, using the
+<strong>--build-list</strong> option, a list of (<strong>name</strong>,
+<strong>image</strong>) pairs to generate code for a list of images into
+named variables.</p>
+<p>This tool is mostly meant to be used for backward compatibility.
+Newly written applications and libraries should use GResource to embed
+image assets in their binary.</p>
+<h1>OPTIONS</h1>
+<p><strong>--stream</strong></p>
+<blockquote>
+<blockquote>
+<p>Generate pixbuf data stream: a single string containing a serialized
+<strong>GdkPixdata</strong> structure in network byte order.</p>
+</blockquote>
+</blockquote>
+<p><strong>--struct</strong></p>
+<blockquote>
+<blockquote>
+<p>Generate <strong>GdkPixdata</strong> structure; your code needs the
+<strong>GdkPixdata</strong> structure definition from
+<strong>gdk-pixdata.h</strong>.</p>
+</blockquote>
+</blockquote>
+<p><strong>--macros</strong></p>
+<blockquote>
+<blockquote>
+<p>Generate <strong>*_ROWSTRIDE</strong>, <strong>*_WIDTH</strong>,
+<strong>*_HEIGHT</strong>, <strong>*_BYTES_PER_PIXEL</strong> and
+<strong>*_RLE_PIXEL_DATA</strong> or <strong>*_PIXEL_DATA</strong> macro
+definitions for the image.</p>
+</blockquote>
+</blockquote>
+<p><strong>--rle</strong></p>
+<blockquote>
+<blockquote>
+<p>Enables run-length encoding for the generated pixel data
+(default).</p>
+</blockquote>
+</blockquote>
+<p><strong>--raw</strong></p>
+<blockquote>
+<blockquote>
+<p>Disables run-length encoding for the generated pixel data.</p>
+</blockquote>
+</blockquote>
+<p><strong>--extern</strong></p>
+<blockquote>
+<blockquote>
+<p>Generate extern symbols.</p>
+</blockquote>
+</blockquote>
+<p><strong>--static</strong></p>
+<blockquote>
+<blockquote>
+<p>Generate static symbols (default).</p>
+</blockquote>
+</blockquote>
+<p><strong>--decoder</strong></p>
+<blockquote>
+<blockquote>
+<p>Provide a <strong>*_RUN_LENGTH_DECODE(image_buf, rle_data, size,
+bpp)</strong> macro definition to decode run-length encoded image
+data.</p>
+</blockquote>
+</blockquote>
+<p><strong>--name=identifier</strong></p>
+<blockquote>
+<blockquote>
+<p>Specifies the identifier name (prefix) for the generated variables or
+macros (useful only if <strong>--build-list</strong> was not
+specified).</p>
+</blockquote>
+</blockquote>
+<p><strong>--build-list</strong></p>
+<blockquote>
+<blockquote>
+<p>Enables (<strong>name</strong>, <strong>image</strong>) pair parsing
+mode.</p>
+</blockquote>
+</blockquote>
+<p><strong>-h, --help</strong></p>
+<blockquote>
+<blockquote>
+<p>Prints a brief help and exit.</p>
+</blockquote>
+</blockquote>
+<p><strong>-v, --version</strong></p>
+<blockquote>
+<blockquote>
+<p>Prints the tool version and exit.</p>
+</blockquote>
+</blockquote>
+<p><strong>--g-fatal-warnings</strong></p>
+<blockquote>
+<blockquote>
+<p>Makes warnings fatal, and causes the program to abort.</p>
+</blockquote>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p>The <strong>GdkPixbuf</strong> documentation, shipped by gdk-pixbuf,
+and also available online on <em>docs.gtk.org</em>.</p>
+<h1>BUGS</h1>
+<p>The runlength encoder gets out of sync with the pixel boundaries,
+since it includes the rowstride padding in the encoded stream.
+Furthermore, it generates pixbufs with suboptimal rowstride in some
+cases.</p>

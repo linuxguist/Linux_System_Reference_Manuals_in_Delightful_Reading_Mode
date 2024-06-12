@@ -1,0 +1,45 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Binding::Message::Error - a message encoding a method call
+error</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::DBus::Binding::Message::Error; my $error =
+Net::DBus::Binding::Message::Error-&gt;new( replyto =&gt; $method_call,
+name =&gt; "org.example.myobject.FooException", description =&gt;
+"Unable to do Foo when updating bar"); $connection-&gt;send($error);</p>
+<h1>DESCRIPTION</h1>
+<p>This module is part of the low-level DBus binding APIs, and should
+not be used by application code. No guarantees are made about APIs under
+the <code>Net::DBus::Binding::</code> namespace being stable across
+releases.</p>
+<p>This module provides a convenience constructor for creating a message
+representing an error condition.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $error = Net::DBus::Binding::Message::Error-&gt;new( replyto
+=&gt; $method_call, name =&gt; $name, description =&gt;
+$description);</dt>
+<dd>
+<p>Creates a new message, representing an error which occurred during
+the handling of the method call object passed in as the
+<code>replyto</code> parameter. The <code>name</code> parameter is the
+formal name of the error condition, while the <code>description</code>
+is a short piece of text giving more specific information on the
+error.</p>
+</dd>
+<dt>my $name = $error-&gt;get_error_name</dt>
+<dd>
+<p>Returns the formal name of the error, as previously passed in via the
+<code>name</code> parameter in the constructor.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2004-2009 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::Binding::Message</p>

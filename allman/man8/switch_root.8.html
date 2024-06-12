@@ -1,0 +1,47 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>switch_root - switch to another filesystem as the root of the mount
+tree</p>
+<h1>SYNOPSIS</h1>
+<p><strong>switch_root</strong> [<strong>-hV</strong>]</p>
+<p><strong>switch_root</strong> <em>newroot init</em>
+[<em>arg</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>switch_root</strong> moves already mounted <em>/proc</em>,
+<em>/dev</em>, <em>/sys</em> and <em>/run</em> to <em>newroot</em> and
+makes <em>newroot</em> the new root filesystem and starts <em>init</em>
+process.</p>
+<p><strong>WARNING: switch_root removes recursively all files and
+directories on the current root filesystem.</strong></p>
+<h1>OPTIONS</h1>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXIT STATUS</h1>
+<p><strong>switch_root</strong> returns 1 on failure, it never returns
+on success.</p>
+<h1>NOTES</h1>
+<p><strong>switch_root</strong> will fail to function if
+<em>newroot</em> is not the root of a mount. If you want to switch root
+into a directory that does not meet this requirement then you can first
+use a bind-mounting trick to turn any directory into a mount point:</p>
+<blockquote>
+<pre><code>mount --bind $DIR $DIR</code></pre>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>chroot</strong>(2), <strong>init</strong>(8),
+<strong>mkinitrd</strong>(8), <strong>mount</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>switch_root</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

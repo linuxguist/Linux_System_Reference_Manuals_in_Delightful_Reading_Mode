@@ -1,0 +1,73 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>readlink - print resolved symbolic links or canonical file names</p>
+<h1>SYNOPSIS</h1>
+<p><strong>readlink</strong> [<em>OPTION</em>]... <em>FILE</em>...</p>
+<h1>DESCRIPTION</h1>
+<p>Note <strong>realpath</strong>(1) is the preferred command to use for
+canonicalization functionality.</p>
+<p>Print value of a symbolic link or canonical file name</p>
+<dl>
+<dt><strong>-f</strong>, <strong>--canonicalize</strong></dt>
+<dd>
+<p>canonicalize by following every symlink in every component of the
+given name recursively; all but the last component must exist</p>
+</dd>
+<dt><strong>-e</strong>, <strong>--canonicalize-existing</strong></dt>
+<dd>
+<p>canonicalize by following every symlink in every component of the
+given name recursively, all components must exist</p>
+</dd>
+<dt><strong>-m</strong>, <strong>--canonicalize-missing</strong></dt>
+<dd>
+<p>canonicalize by following every symlink in every component of the
+given name recursively, without requirements on components existence</p>
+</dd>
+<dt><strong>-n</strong>, <strong>--no-newline</strong></dt>
+<dd>
+<p>do not output the trailing delimiter</p>
+</dd>
+</dl>
+<p><strong>-q</strong>, <strong>--quiet</strong></p>
+<dl>
+<dt><strong>-s</strong>, <strong>--silent</strong></dt>
+<dd>
+<p>suppress most error messages (on by default)</p>
+</dd>
+<dt><strong>-v</strong>, <strong>--verbose</strong></dt>
+<dd>
+<p>report error messages</p>
+</dd>
+<dt><strong>-z</strong>, <strong>--zero</strong></dt>
+<dd>
+<p>end each output line with NUL, not newline</p>
+</dd>
+<dt><strong>--help</strong></dt>
+<dd>
+<p>display this help and exit</p>
+</dd>
+<dt><strong>--version</strong></dt>
+<dd>
+<p>output version information and exit</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Written by Dmitry V. Levin.</p>
+<h1>REPORTING BUGS</h1>
+<p>GNU coreutils online help:
+&lt;https://www.gnu.org/software/coreutils/&gt;<br />
+Report any translation bugs to
+&lt;https://translationproject.org/team/&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2022 Free Software Foundation, Inc. License GPLv3+: GNU
+GPL version 3 or later &lt;https://gnu.org/licenses/gpl.html&gt;.<br />
+This is free software: you are free to change and redistribute it. There
+is NO WARRANTY, to the extent permitted by law.</p>
+<h1>SEE ALSO</h1>
+<p><strong>readlink</strong>(2), <strong>realpath</strong>(1),
+<strong>realpath</strong>(3)</p>
+<p><br />
+Full documentation
+&lt;https://www.gnu.org/software/coreutils/readlink&gt;<br />
+or available locally via: info '(coreutils) readlink invocation'</p>

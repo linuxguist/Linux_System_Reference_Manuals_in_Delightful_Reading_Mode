@@ -1,0 +1,41 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>nm-connection-editor - network connection editor for
+NetworkManager</p>
+<h1>SYNOPSIS</h1>
+<p><strong>nm-connection-editor</strong> [
+<em>OPTIONS</em>"<em>]</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>nm-connection-editor</strong> is a GTK‐based application to
+add, remove, and modify network connections stored by NetworkManager.
+NetworkManager must be running for any network connections to be added,
+removed, or modified.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-t, --type=&lt;type&gt;</strong></dt>
+<dd>
+<p>Type of connection to create or show. Values are NetworkManager
+setting names, eg "802-3-ethernet", "802-11-wireless", "bridge", "bond",
+"infiniband", "vlan", etc. Does nothing if --create or --show is not
+given.</p>
+</dd>
+<dt><strong>-s, --show</strong></dt>
+<dd>
+<p>Expand or collapse the network list to highlight the network
+connection type given by --type.</p>
+</dd>
+<dt><strong>-c, --create</strong></dt>
+<dd>
+<p>Create a new connection of the type given by --type and allow the
+user to modify connection details.</p>
+</dd>
+<dt><strong>-e, --edit=&lt;uuid&gt;</strong></dt>
+<dd>
+<p>Show the network connection edit window for the connection of the
+given UUID.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p><strong>nmcli(1),</strong> <strong>NetworkManager(8),</strong>
+<strong>nm-applet(1).</strong></p>

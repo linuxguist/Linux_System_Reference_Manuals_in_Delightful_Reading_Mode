@@ -1,0 +1,203 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>openssl-rsautl - RSA command</p>
+<h1>SYNOPSIS</h1>
+<p><strong>openssl</strong> <strong>rsautl</strong>
+[<strong>-help</strong>] [<strong>-in</strong> <em>file</em>]
+[<strong>-passin</strong> <em>arg</em>] [<strong>-rev</strong>]
+[<strong>-out</strong> <em>file</em>] [<strong>-inkey</strong>
+<em>filename</em>|<em>uri</em>] [<strong>-keyform</strong>
+<strong>DER</strong>|<strong>PEM</strong>|<strong>P12</strong>|<strong>ENGINE</strong>]
+[<strong>-pubin</strong>] [<strong>-certin</strong>]
+[<strong>-sign</strong>] [<strong>-verify</strong>]
+[<strong>-encrypt</strong>] [<strong>-decrypt</strong>]
+[<strong>-pkcs</strong>] [<strong>-x931</strong>]
+[<strong>-oaep</strong>] [<strong>-raw</strong>]
+[<strong>-hexdump</strong>] [<strong>-asn1parse</strong>]
+[<strong>-engine</strong> <em>id</em>] [<strong>-rand</strong>
+<em>files</em>] [<strong>-writerand</strong> <em>file</em>]
+[<strong>-provider</strong> <em>name</em>]
+[<strong>-provider-path</strong> <em>path</em>]
+[<strong>-propquery</strong> <em>propq</em>]</p>
+<h1>DESCRIPTION</h1>
+<p>This command has been deprecated. The
+<strong>openssl-pkeyutl</strong> (1) command should be used instead.</p>
+<p>This command can be used to sign, verify, encrypt and decrypt data
+using the RSA algorithm.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+<p>Print out a usage message.</p>
+</dd>
+<dt>-in filename</dt>
+<dd>
+<p>This specifies the input filename to read data from or standard input
+if this option is not specified.</p>
+</dd>
+<dt>-passin arg</dt>
+<dd>
+<p>The passphrase used in the output file. See see
+<strong>openssl-passphrase-options</strong> (1).</p>
+</dd>
+<dt>-rev</dt>
+<dd>
+<p>Reverse the order of the input.</p>
+</dd>
+<dt>-out filename</dt>
+<dd>
+<p>Specifies the output filename to write to or standard output by
+default.</p>
+</dd>
+<dt>-inkey filename|uri</dt>
+<dd>
+<p>The input key, by default it should be an RSA private key.</p>
+</dd>
+<dt>-keyform DER|PEM|P12|ENGINE</dt>
+<dd>
+<p>The key format; unspecified by default. See
+<strong>openssl-format-options</strong> (1) for details.</p>
+</dd>
+<dt>-pubin</dt>
+<dd>
+<p>The input file is an RSA public key.</p>
+</dd>
+<dt>-certin</dt>
+<dd>
+<p>The input is a certificate containing an RSA public key.</p>
+</dd>
+<dt>-sign</dt>
+<dd>
+<p>Sign the input data and output the signed result. This requires an
+RSA private key.</p>
+</dd>
+<dt>-verify</dt>
+<dd>
+<p>Verify the input data and output the recovered data.</p>
+</dd>
+<dt>-encrypt</dt>
+<dd>
+<p>Encrypt the input data using an RSA public key.</p>
+</dd>
+<dt>-decrypt</dt>
+<dd>
+<p>Decrypt the input data using an RSA private key.</p>
+</dd>
+<dt>-pkcs, -oaep, -x931, -raw</dt>
+<dd>
+<p>The padding to use: PKCS#1 v1.5 (the default), PKCS#1 OAEP, ANSI
+X9.31, or no padding, respectively. For signatures, only
+<strong>-pkcs</strong> and <strong>-raw</strong> can be used.</p>
+</dd>
+<dt>-hexdump</dt>
+<dd>
+<p>Hex dump the output data.</p>
+</dd>
+<dt>-asn1parse</dt>
+<dd>
+<p>Parse the ASN.1 output data, this is useful when combined with the
+<strong>-verify</strong> option.</p>
+</dd>
+<dt>-engine id</dt>
+<dd>
+<p>See Engine Options in <strong>openssl</strong> (1). This option is
+deprecated.</p>
+</dd>
+<dt>-rand files, -writerand file</dt>
+<dd>
+<p>See Random State Options in <strong>openssl</strong> (1) for
+details.</p>
+</dd>
+<dt>-provider name</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-provider-path path</dt>
+<dd>
+
+</dd>
+<dt>-propquery propq</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See Provider Options in <strong>openssl</strong> (1),
+<strong>provider</strong> (7), and <strong>property</strong> (7).</p>
+<h1>NOTES</h1>
+<p>Since this command uses the RSA algorithm directly, it can only be
+used to sign or verify small pieces of data.</p>
+<h1>EXAMPLES</h1>
+<p>Examples equivalent to these can be found in the documentation for
+the non-deprecated <strong>openssl-pkeyutl</strong> (1) command.</p>
+<p>Sign some data using a private key:</p>
+<p>openssl rsautl -sign -in file -inkey key.pem -out sig</p>
+<p>Recover the signed data</p>
+<p>openssl rsautl -verify -in sig -inkey key.pem</p>
+<p>Examine the raw signed data:</p>
+<p>openssl rsautl -verify -in sig -inkey key.pem -raw -hexdump 0000 - 00
+01 ff ff ff ff ff ff-ff ff ff ff ff ff ff ff ................ 0010 - ff
+ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff ................ 0020 - ff
+ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff ................ 0030 - ff
+ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff ................ 0040 - ff
+ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff ................ 0050 - ff
+ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff ................ 0060 - ff
+ff ff ff ff ff ff ff-ff ff ff ff ff ff ff ff ................ 0070 - ff
+ff ff ff 00 68 65 6c-6c 6f 20 77 6f 72 6c 64 .....hello world</p>
+<p>The PKCS#1 block formatting is evident from this. If this was done
+using encrypt and decrypt the block would have been of type 2 (the
+second byte) and random padding data visible instead of the 0xff
+bytes.</p>
+<p>It is possible to analyse the signature of certificates using this
+command in conjunction with <strong>openssl-asn1parse</strong> (1).
+Consider the self signed example in <em>certs/pca-cert.pem</em>. Running
+<strong>openssl-asn1parse</strong> (1) as follows yields:</p>
+<p>openssl asn1parse -in pca-cert.pem 0:d=0 hl=4 l= 742 cons: SEQUENCE
+4:d=1 hl=4 l= 591 cons: SEQUENCE 8:d=2 hl=2 l= 3 cons: cont [ 0 ] 10:d=3
+hl=2 l= 1 prim: INTEGER :02 13:d=2 hl=2 l= 1 prim: INTEGER :00 16:d=2
+hl=2 l= 13 cons: SEQUENCE 18:d=3 hl=2 l= 9 prim: OBJECT
+:md5WithRSAEncryption 29:d=3 hl=2 l= 0 prim: NULL 31:d=2 hl=2 l= 92
+cons: SEQUENCE 33:d=3 hl=2 l= 11 cons: SET 35:d=4 hl=2 l= 9 cons:
+SEQUENCE 37:d=5 hl=2 l= 3 prim: OBJECT :countryName 42:d=5 hl=2 l= 2
+prim: PRINTABLESTRING :AU .... 599:d=1 hl=2 l= 13 cons: SEQUENCE 601:d=2
+hl=2 l= 9 prim: OBJECT :md5WithRSAEncryption 612:d=2 hl=2 l= 0 prim:
+NULL 614:d=1 hl=3 l= 129 prim: BIT STRING</p>
+<p>The final BIT STRING contains the actual signature. It can be
+extracted with:</p>
+<p>openssl asn1parse -in pca-cert.pem -out sig -noout -strparse 614</p>
+<p>The certificate public key can be extracted with:</p>
+<p>openssl x509 -in test/testx509.pem -pubkey -noout &gt;pubkey.pem</p>
+<p>The signature can be analysed with:</p>
+<p>openssl rsautl -in sig -verify -asn1parse -inkey pubkey.pem -pubin
+0:d=0 hl=2 l= 32 cons: SEQUENCE 2:d=1 hl=2 l= 12 cons: SEQUENCE 4:d=2
+hl=2 l= 8 prim: OBJECT :md5 14:d=2 hl=2 l= 0 prim: NULL 16:d=1 hl=2 l=
+16 prim: OCTET STRING 0000 - f3 46 9e aa 1a 4a 73 c9-37 ea 93 00 48 25
+08 b5 .F...Js.7...H%..</p>
+<p>This is the parsed version of an ASN1 DigestInfo structure. It can be
+seen that the digest used was md5. The actual part of the certificate
+that was signed can be extracted with:</p>
+<p>openssl asn1parse -in pca-cert.pem -out tbs -noout -strparse 4</p>
+<p>and its digest computed with:</p>
+<p>openssl md5 -c tbs MD5(tbs)=
+f3:46:9e:aa:1a:4a:73:c9:37:ea:93:00:48:25:08:b5</p>
+<p>which it can be seen agrees with the recovered value above.</p>
+<h1>SEE ALSO</h1>
+<p><strong>openssl</strong> (1), <strong>openssl-pkeyutl</strong> (1),
+<strong>openssl-dgst</strong> (1), <strong>openssl-rsa</strong> (1),
+<strong>openssl-genrsa</strong> (1)</p>
+<h1>HISTORY</h1>
+<p>This command was deprecated in OpenSSL 3.0.</p>
+<p>The <strong>-engine</strong> option was deprecated in OpenSSL
+3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2023 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

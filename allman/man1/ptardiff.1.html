@@ -1,0 +1,23 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ptardiff - program that diffs an extracted archive against an
+unextracted one</p>
+<h1>DESCRIPTION</h1>
+<p>ptardiff is a small program that diffs an extracted archive against
+an unextracted one, using the perl module Archive::Tar. This effectively
+lets you view changes made to an archives contents. Provide the progam
+with an ARCHIVE_FILE and it will look up all the files with in the
+archive, scan the current working directory for a file with the name and
+diff it against the contents of the archive.</p>
+<h1>SYNOPSIS</h1>
+<p>ptardiff ARCHIVE_FILE ptardiff -h $ tar -xzf Acme-Buffy-1.3.tar.gz $
+vi Acme-Buffy-1.3/README [...] $ ptardiff Acme-Buffy-1.3.tar.gz &gt;
+README.patch</p>
+<h1>OPTIONS</h1>
+<p>h Prints this help message</p>
+<h1>SEE ALSO</h1>
+<p><strong>tar</strong> (1), Archive::Tar.</p>

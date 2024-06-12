@@ -1,0 +1,675 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::TList - Create and manipulate Tix Tabular List widgets</p>
+<h1>SYNOPSIS</h1>
+<p>    <em><code>$tlist</code></em> =
+<em><code>$parent</code></em>-&gt;<strong>TList</strong>(?<em>options</em>?);</p>
+<h1>SUPER-CLASS</h1>
+<p>None.</p>
+<h1>STANDARD OPTIONS</h1>
+<p><strong>-background</strong> <strong>-borderwidth</strong>
+<strong>-class</strong> <strong>-cursor</strong>
+<strong>-foreground</strong> <strong>-font</strong>
+<strong>-height</strong> <strong>-highlightcolor</strong>
+<strong>-highlightthickness</strong> <strong>-relief</strong>
+<strong>-selectbackground</strong> <strong>-selectforeground</strong>
+<strong>-xscrollcommand</strong> <strong>-yscrollcommand</strong>
+<strong>-width</strong></p>
+<p>See Tk::options for details of the standard options.</p>
+<h1>WIDGET-SPECIFIC OPTIONS</h1>
+<dl>
+<dt>Name: browsecmd</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: BrowseCmd</dt>
+<dd>
+
+</dd>
+<dt>Switch: -browsecmd</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a perl/Tk <strong>callback</strong> to be executed when the
+user browses through the entries in the TList widget.</p>
+<dl>
+<dt>Name: command</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Command</dt>
+<dd>
+
+</dd>
+<dt>Switch: -command</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the perl/Tk <strong>callback</strong> to be executed when
+the user invokes a list entry in the TList widget. Normally the user
+invokes a list entry by double-clicking it or pressing the Return
+key.</p>
+<dl>
+<dt>Name: foreground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Foreground</dt>
+<dd>
+
+</dd>
+<dt>Switch: -foreground</dt>
+<dd>
+
+</dd>
+<dt>Alias: -fg</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the default foreground color for the list entries.</p>
+<dl>
+<dt>Name: height</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Height</dt>
+<dd>
+
+</dd>
+<dt>Switch: -height</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired height for the window in number of
+characters.</p>
+<dl>
+<dt>Name: itemType</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: ItemType</dt>
+<dd>
+
+</dd>
+<dt>Switch: -itemtype</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the default type of display item for this TList widget.
+When you call the <strong>insert</strong> methods, display items of this
+type will be created if the <strong>-itemtype</strong> option is not
+specified.</p>
+<dl>
+<dt>Name: orient</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Orient</dt>
+<dd>
+
+</dd>
+<dt>Switch: -orient</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the order of tabularizing the list entries. When set to
+"<strong>vertical</strong>, the entries are arranged in a column, from
+top to bottom. If the entries cannot be contained in one column, the
+remaining entries will go to the next column, and so on. When set to
+<strong>horizontal</strong>", the entries are arranged in a row, from
+left to right. If the entries cannot be contained in one row, the
+remaining entries will go to the next row, and so on.</p>
+<dl>
+<dt>Name: padX</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Pad</dt>
+<dd>
+
+</dd>
+<dt>Switch: -padx</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The default horizontal padding for list entries.</p>
+<dl>
+<dt>Name: padY</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Pad</dt>
+<dd>
+
+</dd>
+<dt>Switch: -padx</dt>
+<dd>
+
+</dd>
+</dl>
+<p>The default vertical padding for list entries.</p>
+<dl>
+<dt>Name: selectBackground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SelectBackground</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectbackground</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the background color for the selected list entries.</p>
+<dl>
+<dt>Name: selectBorderWidth</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: BorderWidth</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectborderwidth</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a non-negative value indicating the width of the 3-D border
+to draw around selected items. The value may have any of the forms
+acceptable to <strong>Tk_GetPixels</strong>.</p>
+<dl>
+<dt>Name: selectForeground</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SelectForeground</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectforeground</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the foreground color for the selected list entries.</p>
+<dl>
+<dt>Name: selectMode</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SelectMode</dt>
+<dd>
+
+</dd>
+<dt>Switch: -selectmode</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies one of several styles for manipulating the selection. The
+value of the option may be arbitrary, but the default bindings expect it
+to be either <strong>single</strong>, <strong>browse</strong>,
+<strong>multiple</strong>, or <strong>extended</strong>; the default
+value is <strong>single</strong>.</p>
+<dl>
+<dt>Name: sizeCmd</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: SizeCmd</dt>
+<dd>
+
+</dd>
+<dt>Switch: -sizecmd</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies a perl/Tk <strong>callback</strong> to be called whenever
+the TList widget changes its size. This command can be useful to
+implement user scroll bars when needed features.</p>
+<dl>
+<dt>Name: state</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: State</dt>
+<dd>
+
+</dd>
+<dt>Switch: -state</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies whether the TList command should react to user actions.
+When set to "<strong>normal</strong>, the TList reacts to user actions
+in the normal way. When set to <strong>disabled</strong>", the TList can
+only be scrolled, but its entries cannot be selected or activated.</p>
+<dl>
+<dt>Name: width</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>Class: Width</dt>
+<dd>
+
+</dd>
+<dt>Switch: -width</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Specifies the desired width for the window in characters.</p>
+<h1>DESCRIPTION</h1>
+<p>The <strong>TList</strong> method creates a new window (given by the
+<code>$widget</code> argument) and makes it into a TList widget.
+Additional options, described above, may be specified on the command
+line or in the option database to configure aspects of the TList widget
+such as its cursor and relief.</p>
+<p>The TList widget can be used to display data in a tabular format. The
+list entries of a TList widget are similar to the entries in the Tk
+listbox widget. The main differences are (1) the TList widget can
+display the list entries in a two dimensional format and (2) you can use
+graphical images as well as multiple colors and fonts for the list
+entries.</p>
+<p>Each list entry is identified by an <strong>index</strong>, which can
+be in the following forms:</p>
+<dl>
+<dt>number</dt>
+<dd>
+<p>An integer that indicates the position of the entry in the list. 0
+means the first position, 1 means the second position, and so on.</p>
+</dd>
+<dt>end</dt>
+<dd>
+<p>Indicates the end of the listbox. For some commands this means just
+after the last entry; for other commands it means the last entry.</p>
+</dd>
+<dt>@x,y</dt>
+<dd>
+<p>Indicates the element that covers the point in the listbox window
+specified by x and y (in pixel coordinates). If no element covers that
+point, then the closest element to that point is used.</p>
+</dd>
+</dl>
+<h1>DISPLAY ITEMS</h1>
+<p>Each list entry in an TList widget is associated with a
+<strong>display</strong> item. The display item determines what visual
+information should be displayed for this list entry. Please see
+Tk::DItem for a list of all display items.</p>
+<p>When a list entry is created by the <strong>insert</strong> command,
+the type of its display item is determined by the
+<strong>-itemtype</strong> option passed to these commands. If the
+<strong>-itemtype</strong> is omitted, then by default the type
+specified by this TList widget's <strong>-itemtype</strong> option is
+used.</p>
+<h1>WIDGET METHODS</h1>
+<p>The <strong>TList</strong> method creates a widget object.</p>
+<p>This object supports the <strong>configure</strong> and
+<strong>cget</strong> methods described in Tk::options which can be used
+to enquire and modify the options described above. The widget also
+inherits all the methods provided by the generic Tk::Widget class.</p>
+<p>The following additional methods are available for TList widgets:</p>
+<dl>
+<dt>$tlist-&gt;anchorSet(index)</dt>
+<dd>
+<p>Sets the anchor to the list entry identified by <em>index</em>. The
+anchor is the end of the selection that is fixed while dragging out a
+selection with the mouse.</p>
+</dd>
+<dt>$tlist-&gt;anchorClear</dt>
+<dd>
+<p>Removes the anchor, if any, from this TList widget. This only removes
+the surrounding highlights of the anchor entry and does not affect its
+selection status.</p>
+</dd>
+<dt>$tlist-&gt;delete(from, ?to?)</dt>
+<dd>
+<p>Deletes one or more list entries between the two entries specified by
+the indices <em>from</em> and <em>to</em>. If <em>to</em> is not
+specified, deletes the single entry specified by <em>from</em>.</p>
+</dd>
+<dt>$tlist-&gt;dragsiteSet(index)</dt>
+<dd>
+<p>Sets the dragsite to the list entry identified by <em>index</em>. The
+dragsite is used to indicate the source of a drag-and-drop action.
+Currently drag-and-drop functionality has not been implemented in Tix
+yet.</p>
+</dd>
+<dt>$tlist-&gt;dragsiteClear</dt>
+<dd>
+<p>Remove the dragsite, if any, from the this TList widget. This only
+removes the surrounding highlights of the dragsite entry and does not
+affect its selection status.</p>
+</dd>
+<dt>$tlist-&gt;dropsiteSet(index)</dt>
+<dd>
+<p>Sets the dropsite to the list entry identified by <em>index</em>. The
+dropsite is used to indicate the target of a drag-and-drop action.
+Currently drag-and-drop functionality has not been implemented in Tix
+yet.</p>
+</dd>
+<dt>$tlist-&gt;dropsiteClear</dt>
+<dd>
+<p>Remove the dropsite, if any, from the this TList widget. This only
+removes the surrounding highlights of the dropsite entry and does not
+affect its selection status.</p>
+</dd>
+<dt>$tlist-&gt;entrycget(index, option)</dt>
+<dd>
+<p>Returns the current value of the configuration option given by
+<em>option</em> for the entry indentfied by <em>index</em>.
+<em>Option</em> may have any of the values accepted by the
+<strong>insert</strong> method.</p>
+</dd>
+<dt>$tlist-&gt;entryconfigure(index, ?option?, ?value, option, value,
+...?)</dt>
+<dd>
+<p>Query or modify the configuration options of the list entry
+identified by <em>index</em>. If no <em>option</em> is specified,
+returns a list describing all of the available options for
+<em>index</em> (see <strong>Tk_ConfigureInfo</strong> for information on
+the format of this list). If <em>option</em> is specified with no
+<em>value</em>, then the method returns a list describing the one named
+option (this list will be identical to the corresponding sublist of the
+value returned if no <em>option</em> is specified). If one or more
+<em>option-value</em> pairs are specified, then the command modifies the
+given option(s) to have the given value(s); in this case the method
+returns an empty string. <em>Option</em> may have any of the values
+accepted by the <strong>insert</strong> method. The exact set of options
+depends on the value of the <strong>-itemtype</strong> option passed to
+the the <strong>insert</strong> method when this list entry is
+created.</p>
+</dd>
+<dt>$tlist-&gt;insert(index, ?option, value, ...?)</dt>
+<dd>
+<p>Creates a new list entry at the position indicated by <em>index</em>.
+The following configuration options can be given to configure the list
+entry:</p>
+<dl>
+<dt>-itemtype =&gt; type</dt>
+<dd>
+<p>Specifies the type of display item to be display for the new list
+entry. <em>type</em> must be a valid display item type. Currently the
+available display item types are <strong>image</strong>,
+<strong>imagetext</strong>, <strong>text</strong>, and
+<em><code>$widget</code></em>. If this option is not specified, then by
+default the type specified by this TList widget's
+<strong>-itemtype</strong> option is used.</p>
+</dd>
+<dt>-state =&gt; state</dt>
+<dd>
+<p>Specifies whether this entry can be selected or invoked by the user.
+Must be either <strong>normal</strong> or <strong>disabled</strong>.</p>
+</dd>
+<dt>-data =&gt; data</dt>
+<dd>
+<p>Arbitrary data to be associated with the entry (a perl scalar
+value).</p>
+</dd>
+</dl>
+<p>The <strong>insert</strong> method accepts additional configuration
+options to configure the display item associated with this list entry.
+The set of additional configuration options depends on the type of the
+display item given by the <strong>-itemtype</strong> option. Please see
+Tk::DItem for a list of the configuration options for each of the
+display item types.</p>
+</dd>
+<dt>$tlist-&gt;info(option, arg, ...)</dt>
+<dd>
+<p>Query information about the TList widget. <em>option</em> can be one
+of the following:</p>
+<dl>
+<dt>$tlist-&gt;info(anchor, index)</dt>
+<dd>
+<p>Returns the index of the current anchor, if any, of the TList widget.
+If the anchor is not set, returns the empty string.</p>
+</dd>
+<dt>$tlist-&gt;info(dragsite, index)</dt>
+<dd>
+<p>Returns the index of the current dragsite, if any, of the TList
+widget. If the dragsite is not set, returns the empty string.</p>
+</dd>
+<dt>$tlist-&gt;info(dropsite, index)</dt>
+<dd>
+<p>Returns the index of the current dropsite, if any, of the TList
+widget. If the dropsite is not set, returns the empty string.</p>
+</dd>
+<dt>$tlist-&gt;info(selection)</dt>
+<dd>
+<p>Returns a list of selected elements in the TList widget. If no
+entries are selected, returns an empty string.</p>
+</dd>
+</dl>
+</dd>
+<dt>$tlist-&gt;nearest(x, y)</dt>
+<dd>
+<p>Given an <em>(x,y)</em> coordinate within the TList window, this
+command returns the index of the TList element nearest to that
+coordinate.</p>
+</dd>
+<dt>$tlist-&gt;see(index)</dt>
+<dd>
+<p>Adjust the view in the TList so that the entry given by
+<em>index</em> is visible. If the entry is already visible then the
+command has no effect; otherwise TList scrolls to bring the element into
+view at the edge to which it is nearest.</p>
+</dd>
+<dt>$tlist-&gt;selection(option, arg, ...)</dt>
+<dd>
+<p>This command is used to adjust the selection within a TList widget.
+It has several forms, depending on <em>option</em>:</p>
+<dl>
+<dt>$tlist-&gt;selectionClear(?from?, ?to?)</dt>
+<dd>
+<p>When no extra arguments are given, deselects all of the list
+entrie(s) in this TList widget. When only <em>from</em> is given, only
+the list entry identified by <em>from</em> is deselected. When both
+<em>from</em> and <em>to</em> are given, deselects all of the list
+entrie(s) between between <em>from</em> and <em>to</em>, inclusive,
+without affecting the selection state of entries outside that range.</p>
+</dd>
+<dt>$tlist-&gt;selectionIncludes(index)</dt>
+<dd>
+<p>Returns 1 if the list entry indicated by <em>index</em> is currently
+selected; returns 0 otherwise.</p>
+</dd>
+<dt>$tlist-&gt;selectionSet(from, ?to?)</dt>
+<dd>
+<p>Selects all of the list entrie(s) between between <em>from</em> and
+<em>to</em>, inclusive, without affecting the selection state of entries
+outside that range. When only <em>from</em> is given, only the list
+entry identified by <em>from</em> is selected.</p>
+</dd>
+</dl>
+</dd>
+<dt>$tlist-&gt;xview(args)</dt>
+<dd>
+<p>This command is used to query and change the horizontal position of
+the information in the widget's window. It can take any of the following
+forms:</p>
+<dl>
+<dt>$tlist-&gt;xview</dt>
+<dd>
+<p>Returns a list containing two elements. Each element is a real
+fraction between 0 and 1; together they describe the horizontal span
+that is visible in the window. For example, if the first element is 0.2
+and the second element is 0.6, 20% of the TList entry is off-screen to
+the left, the middle 40% is visible in the window, and 40% of the entry
+is off-screen to the right. These are the same values passed to
+scrollbars via the <strong>-xscrollcommand</strong> option.</p>
+</dd>
+<dt>$tlist-&gt;xview(index)</dt>
+<dd>
+<p>Adjusts the view in the window so that the list entry identified by
+<em>index</em> is aligned to the left edge of the window.</p>
+</dd>
+<dt>$tlist-&gt;xviewMoveto(fraction)</dt>
+<dd>
+<p>Adjusts the view in the window so that <em>fraction</em> of the total
+width of the TList is off-screen to the left. <em>fraction</em> must be
+a fraction between 0 and 1.</p>
+</dd>
+<dt>$tlist-&gt;xviewScroll(number, what)</dt>
+<dd>
+<p>This command shifts the view in the window left or right according to
+<em>number</em> and <em>what</em>. <em>Number</em> must be an integer.
+<em>What</em> must be either <strong>units</strong> or
+<strong>pages</strong> or an abbreviation of one of these. If
+<em>what</em> is <strong>units</strong>, the view adjusts left or right
+by <em>number</em> character units (the width of the <strong>0</strong>
+character) on the display; if it is <strong>pages</strong> then the view
+adjusts by <em>number</em> screenfuls. If <em>number</em> is negative
+then characters farther to the left become visible; if it is positive
+then characters farther to the right become visible.</p>
+</dd>
+</dl>
+</dd>
+<dt>$tlist-&gt;yview(?args?)</dt>
+<dd>
+<p>This command is used to query and change the vertical position of the
+entries in the widget's window. It can take any of the following
+forms:</p>
+<dl>
+<dt>$tlist-&gt;yview</dt>
+<dd>
+<p>Returns a list containing two elements, both of which are real
+fractions between 0 and 1. The first element gives the position of the
+list element at the top of the window, relative to the TList as a whole
+(0.5 means it is halfway through the TList, for example). The second
+element gives the position of the list entry just after the last one in
+the window, relative to the TList as a whole. These are the same values
+passed to scrollbars via the <strong>-yscrollcommand</strong>
+option.</p>
+</dd>
+<dt>$tlist-&gt;yview(index)</dt>
+<dd>
+<p>Adjusts the view in the window so that the list entry given by
+<em>index</em> is displayed at the top of the window.</p>
+</dd>
+<dt>$tlist-&gt;yviewMoveto(fraction)</dt>
+<dd>
+<p>Adjusts the view in the window so that the list entry given by
+<em>fraction</em> appears at the top of the window. <em>Fraction</em> is
+a fraction between 0 and 1; 0 indicates the first entry in the TList,
+0.33 indicates the entry one-third the way through the TList, and so
+on.</p>
+</dd>
+<dt>$tlist-&gt;yviewScroll(number, what)</dt>
+<dd>
+<p>This command adjust the view in the window up or down according to
+<em>number</em> and <em>what</em>. <em>Number</em> must be an integer.
+<em>What</em> must be either <strong>units</strong> or
+<strong>pages</strong>. If <em>what</em> is <strong>units</strong>, the
+view adjusts up or down by <em>number</em> lines; if it is
+<strong>pages</strong> then the view adjusts by <em>number</em>
+screenfuls. If <em>number</em> is negative then earlier entries become
+visible; if it is positive then later entries become visible.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h1>BINDINGS</h1>
+<dl>
+<dt>[1]</dt>
+<dd>
+<p>If the <strong>-selectmode</strong> is browse, when the user drags
+the mouse pointer over the list entries, the entry under the pointer
+will be highlighted and the <strong>-browsecmd</strong> procedure will
+be called with one parameter, the index of the highlighted entry. Only
+one entry can be highlighted at a time. The <strong>-command</strong>
+procedure will be called when the user double-clicks on a list
+entry.</p>
+</dd>
+<dt>[2]</dt>
+<dd>
+<p>If the <strong>-selectmode</strong> is single, the entries will only
+be highlighted by mouse &lt;ButtonRelease-1&gt; events. When a new list
+entry is highlighted, the <strong>-browsecmd</strong> procedure will be
+called with one parameter indicating the highlighted list entry. The
+<strong>-command</strong> procedure will be called when the user
+double-clicks on a list entry.</p>
+</dd>
+<dt>[3]</dt>
+<dd>
+<p>If the <strong>-selectmode</strong> is multiple, when the user drags
+the mouse pointer over the list entries, all the entries under the
+pointer will be highlighted. However, only a contiguous region of list
+entries can be selected. When the highlighted area is changed, the
+<strong>-browsecmd</strong> procedure will be called with an undefined
+parameter. It is the responsibility of the <strong>-browsecmd</strong>
+procedure to find out the exact highlighted selection in the TList. The
+<strong>-command</strong> procedure will be called when the user
+double-clicks on a list entry.</p>
+</dd>
+<dt>[4]</dt>
+<dd>
+<p>If the <strong>-selectmode</strong> is extended, when the user drags
+the mouse pointer over the list entries, all the entries under the
+pointer will be highlighted. The user can also make disjointed
+selections using &lt;Control-ButtonPress-1&gt;. When the highlighted
+area is changed, the <strong>-browsecmd</strong> procedure will be
+called with an undefined parameter. It is the responsibility of the
+<strong>-browsecmd</strong> procedure to find out the exact highlighted
+selection in the TList. The <strong>-command</strong> procedure will be
+called when the user double-clicks on a list entry.</p>
+</dd>
+</dl>
+<h1>EXAMPLE</h1>
+<p>This example demonstrates how to use an TList to store a list of
+numbers:</p>
+<p>use strict; use Tk (); use Tk::TList; my $mw =
+Tk::MainWindow-&gt;new(); my $image = $mw-&gt;Getimage(folder); my
+$tlist = $mw-&gt;TList(-orient =&gt; vertical); for my $text ( qw/one
+two three four five six seven eight nine/ ) { $tlist-&gt;insert(end,
+-itemtype=&gt;imagetext, -image=&gt;$image, -text=&gt;$text); }
+$tlist-&gt;pack(-expand=&gt;yes, -fill=&gt;both); Tk::MainLoop;</p>
+<h1>SEE ALSO</h1>
+<p>Tk::options Tk::Widget Tk::DItem Tk::HList Tk::TixGrid</p>
+<h1>KEYWORDS</h1>
+<p>Tix(n), Tabular Listbox, Display Items</p>

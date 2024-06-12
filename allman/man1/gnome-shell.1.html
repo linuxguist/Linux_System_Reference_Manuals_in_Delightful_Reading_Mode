@@ -1,0 +1,94 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>gnome-shell - Graphical shell for the GNOME desktop</p>
+<h1>SYNOPSIS</h1>
+<p><strong>gnome-shell</strong> [<em>OPTION</em>...]</p>
+<h1>DESCRIPTION</h1>
+<p>GNOME shell provides core user interface functions for the GNOME 3
+desktop, like switching to windows and launching applications. GNOME
+shell takes advantage of the capabilities of modern graphics hardware
+and introduces innovative user interface concepts to provide a visually
+attractive and easy to use experience.</p>
+<p>gnome-shell is a required component of the GNOME desktop, i.e. it is
+listed in the RequiredComponents field of
+/usr/share/gnome-session/sessions/gnome.session. It is started in the
+window manager phase of the session.</p>
+<h1>OPTIONS</h1>
+<p><strong>--wayland</strong></p>
+<blockquote>
+<p>Run as a wayland compositor</p>
+</blockquote>
+<p><strong>--display-server</strong></p>
+<blockquote>
+<p>Run as a full display server, rather than nested</p>
+</blockquote>
+<p><strong>--nested</strong></p>
+<blockquote>
+<p>Run as a nested compositor</p>
+</blockquote>
+<p><strong>--no-x11</strong></p>
+<blockquote>
+<p>Run wayland compositor without starting Xwayland</p>
+</blockquote>
+<p><strong>--x11</strong></p>
+<blockquote>
+<p>Run with X11 backend</p>
+</blockquote>
+<p><strong>--wayland-display</strong>=<em>DISPLAY</em></p>
+<blockquote>
+<p>Wayland display name to use</p>
+</blockquote>
+<p><strong>-d</strong>, <strong>--display</strong>=<em>DISPLAY</em></p>
+<blockquote>
+<p>X display to use</p>
+</blockquote>
+<p><strong>-r</strong>, <strong>--replace</strong></p>
+<blockquote>
+<p>Replace the running window manager</p>
+</blockquote>
+<p><strong>--sm-disable</strong></p>
+<blockquote>
+<p>Disable connection to the session manager</p>
+</blockquote>
+<p><strong>--sm-client-id</strong>=<em>ID</em></p>
+<blockquote>
+<p>Specify session management <em>ID</em></p>
+</blockquote>
+<p><strong>--sm-save-file</strong>=<em>FILE</em></p>
+<blockquote>
+<p>Initialize session from <em>FILE</em></p>
+</blockquote>
+<p><strong>--sync</strong></p>
+<blockquote>
+<p>Make X calls synchronous</p>
+</blockquote>
+<p><strong>--mode</strong>=<em>MODE</em></p>
+<blockquote>
+<p>Use a specific mode, e.g. "gdm" for login screen</p>
+</blockquote>
+<p><strong>--list-modes</strong></p>
+<blockquote>
+<p>List possible modes and exit</p>
+</blockquote>
+<p><strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit</p>
+</blockquote>
+<p><strong>--help</strong></p>
+<blockquote>
+<p>Display help and exit</p>
+</blockquote>
+<h1>FILES</h1>
+<p>/usr/share/gnome-session/sessions/gnome.session,
+/usr/share/applications/org.gnome.Shell.desktop.</p>
+<h1>BUGS</h1>
+<p>The bug tracker can be reached by visiting the website
+<strong>https://gitlab.gnome.org/GNOME/gnome-shell/issues</strong>.
+Before sending a bug report, please verify that you have the latest
+version of gnome-shell. Many bugs (major and minor) are fixed at each
+release, and if yours is out of date, the problem may already have been
+solved.</p>
+<h1>ADDITIONAL INFORMATION</h1>
+<p>For further information, visit the website
+<strong>https://wiki.gnome.org/Projects/GnomeShell</strong>.</p>

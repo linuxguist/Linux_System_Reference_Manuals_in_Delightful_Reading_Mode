@@ -1,0 +1,428 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>hciconfig - Configure Bluetooth devices</p>
+<h1>SYNOPSIS</h1>
+<p><strong>hciconfig</strong> -h</p>
+<p><strong>hciconfig</strong> [-a]</p>
+<p><strong>hciconfig</strong> [-a] <em>hciX</em> [<em>COMMAND</em>
+[<em>PARAMETERS</em>]]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>hciconfig(1)</strong> is used to configure Bluetooth devices.
+<em>hciX</em> is the name of a Bluetooth device installed in the system.
+If hciX is not given, hciconfig prints name and basic information about
+all the Bluetooth devices installed in the system.</p>
+<p>If <em>hciX</em> is given but no command is given, it prints basic
+information on device <em>hciX</em> only. Basic information is interface
+type, BD address, ACL MTU, SCO MTU, flags (up, init, running, raw, page
+scan enabled, inquiry scan enabled, inquiry, authentication enabled,
+encryption enabled).</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-a<em>,</em> --all</strong></dt>
+<dd>
+<p>Print features, packet type, link policy, link mode, class, Version
+other than the basic info.</p>
+</dd>
+<dt><strong>-h<em>,</em> --help</strong></dt>
+<dd>
+<p>Show help options</p>
+</dd>
+</dl>
+</blockquote>
+<h1>COMMANDS</h1>
+<blockquote>
+<dl>
+<dt><strong>up</strong></dt>
+<dd>
+<p>Open and initialize HCI device.</p>
+</dd>
+<dt><strong>down</strong></dt>
+<dd>
+<p>Close HCI device.</p>
+</dd>
+<dt><strong>reset</strong></dt>
+<dd>
+<p>Reset HCI device.</p>
+</dd>
+<dt><strong>rstat</strong></dt>
+<dd>
+<p>Reset statistic counters.</p>
+</dd>
+<dt><strong>auth</strong></dt>
+<dd>
+<p>Enable authentication (sets device to security mode 3).</p>
+</dd>
+<dt><strong>noauth</strong></dt>
+<dd>
+<p>Disable authentication.</p>
+</dd>
+<dt><strong>encrypt</strong></dt>
+<dd>
+<p>Enable encryption (sets device to security mode 3).</p>
+</dd>
+<dt><strong>noencrypt</strong></dt>
+<dd>
+<p>Disable encryption.</p>
+</dd>
+<dt><strong>secmgr</strong></dt>
+<dd>
+<p>Enable security manager (current kernel support is limited).</p>
+</dd>
+<dt><strong>nosecmgr</strong></dt>
+<dd>
+<p>Disable security manager.</p>
+</dd>
+<dt><strong>piscan</strong></dt>
+<dd>
+<p>Enable page and inquiry scan.</p>
+</dd>
+<dt><strong>noscan</strong></dt>
+<dd>
+<p>Disable page and inquiry scan.</p>
+</dd>
+<dt><strong>iscan</strong></dt>
+<dd>
+<p>Enable inquiry scan, disable page scan.</p>
+</dd>
+<dt><strong>pscan</strong></dt>
+<dd>
+<p>Enable page scan, disable inquiry scan.</p>
+</dd>
+<dt><strong>ptype [<em>type</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>type</em> <strong>, displays the current packet types.
+Otherwise, all the</strong> packet types specified by <em>type</em>
+<strong>are set.</strong> <em>type</em> <strong>is a comma-separated
+list</strong> of packet types, where the possible packet types are
+<strong>DM1, DM3,</strong> <strong>DM5, DH1, DH3, DH5, HV1, HV2,
+HV3.</strong></p>
+</dd>
+<dt><strong>name [<em>name</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>name</em><strong>, prints local name. Otherwise, sets
+local name to</strong> <em>name</em><strong>.</strong></p>
+</dd>
+<dt><strong>class [<em>class</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>class</em><strong>, prints class of device. Otherwise,
+sets class of device</strong> to <em>class</em><strong>.</strong>
+<em>class</em> <strong>is a 24-bit hex number describing the class of
+device,</strong> as specified in section 1.2 of the Bluetooth Assigned
+Numers document.</p>
+</dd>
+<dt><strong>voice [<em>voice</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>voice</em><strong>, prints voice setting. Otherwise, sets
+voice setting to</strong> <em>voice</em><strong>.</strong>
+<em>voice</em> <strong>is a 16-bit hex number describing the voice
+setting.</strong></p>
+</dd>
+<dt><strong>iac [<em>iac</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>iac</em><strong>, prints the current IAC setting.
+Otherwise, sets the IAC to</strong> <em>iac</em><strong>.</strong></p>
+</dd>
+<dt><strong>inqtpl [<em>level</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>level</em><strong>, prints out the current inquiry
+transmit power level.</strong> Otherwise, sets inquiry transmit power
+level to <em>level</em><strong>.</strong></p>
+</dd>
+<dt><strong>inqmode [<em>mode</em><strong>]</strong></strong></dt>
+<dd>
+<blockquote>
+<blockquote>
+<p>With no <em>mode</em><strong>, prints out the current inquiry mode.
+Otherwise, sets</strong> inquiry mode to
+<em>mode</em><strong>.</strong></p>
+</blockquote>
+</blockquote>
+</dd>
+</dl>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>mode</em></td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Standard Inquiry</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Inquiry with RSSI</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Inquiry with RSSI or Extended Inquiry</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<dl>
+<dt><strong>inqdata [<em>data</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>data</em><strong>, prints out the current inquiry data.
+Otherwise, sets</strong> inquiry data to
+<em>data</em><strong>.</strong></p>
+</dd>
+<dt><strong>inqtype [<em>type</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>type</em><strong>, prints out the current inquiry scan
+type. Otherwise, sets</strong> inquiry scan type to
+<em>type</em><strong>.</strong></p>
+</dd>
+<dt><strong>inqparams [<em>win:int</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>win:int</em><strong>, prints inquiry scan window and
+interval. Otherwise,</strong> sets inquiry scan window to <em>win</em>
+<strong>slots and inquiry scan interval to</strong> <em>int</em>
+<strong>slots.</strong></p>
+</dd>
+<dt><strong>pageparms [<em>win:int</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>win:int</em><strong>, prints page scan window and
+interval. Otherwise,</strong> sets page scan window to <em>win</em>
+<strong>slots and page scan interval to</strong> <em>int</em>
+<strong>slots.</strong></p>
+</dd>
+<dt><strong>pageto [<em>to</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>to</em><strong>, prints page timeout. Otherwise, sets
+page timeout</strong> <em>to</em> <strong>to</strong> slots.</p>
+</dd>
+<dt><strong>afhmode [<em>mode</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>mode</em><strong>, prints out the current AFH mode.
+Otherwise, sets AFH mode</strong> to <em>mode</em><strong>.</strong></p>
+</dd>
+</dl>
+</blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>mode</em></td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Enable</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Disable</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<dl>
+<dt><strong>sspmode [<em>mode</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>mode</em><strong>, prints out the current Simple Pairing
+mode. Otherwise,</strong> sets Simple Pairing mode to
+<em>mode</em><strong>.</strong></p>
+</dd>
+</dl>
+</blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>mode</em></td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Enable</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">Disable</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<dl>
+<dt><strong>aclmtu <em>mtu:pkt</em></strong></dt>
+<dd>
+<p>Sets ACL MTU to <em>mtu</em> <strong>bytes and ACL buffer size
+to</strong> <em>pkt</em> <strong>packets.</strong></p>
+</dd>
+<dt><strong>scomtu <em>mtu:pkt</em></strong></dt>
+<dd>
+<p>Sets SCO MTU to <em>mtu</em> <strong>bytes and SCO buffer size
+to</strong> <em>pkt</em> <strong>packets.</strong></p>
+</dd>
+<dt><strong>delkey
+&lt;<em>bdaddr</em><strong>&gt;</strong></strong></dt>
+<dd>
+<p>This command deletes the stored link key for <em>bdaddr</em>
+<strong>from the device.</strong></p>
+</dd>
+<dt><strong>oobdata</strong></dt>
+<dd>
+<p>Get local OOB data (invalidates previously read data).</p>
+</dd>
+<dt><strong>commands</strong></dt>
+<dd>
+<p>Display supported commands.</p>
+</dd>
+<dt><strong>features</strong></dt>
+<dd>
+<p>Display device features.</p>
+</dd>
+<dt><strong>version</strong></dt>
+<dd>
+<p>Display version information.</p>
+</dd>
+<dt><strong>revision</strong></dt>
+<dd>
+<p>Display revision information.</p>
+</dd>
+<dt><strong>lm [<em>mode</em><strong>]</strong></strong></dt>
+<dd>
+<p>With no <em>mode</em><strong>, prints link mode. CENTRAL or
+PERIPHERAL mean,</strong> respectively, to ask to become central or to
+remain peripheral when a connection request comes in. The additional
+keyword <strong>ACCEPT means that</strong> baseband connections will be
+accepted even if there are no listening <em>AF_BLUETOOTH</em>
+<strong>sockets.</strong> <em>mode</em> <strong>is NONE or a
+comma-separated list of</strong> keywords, where possible keywords are
+<strong>CENTRAL and ACCEPT. NONE</strong> sets link policy to the
+default behaviour of remaining peripheral and not accepting baseband
+connections when there are no listening <em>AF_BLUETOOTH</em> sockets.
+If <strong>CENTRAL is present, the device will ask to become
+central</strong> if a connection request comes in. If <strong>ACCEPT is
+present, the device will</strong> accept baseband connections even when
+there are no listening <em>AF_BLUETOOTH</em> sockets.</p>
+</dd>
+<dt><strong>block &lt;<em>bdaddr</em><strong>&gt;</strong></strong></dt>
+<dd>
+<p>Add a device to the reject list</p>
+</dd>
+<dt><strong>unblock
+&lt;<em>bdaddr</em><strong>&gt;</strong></strong></dt>
+<dd>
+<p>Remove a device from the reject list</p>
+</dd>
+<dt><strong>lerandaddr
+&lt;<em>bdaddr</em><strong>&gt;</strong></strong></dt>
+<dd>
+<p>Set LE Random Address</p>
+</dd>
+<dt><strong>leadv [<em>type</em><strong>]</strong></strong></dt>
+<dd>
+<p>Enable LE Advertising.</p>
+</dd>
+</dl>
+</blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>type</em></td>
+<td style="text-align: left;">Description</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">Connectable undirected advertising
+(default)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Non connectable undirected
+advertising</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<dl>
+<dt><strong>noleadv</strong></dt>
+<dd>
+<p>Disable LE Advertising</p>
+</dd>
+<dt><strong>lestates</strong></dt>
+<dd>
+<p>Display the supported LE states</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>AUTHOR</h1>
+<p>Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;, Marcel Holtmann
+&lt;marcel@holtmann.org&gt;, Fabrizio Gennari
+&lt;fabrizio.gennari@philips.com&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

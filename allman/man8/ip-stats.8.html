@@ -1,0 +1,120 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ip-stats - manage and show interface statistics</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ip</strong> <strong>stats</strong> { <em>COMMAND</em> |
+<strong>help</strong> }</p>
+<p><strong>ip stats show</strong> [ <strong>dev</strong> <em>DEV</em> ]
+[ <strong>group</strong> <em>GROUP</em> [ <strong>subgroup</strong><em>
+SUBGROUP</em> [ <strong>suite</strong> <em> SUITE</em> ] ... ] ... ]
+...</p>
+<p><strong>ip stats set</strong> <strong>dev</strong><em> DEV</em>
+<strong>l3_stats</strong> { <strong>on</strong> | <strong>off</strong>
+}</p>
+<h1>DESCRIPTION</h1>
+<dl>
+<dt><strong>ip stats set</strong></dt>
+<dd>
+<p>is used for toggling whether a certain HW statistics suite is
+collected on a given netdevice. The following statistics suites are
+supported:</p>
+</dd>
+</dl>
+<p><strong>l3_stats</strong> L3 stats reflect traffic that takes place
+in a HW device on an object that corresponds to the given software
+netdevice.</p>
+<dl>
+<dt><strong>ip stats show</strong></dt>
+<dd>
+<p>is used for showing stats on a given netdevice, or dumping statistics
+across all netdevices. By default, all stats are requested. It is
+possible to filter which stats are requested by using the
+<strong>group</strong> and <strong>subgroup</strong> keywords.</p>
+<p>It is possible to specify several groups, or several subgroups for
+one group. When no subgroups are given for a group, all the subgroups
+are requested.</p>
+<p>The following groups are recognized:</p>
+</dd>
+</dl>
+<p><strong>group link</strong> - Link statistics. The same suite that
+"ip -s link show" shows.</p>
+<p><strong>group offload</strong> - A group that contains a number of
+HW-oriented statistics. See below for individual subgroups within this
+group.</p>
+<p><strong>group xstats</strong> - Extended statistics. A subgroup
+identifies the type of netdevice to show the statistics for.</p>
+<p><strong>group xstats_slave</strong> - Extended statistics for the
+slave of a netdevice of a given type. A subgroup identifies the type of
+master netdevice.</p>
+<p><strong>group afstats</strong> - A group for address-family specific
+netdevice statistics.</p>
+<p><strong>group offload </strong>subgroups:</p>
+<p><strong>subgroup cpu_hit</strong> - The <strong>cpu_hit</strong>
+statistics suite is useful on hardware netdevices. The
+<strong>link</strong> statistics on these devices reflect both the
+hardware- and software-datapath traffic. The <strong>cpu_hit</strong>
+statistics then only reflect software-datapath traffic.</p>
+<p><strong>subgroup hw_stats_info</strong> - This suite does not include
+traffic statistics, but rather communicates the state of other
+statistics. Through this subgroup, it is possible to discover whether a
+given statistic was enabled, and when it was, whether any device driver
+actually configured its device to collect these statistics. For example,
+<strong>l3_stats</strong> was enabled in the following case, but no
+driver has installed it:</p>
+<p># ip stats show dev swp1 group offload subgroup hw_stats_info<br />
+56: swp1: group offload subgroup hw_stats_info<br />
+l3_stats on used off</p>
+<p>After an L3 address is added to the netdevice, the counter will be
+installed:</p>
+<p># ip addr add dev swp1 192.0.2.1/28<br />
+# ip stats show dev swp1 group offload subgroup hw_stats_info<br />
+56: swp1: group offload subgroup hw_stats_info<br />
+l3_stats on used on</p>
+<p><strong>subgroup l3_stats</strong> - These statistics reflect L3
+traffic that takes place in HW on an object that corresponds to the
+netdevice. Note that this suite is disabled by default and needs to be
+first enabled through <strong>ip stats set.</strong></p>
+<p>For example:</p>
+<p># ip stats show dev swp2.200 group offload subgroup l3_stats<br />
+112: swp2.200: group offload subgroup l3_stats on used on<br />
+RX: bytes packets errors dropped mcast<br />
+8900 72 2 0 3<br />
+TX: bytes packets errors dropped<br />
+7176 58 0 0</p>
+<p>Note how the l3_stats_info for the selected group is also part of the
+dump.</p>
+<p><strong>group xstats </strong>and<strong> group xstats_slave
+</strong>subgroups:</p>
+<p><strong>subgroup bridge [ suite stp ] [ suite mcast ]</strong> -
+Statistics for STP and, respectively, IGMP / MLD (under the keyword
+<strong>mcast</strong>) traffic on bridges and their slaves.</p>
+<p><strong>subgroup bond [ suite 802.3ad ]</strong> - Statistics for
+LACP traffic on bond devices and their slaves.</p>
+<p><strong>group afstats </strong>subgroups:</p>
+<p><strong>subgroup mpls</strong> - Statistics for MPLS traffic seen on
+the netdevice. For example:</p>
+<p># ip stats show dev veth01 group afstats subgroup mpls<br />
+3: veth01: group afstats subgroup mpls<br />
+RX: bytes packets errors dropped noroute<br />
+0 0 0 0 0<br />
+TX: bytes packets errors dropped<br />
+216 2 0 0</p>
+<h1>EXAMPLES</h1>
+<p># ip stats set dev swp1 l3_stats on</p>
+<blockquote>
+<p>Enables collection of L3 HW statistics on swp1.</p>
+</blockquote>
+<p># ip stats show group offload</p>
+<blockquote>
+<p>Shows all offload statistics on all netdevices.</p>
+</blockquote>
+<p># ip stats show dev swp1 group link</p>
+<blockquote>
+<p>Shows link statistics on the given netdevice.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><br />
+<strong>ip</strong>(8), <strong>ip-link</strong>(8),</p>
+<h1>AUTHOR</h1>
+<p>Manpage by Petr Machata.</p>

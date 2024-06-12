@@ -1,0 +1,23 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>debconf-escape - helper when working with debconf's escape
+capability</p>
+<h1>SYNOPSIS</h1>
+<p>debconf-escape -e &lt; unescaped-text debconf-escape -u &lt;
+escaped-text</p>
+<h1>DESCRIPTION</h1>
+<p>When debconf has the 'escape' capability set, it will expect commands
+you send it to have backslashes and newlines escaped (as <code>\\</code>
+and <code>\n</code> respectively) and will in turn escape backslashes
+and newlines in its replies. This can be used, for example, to
+substitute multi-line strings into templates, or to get multi-line
+extended descriptions reliably using <code>METAGET</code>.</p>
+<h1>SEE ALSO</h1>
+<p><strong>debconf-devel</strong> (7) (available in the debconf-doc
+package)</p>
+<h1>AUTHOR</h1>
+<p>Colin Watson &lt;cjwatson@debian.org&gt;</p>

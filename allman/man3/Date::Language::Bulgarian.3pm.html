@@ -1,0 +1,30 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Date::Language::Bulgarian - localization for Date::Format</p>
+<h1>DESCRIPTION</h1>
+<p>This is Bulgarian localization for Date::Format. It is important to
+note that this module source code is in utf8. All strings which it
+outputs are in utf8, so it is safe to use it currently only with
+English. You are left alone to try and convert the output when using
+different Date::Language::* in the same application. This should be
+addresed in the future.</p>
+<h1>SYNOPSIS</h1>
+<p>use strict; use warnings; use Date::Language; local $\=$/; my
+$template =%a %b %e %T %Y (%Y-%m-%d %H:%M:%S); my $time=1290883821; #or
+just use time(); my @lt = localtime($time); my %languages = qw(English
+GMT German EEST Bulgarian EET); binmode(select,:utf8); foreach my
+$l(keys %languages){ my $lang = Date::Language-&gt;new($l); my $zone =
+$languages{$l}; print $/. "$l $zone"; print
+$lang-&gt;time2str($template, $time); print
+$lang-&gt;time2str($template, $time, $zone); print
+$lang-&gt;strftime($template, \@lt); }</p>
+<h1>AUTHOR</h1>
+<p>Krasimir Berov (berov@cpan.org)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 2010 Krasimir Berov. This program is free software; you
+can redistribute it and/or modify it under the same terms as Perl
+itself.</p>

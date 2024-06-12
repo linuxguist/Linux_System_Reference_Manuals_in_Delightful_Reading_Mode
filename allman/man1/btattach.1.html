@@ -1,0 +1,127 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>btattach - Attach serial devices to BlueZ stack</p>
+<h1>SYNOPSIS</h1>
+<p><strong>btattach</strong> [<strong>-B</strong> <em>device</em>]
+[<strong>-A</strong> <em>device</em>] [<strong>-P</strong>
+<em>protocol</em>] [<strong>-R</strong>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>btattach(1)</strong> is used to attach a serial UART to the
+Bluetooth stack as a transport interface.</p>
+<h1>OPTIONS</h1>
+<blockquote>
+<dl>
+<dt><strong>-B</strong><em> device,</em><strong> --brder</strong><em>
+device</em></dt>
+<dd>
+<p>Attach a BR/EDR controller</p>
+</dd>
+<dt><strong>-A</strong><em> device,</em><strong> --amp</strong><em>
+device</em></dt>
+<dd>
+<p>Attach an AMP controller</p>
+</dd>
+<dt><strong>-P</strong><em> protocol,</em><strong>
+--protocol</strong><em> protocol</em></dt>
+<dd>
+<p>Specify the protocol type for talking to the device.</p>
+<p>Supported values are:</p>
+</dd>
+</dl>
+</blockquote>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>protocol</em></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">h4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bcsp</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3wire</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">h4ds</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ll</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ath3k</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">intel</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bcm</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">qca</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">_</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<dl>
+<dt><strong>-S</strong><em> baudrate,</em><strong> --speed</strong><em>
+baudrate</em></dt>
+<dd>
+<p>Specify wich baudrate to use</p>
+</dd>
+<dt><strong>-N, --noflowctl</strong></dt>
+<dd>
+<p>Disable flow control</p>
+</dd>
+<dt><strong>-v, --version</strong></dt>
+<dd>
+<p>Show version</p>
+</dd>
+<dt><strong>-h, --help</strong></dt>
+<dd>
+<p>Show help options</p>
+</dd>
+</dl>
+</blockquote>
+<h1>RESOURCES</h1>
+<p><em>http://www.bluez.org</em></p>
+<h1>REPORTING BUGS</h1>
+<p><em>linux-bluetooth@vger.kernel.org</em></p>
+<h1>COPYRIGHT</h1>
+<p>Free use of this software is granted under ther terms of the GNU
+Lesser General Public Licenses (LGPL).</p>

@@ -1,0 +1,54 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>aa-enabled - test whether AppArmor is enabled</p>
+<h1>SYNOPSIS</h1>
+<p><strong>aa-enabled</strong> [options]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>aa-enabled</strong> is used to determine if AppArmor is
+enabled.</p>
+<h1>OPTIONS</h1>
+<p><strong>aa-enabled</strong> accepts the following arguments:</p>
+<dl>
+<dt>-h, --help</dt>
+<dd>
+<p>Display a brief usage guide.</p>
+</dd>
+<dt>-q, --quiet</dt>
+<dd>
+<p>Do not output anything to stdout. This option is intended to be used
+by scripts that simply want to use the exit code to determine if
+AppArmor is enabled.</p>
+</dd>
+<dt>-x, --exclusive</dt>
+<dd>
+<p>Require AppArmor to have exclusive access to shared LSM interfaces to
+be considered enabled.</p>
+</dd>
+</dl>
+<h1>EXIT STATUS</h1>
+<p>Upon exiting, <strong>aa-enabled</strong> will set its exit status to
+the following values:</p>
+<ol start="0" type="1">
+<li><p>if AppArmor is enabled.</p></li>
+<li><p>if AppArmor is not enabled/loaded.</p></li>
+<li><p>intentionally not used as an <strong>aa-enabled</strong> exit
+status.</p></li>
+<li><p>if the AppArmor control files aren't available under
+/sys/kernel/security/.</p></li>
+<li><p>if <strong>aa-enabled</strong> doesn't have enough privileges to
+read the apparmor control files.</p></li>
+<li><p>AppArmor is enabled but does not have access to shared LSM
+interfaces.</p></li>
+<li><p>if any unexpected error or condition is encountered.</p></li>
+</ol>
+<h1>BUGS</h1>
+<p>If you find any bugs, please report them at
+&lt;https://gitlab.com/apparmor/apparmor/-/issues&gt;.</p>
+<h1>SEE ALSO</h1>
+<p><strong>apparmor</strong> (7), <strong>apparmor.d</strong> (5),
+<strong>aa_is_enabled</strong> (2), and
+&lt;https://wiki.apparmor.net&gt;.</p>

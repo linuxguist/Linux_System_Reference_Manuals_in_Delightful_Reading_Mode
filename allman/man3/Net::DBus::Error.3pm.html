@@ -1,0 +1,63 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Error - Error details for remote method invocation</p>
+<h1>SYNOPSIS</h1>
+<p>package Music::Player::UnknownFormat; use base qw(Net::DBus::Error);
+# Define an error type for unknown track encoding type # for a music
+player service sub new { my $proto = shift; my $class = ref($proto) ||
+$proto; my $self = $class-&gt;SUPER::new(name =&gt;
+"org.example.music.UnknownFormat", message =&gt; "Unknown track encoding
+format"); } package Music::Player::Engine; ...snip... # Play either mp3
+or ogg music tracks, otherwise # thrown an error sub play { my $self =
+shift; my $url = shift; if ($url =~ /\.(mp3|ogg)$/) { ...play the track
+} else { die Music::Player::UnknownFormat-&gt;new(); } }</p>
+<h1>DESCRIPTION</h1>
+<p>This objects provides for strongly typed error handling. Normally a
+service would simply call</p>
+<p>die "some message text"</p>
+<p>When returning the error condition to the calling DBus client, the
+message is associated with a generic error code or
+org.freedesktop.DBus.Failed. While this suffices for many applications,
+occasionally it is desirable to be able to catch and handle specific
+error conditions. For such scenarios the service should create
+subclasses of the <code>Net::DBus::Error</code> object providing in a
+custom error name. This error name is then sent back to the client
+instead of the genreic org.freedesktop.DBus.Failed code.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>my $error = Net::DBus::Error-&gt;new(name =&gt; $error_name, message
+=&gt; $description);</dt>
+<dd>
+<p>Creates a new error object whose name is given by the
+<code>name</code> parameter, and long descriptive text is provided by
+the <code>message</code> parameter. The <code>name</code> parameter has
+certain formatting rules which must be adhered to. It must only contain
+the letters 'a'-'Z', '0'-'9', '-', '_' and '.'. There must be at least
+two components separated by a '.', For example a valid name is
+'org.example.Music.UnknownFormat'.</p>
+</dd>
+<dt>$error-&gt;name</dt>
+<dd>
+<p>Returns the DBus error name associated with the object.</p>
+</dd>
+<dt>$error-&gt;message</dt>
+<dd>
+<p>Returns the descriptive text/message associated with the error
+condition.</p>
+</dd>
+<dt>$error-&gt;stringify</dt>
+<dd>
+<p>Formats the error as a string in a manner suitable for printing out /
+logging / displaying to the user, etc.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2005-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus, Net::DBus::Object</p>

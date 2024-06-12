@@ -1,0 +1,228 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>NetworkManager-dispatcher - Dispatch user scripts for
+NetworkManager</p>
+<h1>SYNOPSIS</h1>
+<p><strong>NetworkManager</strong> <strong>[OPTIONS...]</strong></p>
+<h1>DESCRIPTION</h1>
+<p>NetworkManager-dispatcher service is a D-Bus activated service that
+runs user provided scripts upon certain changes in NetworkManager.</p>
+<p>NetworkManager-dispatcher will execute scripts in the
+/{etc,usr/lib}/NetworkManager/dispatcher.d directory or subdirectories
+in alphabetical order in response to network events. Each script should
+be a regular executable file owned by root. Furthermore, it must not be
+writable by group or other, and not setuid.</p>
+<p>Each script receives two arguments, the first being the interface
+name of the device an operation just happened on, and second the action.
+For device actions, the interface is the name of the kernel interface
+suitable for IP configuration. Thus it is either VPN_IP_IFACE,
+DEVICE_IP_IFACE, or DEVICE_IFACE, as applicable. For the
+<em>hostname</em> action the device name is always "none" and for
+<em>connectivity-change</em> it is empty.</p>
+<p>The actions are:</p>
+<p><em>pre-up</em></p>
+<blockquote>
+<p>The interface is connected to the network but is not yet fully
+activated. Scripts acting on this event must be placed or symlinked into
+the /etc/NetworkManager/dispatcher.d/pre-up.d directory, and
+NetworkManager will wait for script execution to complete before
+indicating to applications that the interface is fully activated.</p>
+</blockquote>
+<p><em>up</em></p>
+<blockquote>
+<p>The interface has been activated.</p>
+</blockquote>
+<p><em>pre-down</em></p>
+<blockquote>
+<p>The interface will be deactivated but has not yet been disconnected
+from the network. Scripts acting on this event must be placed or
+symlinked into the /etc/NetworkManager/dispatcher.d/pre-down.d
+directory, and NetworkManager will wait for script execution to complete
+before disconnecting the interface from its network. Note that this
+event is not emitted for forced disconnections, like when carrier is
+lost or a wireless signal fades. It is only emitted when there is an
+opportunity to cleanly handle a network disconnection event.</p>
+</blockquote>
+<p><em>down</em></p>
+<blockquote>
+<p>The interface has been deactivated.</p>
+</blockquote>
+<p><em>vpn-pre-up</em></p>
+<blockquote>
+<p>The VPN is connected to the network but is not yet fully activated.
+Scripts acting on this event must be placed or symlinked into the
+/etc/NetworkManager/dispatcher.d/pre-up.d directory, and NetworkManager
+will wait for script execution to complete before indicating to
+applications that the VPN is fully activated.</p>
+</blockquote>
+<p><em>vpn-up</em></p>
+<blockquote>
+<p>A VPN connection has been activated.</p>
+</blockquote>
+<p><em>vpn-pre-down</em></p>
+<blockquote>
+<p>The VPN will be deactivated but has not yet been disconnected from
+the network. Scripts acting on this event must be placed or symlinked
+into the /etc/NetworkManager/dispatcher.d/pre-down.d directory, and
+NetworkManager will wait for script execution to complete before
+disconnecting the VPN from its network. Note that this event is not
+emitted for forced disconnections, like when the VPN terminates
+unexpectedly or general connectivity is lost. It is only emitted when
+there is an opportunity to cleanly handle a VPN disconnection event.</p>
+</blockquote>
+<p><em>vpn-down</em></p>
+<blockquote>
+<p>A VPN connection has been deactivated.</p>
+</blockquote>
+<p><em>hostname</em></p>
+<blockquote>
+<p>The system hostname has been updated. Use gethostname(2) to retrieve
+it. The interface name (first argument) is empty and no environment
+variable is set for this action.</p>
+</blockquote>
+<p><em>dhcp4-change</em></p>
+<blockquote>
+<p>The DHCPv4 lease has changed (renewed, rebound, etc).</p>
+</blockquote>
+<p><em>dhcp6-change</em></p>
+<blockquote>
+<p>The DHCPv6 lease has changed (renewed, rebound, etc).</p>
+</blockquote>
+<p><em>connectivity-change</em></p>
+<blockquote>
+<p>The network connectivity state has changed (no connectivity, went
+online, etc).</p>
+</blockquote>
+<p><em>reapply</em></p>
+<blockquote>
+<p>The connection was reapplied on the device.</p>
+</blockquote>
+<p>The environment contains more information about the interface and the
+connection. The following variables are available for the use in the
+dispatcher scripts:</p>
+<p><em>NM_DISPATCHER_ACTION</em></p>
+<blockquote>
+<p>The dispatcher action like "up" or "dhcp4-change", identical to the
+first command line argument. Since NetworkManager 1.12.0.</p>
+</blockquote>
+<p><em>CONNECTION_UUID</em></p>
+<blockquote>
+<p>The UUID of the connection profile.</p>
+</blockquote>
+<p><em>CONNECTION_ID</em></p>
+<blockquote>
+<p>The name (ID) of the connection profile.</p>
+</blockquote>
+<p><em>CONNECTION_DBUS_PATH</em></p>
+<blockquote>
+<p>The NetworkManager D-Bus path of the connection.</p>
+</blockquote>
+<p><em>CONNECTION_FILENAME</em></p>
+<blockquote>
+<p>The backing file name of the connection profile (if any).</p>
+</blockquote>
+<p><em>CONNECTION_EXTERNAL</em></p>
+<blockquote>
+<p>If "1", this indicates that the connection describes a network
+configuration created outside of NetworkManager.</p>
+</blockquote>
+<p><em>DEVICE_IFACE</em></p>
+<blockquote>
+<p>The interface name of the control interface of the device. Depending
+on the device type, this differs from <em>DEVICE_IP_IFACE</em>. For
+example for ADSL devices, this could be atm0 or for WWAN devices it
+might be ttyUSB0.</p>
+</blockquote>
+<p><em>DEVICE_IP_IFACE</em></p>
+<blockquote>
+<p>The IP interface name of the device. This is the network interface on
+which IP addresses and routes will be configured.</p>
+</blockquote>
+<p><em>IP4_ADDRESS_N</em></p>
+<blockquote>
+<p>The IPv4 address in the format "address/prefix gateway", where N is a
+number from 0 to (# IPv4 addresses - 1). gateway item in this variable
+is deprecated, use IP4_GATEWAY instead.</p>
+</blockquote>
+<p><em>IP4_NUM_ADDRESSES</em></p>
+<blockquote>
+<p>The variable contains the number of IPv4 addresses the script may
+expect.</p>
+</blockquote>
+<p><em>IP4_GATEWAY</em></p>
+<blockquote>
+<p>The gateway IPv4 address in traditional numbers-and-dots
+notation.</p>
+</blockquote>
+<p><em>IP4_ROUTE_N</em></p>
+<blockquote>
+<p>The IPv4 route in the format "address/prefix next-hop metric", where
+N is a number from 0 to (# IPv4 routes - 1).</p>
+</blockquote>
+<p><em>IP4_NUM_ROUTES</em></p>
+<blockquote>
+<p>The variable contains the number of IPv4 routes the script may
+expect.</p>
+</blockquote>
+<p><em>IP4_NAMESERVERS</em></p>
+<blockquote>
+<p>The variable contains a space-separated list of the DNS servers.</p>
+</blockquote>
+<p><em>IP4_DOMAINS</em></p>
+<blockquote>
+<p>The variable contains a space-separated list of the search
+domains.</p>
+</blockquote>
+<p><em>DHCP4_&lt;dhcp-option-name&gt;</em></p>
+<blockquote>
+<p>If the connection used DHCP for address configuration, the received
+DHCP configuration is passed in the environment using standard DHCP
+option names, prefixed with "DHCP4_", like "DHCP4_HOST_NAME=foobar".</p>
+</blockquote>
+<p><em>IP6_&lt;name&gt; and DHCP6_&lt;name&gt;</em></p>
+<blockquote>
+<p>The same variables as for IPv4 are available for IPv6, but the
+prefixes are IP6_ and DHCP6_ instead.</p>
+</blockquote>
+<p><em>CONNECTIVITY_STATE</em></p>
+<blockquote>
+<p>The network connectivity state, which can take the values defined by
+the NMConnectivityState type, from the org.freedesktop.NetworkManager
+D-Bus API: UNKNOWN, NONE, PORTAL, LIMITED or FULL. Note: this variable
+will only be set for connectivity-change actions.</p>
+</blockquote>
+<p>In case of VPN, VPN_IP_IFACE is set, and IP4_*, IP6_* variables with
+VPN prefix are exported too, like VPN_IP4_ADDRESS_0,
+VPN_IP4_NUM_ADDRESSES.</p>
+<p>Dispatcher scripts are run one at a time, but asynchronously from the
+main NetworkManager process, and will be killed if they run for too
+long. If your script might take arbitrarily long to complete, you should
+spawn a child process and have the parent return immediately. Scripts
+that are symbolic links pointing inside the
+/etc/NetworkManager/dispatcher.d/no-wait.d/ directory are run
+immediately, without waiting for the termination of previous scripts,
+and in parallel. Also beware that once a script is queued, it will
+always be run, even if a later event renders it obsolete. (Eg, if an
+interface goes up, and then back down again quickly, it is possible that
+one or more "up" scripts will be run after the interface has gone
+down.)</p>
+<h1>BUGS</h1>
+<p>Please report any bugs you find in NetworkManager at the
+<strong>NetworkManager issue tracker</strong>[1].</p>
+<h1>SEE ALSO</h1>
+<p><strong>NetworkManager home page</strong>[2],
+<strong>NetworkManager</strong>(8),</p>
+<h1>NOTES</h1>
+<dl>
+<dt> 1.</dt>
+<dd>
+<p>NetworkManager issue tracker</p>
+<p>https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/issues</p>
+</dd>
+<dt> 2.</dt>
+<dd>
+<p>NetworkManager home page</p>
+<p>https://networkmanager.dev</p>
+</dd>
+</dl>

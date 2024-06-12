@@ -1,0 +1,216 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::Binding::Message - Base class for messages</p>
+<h1>SYNOPSIS</h1>
+<p>Sending a message</p>
+<p>my $msg = new Net::DBus::Binding::Message::Signal; my $iterator =
+$msg-&gt;iterator; $iterator-&gt;append_byte(132);
+$iterator-&gt;append_int32(14241); $connection-&gt;send($msg);</p>
+<h1>DESCRIPTION</h1>
+<p>Provides a base class for the different kinds of message that can be
+sent/received. Instances of this class are never instantiated directly,
+rather one of the four sub-types Net::DBus::Binding::Message::Signal,
+Net::DBus::Binding::Message::MethodCall,
+Net::DBus::Binding::Message::MethodReturn,
+Net::DBus::Binding::Message::Error should be used.</p>
+<h1>CONSTANTS</h1>
+<p>The following constants are defined in this module. They are not
+exported into the caller's namespace &amp; thus must be referenced with
+their fully qualified package names</p>
+<dl>
+<dt>TYPE_ARRAY</dt>
+<dd>
+<p>Constant representing the signature value associated with the array
+data type.</p>
+</dd>
+<dt>TYPE_BOOLEAN</dt>
+<dd>
+<p>Constant representing the signature value associated with the boolean
+data type.</p>
+</dd>
+<dt>TYPE_BYTE</dt>
+<dd>
+<p>Constant representing the signature value associated with the byte
+data type.</p>
+</dd>
+<dt>TYPE_DICT_ENTRY</dt>
+<dd>
+<p>Constant representing the signature value associated with the
+dictionary entry data type.</p>
+</dd>
+<dt>TYPE_DOUBLE</dt>
+<dd>
+<p>Constant representing the signature value associated with the IEEE
+double precision floating point data type.</p>
+</dd>
+<dt>TYPE_INT16</dt>
+<dd>
+<p>Constant representing the signature value associated with the signed
+16 bit integer data type.</p>
+</dd>
+<dt>TYPE_INT32</dt>
+<dd>
+<p>Constant representing the signature value associated with the signed
+32 bit integer data type.</p>
+</dd>
+<dt>TYPE_INT64</dt>
+<dd>
+<p>Constant representing the signature value associated with the signed
+64 bit integer data type.</p>
+</dd>
+<dt>TYPE_OBJECT_PATH</dt>
+<dd>
+<p>Constant representing the signature value associated with the object
+path data type.</p>
+</dd>
+<dt>TYPE_STRING</dt>
+<dd>
+<p>Constant representing the signature value associated with the UTF-8
+string data type.</p>
+</dd>
+<dt>TYPE_SIGNATURE</dt>
+<dd>
+<p>Constant representing the signature value associated with the
+signature data type.</p>
+</dd>
+<dt>TYPE_STRUCT</dt>
+<dd>
+<p>Constant representing the signature value associated with the struct
+data type.</p>
+</dd>
+<dt>TYPE_UINT16</dt>
+<dd>
+<p>Constant representing the signature value associated with the
+unsigned 16 bit integer data type.</p>
+</dd>
+<dt>TYPE_UINT32</dt>
+<dd>
+<p>Constant representing the signature value associated with the
+unsigned 32 bit integer data type.</p>
+</dd>
+<dt>TYPE_UINT64</dt>
+<dd>
+<p>Constant representing the signature value associated with the
+unsigned 64 bit integer data type.</p>
+</dd>
+<dt>TYPE_VARIANT</dt>
+<dd>
+<p>Constant representing the signature value associated with the variant
+data type.</p>
+</dd>
+<dt>TYPE_UNIX_FD</dt>
+<dd>
+<p>Constant representing the signature value associated with the unix
+file descriptor data type.</p>
+</dd>
+</dl>
+<h1>METHODS</h1>
+<dl>
+<dt>my $msg = Net::DBus::Binding::Message-&gt;new(message =&gt;
+$rawmessage);</dt>
+<dd>
+<p>Creates a new message object, initializing it with the underlying C
+message object given by the <code>message</code> object. This
+constructor is intended for internal use only, instead refer to one of
+the four sub-types for this class for specific message types</p>
+</dd>
+<dt>my $type = $msg-&gt;get_type</dt>
+<dd>
+<p>Retrieves the type code for this message. The returned value
+corresponds to one of the four
+<code>Net::DBus::Binding::Message::MESSAGE_TYPE_*</code> constants.</p>
+</dd>
+<dt>my $interface = $msg-&gt;get_interface</dt>
+<dd>
+<p>Retrieves the name of the interface targeted by this message,
+possibly an empty string if there is no applicable interface for this
+message.</p>
+</dd>
+<dt>my $path = $msg-&gt;get_path</dt>
+<dd>
+<p>Retrieves the object path associated with the message, possibly an
+empty string if there is no applicable object for this message.</p>
+</dd>
+<dt>my $name = $msg-&gt;get_destination</dt>
+<dd>
+<p>Retrieves the unique or well-known bus name for client intended to be
+the recipient of the message. Possibly returns an empty string if the
+message is being broadcast to all clients.</p>
+</dd>
+<dt>my $name = $msg-&gt;get_sender</dt>
+<dd>
+<p>Retireves the unique name of the client sending the message</p>
+</dd>
+<dt>my $serial = $msg-&gt;get_serial</dt>
+<dd>
+<p>Retrieves the unique serial number of this message. The number is
+guaranteed unique for as long as the connection over which the message
+was sent remains open. May return zero, if the message is yet to be
+sent.</p>
+</dd>
+<dt>my $name = $msg-&gt;get_member</dt>
+<dd>
+<p>For method calls, retrieves the name of the method to be invoked,
+while for signals, retrieves the name of the signal.</p>
+</dd>
+<dt>my $sig = $msg-&gt;get_signature</dt>
+<dd>
+<p>Retrieves a string representing the type signature of the values
+packed into the body of the message.</p>
+</dd>
+<dt>$msg-&gt;set_sender($name)</dt>
+<dd>
+<p>Set the name of the client sending the message. The name must be the
+unique name of the client.</p>
+</dd>
+<dt>$msg-&gt;set_destination($name)</dt>
+<dd>
+<p>Set the name of the intended recipient of the message. This is
+typically used for signals to switch them from broadcast to unicast.</p>
+</dd>
+<dt>my $iterator = $msg-&gt;iterator;</dt>
+<dd>
+<p>Retrieves an iterator which can be used for reading or writing fields
+of the message. The returned object is an instance of the
+<code>Net::DBus::Binding::Iterator</code> class.</p>
+</dd>
+<dt>$boolean = $msg-&gt;get_no_reply()</dt>
+<dd>
+<p>Gets the flag indicating whether the message is expecting a reply to
+be sent.</p>
+</dd>
+<dt>$msg-&gt;set_no_reply($boolean)</dt>
+<dd>
+<p>Toggles the flag indicating whether the message is expecting a reply
+to be sent. All method call messages expect a reply by default. By
+toggling this flag the communication latency is reduced by removing the
+need for the client to wait</p>
+</dd>
+<dt>my @values = $msg-&gt;get_args_list</dt>
+<dd>
+<p>De-marshall all the values in the body of the message, using the
+message signature to identify data types. The values are returned as a
+list.</p>
+</dd>
+<dt>$msg-&gt;append_args_list(@values)</dt>
+<dd>
+<p>Append a set of values to the body of the message. Values will be
+encoded as either a string, list or dictionary as appropriate to their
+Perl data type. For more specific data typing needs, the
+Net::DBus::Binding::Iterator object should be used instead.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel P. Berrange</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2004-2011 Daniel P. Berrange</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus::Binding::Server, Net::DBus::Binding::Connection,
+Net::DBus::Binding::Message::Signal,
+Net::DBus::Binding::Message::MethodCall,
+Net::DBus::Binding::Message::MethodReturn,
+Net::DBus::Binding::Message::Error</p>

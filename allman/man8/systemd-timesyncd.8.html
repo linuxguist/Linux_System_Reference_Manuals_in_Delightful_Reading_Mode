@@ -1,0 +1,71 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>systemd-timesyncd.service, systemd-timesyncd - Network Time
+Synchronization</p>
+<h1>SYNOPSIS</h1>
+<p>systemd-timesyncd.service</p>
+<p>/lib/systemd/systemd-timesyncd</p>
+<h1>DESCRIPTION</h1>
+<p>systemd-timesyncd is a system service that may be used to synchronize
+the local system clock with a remote Network Time Protocol (NTP) server.
+It also saves the local time to disk every time the clock has been
+synchronized and uses this to possibly advance the system realtime clock
+on subsequent reboots to ensure it (roughly) monotonically advances even
+if the system lacks a battery-buffered RTC chip.</p>
+<p>The systemd-timesyncd service implements SNTP only. This minimalistic
+service will step the system clock for large offsets or slowly adjust it
+for smaller deltas. Complex use cases that require full NTP support (and
+where SNTP is not sufficient) are not covered by systemd-timesyncd.</p>
+<p>The NTP servers contacted are determined from the global settings in
+<strong>timesyncd.conf</strong>(5), the per-link static settings in
+.network files, and the per-link dynamic settings received over DHCP.
+See <strong>systemd.network</strong>(5) for further details.</p>
+<p><strong>timedatectl</strong>(1)s <strong>set-ntp</strong> command may
+be used to enable and start, or disable and stop this service.</p>
+<p><strong>timedatectl</strong>(1)s <strong>timesync-status</strong> or
+<strong>show-timesync</strong> command can be used to show the current
+status of this service.</p>
+<p>systemd-timesyncd initialization delays the start of units that are
+ordered after time-set.target (see <strong>systemd.special</strong>(7)
+for details) until the local time has been updated from
+/var/lib/systemd/timesync/clock (see below) in order to make it roughly
+monotonic. It does not delay other units until synchronization with an
+accurate reference time sources has been reached. Use
+<strong>systemd-time-wait-sync.service</strong>(8) to achieve that,
+which will delay start of units that are ordered after time-sync.target
+until synchronization to an accurate reference clock is reached.</p>
+<h1>FILES</h1>
+<p>/var/lib/systemd/timesync/clock</p>
+<blockquote>
+<p>The modification time ("mtime") of this file is updated on each
+successful NTP synchronization or after each <em>SaveIntervalSec=</em>
+time interval, as specified in <strong>timesyncd.conf</strong>(5).</p>
+<p>When initializing, the local clock is advanced to the modification
+time of this file (if the file timestamp is in the past this adjustment
+is not made). If the file does not exist yet, the clock is instead
+advanced to the modification time of /usr/lib/clock-epoch – if it exists
+– or to a time derived from the source tree at build time. This
+mechanism is used to ensure that the system clock remains somewhat
+reasonably initialized and roughly monotonic across reboots, in case no
+battery-buffered local RTC is available.</p>
+</blockquote>
+<p>/usr/lib/clock-epoch</p>
+<blockquote>
+<p>The modification time ("mtime") of this file is used for advancing
+the system clock in case /var/lib/systemd/timesync/clock does not exist
+yet, see above.</p>
+</blockquote>
+<p>/run/systemd/timesync/synchronized</p>
+<blockquote>
+<p>A file that is touched on each successful synchronization, to assist
+systemd-time-wait-sync and other applications to detecting
+synchronization with accurate reference clocks.</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>timesyncd.conf</strong>(5),
+<strong>systemd.network</strong>(5),
+<strong>systemd-networkd.service</strong>(8),
+<strong>systemd-time-wait-sync.service</strong>(8),
+<strong>systemd.special</strong>(7), <strong>timedatectl</strong>(1),
+<strong>localtime</strong>(5), <strong>hwclock</strong>(8)</p>

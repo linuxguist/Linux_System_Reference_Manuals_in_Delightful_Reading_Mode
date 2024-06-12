@@ -1,0 +1,100 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ico - animate an icosahedron or other polyhedron</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ico</strong> [-display display] [-geometry geometry] [-r] [-d
+pattern] [-i] [-dbl] [-faces] [-noedges] [-sleep n] [-obj object]
+[-colors color-list]</p>
+<p><strong>ico</strong> -objhelp</p>
+<p><strong>ico</strong> -version</p>
+<h1>DESCRIPTION</h1>
+<p><em>Ico</em> displays a wire-frame rotating polyhedron, with hidden
+lines removed, or a solid-fill polyhedron with hidden faces removed.
+There are a number of different polyhedra available; adding a new
+polyhedron to the program is quite simple.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>-r</strong></dt>
+<dd>
+<p>Display on the root window instead of creating a new window.</p>
+</dd>
+<dt><strong>-d pattern</strong></dt>
+<dd>
+<p>Specify a bit pattern for drawing dashed lines for wire frames.</p>
+</dd>
+<dt><strong>-i</strong></dt>
+<dd>
+<p>Use inverted colors for wire frames.</p>
+</dd>
+<dt><strong>-dbl</strong></dt>
+<dd>
+<p>Use double buffering on the display. This works for either wire frame
+or solid fill drawings. For solid fill drawings, using this switch
+results in substantially smoother movement. Note that this requires
+twice as many bit planes as without double buffering. Since some colors
+are typically allocated by other programs, most eight-bit-plane displays
+will probably be limited to eight colors when using double
+buffering.</p>
+</dd>
+<dt><strong>-faces</strong></dt>
+<dd>
+<p>Draw filled faces instead of wire frames.</p>
+</dd>
+<dt><strong>-noedges</strong></dt>
+<dd>
+<p>Don't draw the wire frames. Typically used only when -faces is
+used.</p>
+</dd>
+<dt><strong>-sleep <em>n</em></strong></dt>
+<dd>
+<p>Sleep n seconds between each move of the object.</p>
+</dd>
+<dt><strong>-obj <em>object</em></strong></dt>
+<dd>
+<p>Specify what object to draw. If no object is specified, an
+icosahedron is drawn.</p>
+</dd>
+<dt><strong>-objhelp</strong></dt>
+<dd>
+<p>Print out a list of the available objects, along with information
+about each object.</p>
+</dd>
+<dt><strong>-colors <em>color</em> color ...</strong></dt>
+<dd>
+<p>Specify what colors should be used to draw the filled faces of the
+object. If less colors than faces are given, the colors are reused.</p>
+</dd>
+<dt><strong>-version</strong></dt>
+<dd>
+<p>Print program version information and exit.</p>
+</dd>
+</dl>
+<h1>PROGRAM TERMINATION</h1>
+<p>Pressing "q" will close a window. If compiled with threads support,
+the program will stop only when all threads terminate. You can also
+close an animation window using the ICCCM <em>delete</em> message
+(depending on your window manager, you will have a decoration button or
+menu to send such message).</p>
+<h1>ADDING POLYHEDRA</h1>
+<p>If you have the source to ico, it is very easy to add more polyhedra.
+Each polyhedron is defined in an include file by the name of objXXX.h,
+where XXX is something related to the name of the polyhedron. The format
+of the include file is defined in the file polyinfo.h. Look at the file
+objcube.h to see what the exact format of an objXXX.h file should be,
+then create your objXXX.h file in that format.</p>
+<p>After making the new objXXX.h file (or copying in a new one from
+elsewhere), simply do a 'make depend'. This will recreate the file
+allobjs.h, which lists all of the objXXX.h files. Doing a 'make' after
+this will rebuild ico with the new object information.</p>
+<h1>SEE ALSO</h1>
+<p>X(7)</p>
+<h1>BUGS</h1>
+<p>Pyramids and tetrahedrons with filled faces do not display
+correctly.</p>
+<p>A separate color cell is allocated for each name in the -colors list,
+even when the same name may be specified twice. Color allocation fails
+in TrueColor displays and option <em>-faces</em> does not work well.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 1994 X Consortium<br />
+See <em>X(7)</em> for a full statement of rights and permissions.</p>

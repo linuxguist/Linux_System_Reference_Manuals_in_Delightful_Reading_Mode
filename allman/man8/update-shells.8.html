@@ -1,0 +1,34 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>update-shells - update the list of valid login shells</p>
+<h1>SYNOPSIS</h1>
+<p><strong>update-shells</strong> [<em>options</em>]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>update-shells</strong> locates the shells provided by
+packages from <em>/usr/share/debianutils/shells.d</em> and updates
+<em>/etc/shells</em> with newly added or removed shells. To track
+changes made by the administrator, it consults a state file in
+<em>/var/lib/shells.state .</em></p>
+<h1>OPTIONS</h1>
+<dl>
+<dt><strong>--no-act</strong></dt>
+<dd>
+<p>Do not actually perform the changes to <em>/etc/shells .</em></p>
+</dd>
+<dt><strong>--root</strong></dt>
+<dd>
+<p><em>ROOT</em></p>
+<p>Operate on a chroot at <em>ROOT .</em> Defaults to the value of the
+environment variable <em>DPKG_ROOT .</em></p>
+</dd>
+<dt><strong>--verbose</strong></dt>
+<dd>
+<p>Print the shells that are being added or removed.</p>
+</dd>
+</dl>
+<h1>FILES</h1>
+<p><em>/etc/shells</em> <em>/var/lib/shells.state</em>
+<em>/usr/share/debianutils/shells.d</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>shells</strong>(5)</p>

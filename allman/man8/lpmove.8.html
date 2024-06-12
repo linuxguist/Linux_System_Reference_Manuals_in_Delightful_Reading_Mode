@@ -1,0 +1,54 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>lpmove - move a job or all jobs to a new destination</p>
+<h1>SYNOPSIS</h1>
+<p><strong>lpmove</strong> [ <strong>-h</strong>
+<em>server</em>[<strong>:</strong><em>port</em>] ] [ <strong>-E</strong>
+] [ <strong>-U</strong> <em>username</em> ] <em>job</em>
+<em>destination</em><br />
+<strong>lpmove</strong> [ <strong>-h</strong>
+<em>server</em>[<strong>:</strong><em>port</em>] ] [ <strong>-E</strong>
+] [ <strong>-U</strong> <em>username</em> ] <em>source</em>
+<em>destination</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>lpmove</strong> moves the specified <em>job</em> or all jobs
+from <em>source</em> to <em>destination</em>. <em>job</em> can be the
+job ID number or the old destination and job ID.</p>
+<h1>OPTIONS</h1>
+<p>The <strong>lpmove</strong> command supports the following
+options:</p>
+<dl>
+<dt><strong>-E</strong></dt>
+<dd>
+<p>Forces encryption when connecting to the server.</p>
+</dd>
+<dt><strong>-U</strong> <em>username</em></dt>
+<dd>
+<p>Specifies an alternate username.</p>
+</dd>
+<dt><strong>-h</strong>
+<em>server</em>[<strong>:</strong><em>port</em>]</dt>
+<dd>
+<p>Specifies an alternate server. Note: This option must occur before
+all others.</p>
+</dd>
+</dl>
+<h1>EXAMPLES</h1>
+<p>Move job 123 from "oldprinter" to "newprinter":</p>
+<pre><code>
+    lpmove 123 newprinter
+
+            or
+
+    lpmove oldprinter-123 newprinter
+</code></pre>
+<p>Move all jobs from "oldprinter" to "newprinter":</p>
+<pre><code>
+    lpmove oldprinter newprinter</code></pre>
+<h1>SEE ALSO</h1>
+<p><strong>cancel</strong>(1), <strong>lp</strong>(1),
+<strong>lpr</strong>(1), <strong>lprm</strong>(1),<br />
+CUPS Online Help (http://localhost:631/help)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright © 2021-2022 by OpenPrinting.</p>

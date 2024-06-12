@@ -1,0 +1,102 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ssl - OpenSSL SSL/TLS library</p>
+<h1>SYNOPSIS</h1>
+<p>See the individual manual pages for details.</p>
+<h1>DESCRIPTION</h1>
+<p>The OpenSSL <strong>ssl</strong> library implements several versions
+of the Secure Sockets Layer, Transport Layer Security, and Datagram
+Transport Layer Security protocols. This page gives a brief overview of
+the extensive API and data types provided by the library.</p>
+<p>An <strong>SSL_CTX</strong> object is created as a framework to
+establish TLS/SSL enabled connections (see
+<strong>SSL_CTX_new</strong> (3)). Various options regarding
+certificates, algorithms etc. can be set in this object.</p>
+<p>When a network connection has been created, it can be assigned to an
+<strong>SSL</strong> object. After the <strong>SSL</strong> object has
+been created using <strong>SSL_new</strong> (3),
+<strong>SSL_set_fd</strong> (3) or <strong>SSL_set_bio</strong> (3) can
+be used to associate the network connection with the object.</p>
+<p>When the TLS/SSL handshake is performed using
+<strong>SSL_accept</strong> (3) or <strong>SSL_connect</strong> (3)
+respectively. <strong>SSL_read_ex</strong> (3),
+<strong>SSL_read</strong> (3), <strong>SSL_write_ex</strong> (3) and
+<strong>SSL_write</strong> (3) are used to read and write data on the
+TLS/SSL connection. <strong>SSL_shutdown</strong> (3) can be used to
+shut down the TLS/SSL connection.</p>
+<h1>DATA STRUCTURES</h1>
+<p>Here are some of the main data structures in the library.</p>
+<dl>
+<dt>SSL_METHOD (SSL Method)</dt>
+<dd>
+<p>This is a dispatch structure describing the internal
+<strong>ssl</strong> library methods/functions which implement the
+various protocol versions (SSLv3 TLSv1, ...). It's needed to create an
+<strong>SSL_CTX</strong>.</p>
+</dd>
+<dt>SSL_CIPHER (SSL Cipher)</dt>
+<dd>
+<p>This structure holds the algorithm information for a particular
+cipher which are a core part of the SSL/TLS protocol. The available
+ciphers are configured on a <strong>SSL_CTX</strong> basis and the
+actual ones used are then part of the <strong>SSL_SESSION</strong>.</p>
+</dd>
+<dt>SSL_CTX (SSL Context)</dt>
+<dd>
+<p>This is the global context structure which is created by a server or
+client once per program life-time and which holds mainly default values
+for the <strong>SSL</strong> structures which are later created for the
+connections.</p>
+</dd>
+<dt>SSL_SESSION (SSL Session)</dt>
+<dd>
+<p>This is a structure containing the current TLS/SSL session details
+for a connection: <strong>SSL_CIPHER</strong>s, client and server
+certificates, keys, etc.</p>
+</dd>
+<dt>SSL (SSL Connection)</dt>
+<dd>
+<p>This is the main SSL/TLS structure which is created by a server or
+client per established connection. This actually is the core structure
+in the SSL API. At run-time the application usually deals with this
+structure which has links to mostly all other structures.</p>
+</dd>
+</dl>
+<h1>HEADER FILES</h1>
+<p>Currently the OpenSSL <strong>ssl</strong> library provides the
+following C header files containing the prototypes for the data
+structures and functions:</p>
+<dl>
+<dt>&lt;openssl/ssl.h&gt;</dt>
+<dd>
+<p>This is the common header file for the SSL/TLS API. Include it into
+your program to make the API of the <strong>ssl</strong> library
+available. It internally includes both more private SSL headers and
+headers from the <strong>crypto</strong> library. Whenever you need
+hard-core details on the internals of the SSL API, look inside this
+header file. This file also includes the others listed below.</p>
+</dd>
+<dt>&lt;openssl/ssl2.h&gt;</dt>
+<dd>
+<p>Unused. Present for backwards compatibility only.</p>
+</dd>
+<dt>&lt;openssl/ssl3.h&gt;</dt>
+<dd>
+<p>This is the sub header file dealing with the SSLv3 protocol only.</p>
+</dd>
+<dt>&lt;openssl/tls1.h&gt;</dt>
+<dd>
+<p>This is the sub header file dealing with the TLSv1 protocol only.</p>
+</dd>
+</dl>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2000-2018 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

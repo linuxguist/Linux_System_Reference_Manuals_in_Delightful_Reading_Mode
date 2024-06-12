@@ -1,0 +1,70 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>adjtime_config - information about hardware clock setting and drift
+factor</p>
+<h1>SYNOPSIS</h1>
+<p><em>/etc/adjtime</em></p>
+<h1>DESCRIPTION</h1>
+<p>The file <em>/etc/adjtime</em> contains descriptive information about
+the hardware mode clock setting and clock drift factor. The file is read
+and write by <strong>hwclock</strong>(8); and read by programs like
+rtcwake to get RTC time mode.</p>
+<p>The file is usually located in <em>/etc</em>, but tools like
+<strong>hwclock</strong>(8) or <strong>rtcwake</strong>(8) can use
+alternative location by command line options if write access to
+<em>/etc</em> is unwanted. The default clock mode is "UTC" if the file
+is missing.</p>
+<p>The Hardware Clock is usually not very accurate. However, much of its
+inaccuracy is completely predictable - it gains or loses the same amount
+of time every day. This is called systematic drift. The util
+<strong>hwclock</strong>(8) keeps the file <em>/etc/adjtime</em>, that
+keeps some historical information. For more details see "<strong>The
+Adjust Function</strong>" and "<strong>The Adjtime File</strong>"
+sections from <strong>hwclock</strong>(8) man page.</p>
+<p>The <em>adjtime</em> file is formatted in ASCII.</p>
+<h2>First line</h2>
+<p>Three numbers, separated by blanks:</p>
+<p><strong>drift factor</strong></p>
+<blockquote>
+<p>the systematic drift rate in seconds per day (floating point
+decimal)</p>
+</blockquote>
+<p><strong>last adjust time</strong></p>
+<blockquote>
+<p>the resulting number of seconds since 1969 UTC of most recent
+adjustment or calibration (decimal integer)</p>
+</blockquote>
+<p><strong>adjustment status</strong></p>
+<blockquote>
+<p>zero (for compatibility with <strong>clock</strong>(8)) as a floating
+point decimal</p>
+</blockquote>
+<h2>Second line</h2>
+<p><strong>last calibration time</strong></p>
+<blockquote>
+<p>The resulting number of seconds since 1969 UTC of most recent
+calibration. Zero if there has been no calibration yet or it is known
+that any previous calibration is moot (for example, because the Hardware
+Clock has been found, since that calibration, not to contain a valid
+time). This is a decimal integer.</p>
+</blockquote>
+<h2>Third line</h2>
+<p><strong>clock mode</strong></p>
+<blockquote>
+<p>Supported values are <strong>UTC</strong> or <strong>LOCAL</strong>.
+Tells whether the Hardware Clock is set to Coordinated Universal Time or
+local time. You can always override this value with options on the
+<strong>hwclock</strong>(8) command line.</p>
+</blockquote>
+<h1>FILES</h1>
+<p><em>/etc/adjtime</em></p>
+<h1>SEE ALSO</h1>
+<p><strong>hwclock</strong>(8), <strong>rtcwake</strong>(8)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p><strong>adjtime_config</strong> is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

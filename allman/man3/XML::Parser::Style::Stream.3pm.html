@@ -1,0 +1,37 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>XML::Parser::Style::Stream - Stream style for XML::Parser</p>
+<h1>SYNOPSIS</h1>
+<p>use XML::Parser; my $p = XML::Parser-&gt;new(Style =&gt; Stream, Pkg
+=&gt; MySubs); $p-&gt;parsefile(foo.xml); { package MySubs; sub StartTag
+{ my ($e, $name) = @_; # do something with start tags } sub EndTag { my
+($e, $name) = @_; # do something with end tags } sub Characters { my
+($e, $data) = @_; # do something with text nodes } }</p>
+<h1>DESCRIPTION</h1>
+<p>This style uses the Pkg option to find subs in a given package to
+call for each event. If none of the subs that this style looks for is
+there, then the effect of parsing with this style is to print a
+canonical copy of the document without comments or declarations. All the
+subs receive as their 1st parameter the Expat instance for the document
+they're parsing.</p>
+<p>It looks for the following routines:</p>
+<ul>
+<li><p>StartDocument Called at the start of the parse .</p></li>
+<li><p>StartTag Called for every start tag with a second parameter of
+the element type. The <code>$_</code> variable will contain a copy of
+the tag and the <code>%_</code> variable will contain attribute values
+supplied for that element.</p></li>
+<li><p>EndTag Called for every end tag with a second parameter of the
+element type. The <code>$_</code> variable will contain a copy of the
+end tag.</p></li>
+<li><p>Text Called just before start or end tags with accumulated
+non-markup text in the <code>$_</code> variable.</p></li>
+<li><p>PI Called for processing instructions. The <code>$_</code>
+variable will contain a copy of the PI and the target and data are sent
+as 2nd and 3rd parameters respectively.</p></li>
+<li><p>EndDocument Called at conclusion of the parse.</p></li>
+</ul>

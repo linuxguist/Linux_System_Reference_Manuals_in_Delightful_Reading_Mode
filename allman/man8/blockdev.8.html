@@ -1,0 +1,144 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>blockdev - call block device ioctls from the command line</p>
+<h1>SYNOPSIS</h1>
+<p><strong>blockdev</strong> [<strong>-q</strong>] [<strong>-v</strong>]
+<em>command</em> [<em>command</em>...] <em>device</em>
+[<em>device</em>...]</p>
+<p><strong>blockdev</strong> <strong>--report</strong>
+[<em>device</em>...]</p>
+<p><strong>blockdev</strong> <strong>-h</strong>|<strong>-V</strong></p>
+<h1>DESCRIPTION</h1>
+<p>The utility <strong>blockdev</strong> allows one to call block device
+ioctls from the command line.</p>
+<h1>OPTIONS</h1>
+<p><strong>-q</strong></p>
+<blockquote>
+<p>Be quiet.</p>
+</blockquote>
+<p><strong>-v</strong></p>
+<blockquote>
+<p>Be verbose.</p>
+</blockquote>
+<p><strong>--report</strong></p>
+<blockquote>
+<p>Print a report for the specified device. It is possible to give
+multiple devices. If none is given, all devices which appear in
+<em>/proc/partitions</em> are shown. Note that the partition StartSec is
+in 512-byte sectors.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>COMMANDS</h1>
+<p>It is possible to give multiple devices and multiple commands.</p>
+<p><strong>--flushbufs</strong></p>
+<blockquote>
+<p>Flush buffers.</p>
+</blockquote>
+<p><strong>--getalignoff</strong></p>
+<blockquote>
+<p>Get alignment offset.</p>
+</blockquote>
+<p><strong>--getbsz</strong></p>
+<blockquote>
+<p>Print the blocksize in bytes. This size does not describe device
+topology. It’s the size used internally by the kernel and it may be
+modified (for example) by filesystem driver on mount.</p>
+</blockquote>
+<p><strong>--getdiscardzeroes</strong></p>
+<blockquote>
+<p>Get discard zeroes support status.</p>
+</blockquote>
+<p><strong>--getfra</strong></p>
+<blockquote>
+<p>Get filesystem readahead in 512-byte sectors.</p>
+</blockquote>
+<p><strong>--getiomin</strong></p>
+<blockquote>
+<p>Get minimum I/O size.</p>
+</blockquote>
+<p><strong>--getioopt</strong></p>
+<blockquote>
+<p>Get optimal I/O size.</p>
+</blockquote>
+<p><strong>--getmaxsect</strong></p>
+<blockquote>
+<p>Get max sectors per request.</p>
+</blockquote>
+<p><strong>--getpbsz</strong></p>
+<blockquote>
+<p>Get physical block (sector) size.</p>
+</blockquote>
+<p><strong>--getra</strong></p>
+<blockquote>
+<p>Print readahead (in 512-byte sectors).</p>
+</blockquote>
+<p><strong>--getro</strong></p>
+<blockquote>
+<p>Get read-only. Print 1 if the device is read-only, 0 otherwise.</p>
+</blockquote>
+<p><strong>--getsize64</strong></p>
+<blockquote>
+<p>Print device size in bytes.</p>
+</blockquote>
+<p><strong>--getsize</strong></p>
+<blockquote>
+<p>Print device size (32-bit!) in sectors. Deprecated in favor of the
+<strong>--getsz</strong> option.</p>
+</blockquote>
+<p><strong>--getss</strong></p>
+<blockquote>
+<p>Print logical sector size in bytes - usually 512.</p>
+</blockquote>
+<p><strong>--getsz</strong></p>
+<blockquote>
+<p>Get size in 512-byte sectors.</p>
+</blockquote>
+<p><strong>--rereadpt</strong></p>
+<blockquote>
+<p>Reread partition table</p>
+</blockquote>
+<p><strong>--setbsz</strong> <em>bytes</em></p>
+<blockquote>
+<p>Set blocksize. Note that the block size is specific to the current
+file descriptor opening the block device, so the change of block size
+only persists for as long as <strong>blockdev</strong> has the device
+open, and is lost once <strong>blockdev</strong> exits.</p>
+</blockquote>
+<p><strong>--setfra</strong> <em>sectors</em></p>
+<blockquote>
+<p>Set filesystem readahead (same as <strong>--setra</strong> on 2.6
+kernels).</p>
+</blockquote>
+<p><strong>--setra</strong> <em>sectors</em></p>
+<blockquote>
+<p>Set readahead (in 512-byte sectors).</p>
+</blockquote>
+<p><strong>--setro</strong></p>
+<blockquote>
+<p>Set read-only. The currently active access to the device may not be
+affected by the change. For example, a filesystem already mounted in
+read-write mode will not be affected. The change applies after
+remount.</p>
+</blockquote>
+<p><strong>--setrw</strong></p>
+<blockquote>
+<p>Set read-write.</p>
+</blockquote>
+<h1>AUTHORS</h1>
+<p><strong>blockdev</strong> was written by Andries E. Brouwer and
+rewritten by Karel Zak.</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>blockdev</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

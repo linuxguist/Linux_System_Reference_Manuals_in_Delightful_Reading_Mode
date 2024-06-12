@@ -1,0 +1,135 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>setarch - change reported architecture in new program environment
+and/or set personality flags</p>
+<h1>SYNOPSIS</h1>
+<p><strong>setarch</strong> [<em>arch</em>] [options] [<em>program</em>
+[<em>argument</em>...]]</p>
+<p><strong>setarch</strong>
+<strong>--list</strong>|<strong>-h</strong>|<strong>-V</strong></p>
+<p><strong>arch</strong> [options] [<em>program</em>
+[<em>argument</em>...]]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>setarch</strong> modifies execution domains and process
+personality flags.</p>
+<p>The execution domains currently only affects the output of
+<strong>uname -m</strong>. For example, on an AMD64 system, running
+<strong>setarch i386</strong> <em>program</em> will cause
+<em>program</em> to see i686 instead of <em>x86_64</em> as the machine
+type. It can also be used to set various personality options. The
+default <em>program</em> is <strong>/bin/sh</strong>.</p>
+<p>Since version 2.33 the <em>arch</em> command line argument is
+optional and <strong>setarch</strong> may be used to change personality
+flags (ADDR_LIMIT_*, SHORT_INODE, etc) without modification of the
+execution domain.</p>
+<h1>OPTIONS</h1>
+<p><strong>--list</strong></p>
+<blockquote>
+<p>List the architectures that <strong>setarch</strong> knows about.
+Whether <strong>setarch</strong> can actually set each of these
+architectures depends on the running kernel.</p>
+</blockquote>
+<p><strong>--uname-2.6</strong></p>
+<blockquote>
+<p>Causes the <em>program</em> to see a kernel version number beginning
+with 2.6. Turns on <strong>UNAME26</strong>.</p>
+</blockquote>
+<p><strong>-v</strong>, <strong>--verbose</strong></p>
+<blockquote>
+<p>Be verbose.</p>
+</blockquote>
+<p><strong>-3</strong>, <strong>--3gb</strong></p>
+<blockquote>
+<p>Specifies <em>program</em> should use a maximum of 3GB of address
+space. Supported on x86. Turns on <strong>ADDR_LIMIT_3GB</strong>.</p>
+</blockquote>
+<p><strong>--4gb</strong></p>
+<blockquote>
+<p>This option has no effect. It is retained for backward compatibility
+only, and may be removed in future releases.</p>
+</blockquote>
+<p><strong>-B</strong>, <strong>--32bit</strong></p>
+<blockquote>
+<p>Limit the address space to 32 bits to emulate hardware. Supported on
+ARM and Alpha. Turns on <strong>ADDR_LIMIT_32BIT</strong>.</p>
+</blockquote>
+<p><strong>-F</strong>, <strong>--fdpic-funcptrs</strong></p>
+<blockquote>
+<p>Treat user-space function pointers to signal handlers as pointers to
+address descriptors. This option has no effect on architectures that do
+not support <strong>FDPIC</strong> ELF binaries. In kernel v4.14 support
+is limited to ARM, Blackfin, Fujitsu FR-V, and SuperH CPU
+architectures.</p>
+</blockquote>
+<p><strong>-I</strong>, <strong>--short-inode</strong></p>
+<blockquote>
+<p>Obsolete bug emulation flag. Turns on
+<strong>SHORT_INODE</strong>.</p>
+</blockquote>
+<p><strong>-L</strong>, <strong>--addr-compat-layout</strong></p>
+<blockquote>
+<p>Provide legacy virtual address space layout. Use when the
+<em>program</em> binary does not have <strong>PT_GNU_STACK</strong> ELF
+header. Turns on <strong>ADDR_COMPAT_LAYOUT</strong>.</p>
+</blockquote>
+<p><strong>-R</strong>, <strong>--addr-no-randomize</strong></p>
+<blockquote>
+<p>Disables randomization of the virtual address space. Turns on
+<strong>ADDR_NO_RANDOMIZE</strong>.</p>
+</blockquote>
+<p><strong>-S</strong>, <strong>--whole-seconds</strong></p>
+<blockquote>
+<p>Obsolete bug emulation flag. Turns on
+<strong>WHOLE_SECONDS</strong>.</p>
+</blockquote>
+<p><strong>-T</strong>, <strong>--sticky-timeouts</strong></p>
+<blockquote>
+<p>This makes <strong>select</strong>(2), <strong>pselect</strong>(2),
+and <strong>ppoll</strong>(2) system calls preserve the timeout value
+instead of modifying it to reflect the amount of time not slept when
+interrupted by a signal handler. Use when <em>program</em> depends on
+this behavior. For more details see the timeout description in
+<strong>select</strong>(2) manual page. Turns on
+<strong>STICKY_TIMEOUTS</strong>.</p>
+</blockquote>
+<p><strong>-X</strong>, <strong>--read-implies-exec</strong></p>
+<blockquote>
+<p>If this is set then <strong>mmap</strong>(3p)
+<strong>PROT_READ</strong> will also add the <strong>PROT_EXEC</strong>
+bit - as expected by legacy x86 binaries. Notice that the ELF loader
+will automatically set this bit when it encounters a legacy binary.
+Turns on <strong>READ_IMPLIES_EXEC</strong>.</p>
+</blockquote>
+<p><strong>-Z</strong>, <strong>--mmap-page-zero</strong></p>
+<blockquote>
+<p>SVr4 bug emulation that will set <strong>mmap</strong>(3p) page zero
+as read-only. Use when <em>program</em> depends on this behavior, and
+the source code is not available to be fixed. Turns on
+<strong>MMAP_PAGE_ZERO</strong>.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h1>EXAMPLE</h1>
+<blockquote>
+<pre><code>setarch --addr-no-randomize mytestprog
+setarch ppc32 rpmbuild --target=ppc --rebuild foo.src.rpm
+setarch ppc32 -v -vL3 rpmbuild --target=ppc --rebuild bar.src.rpm
+setarch ppc32 --32bit rpmbuild --target=ppc --rebuild foo.src.rpm</code></pre>
+</blockquote>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>personality</strong>(2), <strong>select</strong>(2)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>setarch</strong> command is part of the util-linux
+package which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

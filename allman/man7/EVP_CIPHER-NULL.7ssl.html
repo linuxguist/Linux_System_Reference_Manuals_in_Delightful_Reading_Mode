@@ -1,0 +1,66 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_CIPHER-NULL - The NULL EVP_CIPHER implementation</p>
+<h1>DESCRIPTION</h1>
+<p>Support for a NULL symmetric encryption using the
+<strong>EVP_CIPHER</strong> API. This is used when the TLS cipher suite
+is TLS_NULL_WITH_NULL_NULL. This does no encryption (just copies the
+data) and has a mac size of zero.</p>
+<h2>Algorithm Name</h2>
+<p>The following algorithm is available in the default provider:</p>
+<dl>
+<dt>"NULL"</dt>
+<dd>
+
+</dd>
+</dl>
+<h2>Parameters</h2>
+<p>This implementation supports the following parameters:</p>
+<p><em>Gettable EVP_CIPHER parameters</em></p>
+<p>See Gettable EVP_CIPHER parameters in
+<strong>EVP_EncryptInit</strong> (3)</p>
+<p><em>Gettable EVP_CIPHER_CTX parameters</em></p>
+<dl>
+<dt>"keylen" (OSSL_CIPHER_PARAM_KEYLEN) &lt;unsigned integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"ivlen" (OSSL_CIPHER_PARAM_IVLEN and
+&lt;OSSL_CIPHER_PARAM_AEAD_IVLEN) &lt;unsigned integer&gt;</dt>
+<dd>
+
+</dd>
+<dt>"tls-mac" (OSSL_CIPHER_PARAM_TLS_MAC) &lt;octet ptr&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See PARAMETERS in <strong>EVP_EncryptInit</strong> (3) for further
+information.</p>
+<p><em>Settable EVP_CIPHER_CTX parameters</em></p>
+<dl>
+<dt>"tls-mac-size" (OSSL_CIPHER_PARAM_TLS_MAC_SIZE) &lt;unsigned
+integer&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>See PARAMETERS in <strong>EVP_EncryptInit</strong> (3) for further
+information.</p>
+<h1>CONFORMING TO</h1>
+<p>RFC 5246 section-6.2.3.1</p>
+<h1>SEE ALSO</h1>
+<p><strong>provider-cipher</strong> (7),
+<strong>OSSL_PROVIDER-default</strong> (7)</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2023 The OpenSSL Project Authors. All Rights Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

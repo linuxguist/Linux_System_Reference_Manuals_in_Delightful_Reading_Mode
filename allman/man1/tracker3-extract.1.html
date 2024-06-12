@@ -1,0 +1,65 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>tracker3-extract - Extract metadata from a file.</p>
+<h1>SYNOPSYS</h1>
+<p><strong>tracker3 extract</strong> <em>FILE</em></p>
+<h1>DESCRIPTION</h1>
+<p><strong>tracker3 extract</strong> reads the file provided and
+extracts any metadata it can from this file, then displays the metadata
+on standard output.</p>
+<p>The metadata is displayed as a SPARQL update command, that can be run
+against a SPARQL endpoint to update its copy of the metadata.</p>
+<p>The actual extraction is done by a separate process. This is done to
+isolate the calling process from any memory leaks or crashes in the
+libraries Tracker uses to extract metadata.</p>
+<p>For more information see the libtracker-extract reference
+documentation.</p>
+<h1>OPTIONS</h1>
+<p><strong>-o,
+--output-format=&lt;</strong><em>FORMAT</em><strong>&gt;</strong></p>
+<blockquote>
+<p>Choose which format to use to output results. Supported formats are
+<em>sparql</em>, <em>turtle</em> and <em>json-ld</em>.</p>
+</blockquote>
+<h1>EXAMPLES</h1>
+<p>Using command line to extract metadata from a file</p>
+<blockquote>
+<p>$ tracker3 extract /path/to/some/file.mp3</p>
+</blockquote>
+<h1>ENVIRONMENT</h1>
+<p><strong>G_MESSAGES_DEBUG</strong></p>
+<blockquote>
+<p>Controls verbose log output from GLib-based code. Use
+G_MESSAGES_DEBUG=Tracker to see only Tracker-related logs, or
+G_MESSAGES_DEBUG=all to see everything.</p>
+</blockquote>
+<p><strong>TRACKER_DEBUG</strong></p>
+<blockquote>
+<p>Enables more specialized debug output. Pass a comma-separated list of
+one or more keywords:</p>
+<p>config</p>
+<blockquote>
+<p>extractor configuration</p>
+</blockquote>
+<p>statistics</p>
+<blockquote>
+<p>show statistics about how many files were processed</p>
+</blockquote>
+</blockquote>
+<p>status</p>
+<blockquote>
+<p>log the status messages that are published over D-Bus</p>
+</blockquote>
+<h1>SEE ALSO</h1>
+<p><strong>tracker3-sparql</strong>(1),
+<strong>tracker3-status</strong>(1),
+<strong>tracker3-info</strong>(1).</p>
+<blockquote>
+<p>·</p>
+<p><strong>/usr/lib/tracker-1.0/extract-modules/</strong></p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p><strong>/usr/share/tracker/extract-rules/</strong></p>
+</blockquote>

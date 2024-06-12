@@ -1,0 +1,37 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p><strong>ibus-setup</strong> - configuration program for ibus</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ibus-setup</strong></p>
+<h1>DESCRIPTION</h1>
+<p>IBus is an Intelligent Input Bus. It is a new input framework for
+Linux OS. It provides full featured and user friendly input method user
+interface. It also may help developers to develop input method
+easily.</p>
+<p><strong>ibus-setup</strong> is the configuration program for
+IBus.</p>
+<p>Homepage: https://github.com/ibus/ibus/wiki</p>
+<h1>ADVANCED</h1>
+<dl>
+<dt><strong>Use system keyboard layout</strong></dt>
+<dd>
+<p>If this option is enabled, use your system keymap instead and IBus
+does not change it with any input method engines. The system keymap is
+decided by your desktop session. IBus calls <strong>setxkbmap
+(1)</strong> command internally to set the selected keymap and override
+the system keymap if this options is disabled. You can check the current
+keymap with <strong>setxkbmap -query</strong> command.</p>
+</dd>
+<dt><strong>Share the same input method among all
+applications</strong></dt>
+<dd>
+<p>If this option is disabled, You can choose an input metod engine by
+input context.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>If you find a bug, please report it at
+https://github.com/ibus/ibus/issues</p>
+<h1>SEE ALSO</h1>
+<p><strong>ibus</strong>(1)</p>

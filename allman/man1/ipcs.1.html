@@ -1,0 +1,122 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>ipcs - show information on IPC facilities</p>
+<h1>SYNOPSIS</h1>
+<p><strong>ipcs</strong> [options]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>ipcs</strong> shows information on System V inter-process
+communication facilities. By default it shows information about all
+three resources: shared memory segments, message queues, and semaphore
+arrays.</p>
+<h1>OPTIONS</h1>
+<p><strong>-i</strong>, <strong>--id</strong> <em>id</em></p>
+<blockquote>
+<p>Show full details on just the one resource element identified by
+<em>id</em>. This option needs to be combined with one of the three
+resource options: <strong>-m</strong>, <strong>-q</strong> or
+<strong>-s</strong>.</p>
+</blockquote>
+<p><strong>-h</strong>, <strong>--help</strong></p>
+<blockquote>
+<p>Display help text and exit.</p>
+</blockquote>
+<p><strong>-V</strong>, <strong>--version</strong></p>
+<blockquote>
+<p>Print version and exit.</p>
+</blockquote>
+<h2>Resource options</h2>
+<p><strong>-m</strong>, <strong>--shmems</strong></p>
+<blockquote>
+<p>Write information about active shared memory segments.</p>
+</blockquote>
+<p><strong>-q</strong>, <strong>--queues</strong></p>
+<blockquote>
+<p>Write information about active message queues.</p>
+</blockquote>
+<p><strong>-s</strong>, <strong>--semaphores</strong></p>
+<blockquote>
+<p>Write information about active semaphore sets.</p>
+</blockquote>
+<p><strong>-a</strong>, <strong>--all</strong></p>
+<blockquote>
+<p>Write information about all three resources (default).</p>
+</blockquote>
+<h2>Output formats</h2>
+<p>Of these options only one takes effect: the last one specified.</p>
+<p><strong>-c</strong>, <strong>--creator</strong></p>
+<blockquote>
+<p>Show creator and owner.</p>
+</blockquote>
+<p><strong>-l</strong>, <strong>--limits</strong></p>
+<blockquote>
+<p>Show resource limits.</p>
+</blockquote>
+<p><strong>-p</strong>, <strong>--pid</strong></p>
+<blockquote>
+<p>Show PIDs of creator and last operator.</p>
+</blockquote>
+<p><strong>-t</strong>, <strong>--time</strong></p>
+<blockquote>
+<p>Write time information. The time of the last control operation that
+changed the access permissions for all facilities, the time of the last
+<strong>msgsnd</strong>(2) and <strong>msgrcv</strong>(2) operations on
+message queues, the time of the last <strong>shmat</strong>(2) and
+<strong>shmdt</strong>(2) operations on shared memory, and the time of
+the last <strong>semop</strong>(2) operation on semaphores.</p>
+</blockquote>
+<p><strong>-u</strong>, <strong>--summary</strong></p>
+<blockquote>
+<p>Show status summary.</p>
+</blockquote>
+<h2>Representation</h2>
+<p>These affect only the <strong>-l</strong> (<strong>--limits</strong>)
+option.</p>
+<p><strong>-b</strong>, <strong>--bytes</strong></p>
+<blockquote>
+<p>Print the sizes in bytes rather than in a human-readable format.</p>
+<p>By default, the unit, sizes are expressed in, is byte, and unit
+prefixes are in power of 2^10 (1024). Abbreviations of symbols are
+exhibited truncated in order to reach a better readability, by
+exhibiting alone the first letter of them; examples: "1 KiB" and "1 MiB"
+are respectively exhibited as "1 K" and "1 M", then omitting on purpose
+the mention "iB", which is part of these abbreviations.</p>
+</blockquote>
+<p><strong>--human</strong></p>
+<blockquote>
+<p>Print sizes in human-readable format.</p>
+</blockquote>
+<h1>CONFORMING TO</h1>
+<p>The Linux <strong>ipcs</strong> utility is not fully compatible to
+the POSIX <strong>ipcs</strong> utility. The Linux version does not
+support the POSIX <strong>-a</strong>, <strong>-b</strong> and
+<strong>-o</strong> options, but does support the <strong>-l</strong>
+and <strong>-u</strong> options not defined by POSIX. A portable
+application shall not use the <strong>-a</strong>, <strong>-b</strong>,
+<strong>-o</strong>, <strong>-l</strong>, and <strong>-u</strong>
+options.</p>
+<h1>NOTES</h1>
+<p>The current implementation of <strong>ipcs</strong> obtains
+information about available IPC resources by parsing the files in
+<em>/proc/sysvipc</em>. Before util-linux version v2.23, an alternate
+mechanism was used: the <strong>IPC_STAT</strong> command of
+<strong>msgctl</strong>(2), <strong>semctl</strong>(2), and
+<strong>shmctl</strong>(2). This mechanism is also used in later
+util-linux versions in the case where <em>/proc</em> is unavailable. A
+limitation of the <strong>IPC_STAT</strong> mechanism is that it can
+only be used to retrieve information about IPC resources for which the
+user has read permission.</p>
+<h1>AUTHORS</h1>
+<h1>SEE ALSO</h1>
+<p><strong>ipcmk</strong>(1), <strong>ipcrm</strong>(1),
+<strong>msgrcv</strong>(2), <strong>msgsnd</strong>(2),
+<strong>semget</strong>(2), <strong>semop</strong>(2),
+<strong>shmat</strong>(2), <strong>shmdt</strong>(2),
+<strong>shmget</strong>(2), <strong>sysvipc</strong>(7)</p>
+<h1>REPORTING BUGS</h1>
+<p>For bug reports, use the issue tracker at
+&lt;https://github.com/util-linux/util-linux/issues&gt;.</p>
+<h1>AVAILABILITY</h1>
+<p>The <strong>ipcs</strong> command is part of the util-linux package
+which can be downloaded from <em>Linux Kernel Archive</em>
+&lt;https://www.kernel.org/pub/linux/utils/util-linux/&gt;.</p>

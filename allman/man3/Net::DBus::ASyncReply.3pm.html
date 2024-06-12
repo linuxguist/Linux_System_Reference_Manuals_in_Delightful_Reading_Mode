@@ -1,0 +1,59 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Net::DBus::ASyncReply - asynchronous method reply handler</p>
+<h1>SYNOPSIS</h1>
+<p>use Net::DBus::Annotation qw(:call); my $object =
+$service-&gt;get_object("/org/example/systemMonitor"); # List processes
+&amp; get on with other work until # the list is returned. my
+$asyncreply = $object-&gt;list_processes(dbus_call_async, "someuser");
+while (!$asyncreply-&gt;is_ready) { ... do some background work.. } my
+$processes = $asyncreply-&gt;get_result;</p>
+<h1>DESCRIPTION</h1>
+<p>This object provides a handler for receiving asynchronous method
+replies. An asynchronous reply object is generated when making remote
+method call with the <code>dbus_call_async</code> annotation set.</p>
+<h1>METHODS</h1>
+<dl>
+<dt>$asyncreply-&gt;discard_result;</dt>
+<dd>
+<p>Indicates that the caller is no longer interested in receiving the
+reply &amp; that it should be discarded. After calling this method, this
+object should not be used again.</p>
+</dd>
+<dt>$asyncreply-&gt;wait_for_result;</dt>
+<dd>
+<p>Blocks the caller waiting for completion of the of the asynchronous
+reply. Upon returning from this method, the result can be obtained with
+the <code>get_result</code> method.</p>
+</dd>
+<dt>my $boolean = $asyncreply-&gt;is_ready;</dt>
+<dd>
+<p>Returns a true value if the asynchronous reply is now complete (or a
+timeout has occurred). When this method returns true, the result can be
+obtained with the <code>get_result</code> method.</p>
+</dd>
+<dt>$asyncreply-&gt;set_notify($coderef);</dt>
+<dd>
+<p>Sets a notify function which will be invoked when the asynchronous
+reply finally completes. The callback will be invoked with a single
+parameter which is this object.</p>
+</dd>
+<dt>my @data = $asyncreply-&gt;get_result;</dt>
+<dd>
+<p>Retrieves the data associated with the asynchronous reply. If a
+timeout occurred, then this method will throw an exception. This method
+can only be called once the reply is complete, as indicated by the
+<code>is_ready</code> method returning a true value. After calling this
+method, this object should no longer be used.</p>
+</dd>
+</dl>
+<h1>AUTHOR</h1>
+<p>Daniel Berrange &lt;dan@berrange.com&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copright (C) 2006-2011, Daniel Berrange.</p>
+<h1>SEE ALSO</h1>
+<p>Net::DBus, Net::DBus::RemoteObject, Net::DBus::Annotation</p>

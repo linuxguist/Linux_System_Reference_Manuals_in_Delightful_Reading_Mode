@@ -1,0 +1,83 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>EVP_KDF-X963 - The X9.63-2001 EVP_KDF implementation</p>
+<h1>DESCRIPTION</h1>
+<p>The EVP_KDF-X963 algorithm implements the key derivation function
+(X963KDF). X963KDF is used by Cryptographic Message Syntax (CMS) for EC
+KeyAgreement, to derive a key using input such as a shared secret key
+and shared info.</p>
+<h2>Identity</h2>
+<p>X963KDF is the name for this implementation; it can be used with the
+<strong>EVP_KDF_fetch()</strong> function.</p>
+<h2>Supported parameters</h2>
+<p>The supported parameters are:</p>
+<dl>
+<dt>"properties" (OSSL_KDF_PARAM_PROPERTIES) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>"digest" (OSSL_KDF_PARAM_DIGEST) &lt;UTF8 string&gt;</dt>
+<dd>
+
+</dd>
+</dl>
+<p>These parameters work as described in PARAMETERS in
+<strong>EVP_KDF</strong> (3).</p>
+<dl>
+<dt>"key" (OSSL_KDF_PARAM_KEY) &lt;octet string&gt;</dt>
+<dd>
+<p>The shared secret used for key derivation. This parameter sets the
+secret.</p>
+</dd>
+<dt>"info" (OSSL_KDF_PARAM_INFO) &lt;octet string&gt;</dt>
+<dd>
+<p>This parameter specifies an optional value for shared info.</p>
+</dd>
+</dl>
+<h1>NOTES</h1>
+<p>X963KDF is very similar to the SSKDF that uses a digest as the
+auxiliary function, X963KDF appends the counter to the secret, whereas
+SSKDF prepends the counter.</p>
+<p>A context for X963KDF can be obtained by calling:</p>
+<p>EVP_KDF *kdf = EVP_KDF_fetch(NULL, "X963KDF", NULL); EVP_KDF_CTX
+*kctx = EVP_KDF_CTX_new(kdf);</p>
+<p>The output length of an X963KDF is specified via the <em>keylen</em>
+parameter to the <strong>EVP_KDF_derive</strong> (3) function.</p>
+<h1>EXAMPLES</h1>
+<p>This example derives 10 bytes, with the secret key secret and
+sharedinfo value label:</p>
+<p>EVP_KDF *kdf; EVP_KDF_CTX *kctx; unsigned char out[10]; OSSL_PARAM
+params[4], *p = params; kdf = EVP_KDF_fetch(NULL, "X963KDF", NULL); kctx
+= EVP_KDF_CTX_new(kdf); EVP_KDF_free(kdf); *p++ =
+OSSL_PARAM_construct_utf8_string(OSSL_KDF_PARAM_DIGEST, SN_sha256,
+strlen(SN_sha256)); *p++ =
+OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_SECRET, "secret",
+(size_t)6); *p++ =
+OSSL_PARAM_construct_octet_string(OSSL_KDF_PARAM_INFO, "label",
+(size_t)5); *p = OSSL_PARAM_construct_end(); if (EVP_KDF_derive(kctx,
+out, sizeof(out), params) &lt;= 0) { error("EVP_KDF_derive"); }
+EVP_KDF_CTX_free(kctx);</p>
+<h1>CONFORMING TO</h1>
+<p>SEC 1: Elliptic Curve Cryptography</p>
+<h1>SEE ALSO</h1>
+<p><strong>EVP_KDF</strong> (3), <strong>EVP_KDF_CTX_new</strong> (3),
+<strong>EVP_KDF_CTX_free</strong> (3),
+<strong>EVP_KDF_CTX_set_params</strong> (3),
+<strong>EVP_KDF_CTX_get_kdf_size</strong> (3),
+<strong>EVP_KDF_derive</strong> (3), PARAMETERS in
+<strong>EVP_KDF</strong> (3)</p>
+<h1>HISTORY</h1>
+<p>This functionality was added in OpenSSL 3.0.</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright 2019-2021 The OpenSSL Project Authors. All Rights
+Reserved.</p>
+<p>Licensed under the Apache License 2.0 (the License). You may not use
+this file except in compliance with the License. You can obtain a copy
+in the file LICENSE in the source distribution or at
+&lt;https://www.openssl.org/source/license.html&gt;.</p>

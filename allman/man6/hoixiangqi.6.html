@@ -1,0 +1,124 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>hoichess - xboard compatible chess engine</p>
+<p>hoixiangqi - xiangqi engine</p>
+<h1>SYNOPSIS</h1>
+<p><strong>hoichess</strong> [options]</p>
+<p><strong>hoixiangqi</strong> [options]</p>
+<h1>DESCRIPTION</h1>
+<p><strong>hoichess</strong> is a chess playing program. It implements
+major parts of the xboard/winboard chess engine protocol.</p>
+<p><strong>hoichess</strong> uses many of the standard techniques found
+in modern chess programs, like rotated bitboards, principal variation
+search, quiescence search, transposition table and iterative
+deepening.</p>
+<p>See <strong>xboard</strong> (6) for instructions about how to use
+<strong>hoichess</strong> through xboard. To start up quickly, you just
+need the command: <strong>xboard -fcp hoichess</strong>.</p>
+<p><strong>hoixiangqi</strong> is a xiangqi (Chinese chess) playing
+program. Recent versions of xboard also support xiangqi: <strong>xboard
+-fcp hoixiangqi</strong>.</p>
+<p><strong>hoichess</strong> and <strong>hoixiangqi</strong> are built
+from the same code base, so nearly all commands and options, as well as
+the text based user interface, are the same for both programs.</p>
+<p>If run <strong>hoichess</strong> or <strong>hoixiangqi</strong> at
+the command line, the <strong>help</strong> command gives you a brief
+summary of available commands.</p>
+<p>At program start, a default startup file is read. This file is called
+<em>hoichess.rc</em> or <em>hoixiangqi.rc</em>, respectively. It is
+searched for in the following directories, in order: current directory,
+<em><code>$HOME</code>/.hoichess</em>,
+<em><code>$USERPROFILE</code>/.hoichess</em> (only on Windows),
+<em>DATADIR</em>. Only the first found file is read. The
+<em>DATADIR</em> is installation dependent, commonly
+<em>/usr/share/games/hoichess</em>.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-h, --help</dt>
+<dd>
+<p>Display usage information.</p>
+</dd>
+<dt>-V, --version</dt>
+<dd>
+<p>Display version information.</p>
+</dd>
+<dt>-v, --verbose[=n]</dt>
+<dd>
+<p>Increase verbosity. Multiple <strong>-v</strong> options may be
+given. <strong>--verbose=</strong><em>n</em> sets verbosity level
+<em>n</em>.</p>
+</dd>
+<dt>-d, --debug[=n]</dt>
+<dd>
+<p>Increase debug level. Multiple <strong>-d</strong> options may be
+given. <strong>--debug=</strong><em>n</em> sets debug level
+<em>n</em>.</p>
+</dd>
+<dt>-x, --xboard[=arg]</dt>
+<dd>
+<p>Start in xboard compatible mode. This turns off the input prompt and
+alters the output format to meet the requirements of the xboard
+protocol. Normally, this option should not be necessary because
+<strong>hoichess</strong> automatically detects when it is started under
+xboard. The optional argument can be one of:</p>
+<dl>
+<dt>off</dt>
+<dd>
+<p>Force non-xboard mode.</p>
+</dd>
+<dt>on</dt>
+<dd>
+<p>Force xboard mode.</p>
+</dd>
+</dl>
+</dd>
+<dt>--source filename</dt>
+<dd>
+<p>Before accepting input from stdin, first read commands (and probably
+moves) from <em>filename</em>. Can be given multiple times.</p>
+</dd>
+<dt>--initcmd command</dt>
+<dd>
+<p>Execute <em>command</em> at startup. The command is executed before
+reading script files given by the <strong>--source</strong> option. Can
+be given multiple times.</p>
+</dd>
+<dt>--norc</dt>
+<dd>
+<p>Do not read default startup file <em>hoichess.rc</em> or
+<em>hoixiangqi.rc</em>.</p>
+</dd>
+<dt>--color arg</dt>
+<dd>
+<p>Control usage of ANSI color control sequences, e.g. when displaying
+the chess board. <em>arg</em> can be one of:</p>
+<dl>
+<dt>off</dt>
+<dd>
+<p>Never use ANSI color sequences.</p>
+</dd>
+<dt>on</dt>
+<dd>
+<p>Always use ANSI color sequences.</p>
+</dd>
+<dt>auto</dt>
+<dd>
+<p>Automatically use ANSI color sequences when stdout is a terminal.</p>
+</dd>
+</dl>
+<p>On Unix platforms, the default is <strong>auto</strong>. On Windows
+platforms, the default is <strong>off</strong>, because the Windows
+terminal is normally not ANSI capable.</p>
+</dd>
+</dl>
+<h1>SEE ALSO</h1>
+<p>http://www.hoicher.de/hoichess</p>
+<p><strong>xboard</strong> (6)</p>
+<h1>AUTHOR</h1>
+<p><strong>hoichess</strong> was written by Holger Ruckdeschel
+&lt;holger@hoicher.de&gt;.</p>
+<p>This manual page was generated with <strong>pod2man</strong> (1).</p>

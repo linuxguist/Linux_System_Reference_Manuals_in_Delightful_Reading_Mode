@@ -1,0 +1,97 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>mimeopen - Open files by mimetype</p>
+<h1>SYNOPSIS</h1>
+<p>mimeopen [options] [-] files</p>
+<h1>DESCRIPTION</h1>
+<p>This script tries to determine the mimetype of a file and open it
+with the default desktop application. If no default application is
+configured the user is prompted with an open with menu in the
+terminal.</p>
+<p>To use this script you need the freedesktop mime-info database and
+the freedesktop desktop-file-utils package. See
+<strong>File::MimeInfo::Applications</strong> (3) for more details.</p>
+<h1>OPTIONS</h1>
+<dl>
+<dt>-a, --ask</dt>
+<dd>
+<p>Do not execute the default application but ask which application to
+run. This does not change the default application.</p>
+</dd>
+<dt>-d, --ask-default</dt>
+<dd>
+<p>Let the user choose a new default program for given files.</p>
+</dd>
+<dt>-n, --no-ask</dt>
+<dd>
+<p>Don't ask the user which program to use. Choose the default program
+or the first program known to handle the file mimetype. This does not
+set the default application.</p>
+</dd>
+<dt>-M, --magic-only</dt>
+<dd>
+<p>Do not check for extensions, globs or inode type, only look at the
+content of the file. This is particularly useful if for some reason you
+don't trust the name or the extension a file has.</p>
+</dd>
+<dt>--database=mimedir:mimedir:...</dt>
+<dd>
+<p>Force the program to look in these directories for the shared
+mime-info database. The directories specified by the basedir
+specification are ignored.</p>
+</dd>
+<dt>-D, --debug</dt>
+<dd>
+<p>Print debug information about how the mimetype was determined.</p>
+</dd>
+<dt>-h, --help</dt>
+<dd>
+
+</dd>
+</dl>
+<dl>
+<dt>-u, --usage</dt>
+<dd>
+
+</dd>
+</dl>
+<p>Print a help message and exits.</p>
+<dl>
+<dt>-v, --version</dt>
+<dd>
+<p>Print the version of the program and exit.</p>
+</dd>
+</dl>
+<h1>DEPRECATED OPTIONS</h1>
+<dl>
+<dt>-L, --dereference</dt>
+<dd>
+<p>Follow symbolic links. Deprecated because this is the logical default
+for this command. Ignored silently.</p>
+</dd>
+</dl>
+<h1>BUGS</h1>
+<p>If you find bugs, please file them in our Github issue tracker at
+&lt;https://github.com/mbeijen/File-MimeInfo/issues&gt;.</p>
+<p>See <strong>File::MimeInfo::Applications</strong> (3) and
+<strong>File::DesktopEntry</strong> (3) for some limitations.</p>
+<h1>AUTHOR</h1>
+<p>Jaap Karssenberg &lt;pardus@cpan.org&gt; Maintained by Michiel Beijen
+&lt;mb@x14.nl&gt;</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (c) 2002, 2012 Jaap G Karssenberg. All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl.</p>
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
+<h1>SEE ALSO</h1>
+<p><strong>mimetype</strong> (1),
+<strong>update-mime-database</strong> (1),
+<strong>update-desktop-database</strong> (1),
+<strong>File::MimeInfo</strong> (3),
+<strong>File::MimeInfo::Applications</strong> (3)</p>

@@ -1,0 +1,100 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>nss-myhostname, libnss_myhostname.so.2 - Hostname resolution for the
+locally configured system hostname</p>
+<h1>SYNOPSIS</h1>
+<p>libnss_myhostname.so.2</p>
+<h1>DESCRIPTION</h1>
+<p><strong>nss-myhostname</strong> is a plug-in module for the GNU Name
+Service Switch (NSS) functionality of the GNU C Library
+(<strong>glibc</strong>), primarily providing hostname resolution for
+the locally configured system hostname as returned by
+<strong>gethostname</strong>(2). The precise hostnames resolved by this
+module are:</p>
+<blockquote>
+<p>·</p>
+<p>The local, configured hostname is resolved to all locally configured
+IP addresses ordered by their scope, or — if none are configured — the
+IPv4 address 127.0.0.2 (which is on the local loopback) and the IPv6
+address ::1 (which is the local host).</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>The hostnames "localhost" and "localhost.localdomain" (as well as any
+hostname ending in ".localhost" or ".localhost.localdomain") are
+resolved to the IP addresses 127.0.0.1 and ::1.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>The hostname "_gateway" is resolved to all current default routing
+gateway addresses, ordered by their metric. This assigns a stable
+hostname to the current gateway, useful for referencing it independently
+of the current network configuration state.</p>
+</blockquote>
+<blockquote>
+<p>·</p>
+<p>The hostname "_outbound" is resolved to the local IPv4 and IPv6
+addresses that are most likely used for communication with other hosts.
+This is determined by requesting a routing decision to the configured
+default gateways from the kernel and then using the local IP addresses
+selected by this decision. This hostname is only available if there is
+at least one local default gateway configured. This assigns a stable
+hostname to the local outbound IP addresses, useful for referencing them
+independently of the current network configuration state.</p>
+</blockquote>
+<p>Various software relies on an always-resolvable local hostname. When
+using dynamic hostnames, this is traditionally achieved by patching
+/etc/hosts at the same time as changing the hostname. This is
+problematic since it requires a writable /etc/ file system and is
+fragile because the file might be edited by the administrator at the
+same time. With <strong>nss-myhostname</strong> enabled, changing
+/etc/hosts is unnecessary, and on many systems, the file becomes
+entirely optional.</p>
+<p>To activate the NSS modules, add "myhostname" to the line starting
+with "hosts:" in /etc/nsswitch.conf.</p>
+<p>It is recommended to place "myhostname" after "file" and before
+"dns". This resolves well-known hostnames like "localhost" and the
+machine hostnames locally. It is consistent with the behaviour of
+<strong>nss-resolve</strong>, and still allows overriding via
+/etc/hosts.</p>
+<p>Please keep in mind that <strong>nss-myhostname</strong> (and
+<strong>nss-resolve</strong>) also resolve in the other direction — from
+locally attached IP addresses to hostnames. If you rely on that lookup
+being provided by DNS, you might want to order things differently.</p>
+<h1>EXAMPLE</h1>
+<p>Here is an example /etc/nsswitch.conf file that enables
+<strong>nss-myhostname</strong> correctly:</p>
+<blockquote>
+<pre><code>passwd:         compat systemd
+group:          compat [SUCCESS=merge] systemd
+shadow:         compat systemd
+gshadow:        files systemd
+
+
+hosts:          mymachines resolve [!UNAVAIL=return] files myhostname dns
+networks:       files
+
+protocols:      db files
+services:       db files
+ethers:         db files
+rpc:            db files
+
+netgroup:       nis</code></pre>
+</blockquote>
+<p>To test, use <strong>glibc</strong>s <strong>getent</strong>
+tool:</p>
+<blockquote>
+<pre><code>$ getent ahosts `hostname`
+::1       STREAM omega
+::1       DGRAM
+::1       RAW
+127.0.0.2       STREAM
+127.0.0.2       DGRAM
+127.0.0.2       RAW</code></pre>
+</blockquote>
+<p>In this case, the local hostname is <em>omega</em>.</p>
+<h1>SEE ALSO</h1>
+<p><strong>systemd</strong>(1), <strong>nss-systemd</strong>(8),
+<strong>nss-resolve</strong>(8), <strong>nss-mymachines</strong>(8),
+<strong>nsswitch.conf</strong>(5), <strong>getent</strong>(1)</p>

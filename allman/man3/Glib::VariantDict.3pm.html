@@ -1,0 +1,48 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Glib::VariantDict - Utilities for dealing with the GVariantDict
+mutable interface to GVariant dictionaries</p>
+<h1>HIERARCHY</h1>
+<p>Glib::Boxed +----Glib::VariantDict</p>
+<h1>METHODS</h1>
+<h2>variantdict = Glib::VariantDict-&gt;<strong>new</strong>
+($from_asv)</h2>
+<ul>
+<li><p><code>$from_asv</code> (Glib::Variant)</p></li>
+</ul>
+<p>Since: glib 2.40</p>
+<h2>boolean = $dict-&gt;<strong>contains</strong> ($key)</h2>
+<ul>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Since: glib 2.40</p>
+<h2>variant = $dict-&gt;<strong>end</strong></h2>
+<p>Since: glib 2.40</p>
+<h2>$dict-&gt;<strong>insert_value</strong> ($key, $value)</h2>
+<ul>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$value</code> (Glib::Variant)</p></li>
+</ul>
+<p>Since: glib 2.40</p>
+<h2>variant = $dict-&gt;<strong>lookup_value</strong> ($key,
+$expected_type)</h2>
+<ul>
+<li><p><code>$key</code> (string)</p></li>
+<li><p><code>$expected_type</code> (Glib::VariantType)</p></li>
+</ul>
+<p>Since: glib 2.40</p>
+<h2>boolean = $dict-&gt;<strong>remove</strong> ($key)</h2>
+<ul>
+<li><p><code>$key</code> (string)</p></li>
+</ul>
+<p>Since: glib 2.40</p>
+<h1>SEE ALSO</h1>
+<p>Glib, Glib::Boxed, Glib::Variant</p>
+<h1>COPYRIGHT</h1>
+<p>Copyright (C) 2003-2011 by the gtk2-perl team.</p>
+<p>This software is licensed under the LGPL. See Glib for a full
+notice.</p>

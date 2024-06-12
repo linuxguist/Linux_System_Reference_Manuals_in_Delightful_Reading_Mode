@@ -1,0 +1,27 @@
+<pre><code></code></pre>
+<p><br />
+</p>
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>Tk::WinPhoto - Load a Photo image from a window</p>
+<h1>SYNOPSIS</h1>
+<p>use Tk; use Tk::WinPhoto; my $image = $mw-&gt;Photo(-format =&gt;
+Window, -data =&gt; oct($mw-&gt;id)); $image-&gt;write($path_name,
+-format =&gt; BMP|PPM|XPM);</p>
+<h1>DESCRIPTION</h1>
+<p>This is an extension for Tk800.* which will load a Photo image from a
+snapshot of an X window specified by the -data option.</p>
+<p>The window must exist and be visible. Because the code allows you to
+capture windows not owned by Tk it does not attempt to enforce this. If
+you are capturing one of Tk's windows then use
+<code>$w-&gt;update</code>.</p>
+<p>If window is mapped, but obscured by other windows then what is
+captured is the rectangle the window would occupy. This can be
+considered a feature. For Tk-owned windows <code>$w-&gt;raise</code> can
+used to bring window forward.</p>
+<p>Once the Photo is loaded it can be saved using
+<code>$image-&gt;write(-format =&gt; ...)</code> using any of formats
+which support writing.</p>
+<h1>AUTHOR</h1>
+<p>Nick Ing-Simmons &lt;nick@ni-s.u-net.com&gt;</p>

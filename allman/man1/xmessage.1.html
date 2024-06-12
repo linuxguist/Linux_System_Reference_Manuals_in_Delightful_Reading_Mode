@@ -1,0 +1,173 @@
+<link rel='stylesheet' href='../style.css'>
+<script src='../script.js'></script>
+<h1>NAME</h1>
+<p>xmessage - display a message or query in a window (X-based
+/bin/echo)</p>
+<h1>SYNOPSIS</h1>
+<p><strong>xmessage</strong> [ <strong>-buttons</strong>
+<em>label1[<strong>:</strong>value1]<strong>,</strong>label2[<strong>:</strong>value2]<strong>,</strong></em>
+ . . . ] [ <em>options</em> ] <strong>-file</strong>
+<em>filename</em><br />
+<strong>xmessage</strong> [ <strong>-buttons</strong>
+<em>label1[<strong>:</strong>value1]<strong>,</strong>label2[<strong>:</strong>value2]<strong>,</strong></em>
+ . . . ] [ <em>options</em> ] <em>message</em> . . .</p>
+<h1>DESCRIPTION</h1>
+<p>The <em>xmessage</em> program displays a window containing a message
+from the command line, a file, or standard input. Along the lower edge
+of the message is row of buttons; clicking the left mouse button on any
+of these buttons will cause <em>xmessage</em> to exit. Which button was
+pressed is returned in the exit status and, optionally, by writing the
+label of the button to standard output.</p>
+<p>The program is typically used by shell scripts to display information
+to the user or to ask the user to make a choice.</p>
+<p>Unless a size is specified, <em>xmessage</em> sizes itself to fit the
+message, up to a maximum size. If the message is too big for the window,
+<em>xmessage</em> will display scroll bars.</p>
+<h1>OPTIONS</h1>
+<p>These are the command line options that <em>xmessage</em>
+understands, in addition to the standard ones listed in
+<strong>X</strong>(7).</p>
+<dl>
+<dt><strong>-buttons <em>button,button,. . .</em></strong></dt>
+<dd>
+<p>This option will cause <em>xmessage</em> to create one button for
+each comma-separated <em>button</em> argument. The corresponding
+resource is <strong>buttons</strong>. Each <em>button</em> consists of a
+label optionally followed by a colon and an exit value. The label is the
+name of the Command button widget created and will be the default text
+displayed to the user. Since this is the name of the widget it may be
+used to change any of the resources associated with that button. The
+exit value will be returned by <em>xmessage</em> if that button is
+selected. The default exit value is 100 plus the button number. Buttons
+are numbered from the left starting with one. The default string if no
+<strong>-buttons</strong> option is given is
+<strong>okay:0</strong>.</p>
+</dd>
+<dt><strong>-default <em>label</em></strong></dt>
+<dd>
+<p>Defines the button with a matching <em>label</em> to be the default.
+If not specified there is no default. The corresponding resource is
+<strong>defaultButton</strong>. Pressing Return anywhere in the
+<em>xmessage</em> window will activate the default button. The default
+button has a wider border than the others.</p>
+</dd>
+<dt><strong>-file <em>filename</em></strong></dt>
+<dd>
+<p>File to display. The corresponding resource is <strong>file</strong>.
+A <em>filename</em> of `<strong>-</strong>' reads from standard input.
+If this option is not supplied, <em>xmessage</em> will display all
+non-option arguments in the style of <em>echo</em>. Either
+<strong>-file</strong> or a message on the command line should be
+provided, but not both.</p>
+</dd>
+<dt><strong>-print</strong></dt>
+<dd>
+<p>This will cause the program to write the label of the button pressed
+to standard output. Equivalent to setting the
+<strong>printValue</strong> resource to TRUE. This is one way to get
+feedback as to which button was pressed.</p>
+</dd>
+<dt><strong>-center</strong></dt>
+<dd>
+<p>Pop up the window at the center of the screen. Equivalent to setting
+the <strong>center</strong> resource to TRUE.</p>
+</dd>
+<dt><strong>-nearmouse</strong></dt>
+<dd>
+<p>Pop up the window near the mouse cursor. Equivalent to setting the
+<strong>nearMouse</strong> resource to TRUE.</p>
+</dd>
+<dt><strong>-timeout <em>secs</em></strong></dt>
+<dd>
+<p>Exit with status 0 after <em>secs</em> seconds if the user has not
+clicked on a button yet. The corresponding resource is
+<strong>timeout</strong>.</p>
+</dd>
+</dl>
+<h1>WIDGET HIERARCHY</h1>
+<p>Knowing the name and position in the hierarchy of each widget is
+useful when specifying resources for them. In the following chart, the
+class and name of each widget is given.</p>
+<pre><code>Xmessage (xmessage)
+	Form form
+		Text message
+		Command (label1)
+		Command (label2)
+		.
+		.
+		.</code></pre>
+<h1>RESOURCES</h1>
+<p>The program has a few top-level application resources that allow
+customizations that are specific to <em>xmessage</em>.</p>
+<dl>
+<dt><strong>file</strong></dt>
+<dd>
+<p>A String specifying the file to display.</p>
+</dd>
+<dt><strong>buttons</strong></dt>
+<dd>
+<p>A String specifying the buttons to display. See the
+<strong>-buttons</strong> command-line option.</p>
+</dd>
+<dt><strong>defaultButton</strong></dt>
+<dd>
+<p>A String specifying a default button by label.</p>
+</dd>
+<dt><strong>printValue</strong></dt>
+<dd>
+<p>A Boolean value specifying whether the label of the button pressed to
+exit the program is written to standard output. The default is
+FALSE.</p>
+</dd>
+<dt><strong>center</strong></dt>
+<dd>
+<p>A Boolean value specifying whether to pop up the window at the center
+of the screen. The default is FALSE.</p>
+</dd>
+<dt><strong>nearMouse</strong></dt>
+<dd>
+<p>A Boolean value specifying whether to pop up the window near the
+mouse cursor. The default is FALSE.</p>
+</dd>
+<dt><strong>timeout</strong></dt>
+<dd>
+<p>The number of seconds after which to exit with status 0. The default
+is 0, which means never time out.</p>
+</dd>
+<dt><strong>"maxHeight (<strong>class</strong> Maximum)</strong></dt>
+<dd>
+<p>The maximum height of the text part of the window in pixels, used if
+no size was specified in the geometry. The default is 0, which means use
+70% of the height of the screen.</p>
+</dd>
+<dt><strong>"maxWidth (<strong>class</strong> Maximum)</strong></dt>
+<dd>
+<p>The maximum width of the text part of the window in pixels, used if
+no size was specified in the geometry. The default is 0, which means use
+70% of the width of the screen.</p>
+</dd>
+</dl>
+<h1>ACTIONS</h1>
+<dl>
+<dt><strong>exit(<em>value</em><strong>)</strong></strong></dt>
+<dd>
+<p>exit immediately with an exit status of <em>value</em>
+<strong>(default 0). This</strong> action can be used with translations
+to provide alternate ways of exiting
+<em>xmessage</em><strong>.</strong></p>
+</dd>
+<dt><strong>default-exit()</strong></dt>
+<dd>
+<p>exit immediately with the exit status specified by the default
+button. If there is no default button, this action has no effect.</p>
+</dd>
+</dl>
+<h1>EXIT STATUS</h1>
+<p>If it detects an error, <em>xmessage</em> <strong>returns 1, so this
+value should</strong> not be used with a button.</p>
+<h1>SEE ALSO</h1>
+<p><em>X</em>(7), <em>echo</em>(1), <em>cat</em>(1)<br />
+</p>
+<h1>AUTHORS</h1>
+<p>Chris Peterson, MIT Project Athena<br />
+Stephen Gildea, X Consortium</p>
